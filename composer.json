@@ -1,0 +1,17 @@
+{
+    "name": "patrikjak/utils",
+    "type": "library",
+    "autoload": {
+        "psr-4": {
+            "Patrikjak\\Utils\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Patrik Jakab"
+        }
+    ],
+    "require": {
+        "illuminate/collections": "^11.25"
+    }
+}
