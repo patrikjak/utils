@@ -13,6 +13,22 @@ class UtilsServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'pjutils');
 
         Blade::componentNamespace('Patrikjak\\Utils\\View\\Components', 'pjutils');
+
+        if ($this->app->runningInConsole()) {
+            $this->publishes(
+                [
+                    __DIR__ . '/../resources/views' => resource_path('views/vendor/pjutils'),
+                    __DIR__ . '/../resources/assets/css' => resource_path('css/vendor/pjutils'),
+                    //__DIR__ . '/../resources/assets/js' => resource_path('js/vendor/pjutils'),
+                ],
+                'laravel-assets',
+            );
+        }
+
+        $this->publishes(
+            [__DIR__ . '/../public' => public_path('vendor/pjutils')],
+            'laravel-assets',
+        );
     }
 
     public function register(): void
