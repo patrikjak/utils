@@ -1,7 +1,6 @@
 import {getCss, insertAfter} from "../helpers/general";
 import {bindPagination} from "./pagination";
 import {bindPageSizeChange} from "./page-size";
-import {bindExpandable} from "./expandable";
 
 export function bindTableFunctions(table: HTMLElement | null = null): void {
     let tables: NodeListOf<HTMLElement> = document.querySelectorAll('.be-table-wrapper');
@@ -16,10 +15,6 @@ export function bindTableFunctions(table: HTMLElement | null = null): void {
         bindShowingRowActions(table);
         bindPagination(table);
         bindPageSizeChange(table);
-
-        if (table.querySelector('.be-table').classList.contains('expandable')) {
-            bindExpandable(table.querySelector('.be-table'));
-        }
     });
 }
 
