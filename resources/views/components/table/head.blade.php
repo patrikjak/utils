@@ -2,7 +2,7 @@
     <tr>
         @if($showCheckboxes())
             <th class="check">
-                <x-form.checkbox name="all" :id="$table->tableId" />
+                <x-pjutils::form.checkbox name="all" :id="$table->tableId" />
             </th>
         @endif
 
