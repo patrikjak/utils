@@ -1,7 +1,7 @@
 import axios from "axios";
 import {bindTableFunctions} from "./table";
 import {findGetParameter, getData, insertAfter} from "../helpers/general";
-import {bindDropdowns} from "../helpers/dropdown";
+import {bindDropdowns} from "../utils/dropdown";
 
 export function bindPagination(table: HTMLElement): void {
     if (!table.classList.contains('be-table-wrapper')) {

@@ -1,5 +1,5 @@
 import {findGetParameter, getData} from "../helpers/general";
-import {getDropdownValue} from "../helpers/dropdown";
+import {getDropdownValue} from "../utils/dropdown";
 import {getPageQueryForTable, loadPage} from "./pagination";
 
 export function bindPageSizeChange(table: HTMLElement): void {

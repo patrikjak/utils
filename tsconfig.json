@@ -2,6 +2,6 @@
 	"compilerOptions": {
 		"module": "commonjs",
 		"target": "esnext",
-		"sourceMap": true
+		"sourceMap": true,
 	},
 }

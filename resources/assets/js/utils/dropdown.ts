@@ -1,4 +1,4 @@
-import {createElement, getData, removeClassesAfterAnimation, setData, showElement} from "./general";
+import {createElement, getData, removeClassesAfterAnimation, setData, showElement} from "../helpers/general";
 import {DEFAULT_ENTER_ANIMATION, DEFAULT_EXIT_ANIMATION} from "../constants";
 
 export function bindDropdowns(scope: Document|HTMLElement = document): void {
