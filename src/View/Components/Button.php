@@ -4,6 +4,7 @@ namespace Patrikjak\Utils\View\Components;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\View\Type;
 
 class Button extends Component
 {
@@ -29,9 +30,9 @@ class Button extends Component
         $classes = ['be-btn'];
 
         $typeClass = match (true) {
-            $this->texted === true => sprintf('%s-%s', $this->type, 'texted'),
-            $this->bordered === true => sprintf('%s-%s', $this->type, 'bordered'),
-            default => $this->type,
+            $this->texted === true => sprintf('%s-%s', $this->type->value, 'texted'),
+            $this->bordered === true => sprintf('%s-%s', $this->type->value, 'bordered'),
+            default => $this->type->value,
         };
 
         $classes[] = $typeClass;
@@ -44,6 +45,6 @@ class Button extends Component
             $classes[] = 'button-like';
         }
 
-        return implode(', ', $classes);
+        return implode(' ', $classes);
     }
 }

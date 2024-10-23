@@ -11,5 +11,7 @@
 
     {{ $slot }}
 
-    <x-button type="submit" :label="$actionLabel ?? __('actions.submit')" />
+    <x-pjutils::button>
+        {{ $actionLabel ?? __('actions.submit') }}
+    </x-pjutils::button>
 </form>

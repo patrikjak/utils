@@ -1,6 +1,6 @@
 <?php
 
-namespace Patrikjak\Utils\View\Components;
+namespace Patrikjak\Utils\View;
 
 enum Type: string
 {
@@ -8,5 +8,5 @@ enum Type: string
     case DANGER = 'danger';
     case WARNING = 'warning';
     case INFO = 'info';
-    case NEUTRAL = 'light';
+    case NEUTRAL = 'neutral';
 }

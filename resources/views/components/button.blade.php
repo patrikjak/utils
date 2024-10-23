@@ -3,7 +3,7 @@
 @else
     <button {{ $attributes->merge(['class' => $classes]) }}>
         {{ $slot }}
-        @if($loadingButton)
+        @if($loading)
             <div class="loader">
                 <div class="loading-dot"></div>
                 <div class="loading-dot"></div>
