@@ -1,5 +1,6 @@
 import axios from "axios";
-import {RECAPTCHA_SITE_KEY} from "../constants";
+
+declare const RECAPTCHA_SITE_KEY: string;
 
 export async function sendRequest(url: string, method: string, data: FormData, recaptchaAction: string|null = null) {
     if (recaptchaAction) {
