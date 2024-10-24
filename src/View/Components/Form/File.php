@@ -27,7 +27,7 @@ final class File extends Component
 
     private function resolveWrapperClass(): string
     {
-        $classes = ['be-file'];
+        $classes = ['pj-file'];
 
         if ($this->error) {
             $classes[] = 'error';

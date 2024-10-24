@@ -27,7 +27,7 @@ class Textarea extends Component
 
     private function resolveWrapperClass(): string
     {
-        $classes = ['be-textarea'];
+        $classes = ['pj-textarea'];
 
         if ($this->required) {
             $classes[] = 'required';

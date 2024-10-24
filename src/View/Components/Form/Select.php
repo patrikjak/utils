@@ -34,7 +34,7 @@ class Select extends Component
 
     private function resolveWrapperClass(): string
     {
-        $classes = ['be-select'];
+        $classes = ['pj-select'];
 
         if ($this->required) {
             $classes[] = 'required';

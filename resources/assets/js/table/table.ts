@@ -3,7 +3,7 @@ import {bindPagination} from "./pagination";
 import {bindPageSizeChange} from "./page-size";
 
 export function bindTableFunctions(table: HTMLElement | null = null): void {
-    let tables: NodeListOf<HTMLElement> = document.querySelectorAll('.be-table-wrapper');
+    let tables: NodeListOf<HTMLElement> = document.querySelectorAll('.pj-table-wrapper');
 
     if (table !== null) {
         // @ts-ignore
@@ -19,11 +19,11 @@ export function bindTableFunctions(table: HTMLElement | null = null): void {
 }
 
 export function bindChecking(table: HTMLElement): void {
-    const headCheckbox: HTMLFormElement = table.querySelector('thead .be-checkbox input');
-    const dataCheckboxes: NodeListOf<HTMLFormElement> = table.querySelectorAll('tbody .be-checkbox input');
+    const headCheckbox: HTMLFormElement = table.querySelector('thead .pj-checkbox input');
+    const dataCheckboxes: NodeListOf<HTMLFormElement> = table.querySelectorAll('tbody .pj-checkbox input');
 
     if (headCheckbox !== null) {
-        headCheckbox.closest('.be-checkbox').addEventListener('click', (): void => {
+        headCheckbox.closest('.pj-checkbox').addEventListener('click', (): void => {
             toggleCheckAll(headCheckbox, dataCheckboxes);
         });
     }
@@ -88,7 +88,7 @@ function bindClosingActions(actions: HTMLElement): void {
 
 export function getChecked(table: HTMLElement): Array<string> {
     const checked = [];
-    const checkboxes: NodeListOf<HTMLFormElement> = table.querySelectorAll('tbody .be-checkbox input');
+    const checkboxes: NodeListOf<HTMLFormElement> = table.querySelectorAll('tbody .pj-checkbox input');
 
     checkboxes.forEach((checkbox: HTMLFormElement): void => {
         if (checkbox.checked) {
@@ -130,7 +130,7 @@ function toggleCheckAll(headCheckbox: HTMLFormElement, dataCheckboxes: NodeListO
 
 function checkChanges(headCheckbox: HTMLFormElement, dataCheckboxes: NodeListOf<HTMLFormElement>): void {
     dataCheckboxes.forEach((checkbox: HTMLFormElement): void => {
-        checkbox.closest('.be-checkbox').addEventListener('click', (): void => {
+        checkbox.closest('.pj-checkbox').addEventListener('click', (): void => {
             changeCheckboxState(checkbox, !checkbox.checked);
             headCheckbox.checked = areCheckedAll(dataCheckboxes);
         });

@@ -1,6 +1,6 @@
 @use "../variables" as *;
 
-.be-dropdown {
+.pj-dropdown {
     max-width: 100%;
     margin-top: 1rem;
     font-size: .875rem;
@@ -42,7 +42,7 @@
             background-color: $white;
             box-shadow: 5px 15px 20px -3px rgba(0,0,0,0.1);
 
-            .be-dropdown-item {
+            .pj-dropdown-item {
                 cursor: pointer;
                 padding: .75rem;
                 border-radius: inherit;

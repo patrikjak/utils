@@ -64,14 +64,14 @@ export function showErrors(form: HTMLFormElement, errors: object): void {
 }
 
 function showError(input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement, error: string): void {
-    let wrapper: HTMLElement = input.closest('[class^="be-"]');
-    const inputsWrapper = wrapper.closest('[class^="be-"][class$="-wrapper"]');
+    let wrapper: HTMLElement = input.closest('[class^="pj-"]');
+    const inputsWrapper = wrapper.closest('[class^="pj-"][class$="-wrapper"]');
     const originalInput = input;
 
     if (inputsWrapper !== null) {
         // @ts-ignore
         wrapper = inputsWrapper;
-        input = wrapper.querySelector('[class^="be-"]:last-child');
+        input = wrapper.querySelector('[class^="pj-"]:last-child');
     }
 
     const hasIcon = ['text', 'email', 'password', 'tel'].includes(input.type);
@@ -108,11 +108,11 @@ function showError(input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectEle
 }
 
 function bindResetInput(input: HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement): void {
-    const inputWrapper = input.closest('.be-input-wrapper');
+    const inputWrapper = input.closest('.pj-input-wrapper');
 
     if (inputWrapper !== null) {
-        const children: NodeListOf<HTMLInputElement> = input.closest('[class^="be-"][class$="wrapper error"]')
-            .querySelectorAll('[class^="be-"]');
+        const children: NodeListOf<HTMLInputElement> = input.closest('[class^="pj-"][class$="wrapper error"]')
+            .querySelectorAll('[class^="pj-"]');
 
         if (children) {
             children.forEach((child): void => {
@@ -127,7 +127,7 @@ function bindResetInput(input: HTMLInputElement | HTMLTextAreaElement | HTMLSele
     }
 
     input.addEventListener('change', (): void => {
-        removeError(input.closest('[class^="be-"]'));
+        removeError(input.closest('[class^="pj-"]'));
     }, {once: true});
 }
 
@@ -154,7 +154,7 @@ function getInputErrorIcon(input: HTMLFormElement): HTMLElement {
 
 function hideErrors(form: HTMLFormElement): void {
     // @ts-ignore
-    const errorWrappers: NodeList<HTMLElement> = form.querySelectorAll('[class^="be-"].error');
+    const errorWrappers: NodeList<HTMLElement> = form.querySelectorAll('[class^="pj-"].error');
 
     errorWrappers.forEach((errorWrapper): void => {
         removeError(errorWrapper);

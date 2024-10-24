@@ -41,7 +41,7 @@ class Input extends Component
 
     public function resolveWrapperClass(): string
     {
-        $classes = ['be-classic'];
+        $classes = ['pj-classic'];
 
         if (isset($this->icon)) {
             $classes[] = 'iconic';

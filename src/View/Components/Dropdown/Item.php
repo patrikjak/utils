@@ -23,6 +23,6 @@ class Item extends Component
 
     private function resolveClasses(): string
     {
-        return implode(' ', ['be-dropdown-item']);
+        return implode(' ', ['pj-dropdown-item']);
     }
 }

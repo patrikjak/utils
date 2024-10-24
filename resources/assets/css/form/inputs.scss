@@ -4,9 +4,9 @@ label {
     font-size: .875rem;
 }
 
-.be-file,
-.be-classic,
-.be-textarea {
+.pj-file,
+.pj-classic,
+.pj-textarea {
     width: 100%;
     margin-top: 1rem;
 
@@ -85,12 +85,12 @@ label {
     }
 }
 
-.be-checkbox.error label:before {
+.pj-checkbox.error label:before {
     border-color: $error;
 }
 
-.be-checkbox,
-.be-radio {
+.pj-checkbox,
+.pj-radio {
     position: relative;
     margin-top: .5rem;
     display: block;
@@ -164,7 +164,7 @@ label {
     }
 }
 
-.be-radio {
+.pj-radio {
     label:before {
         border-radius: 50%;
     }
@@ -199,25 +199,25 @@ label {
     }
 }
 
-.be-input-wrapper {
+.pj-input-wrapper {
     margin-top: 1rem;
 }
 
-.be-classic,
-.be-textarea,
-.be-file,
-.be-select {
+.pj-classic,
+.pj-textarea,
+.pj-file,
+.pj-select {
     &:first-child {
         margin-top: 0;
     }
 }
 
-.be-classic,
-.be-checkbox,
-.be-select,
-.be-input-wrapper,
-.be-file,
-.be-textarea {
+.pj-classic,
+.pj-checkbox,
+.pj-select,
+.pj-input-wrapper,
+.pj-file,
+.pj-textarea {
     & > .error {
         display: flex;
         align-items: center;
@@ -231,7 +231,7 @@ label {
     }
 }
 
-.be-select {
+.pj-select {
     width: 100%;
     margin-top: 1rem;
 
@@ -269,7 +269,7 @@ label {
     }
 }
 
-.be-file input {
+.pj-file input {
     padding: 0;
 
     &::file-selector-button {

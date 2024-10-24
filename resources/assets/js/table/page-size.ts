@@ -9,7 +9,7 @@ export function bindPageSizeChange(table: HTMLElement): void {
         return;
     }
 
-    const dropdown: HTMLDivElement = pageSize.querySelector('.be-dropdown');
+    const dropdown: HTMLDivElement = pageSize.querySelector('.pj-dropdown');
 
     dropdown.addEventListener('change', async function (): Promise<void> {
         const baseLink = getData(pageSize, 'href');

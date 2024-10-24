@@ -1,6 +1,6 @@
 @use "../variables" as *;
 
-.be-table {
+.pj-table {
     border-collapse: collapse;
     width: 100%;
     transition-duration: .3s;
@@ -105,7 +105,7 @@
         }
     }
 
-    .be-checkbox {
+    .pj-checkbox {
         margin-top: 0;
         width: 20px;
         height: auto;
@@ -280,6 +280,6 @@
     }
 }
 
-.be-table-wrapper .be-dropdown .dropdown-wrapper {
+.pj-table-wrapper .pj-dropdown .dropdown-wrapper {
     margin-top: 0;
 }

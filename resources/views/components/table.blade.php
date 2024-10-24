@@ -1,5 +1,5 @@
 <div
-    class="be-table-wrapper"
+    class="pj-table-wrapper"
     id="{{ $tableId }}"
 >
     <table class="{{ $tableClass }}"

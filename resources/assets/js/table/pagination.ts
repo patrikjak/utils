@@ -4,8 +4,8 @@ import {findGetParameter, getData, insertAfter} from "../helpers/general";
 import {bindDropdowns} from "../utils/dropdown";
 
 export function bindPagination(table: HTMLElement): void {
-    if (!table.classList.contains('be-table-wrapper')) {
-        table = table.closest('.be-table-wrapper');
+    if (!table.classList.contains('pj-table-wrapper')) {
+        table = table.closest('.pj-table-wrapper');
     }
 
     const pagination: NodeListOf<HTMLElement> = table.querySelectorAll('.pagination');
@@ -18,7 +18,7 @@ export function bindPagination(table: HTMLElement): void {
                 e.preventDefault();
                 if (canClickOnPaginationLink(link)) {
                     await loadPage(
-                        link.closest('.be-table-wrapper'),
+                        link.closest('.pj-table-wrapper'),
                         link.getAttribute('href'),
                     );
                 }
@@ -28,7 +28,7 @@ export function bindPagination(table: HTMLElement): void {
 }
 
 export function getPageQueryForTable(table: HTMLElement): string {
-    return getData(table.closest('.be-table-wrapper'), 'page-key');
+    return getData(table.closest('.pj-table-wrapper'), 'page-key');
 }
 
 export async function loadPage(table: HTMLElement, link: string): Promise<void> {
@@ -62,7 +62,7 @@ function loadTableBody(table: HTMLElement, pageContent: string): void {
 }
 
 function loadPagination(table: HTMLElement, pagination: string): void {
-    const tablePagination = table.closest('.be-table-wrapper').querySelector('.pagination');
+    const tablePagination = table.closest('.pj-table-wrapper').querySelector('.pagination');
     tablePagination.outerHTML = pagination;
 }
 
@@ -74,7 +74,7 @@ function setActionsToDefaultPosition(table: HTMLElement): void {
     const actions: HTMLElement = table.querySelector('.table-actions');
 
     if (actions !== null) {
-        insertAfter(actions, table.querySelector('.be-table'));
+        insertAfter(actions, table.querySelector('.pj-table'));
     }
 }
 

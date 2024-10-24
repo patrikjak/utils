@@ -1,3 +1,3 @@
 @props(['label'])
 
-<input {{ $attributes->merge(['class' => 'be-btn']) }} type="submit" value="{{ $label }}">
+<input {{ $attributes->merge(['class' => 'pj-btn']) }} type="submit" value="{{ $label }}">

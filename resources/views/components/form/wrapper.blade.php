@@ -1,5 +1,5 @@
 @props(['name'])
 
-<div class="be-input-wrapper">
+<div class="pj-input-wrapper">
     {{ $slot }}
 </div>

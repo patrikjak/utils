@@ -30,7 +30,7 @@ class Radio extends Component
 
     private function resolveWrapperClass(): string
     {
-        $classes = ['be-radio'];
+        $classes = ['pj-radio'];
 
         if ($this->required) {
             $classes[] = 'required';

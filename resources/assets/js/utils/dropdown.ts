@@ -2,7 +2,7 @@ import {createElement, getData, removeClassesAfterAnimation, setData, showElemen
 import {DEFAULT_ENTER_ANIMATION, DEFAULT_EXIT_ANIMATION} from "../constants";
 
 export function bindDropdowns(scope: Document|HTMLElement = document): void {
-    scope.querySelectorAll('.be-dropdown').forEach(function (dropdown: HTMLDivElement): void {
+    scope.querySelectorAll('.pj-dropdown').forEach(function (dropdown: HTMLDivElement): void {
         adjustDropdownWidth(dropdown);
         bindOpening(dropdown);
         bindSelection(dropdown);
@@ -29,7 +29,7 @@ function bindOpening(dropdown: HTMLDivElement): void {
 }
 
 function bindSelection(dropdown: HTMLDivElement): void {
-    const items = dropdown.querySelectorAll('.all-items .be-dropdown-item');
+    const items = dropdown.querySelectorAll('.all-items .pj-dropdown-item');
 
     items.forEach(function (item: HTMLDivElement): void {
         item.addEventListener('click', function (): void {
@@ -70,7 +70,7 @@ function openDropdown(dropdown: HTMLDivElement): void {
 
 function adjustDropdownWidth(dropdown: HTMLDivElement): void {
     const hiddenItems: HTMLElement = createElement('div', null, {class: ['hidden-items']});
-    const items: NodeListOf<HTMLDivElement> = dropdown.querySelectorAll('.all-items .be-dropdown-item');
+    const items: NodeListOf<HTMLDivElement> = dropdown.querySelectorAll('.all-items .pj-dropdown-item');
 
     items.forEach(function (item: HTMLDivElement): void {
         hiddenItems.appendChild(item.cloneNode(true));

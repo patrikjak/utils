@@ -1,4 +1,4 @@
-<div class="be-dropdown">
+<div class="pj-dropdown">
     @if($label !== null)
         <p class="label">{{ $label }}</p>
     @endif

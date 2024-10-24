@@ -32,7 +32,7 @@ class Table extends Component
 
     private function resolveTableClass(): string
     {
-        $classes = ['be-table'];
+        $classes = ['pj-table'];
 
         if ($this->table->expandable !== null) {
             $classes[] = 'expandable';

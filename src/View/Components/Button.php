@@ -29,7 +29,7 @@ class Button extends Component
 
     private function getClasses(): string
     {
-        $classes = ['be-btn'];
+        $classes = ['pj-btn'];
 
         $typeClass = match (true) {
             $this->texted === true => sprintf('%s-%s', $this->type->value, 'texted'),

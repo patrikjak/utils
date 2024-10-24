@@ -26,7 +26,7 @@ final class Checkbox extends Component
 
     private function resolveWrapperClass(): string
     {
-        $classes = ['be-checkbox'];
+        $classes = ['pj-checkbox'];
 
         if ($this->required) {
             $classes[] = 'required';
