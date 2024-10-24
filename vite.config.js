@@ -8,6 +8,7 @@ export default defineConfig({
                 "resources/assets/css/main.scss",
                 "resources/assets/css/general/buttons.scss",
                 "resources/assets/css/general/general.scss",
+                "resources/assets/css/general/animations.scss",
                 "resources/assets/css/table/table.scss",
                 "resources/assets/css/form/inputs.scss",
                 "resources/assets/css/utils/dropdown.scss",
