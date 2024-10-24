@@ -4,6 +4,7 @@
     "keywords": ["laravel", "utils", "utility"],
     "version": "0.1.0",
     "type": "library",
+    "license": "MIT",
     "autoload": {
         "psr-4": {
             "Patrikjak\\Utils\\": "src/"
