@@ -100,21 +100,21 @@ export function getChecked(table: HTMLElement): Array<string> {
 }
 
 function areCheckedAll(dataCheckboxes: NodeListOf<HTMLFormElement>): boolean {
-    dataCheckboxes.forEach((checkbox: HTMLFormElement): boolean => {
+    for (const checkbox of dataCheckboxes) {
         if (checkbox.checked === false) {
             return false;
         }
-    });
+    }
 
     return true;
 }
 
 function isAtLeastOneChecked(dataCheckboxes: NodeListOf<HTMLFormElement>): boolean {
-    dataCheckboxes.forEach((checkbox: HTMLFormElement): boolean => {
-        if (checkbox.checked === true) {
+    for (const dataCheckbox of dataCheckboxes) {
+        if (dataCheckbox.checked === true) {
             return true;
         }
-    });
+    }
 
     return false;
 }
