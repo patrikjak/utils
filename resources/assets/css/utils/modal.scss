@@ -1,0 +1,64 @@
+@use "../variables" as *;
+
+.modal {
+    width: 30%;
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 1.5rem 2rem;
+    background-color: $white;
+    border-radius: 1rem;
+    text-align: center;
+
+    .close-button {
+        position: absolute;
+        top: .5rem;
+        right: .5rem;
+
+        .line {
+            background-color: $grey;
+        }
+    }
+
+    &.complex {
+        text-align: left;
+
+        .close-button {
+            top: 1.5rem;
+            right: 2rem;
+        }
+
+        .header {
+            font-size: 1.125rem;
+        }
+
+        .body {
+            margin-top: 1.3125rem;
+        }
+    }
+
+    p {
+        margin: 0;
+    }
+
+    .header p {
+        color: $font;
+    }
+
+    .body {
+        color: $font-light;
+        margin-top: .5rem;
+    }
+
+    .footer {
+        display: flex;
+        justify-content: center;
+        gap: .5rem;
+        margin-top: 1.5rem;
+
+        button {
+            margin-top: 0;
+        }
+    }
+}

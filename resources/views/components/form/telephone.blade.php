@@ -1,0 +1,1 @@
+<x-pjutils::form.input type="tel" {{ $attributes->merge(['pattern' => $pattern]) }}/>

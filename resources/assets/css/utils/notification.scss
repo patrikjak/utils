@@ -1,0 +1,93 @@
+@use "../variables" as *;
+
+.notification {
+    display: flex;
+    align-items: center;
+    padding: 1rem;
+    border-radius: 16px;
+    border: solid .0625rem $primary;
+    background-color: $white;
+    width: 22.625rem;
+    position: fixed;
+    top: 5%;
+    right: 3%;
+    z-index: 1000;
+    box-shadow: 8px 8px 40px -6px rgba(111, 135, 234, 0.22);
+    animation-duration: 300ms;
+    gap: .75rem;
+
+    .level {
+        width: 56px;
+        height: 56px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: $primary-light;
+        border-radius: 8px;
+
+        svg {
+            box-sizing: content-box;
+            padding: 12px;
+            width: 32px;
+        }
+    }
+
+    .content {
+        color: $font;
+        padding-right: 2rem;
+        word-break: break-word;
+        font-size: .875rem;
+
+        .title {
+            line-height: 1.1875rem;
+            font-weight: 500;
+            margin: 0;
+            color: $primary;
+        }
+
+        .message {
+            margin: 7px 0 0;
+            font-size: .875rem;
+            color: $font-light;
+        }
+    }
+
+    &.success {
+        border-color: $success;
+        box-shadow: 8px 8px 40px -6px #EAF8DC;
+
+        .level {
+            background-color: $success-light;
+        }
+
+        .content .title {
+            color: $success;
+        }
+    }
+
+    &.warning {
+        border-color: $warning;
+        box-shadow: 8px 8px 40px -6px #FFF7E5;
+
+        .level {
+            background-color: $warning-light;
+        }
+
+        .content .title {
+            color: $warning;
+        }
+    }
+
+    &.error {
+        border-color: $error;
+        box-shadow: 8px 8px 40px -6px #FFDBDE;
+
+        .level {
+            background-color: $error-light;
+        }
+
+        .content .title {
+            color: $error;
+        }
+    }
+}

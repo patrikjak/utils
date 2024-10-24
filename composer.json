@@ -1,5 +1,8 @@
 {
     "name": "patrikjak/utils",
+    "description": "A simple utility package for Laravel",
+    "keywords": ["laravel", "utils", "utility"],
+    "version": "0.1.0",
     "type": "library",
     "autoload": {
         "psr-4": {
@@ -12,6 +15,15 @@
         }
     ],
     "require": {
-        "illuminate/collections": "^11.25"
+        "laravel/framework": "^11.25"
+    },
+    "require-dev": {
+        "phpstan/phpstan": "^1.12",
+        "slevomat/coding-standard": "^8.14"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
