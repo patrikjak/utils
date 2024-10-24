@@ -36,8 +36,8 @@ class PaginationItem extends Component
     public function __construct(public PaginationSettings $paginationSettings, public array $link)
     {
         $this->page = (int) $link['label'];
-        $this->isPrevArrow = $link['label'] === __('pagination.previous');
-        $this->isNextArrow = $link['label'] === __('pagination.next');
+        $this->isPrevArrow = $link['label'] === __('pjutils::table.pagination.previous');
+        $this->isNextArrow = $link['label'] === __('pjutils::table.pagination.next');
 
         $isFirstPage = $this->page === 1;
         $isLastPage = $this->page === $paginationSettings->lastPage;

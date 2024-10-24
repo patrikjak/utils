@@ -12,8 +12,9 @@ class UtilsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'pjutils');
-
         Blade::componentNamespace('Patrikjak\\Utils\\View\\Components', 'pjutils');
+
+        $this->loadTranslationsFrom(__DIR__ . '/../lang', 'pjutils');
 
         if ($this->app->runningInConsole()) {
             $this->publishes(

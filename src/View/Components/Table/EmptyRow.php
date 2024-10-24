@@ -15,7 +15,7 @@ class EmptyRow extends Component
     public function __construct(public Table $table, public ?string $message = null)
     {
         $this->colspan = $this->resolveColspan();
-        $this->message ??= __('general.no_data_available');
+        $this->message ??= __('pjutils::table.no_data_available');
     }
 
     public function render(): View
