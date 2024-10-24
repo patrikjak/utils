@@ -1,0 +1,1 @@
+.close-button{margin:0;padding:.5rem;border:none;background:0;position:relative;width:1.5rem;height:1.5rem;cursor:pointer;box-sizing:border-box}.close-button .line{width:1rem;height:.15rem;background-color:#000}.close-button .line:first-child{transform:rotate(45deg) translate(-1px,5.5px)}.close-button .line:last-child{transform:rotate(-45deg) translate(-4px,-3px)}
