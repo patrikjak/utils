@@ -1,4 +1,4 @@
-import {createElement, showElement} from "./general";
+import {createElement, showElement} from "../helpers/general";
 import {dangerSign, hiddenEye, shownEye} from "../components/icons";
 
 export function getFormAction(form: HTMLFormElement): string {

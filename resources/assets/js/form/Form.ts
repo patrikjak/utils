@@ -3,7 +3,7 @@ import {sendRequest} from "../helpers/connector";
 import {AdditionalData, FormCallback} from "./interfaces/form";
 import notify from "../utils/notification";
 import {translator} from "../translator";
-import {emptyFormInputs, showErrors, getFormAction, getFormMethod} from "../helpers/form";
+import {emptyFormInputs, showErrors, getFormAction, getFormMethod} from "./helper";
 
 export default class Form {
     private forms: Array<HTMLFormElement>;
