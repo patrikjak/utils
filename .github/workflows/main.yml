@@ -1,0 +1,32 @@
+name: Lint
+
+on:
+  push:
+    branches:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    name: Lint
+
+    steps:
+      - uses: shivammathur/setup-php@v2
+        with:
+          php-version: '8.3'
+          tools: phpcs, phpstan
+
+      - name: Install dependencies
+        run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+
+      - name: Build assets
+        run: |
+          npm install
+          npm run build
+
+      - name: phpcs
+        run: vendor/bin/phpcs --standard=ruleset.xml
+
+      - name: phpstan
+        run: vendor/bin/phpstan analyse
