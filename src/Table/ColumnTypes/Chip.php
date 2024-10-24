@@ -22,7 +22,7 @@ final readonly class Chip implements ColumnType
     }
     
     /**
-     * @return ChipType
+     * @return array<string, array{label: string, type: ChipType}>
      */
     public function getMapped(): array
     {

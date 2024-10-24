@@ -15,7 +15,7 @@ class ChipCell extends Cell
     public readonly string $chipType;
 
     /**
-     * @var array<ChipType>
+     * @var array<string, array{label: string, type: ChipType}>
      */
     private array $mappedChipInfo;
 

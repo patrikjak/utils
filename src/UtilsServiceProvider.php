@@ -1,7 +1,8 @@
 <?php
 
-namespace Patrikjak\Utils;
+declare(strict_types = 1);
 
+namespace Patrikjak\Utils;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
@@ -29,9 +30,5 @@ class UtilsServiceProvider extends ServiceProvider
             [__DIR__ . '/../public' => public_path('vendor/pjutils')],
             'assets',
         );
-    }
-
-    public function register(): void
-    {
     }
 }

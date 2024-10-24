@@ -1,0 +1,12 @@
+includes:
+	- phpstan-baseline.neon
+
+parameters:
+
+    paths:
+        - src/
+
+    level: 6
+
+    ignoreErrors:
+        - identifier: missingType.generics
