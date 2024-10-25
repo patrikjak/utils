@@ -2,7 +2,7 @@
     "name": "patrikjak/utils",
     "description": "A simple utility package for Laravel",
     "keywords": ["laravel", "utils", "utility"],
-    "version": "0.1.1",
+    "version": "0.1.2",
     "type": "library",
     "license": "MIT",
     "autoload": {
@@ -16,6 +16,7 @@
         }
     ],
     "require": {
+        "php": "^8.3",
         "laravel/framework": "^11.25"
     },
     "require-dev": {
