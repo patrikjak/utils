@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Services;
 
-use Patrikjak\Utils\Table\Services\Actions\ActionInterface;
+use Patrikjak\Utils\Table\Dtos\Action;
 use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 
 interface TableProviderInterface
@@ -35,7 +35,7 @@ interface TableProviderInterface
     public function getExpandable(): ?string;
 
     /**
-     * @return array<ActionInterface>
+     * @return array<Action>
      */
     public function getActions(): array;
 }

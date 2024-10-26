@@ -6,12 +6,12 @@ namespace Patrikjak\Utils\View\Components\Table;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Services\Actions\ActionInterface;
+use Patrikjak\Utils\Table\Dtos\Action;
 
 class Actions extends Component
 {
     /**
-     * @param array<ActionInterface> $actions
+     * @param array<Action> $actions
      */
     public function __construct(public array $actions)
     {

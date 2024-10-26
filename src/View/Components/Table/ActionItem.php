@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\View\Components\Table;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Services\Actions\Action;
+use Patrikjak\Utils\Table\Dtos\Action;
 
 class ActionItem extends Component
 {
@@ -17,7 +17,7 @@ class ActionItem extends Component
     public function __construct(public readonly Action $action)
     {
         $this->actionItemClass = $this->resolveClass();
-        $this->hasIcon = $this->action->getIcon() !== null;
+        $this->hasIcon = $this->action->icon !== null;
     }
 
     public function render(): View
@@ -27,6 +27,6 @@ class ActionItem extends Component
 
     private function resolveClass(): string
     {
-        return implode(' ', ['action', $this->action->getClassId(), $this->action->getType()->value]);
+        return implode(' ', ['action', $this->action->classId, $this->action->type->value]);
     }
 }
