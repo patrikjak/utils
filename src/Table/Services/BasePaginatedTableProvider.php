@@ -43,7 +43,7 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements S
 
     public function getPaginationSettings(): Settings
     {
-        return new Pagination(
+        return new Settings(
             page: $this->parameters->page,
             pageSize: $this->parameters->pageSize,
             pageSizeOptions: $this->getPageSizeOptions(),
