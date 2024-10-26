@@ -2,11 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\ColumnTypes;
+namespace Patrikjak\Utils\Table\Services\ColumnTypes;
 
-use Patrikjak\Utils\Table\ColumnTypes\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\ColumnTypes\Interfaces\IconType;
-use Patrikjak\Utils\Table\ColumnTypes\Interfaces\SupportsIcon;
+use Patrikjak\Utils\Table\Enums\ColumnTypes\IconType;
+use Patrikjak\Utils\Table\Enums\ColumnTypes\Type;
+use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
+use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\SupportsIcon;
 
 final readonly class Simple implements ColumnType, SupportsIcon
 {

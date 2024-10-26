@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\View\Components\Table;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Pagination\PaginationSettings;
+use Patrikjak\Utils\Table\Dtos\Pagination\Settings;
 
 class PageSize extends Component
 {
@@ -19,7 +19,7 @@ class PageSize extends Component
 
     public readonly string $path;
 
-    public function __construct(PaginationSettings $paginationSettings)
+    public function __construct(Settings $paginationSettings)
     {
         $this->pageSizeOptions = $paginationSettings->pageSizeOptions;
         $this->pageSize = $paginationSettings->pageSize;

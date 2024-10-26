@@ -2,7 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Actions;
+namespace Patrikjak\Utils\Table\Services\Actions;
+
+use Patrikjak\Utils\Table\Enums\Actions\Type;
 
 final readonly class Action implements ActionInterface
 {

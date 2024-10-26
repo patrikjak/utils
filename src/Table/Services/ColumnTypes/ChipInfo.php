@@ -2,7 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\ColumnTypes;
+namespace Patrikjak\Utils\Table\Services\ColumnTypes;
+
+use Patrikjak\Utils\Table\Enums\ColumnTypes\ChipType;
 
 final readonly class ChipInfo
 {

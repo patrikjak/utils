@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\View\Components\Table;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Pagination\PaginationSettings;
+use Patrikjak\Utils\Table\Dtos\Pagination\Settings;
 
 class PaginationItem extends Component
 {
@@ -33,7 +33,7 @@ class PaginationItem extends Component
     /**
      * @param array{url: string, label:string, active: bool} $link
      */
-    public function __construct(public PaginationSettings $paginationSettings, public array $link)
+    public function __construct(public Settings $paginationSettings, public array $link)
     {
         $this->page = (int) $link['label'];
         $this->isPrevArrow = $link['label'] === __('pjutils::table.pagination.previous');

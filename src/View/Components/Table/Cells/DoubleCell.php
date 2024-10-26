@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\View\Components\Table\Cells;
 
-use Patrikjak\Utils\Table\ColumnTypes\Double;
-use Patrikjak\Utils\Table\ColumnTypes\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\Table;
+use Patrikjak\Utils\Table\Dtos\Table;
+use Patrikjak\Utils\Table\Services\ColumnTypes\Double;
+use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 
 class DoubleCell extends Cell
 {

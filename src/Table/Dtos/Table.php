@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table;
+namespace Patrikjak\Utils\Table\Dtos;
 
-use Patrikjak\Utils\Table\Actions\ActionInterface;
-use Patrikjak\Utils\Table\ColumnTypes\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\Pagination\PaginationSettings;
+use Patrikjak\Utils\Table\Dtos\Pagination\Settings;
+use Patrikjak\Utils\Table\Services\Actions\ActionInterface;
+use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 
 final readonly class Table
 {
@@ -26,7 +26,7 @@ final readonly class Table
         public bool $showOrder,
         public ?string $expandable,
         public array $actions,
-        public ?PaginationSettings $paginationSettings = null,
+        public ?Settings $paginationSettings = null,
     ) {
     }
 

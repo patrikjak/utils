@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table;
+namespace Patrikjak\Utils\Table\Services;
 
-use Patrikjak\Utils\Table\Actions\ActionInterface;
-use Patrikjak\Utils\Table\ColumnTypes\Interfaces\ColumnType;
+use Patrikjak\Utils\Table\Services\Actions\ActionInterface;
+use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 
 interface TableProviderInterface
 {

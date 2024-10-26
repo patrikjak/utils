@@ -2,17 +2,18 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table;
+namespace Patrikjak\Utils\Table\Services;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Table\Pagination\PaginationSettings;
-use Patrikjak\Utils\Table\Parameters\TableParameters;
+use Patrikjak\Utils\Table\Dtos\Pagination\Settings;
+use Patrikjak\Utils\Table\Dtos\Parameters;
+use Patrikjak\Utils\Table\Dtos\Table;
 use Patrikjak\Utils\View\Components\Table\Body;
 use Patrikjak\Utils\View\Components\Table\Pagination;
 
-abstract class BasePaginatedTableProvider extends BaseTableProvider implements SupportPagination
+abstract class BasePaginatedTableProvider extends BaseTableProvider implements SupportsPagination
 {
     protected ?Table $table = null;
 
@@ -30,7 +31,7 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements S
     /**
      * @inheritDoc
      */
-    public function getHtmlParts(TableParameters $parameters): array
+    public function getHtmlParts(Parameters $parameters): array
     {
         $this->table = $this->getTable($parameters);
 
@@ -40,9 +41,9 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements S
         ];
     }
 
-    public function getPaginationSettings(): PaginationSettings
+    public function getPaginationSettings(): Settings
     {
-        return new PaginationSettings(
+        return new Pagination(
             page: $this->parameters->page,
             pageSize: $this->parameters->pageSize,
             pageSizeOptions: $this->getPageSizeOptions(),

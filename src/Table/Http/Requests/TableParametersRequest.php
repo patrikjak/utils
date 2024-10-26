@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Http\Requests\Table;
+namespace Patrikjak\Utils\Table\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Patrikjak\Utils\Table\Parameters\TableParameters;
+use Patrikjak\Utils\Table\Dtos\Parameters;
 use stdClass;
 
 class TableParametersRequest extends FormRequest
@@ -14,11 +14,11 @@ class TableParametersRequest extends FormRequest
 
     private bool $shouldUpdateCookie = false;
 
-    public function getTableParameters(string $tableId): TableParameters
+    public function getTableParameters(string $tableId): Parameters
     {
         $this->tableId = $tableId;
 
-        $parameters = new TableParameters($this->getCurrentPage(), $this->getPageSize());
+        $parameters = new Parameters($this->getCurrentPage(), $this->getPageSize());
 
         if ($this->shouldUpdateCookie) {
             $this->updateParametersCookie($parameters);
@@ -80,7 +80,7 @@ class TableParametersRequest extends FormRequest
         return $cookie ? json_decode($cookie) : null;
     }
 
-    private function updateParametersCookie(TableParameters $parameters): void
+    private function updateParametersCookie(Parameters $parameters): void
     {
         $tableParameters = json_decode($this->cookie($this->tableId, '{}'), true);
         $updatedParameters = array_merge($tableParameters, $parameters->toArray());

@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\View\Components\Table;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Table;
+use Patrikjak\Utils\Table\Dtos\Table;
 
 final class Head extends Component
 {

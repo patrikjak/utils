@@ -2,11 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Pagination;
+namespace Patrikjak\Utils\Table\Dtos\Pagination;
 
 use Illuminate\Support\Collection;
 
-final readonly class PaginationSettings
+final readonly class Settings
 {
     /**
      * @param array<int, int> $pageSizeOptions

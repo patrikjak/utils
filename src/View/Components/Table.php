@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\View\Components;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Table as TableService;
+use Patrikjak\Utils\Table\Dtos\Table as TableService;
 use Patrikjak\Utils\View\Components\Table\TableMethods;
 
 class Table extends Component

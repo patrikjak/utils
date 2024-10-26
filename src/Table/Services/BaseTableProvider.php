@@ -2,15 +2,16 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table;
+namespace Patrikjak\Utils\Table\Services;
 
-use Patrikjak\Utils\Table\Parameters\TableParameters;
+use Patrikjak\Utils\Table\Dtos\Parameters;
+use Patrikjak\Utils\Table\Dtos\Table;
 
 abstract class BaseTableProvider implements TableProviderInterface
 {
-    protected TableParameters $parameters;
+    protected Parameters $parameters;
 
-    final public function getTable(TableParameters $parameters): Table
+    final public function getTable(Parameters $parameters): Table
     {
         $this->parameters = $parameters;
 
@@ -24,7 +25,7 @@ abstract class BaseTableProvider implements TableProviderInterface
             $this->showOrder(),
             $this->getExpandable(),
             $this->getActions(),
-            $this instanceof SupportPagination ? $this->getPaginationSettings() : null,
+            $this instanceof SupportsPagination ? $this->getPaginationSettings() : null,
         );
     }
 

@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\View\Components\Table\Cells;
 
 use Illuminate\Contracts\View\View;
-use Patrikjak\Utils\Table\ColumnTypes\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\ColumnTypes\Interfaces\IconType;
-use Patrikjak\Utils\Table\ColumnTypes\Interfaces\SupportsIcon;
-use Patrikjak\Utils\Table\Table;
+use Patrikjak\Utils\Table\Dtos\Table;
+use Patrikjak\Utils\Table\Enums\ColumnTypes\IconType;
+use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
+use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\SupportsIcon;
 use Patrikjak\Utils\View\Components\Table\Body;
 
 abstract class Cell extends Body

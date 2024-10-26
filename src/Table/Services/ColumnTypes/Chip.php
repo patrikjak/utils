@@ -2,10 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\ColumnTypes;
+namespace Patrikjak\Utils\Table\Services\ColumnTypes;
 
-use Patrikjak\Utils\Table\ColumnTypes\Interfaces\ColumnType;
-use Patrikjak\Utils\View\Components\Table\Cells\ChipType;
+use Patrikjak\Utils\Table\Enums\ColumnTypes\ChipType;
+use Patrikjak\Utils\Table\Enums\ColumnTypes\Type;
+use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 
 final readonly class Chip implements ColumnType
 {

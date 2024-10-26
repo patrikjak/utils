@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Actions;
+namespace Patrikjak\Utils\Table\Enums\Actions;
 
 enum Type: string
 {

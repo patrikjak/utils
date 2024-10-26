@@ -7,7 +7,6 @@ namespace Patrikjak\Utils\View\Components\Table;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Pagination\PaginationSettings;
 
 class Pagination extends Component
 {
@@ -17,7 +16,7 @@ class Pagination extends Component
      */
     public readonly Collection $links;
 
-    public function __construct(public PaginationSettings $paginationSettings)
+    public function __construct(public Pagination $paginationSettings)
     {
         $this->links = $paginationSettings->links;
     }
