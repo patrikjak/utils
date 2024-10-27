@@ -7,6 +7,7 @@ namespace Patrikjak\Utils\Table\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Table as TableDto;
+use Patrikjak\Utils\Table\View\Traits\TableMethods;
 
 class Table extends Component
 {

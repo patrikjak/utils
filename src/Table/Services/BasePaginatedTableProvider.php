@@ -11,7 +11,7 @@ use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Body;
-use Patrikjak\Utils\Table\View\Pagination;
+use Patrikjak\Utils\Table\View\Pagination\Paginator;
 
 abstract class BasePaginatedTableProvider extends BaseTableProvider implements SupportsPagination
 {
@@ -70,6 +70,6 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements S
 
     private function getPaginationHTML(): string
     {
-        return Blade::renderComponent(new Pagination($this->getPaginationSettings()));
+        return Blade::renderComponent(new Paginator($this->getPaginationSettings()));
     }
 }

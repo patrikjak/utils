@@ -2,13 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\View;
+namespace Patrikjak\Utils\Table\View\Pagination;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 
-class PaginationItem extends Component
+class Item extends Component
 {
     public readonly bool $showDots;
 
@@ -66,7 +66,7 @@ class PaginationItem extends Component
 
     public function render(): View
     {
-        return view('pjutils::table.pagination-item');
+        return view('pjutils::table.pagination.item');
     }
 
     private function shouldShowDots(): bool

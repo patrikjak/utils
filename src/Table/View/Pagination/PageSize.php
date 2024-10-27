@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\View;
+namespace Patrikjak\Utils\Table\View\Pagination;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -28,6 +28,6 @@ class PageSize extends Component
 
     public function render(): View
     {
-        return view('pjutils::table.page-size');
+        return view('pjutils::table.pagination.page-size');
     }
 }

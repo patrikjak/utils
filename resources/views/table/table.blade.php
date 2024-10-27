@@ -15,6 +15,6 @@
     </table>
 
     @if($table->hasPagination())
-        <x-pjutils.table::pagination :pagination-settings="$table->paginationSettings" />
+        <x-pjutils.table::pagination.paginator :pagination-settings="$table->paginationSettings" />
     @endif
 </div>
