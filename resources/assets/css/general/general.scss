@@ -23,3 +23,18 @@
         }
     }
 }
+
+.hellip {
+    display: inline-flex;
+    gap: 2px;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px;
+
+    div {
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background-color: #000000;
+    }
+}
