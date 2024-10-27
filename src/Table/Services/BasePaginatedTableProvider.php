@@ -7,9 +7,9 @@ namespace Patrikjak\Utils\Table\Services;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Table\Dtos\Pagination\Settings;
-use Patrikjak\Utils\Table\Dtos\Parameters;
-use Patrikjak\Utils\Table\Dtos\Table;
+use Patrikjak\Utils\Table\Dto\Pagination\Settings;
+use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Pagination;
 

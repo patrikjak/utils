@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Services;
 
-use Patrikjak\Utils\Table\Dtos\Pagination\Settings;
-use Patrikjak\Utils\Table\Dtos\Parameters;
+use Patrikjak\Utils\Table\Dto\Pagination\Settings;
+use Patrikjak\Utils\Table\Dto\Parameters;
 
 interface SupportsPagination
 {

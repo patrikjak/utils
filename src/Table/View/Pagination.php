@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dtos\Pagination\Settings;
+use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 
 class Pagination extends Component
 {

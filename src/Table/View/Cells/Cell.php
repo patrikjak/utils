@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\View\Cells;
 
 use Illuminate\Contracts\View\View;
-use Patrikjak\Utils\Table\Dtos\Table;
+use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\Enums\ColumnTypes\IconType;
 use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\SupportsIcon;

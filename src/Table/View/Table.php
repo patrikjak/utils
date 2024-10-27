@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dtos\Table as TableService;
+use Patrikjak\Utils\Table\Dto\Table as TableDto;
 
 class Table extends Component
 {
@@ -17,7 +17,7 @@ class Table extends Component
     public readonly string $tableId;
     public readonly Table $component;
 
-    public function __construct(public TableService $table)
+    public function __construct(public TableDto $table)
     {
         $this->tableClass = $this->resolveTableClass();
         $this->tableId = $this->table->tableId;

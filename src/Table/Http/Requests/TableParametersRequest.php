@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use Patrikjak\Utils\Table\Dtos\Parameters;
+use Patrikjak\Utils\Table\Dto\Parameters;
 use stdClass;
 
 class TableParametersRequest extends FormRequest

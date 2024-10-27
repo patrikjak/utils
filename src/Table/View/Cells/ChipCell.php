@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\View\Cells;
 
-use Patrikjak\Utils\Table\Dtos\Table;
+use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\Services\ColumnTypes\Chip;
 use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 

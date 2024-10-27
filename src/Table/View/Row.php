@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dtos\Table;
+use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\Enums\ColumnTypes\Type;
 use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 use stdClass;

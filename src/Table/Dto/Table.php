@@ -2,9 +2,9 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Dtos;
+namespace Patrikjak\Utils\Table\Dto;
 
-use Patrikjak\Utils\Table\Dtos\Pagination\Settings;
+use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 
 final readonly class Table

@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dtos\Action;
+use Patrikjak\Utils\Table\Dto\Action;
 
 class ActionItem extends Component
 {

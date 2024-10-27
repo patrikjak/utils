@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Dtos;
+namespace Patrikjak\Utils\Table\Dto;
 
 use Patrikjak\Utils\Table\Enums\Actions\Type;
 

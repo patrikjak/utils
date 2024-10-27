@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Dtos;
+namespace Patrikjak\Utils\Table\Dto;
 
 use Illuminate\Contracts\Support\Arrayable;
 
