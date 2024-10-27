@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Table\Cells;
+namespace Patrikjak\Utils\Table\View\Cells;
 
 enum ChipType: string
 {

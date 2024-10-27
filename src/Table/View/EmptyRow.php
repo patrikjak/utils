@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Table;
+namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -20,7 +20,7 @@ class EmptyRow extends Component
 
     public function render(): View
     {
-        return view('pjutils::components.table.empty-row');
+        return view('pjutils::table.empty-row');
     }
 
     private function resolveColspan(): int

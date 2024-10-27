@@ -2,16 +2,15 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Table;
+namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
-use Patrikjak\Utils\View\Components\Table;
 
 class Body extends Table
 {
     public function render(): View
     {
-        return view('pjutils::components.table.body');
+        return view('pjutils::table.body');
     }
 
     public function emptyBody(): bool

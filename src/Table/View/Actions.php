@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Table;
+namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -19,6 +19,6 @@ class Actions extends Component
 
     public function render(): View
     {
-        return view('pjutils::components.table.actions');
+        return view('pjutils::table.actions');
     }
 }

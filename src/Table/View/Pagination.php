@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Table;
+namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
@@ -24,6 +24,6 @@ class Pagination extends Component
 
     public function render(): View
     {
-        return view('pjutils::components.table.pagination');
+        return view('pjutils::table.pagination');
     }
 }

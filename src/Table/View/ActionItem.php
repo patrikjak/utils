@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Table;
+namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -22,7 +22,7 @@ class ActionItem extends Component
 
     public function render(): View
     {
-        return view('pjutils::components.table.action-item');
+        return view('pjutils::table.action-item');
     }
 
     private function resolveClass(): string

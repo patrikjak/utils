@@ -10,8 +10,8 @@ use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Table\Dtos\Pagination\Settings;
 use Patrikjak\Utils\Table\Dtos\Parameters;
 use Patrikjak\Utils\Table\Dtos\Table;
-use Patrikjak\Utils\View\Components\Table\Body;
-use Patrikjak\Utils\View\Components\Table\Pagination;
+use Patrikjak\Utils\Table\View\Body;
+use Patrikjak\Utils\Table\View\Pagination;
 
 abstract class BasePaginatedTableProvider extends BaseTableProvider implements SupportsPagination
 {

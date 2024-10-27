@@ -12,18 +12,24 @@ class UtilsServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'pjutils');
-        Blade::componentNamespace('Patrikjak\\Utils\\View\\Components', 'pjutils');
+        $this->registerComponentNamespaces();
 
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'pjutils');
 
         if ($this->app->runningInConsole()) {
             $this->publishes(
                 [
-                    __DIR__ . '/../resources/views' => resource_path('views/vendor/pjutils'),
                     __DIR__ . '/../resources/assets/css' => resource_path('css/vendor/pjutils'),
                     __DIR__ . '/../resources/assets/js' => resource_path('js/vendor/pjutils'),
                 ],
                 'assets',
+            );
+
+            $this->publishes(
+                [
+                    __DIR__ . '/../resources/views' => resource_path('views/vendor/pjutils'),
+                ],
+                'views',
             );
         }
 
@@ -31,5 +37,11 @@ class UtilsServiceProvider extends ServiceProvider
             [__DIR__ . '/../public' => public_path('vendor/pjutils')],
             'assets',
         );
+    }
+
+    private function registerComponentNamespaces(): void
+    {
+        Blade::componentNamespace('Patrikjak\\Utils\\View\\Components', 'pjutils');
+        Blade::componentNamespace('Patrikjak\\Utils\\Table\\View', 'pjutils.table');
     }
 }

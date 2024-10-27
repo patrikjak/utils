@@ -2,12 +2,11 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components;
+namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dtos\Table as TableService;
-use Patrikjak\Utils\View\Components\Table\TableMethods;
 
 class Table extends Component
 {
@@ -27,7 +26,7 @@ class Table extends Component
 
     public function render(): View
     {
-        return view('pjutils::components.table');
+        return view('pjutils::table.table');
     }
 
     private function resolveTableClass(): string

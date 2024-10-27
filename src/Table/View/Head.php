@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Table;
+namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -24,7 +24,7 @@ final class Head extends Component
 
     public function render(): View
     {
-        return view('pjutils::components.table.head');
+        return view('pjutils::table.head');
     }
 
     /**

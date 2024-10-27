@@ -22,6 +22,6 @@
     @endforeach
 
     @if($hasActions())
-        <x-pjutils::table.cells.action :$table />
+        <x-pjutils.table::cells.action :$table />
     @endif
 </tr>

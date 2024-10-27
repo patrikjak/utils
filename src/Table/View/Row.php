@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Table;
+namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
@@ -30,12 +30,12 @@ class Row extends Component
 
     public function render(): View
     {
-        return view('pjutils::components.table.row');
+        return view('pjutils::table.row');
     }
 
     public function getCell(ColumnType $type): string
     {
-        return 'pjutils::table.cells.' . match($type->getType()) {
+        return 'pjutils.table::cells.' . match($type->getType()) {
             Type::DOUBLE => 'double-cell',
             Type::CHIP => 'chip-cell',
             default => 'simple-cell',

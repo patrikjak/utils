@@ -2,14 +2,14 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Table\Cells;
+namespace Patrikjak\Utils\Table\View\Cells;
 
 use Illuminate\Contracts\View\View;
 use Patrikjak\Utils\Table\Dtos\Table;
 use Patrikjak\Utils\Table\Enums\ColumnTypes\IconType;
 use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\SupportsIcon;
-use Patrikjak\Utils\View\Components\Table\Body;
+use Patrikjak\Utils\Table\View\Body;
 
 abstract class Cell extends Body
 {
@@ -34,7 +34,7 @@ abstract class Cell extends Body
 
     public function render(): View
     {
-        return view(sprintf('pjutils::components.table.cells.%s-cell', $this->type->getType()->value));
+        return view(sprintf('pjutils::table.cells.%s-cell', $this->type->getType()->value));
     }
 
     private function resolveCellClass(): string

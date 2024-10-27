@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Table\Cells;
+namespace Patrikjak\Utils\Table\View\Cells;
 
 use Patrikjak\Utils\Table\Dtos\Table;
 use Patrikjak\Utils\Table\Services\ColumnTypes\Double;
