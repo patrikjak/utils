@@ -12,12 +12,12 @@
     @endif
 
 
-    @foreach($table->columns as $dataKey => $type)
-        <x-dynamic-component :component="$getCell($type)"
+    @foreach($table->columnTypes as $dataKey => $columnType)
+        <x-dynamic-component :component="$getCell($columnType)"
                              :$table
                              :$row
                              :$dataKey
-                             :$type
+                             :$columnType
         />
     @endforeach
 

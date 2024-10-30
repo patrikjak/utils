@@ -4,9 +4,12 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\View\Cells;
 
+use Closure;
+use Patrikjak\Utils\Common\Enums\Type;
+use Patrikjak\Utils\Common\Exceptions\InvalidTypeException;
+use Patrikjak\Utils\Table\Dto\Cells\Chip;
+use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
 use Patrikjak\Utils\Table\Dto\Table;
-use Patrikjak\Utils\Table\Services\ColumnTypes\Chip;
-use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 
 class ChipCell extends Cell
 {
@@ -15,23 +18,18 @@ class ChipCell extends Cell
     public readonly string $chipType;
 
     /**
-     * @var array<string, array{label: string, type: ChipType}>
-     */
-    private array $mappedChipInfo;
-
-    /**
      * @inheritDoc
+     * @throws InvalidTypeException
      */
     public function __construct(
         public Table $table,
         public array $row,
         public string $dataKey,
-        public ColumnType $type,
+        public ColumnType $columnType,
     ) {
-        parent::__construct($table, $row, $dataKey, $type);
+        parent::__construct($table, $row, $dataKey, $columnType);
 
-        assert($this->type instanceof Chip);
-        $this->mappedChipInfo = $this->type->getMapped();
+        assert($this->columnType instanceof Chip);
 
         $this->label = $this->resolveLabel();
         $this->chipType = $this->resolveChipType();
@@ -39,11 +37,28 @@ class ChipCell extends Cell
 
     private function resolveLabel(): string
     {
-        return $this->mappedChipInfo[$this->row[$this->dataKey]]['label'];
+        return $this->row[$this->dataKey];
     }
 
+    /**
+     * @throws InvalidTypeException
+     */
     private function resolveChipType(): string
     {
-        return $this->mappedChipInfo[$this->row[$this->dataKey]]['type']->value;
+        assert($this->columnType instanceof Chip);
+
+        $type = $this->columnType->type;
+
+        if (!$type instanceof Closure) {
+            return $this->columnType->type->value;
+        }
+
+        $type = $type($this->row);
+
+        if (!$type instanceof Type) {
+            throw new InvalidTypeException();
+        }
+
+        return $type->value;
     }
 }

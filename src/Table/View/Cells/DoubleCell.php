@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\View\Cells;
 
+use Patrikjak\Utils\Table\Dto\Cells\Double;
+use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
 use Patrikjak\Utils\Table\Dto\Table;
-use Patrikjak\Utils\Table\Services\ColumnTypes\Double;
-use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
 
 class DoubleCell extends Cell
 {
@@ -19,17 +19,17 @@ class DoubleCell extends Cell
         public Table $table,
         public array $row,
         public string $dataKey,
-        public ColumnType $type,
+        public ColumnType $columnType,
     ) {
-        parent::__construct($table, $row, $dataKey, $type);
+        parent::__construct($table, $row, $dataKey, $columnType);
 
         $this->additionalData = $this->resolveAdditionalData();
     }
 
     private function resolveAdditionalData(): string
     {
-        assert($this->type instanceof Double);
+        assert($this->columnType instanceof Double);
 
-        return $this->row[$this->type->getAddition()];
+        return $this->row[$this->columnType->addition];
     }
 }

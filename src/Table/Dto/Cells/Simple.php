@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types = 1);
+namespace Patrikjak\Utils\Table\Dto\Cells;
 
-namespace Patrikjak\Utils\Table\Services\ColumnTypes;
-
+use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
+use Patrikjak\Utils\Table\Dto\Interfaces\SupportsIcon;
 use Patrikjak\Utils\Table\Enums\ColumnTypes\IconType;
 use Patrikjak\Utils\Table\Enums\ColumnTypes\Type;
-use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\SupportsIcon;
 
 final readonly class Simple implements ColumnType, SupportsIcon
 {
@@ -15,7 +13,7 @@ final readonly class Simple implements ColumnType, SupportsIcon
      * Pass icon name for static icon - from resources/views/icons/
      * If the icon is dynamic, get icon from the row, you need to pass icon key in the row.
      */
-    public function __construct(private ?string $icon = null, private IconType $iconType = IconType::STATIC)
+    public function __construct(public ?string $icon = null, public IconType $iconType = IconType::STATIC)
     {
     }
 

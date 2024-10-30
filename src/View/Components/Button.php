@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\View\Components;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\View\Type;
+use Patrikjak\Utils\Common\Enums\Type;
 
 class Button extends Component
 {

@@ -5,10 +5,10 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\View\Cells;
 
 use Illuminate\Contracts\View\View;
+use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
+use Patrikjak\Utils\Table\Dto\Interfaces\SupportsIcon;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\Enums\ColumnTypes\IconType;
-use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces\SupportsIcon;
 use Patrikjak\Utils\Table\View\Body;
 
 abstract class Cell extends Body
@@ -24,7 +24,7 @@ abstract class Cell extends Body
         public Table $table,
         public array $row,
         public string $dataKey,
-        public ColumnType $type,
+        public ColumnType $columnType,
     ) {
         parent::__construct($table);
 
@@ -34,12 +34,12 @@ abstract class Cell extends Body
 
     public function render(): View
     {
-        return view(sprintf('pjutils::table.cells.%s-cell', $this->type->getType()->value));
+        return view(sprintf('pjutils::table.cells.%s-cell', $this->columnType->getType()->value));
     }
 
     private function resolveCellClass(): string
     {
-        $classes = [$this->type->getType()->value, $this->dataKey];
+        $classes = [$this->columnType->getType()->value, $this->dataKey];
 
         if ($this->hasIcon()) {
             $classes[] = 'with-icon';
@@ -54,19 +54,19 @@ abstract class Cell extends Body
             return null;
         }
 
-        assert($this->type instanceof SupportsIcon);
+        assert($this->columnType instanceof SupportsIcon);
 
-        if ($this->type->getIconType() === IconType::STATIC) {
-            return $this->type->getIcon();
+        if ($this->columnType->getIconType() === IconType::STATIC) {
+            return $this->columnType->getIcon();
         }
 
-        return $this->row[$this->type->getIcon()];
+        return $this->row[$this->columnType->getIcon()];
     }
 
     private function hasIcon(): bool
     {
-        return $this->type instanceof SupportsIcon
-            && $this->type->getIcon() !== ''
-            && $this->type->getIcon() !== null;
+        return $this->columnType instanceof SupportsIcon
+            && $this->columnType->getIcon() !== ''
+            && $this->columnType->getIcon() !== null;
     }
 }

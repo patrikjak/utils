@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Services\ColumnTypes\Interfaces;
+namespace Patrikjak\Utils\Table\Dto\Interfaces;
 
 use Patrikjak\Utils\Table\Enums\ColumnTypes\Type;
 

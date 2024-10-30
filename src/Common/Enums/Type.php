@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View;
+namespace Patrikjak\Utils\Common\Enums;
 
 enum Type: string
 {
