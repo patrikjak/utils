@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
 use Patrikjak\Utils\Table\Dto\Table;
-use Patrikjak\Utils\Table\Enums\ColumnTypes\Type;
+use Patrikjak\Utils\Table\Enums\ColumnType as ColumnTypeEnum;
 use Patrikjak\Utils\Table\View\Traits\TableMethods;
 use stdClass;
 
@@ -37,8 +37,8 @@ class Row extends Component
     public function getCell(ColumnType $type): string
     {
         return 'pjutils.table::cells.' . match($type->getType()) {
-            Type::DOUBLE => 'double-cell',
-            Type::CHIP => 'chip-cell',
+            ColumnTypeEnum::DOUBLE => 'double-cell',
+            ColumnTypeEnum::CHIP => 'chip-cell',
             default => 'simple-cell',
         };
     }

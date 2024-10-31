@@ -4,8 +4,8 @@ namespace Patrikjak\Utils\Table\Dto\Cells;
 
 use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
 use Patrikjak\Utils\Table\Dto\Interfaces\SupportsIcon;
-use Patrikjak\Utils\Table\Enums\ColumnTypes\IconType;
-use Patrikjak\Utils\Table\Enums\ColumnTypes\Type;
+use Patrikjak\Utils\Table\Enums\ColumnType as ColumnTypeEnum;
+use Patrikjak\Utils\Table\Enums\IconType;
 
 final readonly class Simple implements ColumnType, SupportsIcon
 {
@@ -17,9 +17,9 @@ final readonly class Simple implements ColumnType, SupportsIcon
     {
     }
 
-    public function getType(): Type
+    public function getType(): ColumnTypeEnum
     {
-        return Type::SIMPLE;
+        return ColumnTypeEnum::SIMPLE;
     }
 
     public function getIcon(): ?string

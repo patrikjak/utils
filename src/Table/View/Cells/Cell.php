@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
 use Patrikjak\Utils\Table\Dto\Interfaces\SupportsIcon;
 use Patrikjak\Utils\Table\Dto\Table;
-use Patrikjak\Utils\Table\Enums\ColumnTypes\IconType;
+use Patrikjak\Utils\Table\Enums\IconType;
 use Patrikjak\Utils\Table\View\Body;
 
 abstract class Cell extends Body

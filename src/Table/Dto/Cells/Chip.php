@@ -5,7 +5,7 @@ namespace Patrikjak\Utils\Table\Dto\Cells;
 use Closure;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\Enums\ColumnTypes\Type as ColumnTypeEnum;
+use Patrikjak\Utils\Table\Enums\ColumnType as ColumnTypeEnum;
 
 final readonly class Chip implements ColumnType
 {

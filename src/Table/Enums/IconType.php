@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Enums\ColumnTypes;
+namespace Patrikjak\Utils\Table\Enums;
 
 enum IconType: string
 {

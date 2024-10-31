@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Dto\Interfaces;
 
-use Patrikjak\Utils\Table\Enums\ColumnTypes\IconType;
+use Patrikjak\Utils\Table\Enums\IconType;
 
 interface SupportsIcon
 {

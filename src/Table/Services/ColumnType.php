@@ -7,7 +7,7 @@ use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Dto\Cells\Chip;
 use Patrikjak\Utils\Table\Dto\Cells\Double as DoubleCell;
 use Patrikjak\Utils\Table\Dto\Cells\Simple;
-use Patrikjak\Utils\Table\Enums\ColumnTypes\IconType;
+use Patrikjak\Utils\Table\Enums\IconType;
 
 readonly class ColumnType
 {
