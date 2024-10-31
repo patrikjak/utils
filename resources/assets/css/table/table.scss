@@ -155,7 +155,7 @@
             background-color: $primary-light;
         }
 
-        &.primary {
+        &.info {
             .icon svg path {
                 fill: $primary;
             }
@@ -204,6 +204,12 @@
 
             &:hover {
                 background-color: $error-light;
+            }
+        }
+
+        &.neutral {
+            &:hover {
+                background-color: $primary-light;
             }
         }
     }

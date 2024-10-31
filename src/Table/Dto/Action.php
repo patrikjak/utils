@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Dto;
 
-use Patrikjak\Utils\Table\Enums\Actions\Type;
+use Patrikjak\Utils\Common\Enums\Type;
 
 final readonly class Action
 {
@@ -12,7 +12,7 @@ final readonly class Action
         public string $label,
         public string $classId,
         public ?string $icon = null,
-        public Type $type = Type::DEFAULT,
+        public Type $type = Type::NEUTRAL,
     ) {
     }
 }
