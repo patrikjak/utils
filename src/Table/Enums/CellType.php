@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Enums;
 
-enum ColumnType: string
+enum CellType: string
 {
     case SIMPLE = 'simple';
 

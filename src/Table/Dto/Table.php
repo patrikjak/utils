@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Dto;
 
-use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
+use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 
 final readonly class Table
@@ -12,14 +12,14 @@ final readonly class Table
     /**
      * @param array<string, string> $header
      * @param array<array<scalar>> $data
-     * @param array<string, ColumnType> $columnTypes
-     * @param array<Action> $actions
+     * @param array<string> $columns
+     * @param array<Item> $actions
      */
     public function __construct(
         public string $tableId,
         public array $header,
         public array $data,
-        public array $columnTypes,
+        public array $columns,
         public string $rowId,
         public bool $showCheckboxes,
         public bool $showOrder,

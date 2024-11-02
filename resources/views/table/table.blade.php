@@ -10,7 +10,7 @@
         <x-pjutils.table::body :$table />
 
         @if($table->hasActions())
-            <x-pjutils.table::actions :actions="$table->actions" />
+            <x-pjutils.table::cells.actions.options :actions="$table->actions" />
         @endif
     </table>
 

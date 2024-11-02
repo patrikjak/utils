@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Services;
 
-use Patrikjak\Utils\Table\Dto\Action;
-use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
+use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 
 interface TableProviderInterface
 {
@@ -22,7 +21,7 @@ interface TableProviderInterface
     public function getData(): array;
 
     /**
-     * @return array<string, ColumnType>
+     * @return array<string>
      */
     public function getColumns(): array;
 
@@ -35,7 +34,7 @@ interface TableProviderInterface
     public function getExpandable(): ?string;
 
     /**
-     * @return array<Action>
+     * @return array<Item>
      */
     public function getActions(): array;
 }

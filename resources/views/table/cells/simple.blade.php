@@ -1,13 +1,13 @@
 <td class="{{ $cellClass }}">
-    @if($iconPath !== null)
+    {{--@if($iconPath !== null)
         <div class="icon-data">
             @include('icons.' . $iconPath)
-    @endif
+    @endif--}}
 
-    {{ $row[$dataKey] }}
+    {{ $cell->value }}
 
-    @if($iconPath !== null)
+   {{-- @if($iconPath !== null)
         </div>
-   @endif
+   @endif--}}
 
 </td>

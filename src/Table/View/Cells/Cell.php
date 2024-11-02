@@ -1,72 +1,26 @@
 <?php
 
-declare(strict_types = 1);
-
 namespace Patrikjak\Utils\Table\View\Cells;
 
 use Illuminate\Contracts\View\View;
-use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\Dto\Interfaces\SupportsIcon;
-use Patrikjak\Utils\Table\Dto\Table;
-use Patrikjak\Utils\Table\Enums\IconType;
-use Patrikjak\Utils\Table\View\Body;
+use Illuminate\View\Component;
+use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
 
-abstract class Cell extends Body
+abstract class Cell extends Component
 {
     public readonly string $cellClass;
 
-    public readonly ?string $iconPath;
-
-    /**
-     * @param array<scalar> $row
-     */
     public function __construct(
-        public Table $table,
-        public array $row,
-        public string $dataKey,
-        public ColumnType $columnType,
+        public AbstractCell $cell,
+        public string $column,
     ) {
-        parent::__construct($table);
-
-        $this->cellClass = $this->resolveCellClass();
-        $this->iconPath = $this->resolveIconPath();
+        $this->cellClass = $this->getCellClass();
     }
 
-    public function render(): View
+    abstract public function render(): View;
+
+    public function getCellClass(): string
     {
-        return view(sprintf('pjutils::table.cells.%s-cell', $this->columnType->getType()->value));
-    }
-
-    private function resolveCellClass(): string
-    {
-        $classes = [$this->columnType->getType()->value, $this->dataKey];
-
-        if ($this->hasIcon()) {
-            $classes[] = 'with-icon';
-        }
-
-        return implode(' ', $classes);
-    }
-
-    private function resolveIconPath(): ?string
-    {
-        if (!$this->hasIcon()) {
-            return null;
-        }
-
-        assert($this->columnType instanceof SupportsIcon);
-
-        if ($this->columnType->getIconType() === IconType::STATIC) {
-            return $this->columnType->getIcon();
-        }
-
-        return $this->row[$this->columnType->getIcon()];
-    }
-
-    private function hasIcon(): bool
-    {
-        return $this->columnType instanceof SupportsIcon
-            && $this->columnType->getIcon() !== ''
-            && $this->columnType->getIcon() !== null;
+        return implode(' ', [$this->cell->getType()->value, $this->column]);
     }
 }

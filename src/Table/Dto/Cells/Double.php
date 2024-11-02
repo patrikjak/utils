@@ -2,20 +2,18 @@
 
 namespace Patrikjak\Utils\Table\Dto\Cells;
 
-use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\Enums\ColumnType as ColumnTypeEnum;
+use Patrikjak\Utils\Table\Dto\Interfaces\Cell as CellInterface;
+use Patrikjak\Utils\Table\Enums\CellType;
 
-final readonly class Double implements ColumnType
+class Double extends Cell implements CellInterface
 {
-    /**
-     * @param string $addition Array key from getData method
-     */
-    public function __construct(public string $addition)
+    public function __construct(public string $value, public string $addition)
     {
+        parent::__construct($value);
     }
 
-    public function getType(): ColumnTypeEnum
+    public function getType(): CellType
     {
-        return ColumnTypeEnum::DOUBLE;
+        return CellType::DOUBLE;
     }
 }

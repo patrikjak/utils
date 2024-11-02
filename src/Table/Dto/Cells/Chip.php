@@ -2,19 +2,19 @@
 
 namespace Patrikjak\Utils\Table\Dto\Cells;
 
-use Closure;
 use Patrikjak\Utils\Common\Enums\Type;
-use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\Enums\ColumnType as ColumnTypeEnum;
+use Patrikjak\Utils\Table\Dto\Interfaces\Cell as CellInterface;
+use Patrikjak\Utils\Table\Enums\CellType;
 
-final readonly class Chip implements ColumnType
+class Chip extends Cell implements CellInterface
 {
-    public function __construct(public Type|Closure $type)
+    public function __construct(public string $value, public Type $type)
     {
+        parent::__construct($value);
     }
 
-    public function getType(): ColumnTypeEnum
+    public function getType(): CellType
     {
-        return ColumnTypeEnum::CHIP;
+        return CellType::CHIP;
     }
 }

@@ -13,7 +13,9 @@ use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Pagination\Paginator;
 
-abstract class BasePaginatedTableProvider extends BaseTableProvider implements SupportsPagination
+abstract class BasePaginatedTableProvider extends BaseTableProvider implements
+    TableProviderInterface,
+    SupportsPagination
 {
     protected ?Table $table = null;
 

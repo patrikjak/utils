@@ -2,33 +2,18 @@
 
 namespace Patrikjak\Utils\Table\Dto\Cells;
 
-use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
-use Patrikjak\Utils\Table\Dto\Interfaces\SupportsIcon;
-use Patrikjak\Utils\Table\Enums\ColumnType as ColumnTypeEnum;
-use Patrikjak\Utils\Table\Enums\IconType;
+use Patrikjak\Utils\Table\Dto\Interfaces\Cell as CellInterface;
+use Patrikjak\Utils\Table\Enums\CellType;
 
-final readonly class Simple implements ColumnType, SupportsIcon
+class Simple extends Cell implements CellInterface
 {
-    /**
-     * Pass icon name for static icon - from resources/views/icons/
-     * If the icon is dynamic, get icon from the row, you need to pass icon key in the row.
-     */
-    public function __construct(public ?string $icon = null, public IconType $iconType = IconType::STATIC)
+    public function __construct(public string $value)
     {
+        parent::__construct($value);
     }
 
-    public function getType(): ColumnTypeEnum
+    public function getType(): CellType
     {
-        return ColumnTypeEnum::SIMPLE;
-    }
-
-    public function getIcon(): ?string
-    {
-        return $this->icon;
-    }
-
-    public function getIconType(): IconType
-    {
-        return $this->iconType;
+        return CellType::SIMPLE;
     }
 }

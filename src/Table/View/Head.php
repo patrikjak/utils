@@ -36,8 +36,8 @@ final class Head extends Component
         $header = [];
         $headerData = $this->table->header;
 
-        foreach ($this->table->columnTypes as $dataKey => $type) {
-            $header[$dataKey] = $headerData[$dataKey];
+        foreach ($this->table->columns as $column) {
+            $header[$column] = $headerData[$column];
         }
 
         return $header;

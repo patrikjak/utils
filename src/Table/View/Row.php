@@ -6,9 +6,8 @@ namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dto\Interfaces\ColumnType;
+use Patrikjak\Utils\Table\Dto\Cells\Cell;
 use Patrikjak\Utils\Table\Dto\Table;
-use Patrikjak\Utils\Table\Enums\ColumnType as ColumnTypeEnum;
 use Patrikjak\Utils\Table\View\Traits\TableMethods;
 use stdClass;
 
@@ -34,17 +33,13 @@ class Row extends Component
         return view('pjutils::table.row');
     }
 
-    public function getCell(ColumnType $type): string
+    public function getCellView(Cell $cell): string
     {
-        return 'pjutils.table::cells.' . match($type->getType()) {
-            ColumnTypeEnum::DOUBLE => 'double-cell',
-            ColumnTypeEnum::CHIP => 'chip-cell',
-            default => 'simple-cell',
-        };
+        return sprintf('pjutils.table::cells.%s', $cell->getType()->value);
     }
 
     private function resolveRowId(): string
     {
-        return $this->row[$this->table->rowId];
+        return (string) $this->row[$this->table->rowId];
     }
 }

@@ -42,7 +42,16 @@ abstract class BaseTableProvider implements TableProviderInterface
     /**
      * @inheritdoc
      */
-    abstract public function getColumns(): array;
+    public function getColumns(): array
+    {
+        $header = $this->getHeader();
+
+        if ($header === null) {
+            return [];
+        }
+
+        return array_keys($header);
+    }
 
     public function getTableId(): string
     {
