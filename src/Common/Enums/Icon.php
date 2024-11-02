@@ -2,10 +2,6 @@
 
 namespace Patrikjak\Utils\Common\Enums;
 
-use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Common\Exceptions\IconTypeNotFoundException;
-use ValueError;
-
 enum Icon: string
 {
     case CHECK = 'check';
@@ -19,23 +15,15 @@ enum Icon: string
     case WARNING_WHITE = 'warning_white';
 
 
-    /** @throws IconTypeNotFoundException */
-    public function setType(IconType $type): self
+    public function getAsHtml(): string
     {
-        try {
-            return self::from(sprintf('%s_%s', $this->value, $type->value));
-        } catch (ValueError) {
-            throw new IconTypeNotFoundException($type);
-        }
+        return file_get_contents(
+            sprintf('%s/../../../resources/views/icons/%s.blade.php', __DIR__, $this->value),
+        );
     }
 
-    public function getAsView(): string
+    public function getImagePath(): string
     {
-        return Blade::render(sprintf('%s/%s.blade.php', resource_path('views/icons'), $this->value));
-    }
-
-    public function getAsImage(): string
-    {
-        return sprintf('%s/%s.svg', resource_path('assets/images/icons'), $this->value);
+        return asset(sprintf('vendor/pjutils/assets/images/icons/%s.svg', $this->value));
     }
 }

@@ -1,13 +1,12 @@
 <td class="{{ $cellClass }}">
-    {{--@if($iconPath !== null)
+    @if($icon !== null)
         <div class="icon-data">
-            @include('icons.' . $iconPath)
-    @endif--}}
+            {!! $icon->getAsHtml() !!}
+    @endif
 
     {{ $cell->value }}
 
-   {{-- @if($iconPath !== null)
+    @if($icon !== null)
         </div>
-   @endif--}}
-
+    @endif
 </td>

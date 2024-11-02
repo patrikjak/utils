@@ -20,7 +20,6 @@ class UtilsServiceProvider extends ServiceProvider
             $this->publishes(
                 [
                     __DIR__ . '/../resources/assets/css' => resource_path('css/vendor/pjutils'),
-                    __DIR__ . '/../resources/assets/images' => resource_path('images/vendor/pjutils'),
                     __DIR__ . '/../resources/assets/js' => resource_path('js/vendor/pjutils'),
                 ],
                 'assets',
@@ -37,6 +36,11 @@ class UtilsServiceProvider extends ServiceProvider
         $this->publishes(
             [__DIR__ . '/../public' => public_path('vendor/pjutils')],
             'assets',
+        );
+
+        $this->publishes(
+            [__DIR__ . '/../resources/assets/images' => public_path('vendor/pjutils/assets/images')],
+            ['assets', 'images'],
         );
     }
 
