@@ -1,7 +1,7 @@
 <div class="{{ $actionItemClass }}">
-    @if($hasIcon)
+    @if($icon !== null)
         <div class="icon">
-            @include('icons.' . $action->icon)
+            {!! $icon->getAsHtml() !!}
         </div>
     @endif
 

@@ -138,8 +138,12 @@
         border-radius: 8px;
 
         .icon {
+            width: 16px;
             height: 16px;
             margin-right: .5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
 
             svg {
                 height: 100%;

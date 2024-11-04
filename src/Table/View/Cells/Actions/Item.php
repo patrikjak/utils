@@ -6,18 +6,22 @@ namespace Patrikjak\Utils\Table\View\Cells\Actions;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item as ActionItem;
 
 class Item extends Component
 {
     public readonly string $actionItemClass;
 
-    public readonly bool $hasIcon;
+    public ?Icon $icon = null;
 
     public function __construct(public readonly ActionItem $action)
     {
         $this->actionItemClass = $this->resolveClass();
-        $this->hasIcon = $this->action->icon !== null;
+
+        if ($this->hasIcon()) {
+            $this->icon = $this->action->icon;
+        }
     }
 
     public function render(): View
@@ -35,5 +39,10 @@ class Item extends Component
                 $this->action->type->value,
             ],
         );
+    }
+
+    private function hasIcon(): bool
+    {
+        return $this->action->icon !== null;
     }
 }
