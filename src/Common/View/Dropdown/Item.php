@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\View\Components\Dropdown;
+namespace Patrikjak\Utils\Common\View\Dropdown;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
