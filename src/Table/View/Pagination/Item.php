@@ -36,8 +36,12 @@ class Item extends Component
     public function __construct(public Settings $paginationSettings, public array $link)
     {
         $this->page = (int) $link['label'];
-        $this->isPrevArrow = $link['label'] === __('pjutils::table.pagination.previous');
-        $this->isNextArrow = $link['label'] === __('pjutils::table.pagination.next');
+        $this->isPrevArrow = $link['label'] === (function_exists('__')
+            ? __('pagination.previous')
+            : 'Previous');
+        $this->isNextArrow = $link['label'] === (function_exists('__')
+            ? __('pagination.next')
+            : 'Next');
 
         $isFirstPage = $this->page === 1;
         $isLastPage = $this->page === $paginationSettings->lastPage;
