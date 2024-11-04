@@ -7,7 +7,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Patrikjak\\Utils\\": "src/"
+            "Patrikjak\\Utils\\": "src/",
+            "Patrikjak\\Utils\\Tests\\": "tests/"
         }
     },
     "authors": [
@@ -21,7 +22,8 @@
     },
     "require-dev": {
         "phpstan/phpstan": "^1.12",
-        "slevomat/coding-standard": "^8.14"
+        "slevomat/coding-standard": "^8.14",
+        "phpunit/phpunit": "^11.4"
     },
     "config": {
         "allow-plugins": {
