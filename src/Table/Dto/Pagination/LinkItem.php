@@ -2,7 +2,7 @@
 
 namespace Patrikjak\Utils\Table\Dto\Pagination;
 
-use Patrikjak\Utils\Table\Dto\Interfaces\Pagination\LinkItem as LinkItemInterface;
+use Patrikjak\Utils\Table\Interfaces\Pagination\LinkItem as LinkItemInterface;
 
 final readonly class LinkItem implements LinkItemInterface
 {

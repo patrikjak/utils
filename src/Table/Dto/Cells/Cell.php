@@ -2,7 +2,7 @@
 
 namespace Patrikjak\Utils\Table\Dto\Cells;
 
-use Patrikjak\Utils\Table\Dto\Interfaces\Cells\Cell as CellInterface;
+use Patrikjak\Utils\Table\Interfaces\Cells\Cell as CellInterface;
 
 abstract class Cell implements CellInterface
 {

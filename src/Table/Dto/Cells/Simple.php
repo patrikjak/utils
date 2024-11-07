@@ -3,9 +3,9 @@
 namespace Patrikjak\Utils\Table\Dto\Cells;
 
 use Patrikjak\Utils\Common\Enums\Icon;
-use Patrikjak\Utils\Table\Dto\Interfaces\Cells\Cell as CellInterface;
-use Patrikjak\Utils\Table\Dto\Interfaces\Cells\SupportsIcon;
 use Patrikjak\Utils\Table\Enums\CellType;
+use Patrikjak\Utils\Table\Interfaces\Cells\Cell as CellInterface;
+use Patrikjak\Utils\Table\Interfaces\Cells\SupportsIcon;
 
 class Simple extends Cell implements CellInterface, SupportsIcon
 {

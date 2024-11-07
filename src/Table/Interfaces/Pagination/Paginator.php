@@ -1,6 +1,6 @@
 <?php
 
-namespace Patrikjak\Utils\Table\Dto\Interfaces\Pagination;
+namespace Patrikjak\Utils\Table\Interfaces\Pagination;
 
 use Illuminate\Support\Collection;
 use Patrikjak\Utils\Common\Interfaces\Paginator as BasePaginator;
