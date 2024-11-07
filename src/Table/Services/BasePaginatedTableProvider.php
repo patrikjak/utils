@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Services;
 
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
@@ -12,6 +11,7 @@ use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Pagination\Paginator;
+use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
 
 abstract class BasePaginatedTableProvider extends BaseTableProvider implements
     TableProviderInterface,
@@ -19,16 +19,9 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
 {
     protected ?Table $table = null;
 
-    private LengthAwarePaginator $paginator;
+    private TablePaginator $paginator;
 
-    final protected function getPageData(): Collection
-    {
-        $this->paginator = $this->getPaginator();
-
-        return $this->paginator->getCollection();
-    }
-
-    abstract protected function getPaginator(): LengthAwarePaginator;
+    abstract protected function getPaginator(): TablePaginator;
 
     /**
      * @inheritDoc
@@ -49,11 +42,11 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
             page: $this->parameters->page,
             pageSize: $this->parameters->pageSize,
             pageSizeOptions: $this->getPageSizeOptions(),
-            path: $this->paginator->path(),
-            links: $this->paginator->linkCollection(),
-            lastPage: $this->paginator->lastPage(),
+            path: $this->paginator->getPath(),
+            links: $this->paginator->getLinks(),
+            lastPage: $this->paginator->getLastPage(),
             isFirstPage: $this->parameters->page === 1,
-            isLastPage: $this->parameters->page === $this->paginator->lastPage(),
+            isLastPage: $this->parameters->page === $this->paginator->getLastPage(),
         );
     }
 
@@ -63,6 +56,13 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
     protected function getPageSizeOptions(): array
     {
         return [10 => 10, 20 => 20, 50 => 50, 100 => 100];
+    }
+
+    protected function getPageData(): Collection
+    {
+        $this->paginator = $this->getPaginator();
+
+        return $this->paginator->getData();
     }
 
     private function getBodyHTML(): string

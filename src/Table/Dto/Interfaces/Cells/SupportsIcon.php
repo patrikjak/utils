@@ -1,6 +1,6 @@
 <?php
 
-namespace Patrikjak\Utils\Table\Dto\Interfaces;
+namespace Patrikjak\Utils\Table\Dto\Interfaces\Cells;
 
 use Patrikjak\Utils\Common\Enums\Icon;
 

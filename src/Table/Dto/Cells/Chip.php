@@ -3,7 +3,7 @@
 namespace Patrikjak\Utils\Table\Dto\Cells;
 
 use Patrikjak\Utils\Common\Enums\Type;
-use Patrikjak\Utils\Table\Dto\Interfaces\Cell as CellInterface;
+use Patrikjak\Utils\Table\Dto\Interfaces\Cells\Cell as CellInterface;
 use Patrikjak\Utils\Table\Enums\CellType;
 
 class Chip extends Cell implements CellInterface

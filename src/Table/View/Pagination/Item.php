@@ -6,6 +6,7 @@ namespace Patrikjak\Utils\Table\View\Pagination;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Table\Dto\Interfaces\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 
 class Item extends Component
@@ -30,18 +31,15 @@ class Item extends Component
 
     private bool $unSkippable;
 
-    /**
-     * @param array{url: string, label:string, active: bool} $link
-     */
-    public function __construct(public Settings $paginationSettings, public array $link)
+    public function __construct(public Settings $paginationSettings, public LinkItem $link)
     {
-        $this->page = (int) $link['label'];
-        $this->isPrevArrow = $link['label'] === (function_exists('__')
-            ? __('pagination.previous')
-            : 'Previous');
-        $this->isNextArrow = $link['label'] === (function_exists('__')
-            ? __('pagination.next')
-            : 'Next');
+        $this->page = (int) $link->getLabel();
+        $this->isPrevArrow = $link->getLabel() === (function_exists('__')
+                ? __('pagination.previous')
+                : 'Previous');
+        $this->isNextArrow = $link->getLabel() === (function_exists('__')
+                ? __('pagination.next')
+                : 'Next');
 
         $isFirstPage = $this->page === 1;
         $isLastPage = $this->page === $paginationSettings->lastPage;
@@ -114,7 +112,7 @@ class Item extends Component
     {
         $classes = ['link'];
 
-        if ($this->link['active']) {
+        if ($this->link->isActive()) {
             $classes[] = 'active';
         }
 

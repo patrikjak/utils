@@ -4,9 +4,9 @@
 
 @if(!$skipPage)
 
-    <a href="{{ $link['url'] }}" class="{{ $itemClass }}">
-        @if(is_numeric($link['label']))
-            <span class="page-number">{{ $link['label'] }}</span>
+    <a href="{{ $link->getUrl() }}" class="{{ $itemClass }}">
+        @if(is_numeric($link->getLabel()))
+            <span class="page-number">{{ $link->getLabel() }}</span>
         @else
             <div class="arrows">
                 @if($isPrevArrow)

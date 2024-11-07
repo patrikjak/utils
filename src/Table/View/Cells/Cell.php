@@ -6,7 +6,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
-use Patrikjak\Utils\Table\Dto\Interfaces\SupportsIcon;
+use Patrikjak\Utils\Table\Dto\Interfaces\Cells\SupportsIcon;
 
 abstract class Cell extends Component
 {

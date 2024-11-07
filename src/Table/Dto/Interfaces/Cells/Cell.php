@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Dto\Interfaces;
+namespace Patrikjak\Utils\Table\Dto\Interfaces\Cells;
 
 use Patrikjak\Utils\Table\Enums\CellType;
 

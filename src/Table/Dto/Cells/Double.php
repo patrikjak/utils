@@ -2,7 +2,7 @@
 
 namespace Patrikjak\Utils\Table\Dto\Cells;
 
-use Patrikjak\Utils\Table\Dto\Interfaces\Cell as CellInterface;
+use Patrikjak\Utils\Table\Dto\Interfaces\Cells\Cell as CellInterface;
 use Patrikjak\Utils\Table\Enums\CellType;
 
 class Double extends Cell implements CellInterface
