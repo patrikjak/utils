@@ -120,9 +120,10 @@ class Item extends Component
             $classes[] = 'arrow';
         }
 
-        if ($this->paginationSettings->isFirstPage && $this->isPrevArrow
-            || $this->paginationSettings->isLastPage && $this->isNextArrow
-        ) {
+        $isFirstPage = $this->paginationSettings->page === 1;
+        $isLastPage = $this->paginationSettings->page === $this->paginationSettings->lastPage;
+
+        if ($isFirstPage && $this->isPrevArrow || $isLastPage && $this->isNextArrow) {
             $classes[] = 'disabled';
         }
 

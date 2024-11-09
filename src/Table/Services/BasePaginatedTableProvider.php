@@ -45,8 +45,6 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
             path: $this->paginator->getPath(),
             links: $this->paginator->getLinks(),
             lastPage: $this->paginator->getLastPage(),
-            isFirstPage: $this->parameters->page === 1,
-            isLastPage: $this->parameters->page === $this->paginator->getLastPage(),
         );
     }
 
@@ -65,12 +63,12 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
         return $this->paginator->getData();
     }
 
-    private function getBodyHTML(): string
+    protected function getBodyHTML(): string
     {
         return Blade::renderComponent(new Body($this->table));
     }
 
-    private function getPaginationHTML(): string
+    protected function getPaginationHTML(): string
     {
         return Blade::renderComponent(new Paginator($this->getPaginationSettings()));
     }
