@@ -8,13 +8,11 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
+use Patrikjak\Utils\Table\Interfaces\Pagination\LinkItem;
 
 class Paginator extends Component
 {
-    /**
-     * @var Collection<int, array{url: string, label:string, active: bool}>
-     *
-     */
+    /** @var Collection<int, LinkItem> */
     public readonly Collection $links;
 
     public function __construct(public Settings $paginationSettings)

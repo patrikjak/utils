@@ -2,7 +2,6 @@
 
 namespace Patrikjak\Utils\Tests\Integration\Table;
 
-use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
@@ -16,7 +15,6 @@ use Spatie\Snapshots\MatchesSnapshots;
 class BasePaginatedTableProviderTest extends TestCase
 {
     use MatchesSnapshots;
-    use InteractsWithViews;
 
     private TableProviderInterface $tableProvider;
 
