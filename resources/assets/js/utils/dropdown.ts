@@ -76,9 +76,16 @@ function adjustDropdownWidth(dropdown: HTMLDivElement): void {
         hiddenItems.appendChild(item.cloneNode(true));
     });
 
+    removeHiddenItems();
     showElement(hiddenItems);
 
     const width = hiddenItems.scrollWidth + 54; // 54 for arrow width and right padding
     const dropdownWrapper: HTMLElement = dropdown.querySelector('.dropdown-wrapper');
     dropdownWrapper.style.width = `${width}px`;
+}
+
+function removeHiddenItems(scope: Document|HTMLElement = document): void {
+    scope.querySelectorAll('.hidden-items').forEach(function (hiddenItems: HTMLDivElement): void {
+        hiddenItems.remove();
+    });
 }

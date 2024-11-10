@@ -1,4 +1,4 @@
-name: Lint
+name: Quality assurance
 
 on:
   push:
@@ -9,7 +9,7 @@ on:
 jobs:
   lint:
     runs-on: ubuntu-latest
-    name: Lint
+    name: Quality assurance
 
     steps:
       - uses: shivammathur/setup-php@v2
@@ -31,3 +31,6 @@ jobs:
 
       - name: phpstan
         run: vendor/bin/phpstan analyse
+
+      - name: PHPUnit tests
+        run: vendor/phpunit/phpunit/phpunit --configuration phpunit.xml

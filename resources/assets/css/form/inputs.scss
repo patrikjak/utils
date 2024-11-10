@@ -30,7 +30,7 @@ label {
         }
 
         &:disabled {
-            background-color: $light-grey;
+            background-color: $gray-200;
             color: $font-light;
         }
 
@@ -249,12 +249,12 @@ label {
 
         &:focus,
         &:focus-visible {
-            border-color: $border-focus;
+            border-color: $primary;
             outline: none;
         }
 
         &:disabled {
-            background-color: $light-grey;
+            background-color: $gray-200;
         }
 
         &[multiple] {
