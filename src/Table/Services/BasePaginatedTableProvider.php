@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Table;
+use Patrikjak\Utils\Table\Exceptions\MissingTableParametersException;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Pagination\Paginator;
 use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
@@ -23,9 +24,14 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
 
     abstract protected function getPaginator(): TablePaginator;
 
-    /**
-     * @inheritDoc
-     */
+    public function getTable(?Parameters $parameters = null): Table
+    {
+        assert($parameters !== null, new MissingTableParametersException());
+
+        return parent::getTable($parameters);
+    }
+
+    /** @inheritDoc */
     public function getHtmlParts(Parameters $parameters): array
     {
         $this->table = $this->getTable($parameters);
@@ -48,9 +54,7 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
         );
     }
 
-    /**
-     * @return array<int, int>
-     */
+    /** @return array<int, int> */
     protected function getPageSizeOptions(): array
     {
         return [10 => 10, 20 => 20, 50 => 50, 100 => 100];

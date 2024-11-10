@@ -33,4 +33,4 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: PHPUnit tests
-        run: vendor/phpunit/phpunit/phpunit --configuration phpunit.xml tests/Feature
+        run: vendor/phpunit/phpunit/phpunit --configuration phpunit.xml

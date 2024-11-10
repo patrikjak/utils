@@ -5,14 +5,15 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\Services;
 
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
+use Patrikjak\Utils\Table\Dto\Table;
 
 interface TableProviderInterface
 {
+    public function getTable(): Table;
+
     public function getTableId(): string;
 
-    /**
-     * @return array<string, string>|null
-     */
+    /** @return array<string, string>|null */
     public function getHeader(): ?array;
 
     /**
@@ -20,9 +21,7 @@ interface TableProviderInterface
      */
     public function getData(): array;
 
-    /**
-     * @return array<string>
-     */
+    /** @return array<string> */
     public function getColumns(): array;
 
     public function getRowId(): string;
@@ -33,8 +32,6 @@ interface TableProviderInterface
 
     public function getExpandable(): ?string;
 
-    /**
-     * @return array<Item>
-     */
+    /** @return array<Item> */
     public function getActions(): array;
 }

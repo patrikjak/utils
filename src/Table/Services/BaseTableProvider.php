@@ -9,9 +9,9 @@ use Patrikjak\Utils\Table\Dto\Table;
 
 abstract class BaseTableProvider implements TableProviderInterface
 {
-    protected Parameters $parameters;
+    protected ?Parameters $parameters;
 
-    final public function getTable(Parameters $parameters): Table
+    public function getTable(?Parameters $parameters = null): Table
     {
         $this->parameters = $parameters;
 
