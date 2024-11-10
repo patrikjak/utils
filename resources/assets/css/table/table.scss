@@ -34,7 +34,7 @@
         border-bottom: solid 1px $background-light;
 
         &:hover {
-            background-color: $primary-light;
+            background-color: $primary-200;
         }
 
         &.active {
@@ -147,6 +147,10 @@
 
             svg {
                 height: 100%;
+
+                path {
+                    fill: $font-light;
+                }
             }
         }
 
@@ -156,7 +160,7 @@
         }
 
         &:hover {
-            background-color: $primary-light;
+            background-color: $primary-200;
         }
 
         &.info {
@@ -213,7 +217,7 @@
 
         &.neutral {
             &:hover {
-                background-color: $primary-light;
+                background-color: $primary-200;
             }
         }
     }

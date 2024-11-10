@@ -81,11 +81,11 @@
     }
 
     &.neutral {
-        background-color: $light-grey;
+        background-color: $gray-200;
         color: $font;
 
         &:hover {
-            background-color: $extra-light-gray;
+            background-color: $gray-100;
             box-shadow: 2px 4px 16px 0 rgba(44, 44, 44, .25);
         }
     }
@@ -96,7 +96,7 @@
         border: solid 1px $border;
 
         &:hover {
-            background-color: $extra-light-gray;
+            background-color: $gray-100;
             box-shadow: none;
         }
     }
