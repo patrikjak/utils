@@ -88,6 +88,14 @@ class BasePaginatedTableProviderTest extends TestCase
         $this->tableMatchesSnapshot();
     }
 
+    public function testCanGetHtmlParts(): void
+    {
+        $htmlParts = $this->tableProvider->getHtmlParts(new Parameters(1, 10));
+
+        $this->assertMatchesHtmlSnapshot($htmlParts['body']);
+        $this->assertMatchesHtmlSnapshot($htmlParts['pagination']);
+    }
+
     private function tableMatchesSnapshot(): void
     {
         $table = $this->tableProvider->getTable(new Parameters(1, 10));

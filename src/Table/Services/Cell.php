@@ -21,7 +21,7 @@ readonly class Cell
         return new DoubleCell($value, $addition);
     }
 
-    public static function chip(string $value, Type|Closure $type): Chip
+    public static function chip(string $value, Type|Closure $type = Type::NEUTRAL): Chip
     {
         return new Chip($value, $type);
     }
