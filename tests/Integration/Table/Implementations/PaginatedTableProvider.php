@@ -2,10 +2,13 @@
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
 
-use Patrikjak\Utils\Table\Services\BaseTableProvider;
+use Illuminate\Support\Collection;
+use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
+use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
+use Patrikjak\Utils\Table\Services\BasePaginatedTableProvider;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
 
-class TableProvider extends BaseTableProvider implements TableProviderInterface
+class PaginatedTableProvider extends BasePaginatedTableProvider implements TableProviderInterface
 {
     use TableProviderData;
 
@@ -20,6 +23,8 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
     private bool $showCheckboxes = false;
 
     private array $actions = [];
+
+    private array $paginationOptions = [10 => 10, 20 => 20, 50 => 50, 100 => 100];
 
     public function getTableId(): string
     {
@@ -40,7 +45,15 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
 
     public function getData(): array
     {
-        return $this->getTableData();
+        return $this->getPageData()->map(function (array $user) {
+            return [
+                'id' => $user['id'],
+                'name' => $user['name'],
+                'email' => $user['email'],
+                'created_at' => $user['created_at'],
+                'updated_at' => $user['updated_at'],
+            ];
+        })->toArray();
     }
 
     public function getColumns(): array
@@ -66,6 +79,31 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
     public function getActions(): array
     {
         return $this->actions;
+    }
+
+    protected function getPaginator(): TablePaginator
+    {
+        return new TablePaginator(
+            1,
+            10,
+            new Collection($this->getTableData()),
+            'https://example.com/table',
+            1,
+            new Collection([
+                new LinkItem(__('pagination.previous'), null),
+                new LinkItem('1', 'https://example.com/table/1', true),
+                new LinkItem('2', 'https://example.com/table/2'),
+                new LinkItem('3', 'https://example.com/table/3'),
+                new LinkItem('4', 'https://example.com/table/4'),
+                new LinkItem(__('pagination.next'), null),
+            ]),
+        );
+    }
+
+    /** @inheritDoc */
+    protected function getPageSizeOptions(): array
+    {
+        return $this->paginationOptions;
     }
 
     public function setTableId(string $tableId): void
@@ -96,5 +134,10 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
     public function setActions(array $actions): void
     {
         $this->actions = $actions;
+    }
+
+    public function setPaginationOptions(array $paginationOptions): void
+    {
+        $this->paginationOptions = $paginationOptions;
     }
 }

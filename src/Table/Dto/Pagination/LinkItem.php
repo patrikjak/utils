@@ -9,7 +9,7 @@ final readonly class LinkItem implements LinkItemInterface
     public function __construct(
         private string $label,
         private ?string $url,
-        private bool $active,
+        private bool $active = false,
     ) {
     }
 

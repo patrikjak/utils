@@ -5,11 +5,12 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\Services;
 
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
+use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Table;
 
 interface TableProviderInterface
 {
-    public function getTable(): Table;
+    public function getTable(?Parameters $parameters = null): Table;
 
     public function getTableId(): string;
 
