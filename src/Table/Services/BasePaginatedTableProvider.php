@@ -6,13 +6,13 @@ namespace Patrikjak\Utils\Table\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
+use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\Exceptions\MissingTableParametersException;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Pagination\Paginator;
-use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
 
 abstract class BasePaginatedTableProvider extends BaseTableProvider implements
     TableProviderInterface,

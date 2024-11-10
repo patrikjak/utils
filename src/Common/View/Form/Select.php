@@ -13,7 +13,7 @@ class Select extends Component
     public readonly string $wrapperClass;
 
     /**
-     * @param Collection $options
+     * @param Collection<string, string> $options
      * @param null|string|array<string> $value
      */
     public function __construct(

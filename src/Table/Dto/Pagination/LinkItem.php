@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Table\Dto\Pagination;
 
 use Patrikjak\Utils\Table\Interfaces\Pagination\LinkItem as LinkItemInterface;

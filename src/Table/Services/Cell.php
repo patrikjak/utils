@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Table\Services;
 
 use Closure;
@@ -21,7 +23,7 @@ readonly class Cell
         return new DoubleCell($value, $addition);
     }
 
-    public static function chip(string $value, Type|Closure $type = Type::NEUTRAL): Chip
+    public static function chip(string $value, Type $type = Type::NEUTRAL): Chip
     {
         return new Chip($value, $type);
     }

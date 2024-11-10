@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Table\Services;
 
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -24,7 +26,7 @@ final readonly class PaginatorFactory
     /** @return Collection<LinkItem> */
     public static function getLinkItems(Collection $links): Collection
     {
-        return $links->map(function ($link) {
+        return $links->map(static function ($link) {
             return new LinkItem(
                 label: $link['label'],
                 url: $link['url'],

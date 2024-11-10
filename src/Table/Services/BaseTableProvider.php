@@ -11,6 +11,16 @@ abstract class BaseTableProvider implements TableProviderInterface
 {
     protected ?Parameters $parameters;
 
+    /**
+     * @inheritdoc
+     */
+    abstract public function getHeader(): ?array;
+
+    /**
+     * @inheritdoc
+     */
+    abstract public function getData(): array;
+
     public function getTable(?Parameters $parameters = null): Table
     {
         $this->parameters = $parameters;
@@ -28,16 +38,6 @@ abstract class BaseTableProvider implements TableProviderInterface
             $this instanceof SupportsPagination ? $this->getPaginationSettings() : null,
         );
     }
-
-    /**
-     * @inheritdoc
-     */
-    abstract public function getHeader(): ?array;
-
-    /**
-     * @inheritdoc
-     */
-    abstract public function getData(): array;
 
     /**
      * @inheritdoc

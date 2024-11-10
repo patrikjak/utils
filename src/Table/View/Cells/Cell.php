@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Table\View\Cells;
 
 use Illuminate\Contracts\View\View;
@@ -14,6 +16,8 @@ abstract class Cell extends Component
 
     public ?Icon $icon = null;
 
+    abstract public function render(): View;
+
     public function __construct(
         public AbstractCell $cell,
         public string $column,
@@ -26,8 +30,6 @@ abstract class Cell extends Component
             $this->icon = $this->cell->getIcon();
         }
     }
-
-    abstract public function render(): View;
 
     public function getCellClass(): string
     {

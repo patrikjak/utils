@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Common\Enums;
 
 enum Icon: string
@@ -26,7 +28,6 @@ enum Icon: string
 
     case EYE_SLASH = 'eye_slash';
     case EYE_SLASH_WHITE = 'eye_slash_white';
-
 
     public function getAsHtml(): string
     {
