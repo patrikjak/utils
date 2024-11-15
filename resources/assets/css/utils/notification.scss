@@ -79,15 +79,15 @@
     }
 
     &.error {
-        border-color: $error;
+        border-color: $danger;
         box-shadow: 8px 8px 40px -6px #FFDBDE;
 
         .level {
-            background-color: $error-light;
+            background-color: $danger-light;
         }
 
         .content .title {
-            color: $error;
+            color: $danger;
         }
     }
 }

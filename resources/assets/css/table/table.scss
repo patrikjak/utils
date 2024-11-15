@@ -91,8 +91,8 @@
             }
 
             &.danger {
-                background-color: $error-light;
-                color: $error;
+                background-color: $danger-light;
+                color: $danger;
             }
         }
 
@@ -203,15 +203,15 @@
 
         &.danger {
             .icon svg path {
-                fill: $error;
+                fill: $danger;
             }
 
             p {
-                color: $error;
+                color: $danger;
             }
 
             &:hover {
-                background-color: $error-light;
+                background-color: $danger-light;
             }
         }
 

@@ -29,6 +29,9 @@ enum Icon: string
     case EYE_SLASH = 'eye_slash';
     case EYE_SLASH_WHITE = 'eye_slash_white';
 
+    case CIRCLE_EXCLAMATION = 'circle_exclamation';
+    case INFO = 'info';
+
     public function getAsHtml(): string
     {
         return file_get_contents(
