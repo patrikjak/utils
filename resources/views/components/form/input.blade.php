@@ -9,8 +9,8 @@
         <div class="input">
             <input {{ $attributes->merge($inputAttributes) }}>
 
-            <div class="icon {{ $icon }}">
-                @include('icons.' . $icon)
+            <div class="icon">
+                {!! $icon->getAsHtml() !!}
             </div>
         </div>
     @else

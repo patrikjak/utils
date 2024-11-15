@@ -6,6 +6,7 @@ namespace Patrikjak\Utils\Common\View\Form;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Common\Enums\Icon;
 
 class Input extends Component
 {
@@ -24,10 +25,10 @@ class Input extends Component
         public readonly ?string $placeholder = null,
         public readonly ?string $error = null,
         public readonly bool $required = false,
-        public ?string $icon = null,
+        public ?Icon $icon = null,
     ) {
         if (isset($this->error)) {
-            $this->icon = 'error';
+            $this->icon = Icon::CIRCLE_EXCLAMATION;
         }
 
         $this->wrapperClass = $this->resolveWrapperClass();

@@ -66,6 +66,10 @@ label {
             svg {
                 height: 100%;
                 padding: 12px;
+
+                path {
+                    fill: $font-light;
+                }
             }
 
             &:hover {
@@ -80,13 +84,17 @@ label {
 
     &.error {
         .input, input, .textarea, textarea {
-            border-color: $error;
+            border-color: $danger;
+        }
+
+        .input .icon svg path {
+            fill: $danger;
         }
     }
 }
 
 .pj-checkbox.error label:before {
-    border-color: $error;
+    border-color: $danger;
 }
 
 .pj-checkbox,
@@ -225,7 +233,7 @@ label {
 
         .message {
             font-size: .875rem;
-            color: $error;
+            color: $danger;
             margin: 0;
         }
     }
@@ -264,7 +272,7 @@ label {
 
     &.error {
         .select, select {
-            border-color: $error;
+            border-color: $danger;
         }
     }
 }

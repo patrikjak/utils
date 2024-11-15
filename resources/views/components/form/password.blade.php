@@ -1,4 +1,6 @@
-<x-pjutils::form.input type="password" {{ $attributes->merge() }} icon="eye" class="password hidden" />
+@use('Patrikjak\Utils\Common\Enums\Icon')
+
+<x-pjutils::form.input type="password" {{ $attributes->merge() }} :icon="Icon::EYE" class="password hidden" />
 
 @if(isset($confirm) && $confirm === true)
     <x-pjutils::form.input type="password"
@@ -7,6 +9,6 @@
                   label="{{ $confirmLabel ?? $label }}"
                   autocomplete="{{ $autocomplete ?? '' }}"
                   placeholder="{{ $confirmPlaceholder ?? '' }}"
-                  icon="eye"
+                  :icon="Icon::EYE"
     />
 @endif

@@ -144,28 +144,28 @@
     }
 
     &.danger {
-        background-color: $error;
+        background-color: $danger;
 
         &:hover {
-            background-color: $error-dark;
+            background-color: $danger-dark;
             box-shadow: 2px 4px 16px 0 rgba(238, 38, 66, .25);
         }
     }
 
     &.danger-bordered {
-        border: solid 1px $error;
-        color: $error;
+        border: solid 1px $danger;
+        color: $danger;
         background-color: $white;
 
         &:hover {
-            background-color: $error-light;
+            background-color: $danger-light;
             box-shadow: none;
         }
     }
 
     &.danger-texted {
         background-color: $white;
-        color: $error;
+        color: $danger;
 
         &:hover {
             box-shadow: none;
