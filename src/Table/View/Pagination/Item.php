@@ -73,23 +73,14 @@ class Item extends Component
 
     private function shouldShowDots(): bool
     {
-        $showDots = false;
-        $startingDots = $this->paginationSettings->page >= $this->paginationSettings->lastPage - 3 && $this->page === 2;
-        $endingDots = $this->paginationSettings->page <= 4 && $this->page === $this->paginationSettings->lastPage;
+        $range = 2;
+        $current = $this->paginationSettings->page;
+        $total = $this->paginationSettings->lastPage;
 
-        if ($this->canEditPaginationDisplay) {
-            $showDots = $startingDots || $endingDots;
-        }
+        $startingDots = $this->page === 2 && $current > $range + 2;
+        $endingDots = $this->page === $total - 1 && $current < $total - $range - 1;
 
-        if ($this->canEditPaginationDisplay
-            && !$this->unSkippable
-            && $this->canSkipOutsideInterval
-            && ($this->page === 2 || $this->page === $this->paginationSettings->lastPage - 1)
-        ) {
-            $showDots = true;
-        }
-
-        return $showDots;
+        return $startingDots || $endingDots;
     }
 
     private function shouldSkipPage(): bool
