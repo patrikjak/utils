@@ -67,6 +67,11 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
         return $this->paginator->getData();
     }
 
+    protected function getPageSize(): int
+    {
+        return $this->parameters->pageSize;
+    }
+
     protected function getBodyHTML(): string
     {
         return Blade::renderComponent(new Body($this->table));
