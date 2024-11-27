@@ -30,7 +30,7 @@
     }
 
     tbody tr {
-        transition-duration: .1s;
+        transition-duration: .15s;
         border-bottom: solid 1px $background-light;
 
         &:hover {
@@ -79,6 +79,7 @@
             font-weight: 500;
             padding: .625rem;
             border-radius: 10px;
+            transition: .15s;
 
             &.success {
                 background-color: $success-light;
@@ -94,6 +95,11 @@
                 background-color: $danger-light;
                 color: $danger;
             }
+
+            &.neutral, &.info {
+                background-color: $primary-200;
+                color: $primary;
+            }
         }
 
         &.expandable {
@@ -102,6 +108,30 @@
 
         &.actions {
             position: relative;
+        }
+    }
+
+    tbody tr:hover {
+        th, td .chip {
+            &.success {
+                background-color: $success;
+                color: $success-light;
+            }
+
+            &.warning {
+                background-color: $warning;
+                color: $warning-light;
+            }
+
+            &.danger {
+                background-color: $danger;
+                color: $danger-light;
+            }
+
+            &.neutral, &.info {
+                background-color: $primary;
+                color: $primary-200;
+            }
         }
     }
 

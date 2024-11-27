@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Http\Requests;
 
+use Illuminate\Cookie\CookieJar;
 use Illuminate\Foundation\Http\FormRequest;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use stdClass;
@@ -85,6 +86,13 @@ class TableParametersRequest extends FormRequest
         $tableParameters = json_decode($this->cookie($this->tableId, '{}'), true);
         $updatedParameters = array_merge($tableParameters, $parameters->toArray());
 
-        cookie()->queue(cookie($this->tableId, json_encode($updatedParameters), 60 * 24 * 30 * 12));
+        $cookieManager = app()->make(CookieJar::class);
+        assert($cookieManager instanceof CookieJar);
+
+        $cookieManager->queue(
+            $this->tableId,
+            json_encode($updatedParameters),
+            60 * 24 * 365,
+        );
     }
 }

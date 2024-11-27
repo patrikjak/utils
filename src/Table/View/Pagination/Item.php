@@ -9,6 +9,9 @@ use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 use Patrikjak\Utils\Table\Interfaces\Pagination\LinkItem;
 
+/**
+ * We display 9 items in the pagination. Range is 1, so we display 1 item before and 1 item after the current page.
+ */
 class Item extends Component
 {
     public readonly bool $showDots;
@@ -23,13 +26,9 @@ class Item extends Component
 
     public bool $isNextArrow;
 
-    private int $lastPageOfIntervalPagination;
+    private int $range = 1;
 
-    private bool $canEditPaginationDisplay;
-
-    private bool $canSkipOutsideInterval;
-
-    private bool $unSkippable;
+    private readonly int $current;
 
     public function __construct(public Settings $paginationSettings, public LinkItem $link)
     {
@@ -41,25 +40,7 @@ class Item extends Component
                 ? __('pagination.next')
                 : 'Next');
 
-        $isFirstPage = $this->page === 1;
-        $isLastPage = $this->page === $paginationSettings->lastPage;
-        $intervalLeftBoundary = $paginationSettings->page - 2;
-        $intervalRightBoundary = $paginationSettings->page + 2;
-
-        $this->lastPageOfIntervalPagination = $paginationSettings->lastPage - 4;
-        $this->canEditPaginationDisplay = $paginationSettings->lastPage > 7;
-
-        $intervalDisplay = $this->page >= $intervalLeftBoundary && $this->page <= $intervalRightBoundary;
-
-        $isFirstPageOfIntervalPagination = $paginationSettings->page >= 5;
-        $isLastPageOfIntervalPagination = $paginationSettings->page <= $this->lastPageOfIntervalPagination;
-
-        $this->canSkipOutsideInterval = $isFirstPageOfIntervalPagination
-            && $isLastPageOfIntervalPagination
-            && !$intervalDisplay;
-        
-        $this->unSkippable = $this->isPrevArrow || $this->isNextArrow || $isFirstPage || $isLastPage;
-
+        $this->current = $paginationSettings->page;
         $this->showDots = $this->shouldShowDots();
         $this->skipPage = $this->shouldSkipPage();
 
@@ -73,39 +54,62 @@ class Item extends Component
 
     private function shouldShowDots(): bool
     {
-        $showDots = false;
-        $startingDots = $this->paginationSettings->page >= $this->paginationSettings->lastPage - 3 && $this->page === 2;
-        $endingDots = $this->paginationSettings->page <= 4 && $this->page === $this->paginationSettings->lastPage;
-
-        if ($this->canEditPaginationDisplay) {
-            $showDots = $startingDots || $endingDots;
+        if ($this->paginationSettings->links->count() <= 9) {
+            return false;
         }
 
-        if ($this->canEditPaginationDisplay
-            && !$this->unSkippable
-            && $this->canSkipOutsideInterval
-            && ($this->page === 2 || $this->page === $this->paginationSettings->lastPage - 1)
-        ) {
-            $showDots = true;
-        }
+        $current = $this->current;
+        $total = $this->paginationSettings->lastPage;
 
-        return $showDots;
+        $startingDots = $this->page === 2 && $current > $this->range + 2;
+        $endingDots = $this->page === $total - 1 && $current < $total - $this->range - 1;
+
+        return $startingDots || $endingDots;
     }
 
     private function shouldSkipPage(): bool
     {
-        $canSkipPagesOnRight = $this->page > 5 && $this->paginationSettings->page < 5;
-        $canSkipPagesOnLeft = $this->page < $this->lastPageOfIntervalPagination
-            && $this->paginationSettings->page > $this->lastPageOfIntervalPagination;
+        if ($this->current === $this->page) {
+            return false;
+        }
 
-        if (($this->canEditPaginationDisplay
-            && !$this->unSkippable)
-            && ($canSkipPagesOnRight || $canSkipPagesOnLeft || $this->canSkipOutsideInterval)
-        ) {
+        if ($this->isPageUnskippable()) {
+            return false;
+        }
+
+        if ($this->pageIsNotRecognizable()) {
             return true;
         }
 
-        return false;
+        if ($this->isWithinFirstPagesRange() || $this->isWithinLastPagesRange()) {
+            return false;
+        }
+
+        return $this->page < $this->current - $this->range || $this->page > $this->current + $this->range;
+    }
+
+    private function isPageUnskippable(): bool
+    {
+        $page = $this->page;
+        $isArrow = $this->isPrevArrow || $this->isNextArrow;
+        $isFirstPageOrLastPage = $page === 1 || $page === $this->paginationSettings->lastPage;
+
+        return $isArrow || $isFirstPageOrLastPage;
+    }
+
+    private function isWithinFirstPagesRange(): bool
+    {
+        return $this->page <= 5 && $this->page >= $this->current - $this->range;
+    }
+
+    private function isWithinLastPagesRange(): bool
+    {
+        return $this->page >= $this->paginationSettings->lastPage - 4 && $this->page <= $this->current + $this->range;
+    }
+
+    private function pageIsNotRecognizable(): bool
+    {
+        return $this->page === 0;
     }
 
     private function resolveItemClass(): string

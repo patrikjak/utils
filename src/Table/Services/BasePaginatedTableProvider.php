@@ -54,6 +54,16 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
         );
     }
 
+    public function getPageSize(): int
+    {
+        return $this->parameters->pageSize;
+    }
+
+    public function getCurrentPage(): int
+    {
+        return $this->parameters->page;
+    }
+
     /** @return array<int, int> */
     protected function getPageSizeOptions(): array
     {
