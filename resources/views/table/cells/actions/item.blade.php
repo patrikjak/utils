@@ -1,6 +1,6 @@
 <div class="{{ $actionItemClass }}">
     @if($icon !== null)
-        <div class="icon">
+        <div class="icon {{ $icon }}-icon">
             {!! $icon->getAsHtml() !!}
         </div>
     @endif

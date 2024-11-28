@@ -9,7 +9,7 @@
         <div class="input">
             <input {{ $attributes->merge($inputAttributes) }}>
 
-            <div class="icon">
+            <div class="icon {{ $icon }}-icon">
                 {!! $icon->getAsHtml() !!}
             </div>
         </div>
