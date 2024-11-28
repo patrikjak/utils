@@ -22,16 +22,16 @@ enum Icon: string
         );
     }
 
+    public function getImagePath(): string
+    {
+        return asset(sprintf('vendor/pjutils/assets/images/icons/%s.svg', $this->value));
+    }
+
     public static function getCustomAsHtml(string $icon): string
     {
         return file_get_contents(
             sprintf('%s/../../../resources/views/icons/%s.blade.php', __DIR__, $icon),
         );
-    }
-
-    public function getImagePath(): string
-    {
-        return asset(sprintf('vendor/pjutils/assets/images/icons/%s.svg', $this->value));
     }
 
     public static function getCustomImagePath(string $icon): string
