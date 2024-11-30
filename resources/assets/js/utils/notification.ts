@@ -1,10 +1,13 @@
 import {dangerSign, infoIcon, successTick, warningSign} from '../components/icons';
 import {createElement, showElement, hideElement} from '../helpers/general';
 
-const autoHide: boolean = true;
-const autoHideTimeout: number = 5000;
-
-export default function notify(message: string, heading: string, level: string = 'info'): void {
+export default function notify(
+    message: string,
+    heading: string,
+    level: string = 'info',
+    autoHide: boolean = true,
+    autoHideTimeout: number = 5000,
+): void {
     const element = notificationElement(message, heading, level);
 
     showElement(element, 'body', 'append', 'flex', 'animation-slide-in-right');
@@ -40,6 +43,7 @@ function notificationElement(message: string, heading: string, level: string): H
     html += '<div class="content">';
     html += `<p class="title">${heading}</p>`;
     html += `<p class="message">${message}</p>`;
+    html += '</div>';
 
     element.innerHTML = html;
 

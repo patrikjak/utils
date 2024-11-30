@@ -4,8 +4,12 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Common\Enums;
 
+use Patrikjak\Utils\Common\Traits\EnumValues;
+
 enum Icon: string
 {
+    use EnumValues;
+
     case CHECK = 'check';
     case WARNING = 'warning';
     case EDIT = 'edit';
@@ -29,13 +33,11 @@ enum Icon: string
 
     public static function getCustomAsHtml(string $icon): string
     {
-        return file_get_contents(
-            sprintf('%s/../../../resources/views/icons/%s.blade.php', __DIR__, $icon),
-        );
+        return file_get_contents(resource_path(sprintf('views/icons/%s.blade.php', $icon)));
     }
 
     public static function getCustomImagePath(string $icon): string
     {
-        return asset(sprintf('vendor/pjutils/assets/images/icons/%s.svg', $icon));
+        return asset(sprintf('images/icons/%s.svg', $icon));
     }
 }

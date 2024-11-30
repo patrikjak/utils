@@ -11,7 +11,9 @@
 
     {{ $slot }}
 
-    <x-pjutils::button>
-        {{ $actionLabel ?? __('pjutils::form.submit') }}
-    </x-pjutils::button>
+    @isset($actionLabel)
+        <x-pjutils::button>
+            {{ $actionLabel }}
+        </x-pjutils::button>
+    @endisset
 </form>
