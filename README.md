@@ -12,6 +12,14 @@ The **Utils** package is a versatile utility toolkit designed to enhance Laravel
         - [Dependencies](#dependencies)
 ---
 
+What's included:
+- **CSS** - A collection of reusable styles for buttons, modals, tables, and more.
+- **JavaScript** - A variety of functions to enhance user experience and streamline development.
+- **Forms** - A set of form components to simplify form creation.
+- **Tables** - A collection of table components to enhance data presentation.
+- **Modals** - A set of modal components to display content in a modal window.
+- **Notifications** - A collection of notification components to display messages to users.
+
 ### You can find the full documentation [here](https://utils.patrikjakab.sk).
 
 ## Installation
@@ -74,3 +82,13 @@ To load correct language for JS you need to set lang attribute to html tag
 Currently supported languages are:
 - en
 - sk
+
+You will need to set up Vite build target to **esnext** in your `vite.config.js` file:
+
+```javascript
+export default defineConfig({
+    ...
+    build: {
+        target: 'esnext',
+    },
+});
