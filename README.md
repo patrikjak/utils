@@ -58,6 +58,14 @@ To include all component styles, add the main.css file:
 <link rel="stylesheet" href="{{ asset('vendor/pjutils/assets/main.css') }}">
 ```
 
+You need to set border-box box-sizing for all elements in your CSS file to prevent layout issues:
+
+```css
+* {
+    box-sizing: border-box;
+}
+```
+
 ### JavaScript
 This package does not include a compiled JavaScript file. Instead, import and call functions directly within your main JavaScript file.
 
