@@ -1,0 +1,35 @@
+<?php
+
+namespace Patrikjak\Utils\Tests\Unit\Common\Http\Rules;
+
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Str;
+use Orchestra\Testbench\TestCase;
+use Patrikjak\Utils\Common\Rules\Password;
+use PHPUnit\Framework\Attributes\DataProvider;
+
+class PasswordTest extends TestCase
+{
+    #[DataProvider('passwordDataProvider')]
+    public function testPassword(
+        ?string $password,
+        bool $passes = false,
+        array $messages = [],
+    ): void {
+        $validator = Validator::make(
+            ['password' => $password],
+            ['password' => new Password()],
+        );
+
+        $this->assertSame($passes, $validator->passes());
+        $this->assertSame($messages, $validator->errors()->get('password'));
+    }
+
+    public static function passwordDataProvider(): iterable
+    {
+        yield 'Null' => [null, false, ['pjutils::validation.required']];
+        yield 'Min length' => ['pass', false, ['pjutils::validation.password.min']];
+        yield 'Max length' => [strtolower(Str::random(192)), false, ['pjutils::validation.password.max']];
+        yield 'Valid format' => ['Password123', true, []];
+    }
+}
