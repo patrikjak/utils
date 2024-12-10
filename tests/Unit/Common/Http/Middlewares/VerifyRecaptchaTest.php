@@ -10,10 +10,10 @@ use Mockery;
 use Mockery\MockInterface;
 use Orchestra\Testbench\TestCase;
 use Patrikjak\Utils\Common\Exceptions\InvalidRecaptchaTokenException;
-use Patrikjak\Utils\Common\Http\Middlewares\Recaptcha;
+use Patrikjak\Utils\Common\Http\Middlewares\VerifyRecaptcha;
 use Symfony\Component\HttpFoundation\Response;
 
-class RecaptchaTest extends TestCase
+class VerifyRecaptchaTest extends TestCase
 {
     public function testSuccessfulHandleWithDefaultException(): void
     {
@@ -46,7 +46,7 @@ class RecaptchaTest extends TestCase
 
     public function testCustomExceptionParameter(): void
     {
-        $this->assertEquals('Patrikjak\Utils\Common\Http\Middlewares\Recaptcha:Exception', Recaptcha::withExceptionClass(Exception::class));
+        $this->assertEquals(sprintf('%s:%s', VerifyRecaptcha::class, Exception::class), VerifyRecaptcha::withExceptionClass(Exception::class));
     }
 
     public function testFailedHandleWithCustomException(): void
@@ -72,10 +72,10 @@ class RecaptchaTest extends TestCase
         }, (new class {})::class);
     }
 
-    private function getMiddleware(): Recaptcha
+    private function getMiddleware(): VerifyRecaptcha
     {
-        $recaptchaMiddleware = app()->make(Recaptcha::class);
-        assert($recaptchaMiddleware instanceof Recaptcha);
+        $recaptchaMiddleware = app()->make(VerifyRecaptcha::class);
+        assert($recaptchaMiddleware instanceof VerifyRecaptcha);
 
         return $recaptchaMiddleware;
     }

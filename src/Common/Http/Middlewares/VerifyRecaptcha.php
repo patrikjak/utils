@@ -14,7 +14,7 @@ use Patrikjak\Utils\Common\Exceptions\InvalidRecaptchaTokenException;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;
 
-class Recaptcha
+class VerifyRecaptcha
 {
     private const string GOOGLE_RECAPTCHA_URL = 'https://www.google.com/recaptcha/api/siteverify';
 
