@@ -31,6 +31,7 @@ return [
         'min' => 'The password must be at least 8 characters',
         'max' => 'The password may not be greater than 191 characters',
     ],
+    'recaptcha' => 'The form did not pass the reCAPTCHA test',
     'required' => 'The :attribute field is required',
     'telephone_format' => 'The :attribute must be a valid telephone number in the format :format',
     'unique' => 'The :attribute has already been taken',

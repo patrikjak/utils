@@ -14,9 +14,15 @@ class UtilsServiceProvider extends ServiceProvider
         $this->registerComponentNamespaces();
         $this->publishAssets();
         $this->publishViews();
+        $this->publishConfig();
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'pjutils');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'pjutils');
+    }
+
+    public function register(): void
+    {
+        $this->mergeConfigFrom(__DIR__ . '/../config/pjutils.php', 'pjutils');
     }
 
     private function registerComponentNamespaces(): void
@@ -50,5 +56,12 @@ class UtilsServiceProvider extends ServiceProvider
             ],
             'views',
         );
+    }
+
+    private function publishConfig(): void
+    {
+        $this->publishes([
+            __DIR__ . '/../config/pjutils.php' => config_path('pjutils.php'),
+        ], 'config');
     }
 }
