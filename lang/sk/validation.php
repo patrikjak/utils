@@ -31,6 +31,7 @@ return [
         'min' => 'Heslo musí mať minimálne 8 znakov',
         'max' => 'Heslo môže mať maximálne 191 znakov',
     ],
+    'recaptcha' => 'Formulár neprešiel testom reCAPTCHA',
     'required' => '{1} :attribute je povinný|{2} :attribute je povinná|{3} :attribute je povinné',
     'telephone_format' => 'attribute musí byť platné telefónne číslo vo formáte :format',
     'unique' => '{1} :attribute je už použitý|{2} :attribute je už použitá|{3} :attribute je už použité',
