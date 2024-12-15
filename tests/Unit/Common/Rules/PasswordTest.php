@@ -1,6 +1,6 @@
 <?php
 
-namespace Patrikjak\Utils\Tests\Unit\Common\Http\Rules;
+namespace Patrikjak\Utils\Tests\Unit\Common\Rules;
 
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
