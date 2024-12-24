@@ -34,7 +34,7 @@ jobs:
         run: vendor/bin/phpstan analyse
 
       - name: PHPUnit tests
-        run: vendor/phpunit/phpunit/phpunit --configuration phpunit.xml
+        run: vendor/phpunit/phpunit/phpunit --configuration phpunit.xml --coverage-clover ./coverage.xml
 
       - name: Upload coverage reports to Codecov
         uses: codecov/codecov-action@v5
