@@ -1,5 +1,7 @@
 # Utils Package
 
+[![codecov](https://codecov.io/gh/patrikjak/utils/graph/badge.svg?token=NOL0Y1NB2S)](https://codecov.io/gh/patrikjak/utils)
+
 The **Utils** package is a versatile utility toolkit designed to enhance Laravel applications. It provides a variety of reusable classes and functions to streamline development, including CSS and JavaScript assets to support frontend components like buttons, modals, and tables. Easily integrate the package into your project, publish assets, and selectively include only the styles and functions you need for a highly customizable setup. Perfect for Laravel developers seeking to simplify their workflow with ready-to-use utilities.
 
 ## Table of Contents
