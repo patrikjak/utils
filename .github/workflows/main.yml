@@ -16,6 +16,7 @@ jobs:
         with:
           php-version: '8.3'
           tools: phpcs, phpstan
+          coverage: xdebug
 
       - uses: actions/checkout@v4
       - name: Install dependencies
@@ -34,3 +35,10 @@ jobs:
 
       - name: PHPUnit tests
         run: vendor/phpunit/phpunit/phpunit --configuration phpunit.xml
+
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v5
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          slug: patrikjak/utils
+          files: ./coverage.xml

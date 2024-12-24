@@ -1,0 +1,16 @@
+name: "auth"
+
+services:
+  cli:
+    image: "patrikjak/php83-cli"
+    container_name: "auth-cli"
+    environment:
+      XDEBUG_MODE: develop,debug,coverage
+    networks:
+      - shared
+    volumes:
+      - ".:/var/www"
+
+networks:
+  shared:
+    driver: bridge
