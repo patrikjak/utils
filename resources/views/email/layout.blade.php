@@ -99,10 +99,14 @@
             font-weight: bold;
             font-size: 2.5rem;
             color: #ffffff;
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
         }
 
         .header img {
             max-width: 150px;
+            max-height: 48px;
         }
 
         .content {
@@ -127,23 +131,47 @@
                 width: 90%;
             }
 
+            .header a {
+                font-size: 2.25rem;
+            }
+
+            .header img {
+                max-height: 40px;
+            }
+
             .header, .body {
                 padding: 40px 64px;
             }
 
+            .footer p {
+                padding: 0 64px 40px;
+            }
         }
 
         @media only screen and (max-width: 575.98px) {
             .space-top {
                 margin-top: 24px;
             }
+
             .header, .body {
                 padding: 24px;
             }
+
+            .header a {
+                font-size: 2rem;
+            }
+
+            .header img {
+                max-height: 36px;
+            }
+
             .header img {
                 max-width: 100px;
             }
 
+            .footer p {
+                padding: 0 24px 24px;
+            }
         }
     </style>
 </head>
