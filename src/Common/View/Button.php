@@ -13,7 +13,7 @@ class Button extends Component
     public readonly string $classes;
 
     public function __construct(
-        public Type $type = Type::INFO,
+        public Type $buttonType = Type::INFO,
         public ?string $href = null,
         public bool $loading = false,
         public bool $bordered = false,
@@ -32,9 +32,9 @@ class Button extends Component
         $classes = ['pj-btn'];
 
         $typeClass = match (true) {
-            $this->texted === true => sprintf('%s-%s', $this->type->value, 'texted'),
-            $this->bordered === true => sprintf('%s-%s', $this->type->value, 'bordered'),
-            default => $this->type->value,
+            $this->texted === true => sprintf('%s-%s', $this->buttonType->value, 'texted'),
+            $this->bordered === true => sprintf('%s-%s', $this->buttonType->value, 'bordered'),
+            default => $this->buttonType->value,
         };
 
         $classes[] = $typeClass;
