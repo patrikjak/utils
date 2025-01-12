@@ -2,7 +2,7 @@
   <configuration default="false" name="Tests" type="PHPUnitRunConfigurationType" factoryName="PHPUnit">
     <CommandLine>
       <PhpTestInterpreterSettings>
-        <option name="interpreterName" value="PHP 8.3" />
+        <option name="interpreterName" value="cli" />
       </PhpTestInterpreterSettings>
     </CommandLine>
     <TestRunner configuration_file="$PROJECT_DIR$/phpunit.xml" scope="XML" use_alternative_configuration_file="true" />
