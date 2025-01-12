@@ -1,9 +1,9 @@
-name: "auth"
+name: "utils"
 
 services:
   cli:
     image: "patrikjak/php83-cli"
-    container_name: "auth-cli"
+    container_name: "utils-cli"
     environment:
       XDEBUG_MODE: develop,debug,coverage
     networks:

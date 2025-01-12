@@ -12,7 +12,7 @@
     {{ $slot }}
 
     @isset($actionLabel)
-        <x-pjutils::button>
+        <x-pjutils::button type="submit">
             {{ $actionLabel }}
         </x-pjutils::button>
     @endisset
