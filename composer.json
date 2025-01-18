@@ -2,7 +2,7 @@
     "name": "patrikjak/utils",
     "description": "A simple utility package for Laravel",
     "keywords": ["laravel", "utils", "utility", "tables"],
-    "version": "1.4.2",
+    "version": "1.4.3",
     "type": "library",
     "license": "MIT",
     "autoload": {

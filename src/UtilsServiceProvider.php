@@ -39,12 +39,12 @@ class UtilsServiceProvider extends ServiceProvider
                 __DIR__ . '/../resources/assets/js' => resource_path('js/vendor/pjutils'),
                 __DIR__ . '/../public' => public_path('vendor/pjutils'),
             ],
-            'assets',
+            'pjutils-assets',
         );
 
         $this->publishes(
             [__DIR__ . '/../resources/assets/images' => public_path('vendor/pjutils/assets/images')],
-            ['assets', 'images'],
+            ['pjutils-assets', 'pjutils-images'],
         );
     }
 
@@ -54,7 +54,7 @@ class UtilsServiceProvider extends ServiceProvider
             [
                 __DIR__ . '/../resources/views' => resource_path('views/vendor/pjutils'),
             ],
-            'views',
+            'pjutils-views',
         );
     }
 
@@ -62,6 +62,6 @@ class UtilsServiceProvider extends ServiceProvider
     {
         $this->publishes([
             __DIR__ . '/../config/pjutils.php' => config_path('pjutils.php'),
-        ], 'config');
+        ], 'pjutils-config');
     }
 }
