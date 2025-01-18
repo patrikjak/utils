@@ -10,7 +10,7 @@ use Illuminate\View\Component;
 
 class Select extends Component
 {
-    public readonly string $wrapperClass;
+    public string $wrapperClass;
 
     /**
      * @param Collection<string, string> $options

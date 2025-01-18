@@ -9,7 +9,7 @@ use Illuminate\View\Component;
 
 class Textarea extends Component
 {
-    public readonly string $wrapperClass;
+    public string $wrapperClass;
 
     public function __construct(
         public readonly ?string $label = null,
