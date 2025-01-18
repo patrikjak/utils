@@ -1,12 +1,12 @@
 <div class="{{ $wrapperClass }}">
     <div class="group">
-        <input type="radio"
-               name="{{ $name }}"
-               id="{{ $id }}"
-               @checked($checked)
-               @disabled($disabled)
-               @if(isset($value)) value="{{$value}}" @endif
+        <input {{ $attributes->merge([
+                'type' => 'radio',
+                'id' => $attributes->get('name'),
+                'required' => $required,
+                'value' => $value,
+            ]) }}
         >
-        <label for="{{ $id }}">{{ $label }}</label>
+        <label for="{{ $attributes->get('id', $attributes->get('name')) }}">{{ $label }}</label>
     </div>
 </div>

@@ -17,18 +17,18 @@ class Select extends Component
      * @param null|string|array<string> $value
      */
     public function __construct(
-        public readonly string $name,
         public readonly iterable $options,
         public readonly ?string $label = null,
         public readonly ?string $error = null,
         public readonly null|string|array $value = null,
         public readonly bool $required = false,
     ) {
-        $this->wrapperClass = $this->resolveWrapperClass();
     }
 
     public function render(): View
     {
+        $this->wrapperClass = $this->resolveWrapperClass();
+
         return view('pjutils::components.form.select');
     }
 

@@ -1,1 +1,1 @@
-<x-pjutils::form.input type="email" {{ $attributes->merge() }}/>
+<x-pjutils::form.input {{ $attributes->merge(['type' => 'email']) }} />
