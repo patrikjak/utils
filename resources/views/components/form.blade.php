@@ -1,8 +1,4 @@
-<form action="{{ $action }}"
-      method="{{ $method }}"
-      {{ $implodedDataAttributes }}
-      {{ $attributes->merge() }}
->
+<form {{ $attributes->merge(['method' => $method]) }} {{ $implodedDataAttributes }}>
     @csrf
 
     @if(in_array($originalMethod, ['PUT', 'PATCH', 'DELETE']))

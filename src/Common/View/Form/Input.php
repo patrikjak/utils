@@ -10,33 +10,24 @@ use Patrikjak\Utils\Common\Enums\Icon;
 
 class Input extends Component
 {
-    public readonly string $wrapperClass;
-
-    /**
-     * @var array<string, string>
-     */
-    public readonly array $inputAttributes;
+    public string $wrapperClass;
 
     public function __construct(
-        public readonly string $name,
-        public readonly string $type = 'text',
         public readonly ?string $label = null,
-        public readonly ?string $autocomplete = null,
-        public readonly ?string $placeholder = null,
         public readonly ?string $error = null,
         public readonly bool $required = false,
         public ?Icon $icon = null,
     ) {
+    }
+
+    public function render(): View
+    {
         if (isset($this->error)) {
             $this->icon = Icon::CIRCLE_EXCLAMATION;
         }
 
         $this->wrapperClass = $this->resolveWrapperClass();
-        $this->inputAttributes = $this->resolveInputAttributes();
-    }
 
-    public function render(): View
-    {
         return view('pjutils::components.form.input');
     }
 
@@ -57,27 +48,5 @@ class Input extends Component
         }
 
         return implode(' ', $classes);
-    }
-
-    /**
-     * @return array<string, string>
-     */
-    private function resolveInputAttributes(): array
-    {
-        $attributes = [
-            'id' => $this->name,
-            'name' => $this->name,
-            'type' => $this->type,
-        ];
-
-        if ($this->autocomplete !== null && $this->autocomplete !== '') {
-            $attributes['autocomplete'] = $this->autocomplete;
-        }
-
-        if ($this->placeholder !== null && $this->placeholder !== '') {
-            $attributes['placeholder'] = $this->placeholder;
-        }
-
-        return $attributes;
     }
 }

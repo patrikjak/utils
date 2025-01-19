@@ -17,13 +17,14 @@ class Dropdown extends Component
         public null|string|int $selected = null,
         public ?string $label = null,
     ) {
-        if ($selected === null) {
-            $this->selected = array_key_first($items);
-        }
     }
 
     public function render(): View
     {
+        if ($this->selected === null) {
+            $this->selected = array_key_first($this->items);
+        }
+
         return view('pjutils::components.dropdown');
     }
 }

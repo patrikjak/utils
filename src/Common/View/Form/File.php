@@ -9,19 +9,19 @@ use Illuminate\View\Component;
 
 final class File extends Component
 {
-    public readonly string $wrapperClass;
+    public string $wrapperClass;
 
     public function __construct(
-        public readonly string $name,
         public readonly ?string $label = null,
         public readonly ?string $error = null,
         public readonly bool $required = false,
     ) {
-        $this->wrapperClass = $this->resolveWrapperClass();
     }
 
     public function render(): View
     {
+        $this->wrapperClass = $this->resolveWrapperClass();
+
         return view('pjutils::components.form.file');
     }
 

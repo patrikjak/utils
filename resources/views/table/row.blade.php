@@ -3,7 +3,7 @@
 >
     @if($showCheckboxes())
         <td class="check">
-            <x-pjutils::form.checkbox name="{{ $rowId }}"/>
+            <x-pjutils::form.checkbox />
         </td>
     @endif
 

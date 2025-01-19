@@ -1,4 +1,4 @@
 <div class="{{ $wrapperClass }}">
-    <label for="{{ $name }}">{{ $label }}</label>
-    <textarea {{ $attributes->merge(['name' => $name, 'id' => $name]) }}>{{ $value ?? '' }}</textarea>
+    <label for="{{ $attributes->get('id', $attributes->get('name')) }}">{{ $label }}</label>
+    <textarea {{ $attributes->merge(['id' => $attributes->get('name'), 'required' => $required]) }}>{{ $value ?? '' }}</textarea>
 </div>

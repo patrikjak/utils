@@ -10,7 +10,7 @@ use Illuminate\View\Component;
 
 class Form extends Component
 {
-    public readonly string $implodedDataAttributes;
+    public string $implodedDataAttributes = '';
 
     public readonly string $originalMethod;
 
@@ -18,27 +18,26 @@ class Form extends Component
      * @param array<string, string> $dataAttributes
      */
     public function __construct(
-        public readonly string $action,
         public string $method = 'POST',
         public readonly ?string $actionLabel = 'Submit',
         public readonly ?string $redirect = null,
         public array $dataAttributes = [],
     ) {
         $this->originalMethod = $method;
-
-        if (in_array($method, ['PUT', 'PATCH', 'DELETE'], true)) {
-            $this->method = 'POST';
-        }
-
-        if ($redirect !== null) {
-            $this->dataAttributes['redirect'] = $redirect;
-        }
-
-        $this->implodedDataAttributes = $this->resolveDataAttributes();
     }
 
     public function render(): View
     {
+        if (in_array($this->originalMethod, ['PUT', 'PATCH', 'DELETE'], true)) {
+            $this->method = 'POST';
+        }
+
+        if ($this->redirect !== null) {
+            $this->dataAttributes['redirect'] = $this->redirect;
+        }
+
+        $this->implodedDataAttributes = $this->resolveDataAttributes();
+
         return view('pjutils::components.form');
     }
 

@@ -2,19 +2,12 @@
 
 namespace Patrikjak\Utils\Tests\Integration\Table;
 
-use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Patrikjak\Utils\Tests\Integration\TestCase as BaseTestCase;
 
-class TestCase extends OrchestraTestCase
+class TestCase extends BaseTestCase
 {
     protected function setUp(): void
     {
         parent::setUp();
-    }
-
-    protected function getPackageProviders($app): array
-    {
-        return [
-            'Patrikjak\Utils\UtilsServiceProvider',
-        ];
     }
 }

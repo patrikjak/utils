@@ -1,3 +1,3 @@
 @props(['name', 'value'])
 
-<x-pjutils::form.input type="hidden" name="{{ $name }}" value="{{ $value }}" />
+<x-pjutils::form.input {{ $attributes->merge(['type' => 'hidden']) }} />

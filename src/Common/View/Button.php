@@ -10,7 +10,7 @@ use Patrikjak\Utils\Common\Enums\Type;
 
 class Button extends Component
 {
-    public readonly string $classes;
+    public string $classes;
 
     public function __construct(
         public Type $buttonType = Type::INFO,
@@ -19,11 +19,12 @@ class Button extends Component
         public bool $bordered = false,
         public bool $texted = false,
     ) {
-        $this->classes = $this->getClasses();
     }
 
     public function render(): View
     {
+        $this->classes = $this->getClasses();
+
         return view('pjutils::components.button');
     }
 
