@@ -10,7 +10,7 @@ use Illuminate\View\Component;
 
 class Form extends Component
 {
-    public string $implodedDataAttributes;
+    public string $implodedDataAttributes = '';
 
     public readonly string $originalMethod;
 

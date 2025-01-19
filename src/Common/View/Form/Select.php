@@ -40,6 +40,10 @@ class Select extends Component
             $classes[] = 'required';
         }
 
+        if ($this->error) {
+            $classes[] = 'error';
+        }
+
         return implode(' ', $classes);
     }
 }
