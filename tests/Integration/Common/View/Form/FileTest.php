@@ -33,4 +33,13 @@ class FileTest extends TestCase
             HTML
         ));
     }
+
+    public function testFileCanBeRenderedWithError(): void
+    {
+        $this->assertMatchesHtmlSnapshot(Blade::render(
+            <<<HTML
+                <x-pjutils::form.file name="file" label="File" error="Error message" />
+            HTML
+        ));
+    }
 }
