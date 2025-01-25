@@ -14,6 +14,10 @@
         @endif
     </table>
 
+    @if($table->hasBulkActions())
+        <x-pjutils.table::bulk-actions.wrapper :bulk-actions="$table->bulkActions" />
+    @endif
+
     @if($table->hasPagination())
         <x-pjutils.table::pagination.paginator :pagination-settings="$table->paginationSettings" />
     @endif

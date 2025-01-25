@@ -26,12 +26,18 @@ final readonly class Table
         public ?string $expandable,
         public array $actions,
         public ?Settings $paginationSettings = null,
+        public array $bulkActions = [],
     ) {
     }
 
     public function hasActions(): bool
     {
         return count($this->actions) > 0;
+    }
+
+    public function hasBulkActions(): bool
+    {
+        return count($this->bulkActions) > 0;
     }
 
     public function hasPagination(): bool

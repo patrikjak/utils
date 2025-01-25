@@ -52,6 +52,10 @@
     &.info {
         background-color: $info;
 
+        svg {
+            fill: $white;
+        }
+
         &:hover {
             background-color: $info-dark;
             box-shadow: 2px 4px 16px 0 rgba(44, 77, 186, .25);
@@ -115,6 +119,10 @@
     &.success {
         background-color: $success;
 
+        svg {
+            fill: $white;
+        }
+
         &:hover {
             background-color: $success-dark;
             box-shadow: 2px 4px 16px 0 rgba(0, 164, 44, .25);
@@ -146,6 +154,10 @@
     &.danger {
         background-color: $danger;
 
+        svg {
+            fill: $white;
+        }
+
         &:hover {
             background-color: $danger-dark;
             box-shadow: 2px 4px 16px 0 rgba(238, 38, 66, .25);
@@ -176,6 +188,10 @@
 
     &.warning {
         background-color: $warning;
+
+        svg {
+            fill: $white;
+        }
 
         &:hover {
             background-color: $warning-dark;

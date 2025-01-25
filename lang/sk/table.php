@@ -8,4 +8,5 @@ return [
     ],
 
     'no_data_available' => 'Žiadne dostupné dáta',
+    'selected' => 'Vybrané',
 ];

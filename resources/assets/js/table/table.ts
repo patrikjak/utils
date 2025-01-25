@@ -1,6 +1,7 @@
 import {getCss, insertAfter} from "../helpers/general";
 import {bindPagination} from "./pagination";
 import {bindPageSizeChange} from "./page-size";
+import {bindChecking, checkSavedCheckboxes, handleBulkActions} from "./checkboxes";
 
 export function bindTableFunctions(table: HTMLElement | null = null): void {
     let tables: NodeListOf<HTMLElement> = document.querySelectorAll('.pj-table-wrapper');
@@ -15,20 +16,10 @@ export function bindTableFunctions(table: HTMLElement | null = null): void {
         bindShowingRowActions(table);
         bindPagination(table);
         bindPageSizeChange(table);
+
+        handleBulkActions(table);
+        checkSavedCheckboxes(table.id);
     });
-}
-
-export function bindChecking(table: HTMLElement): void {
-    const headCheckbox: HTMLFormElement = table.querySelector('thead .pj-checkbox input');
-    const dataCheckboxes: NodeListOf<HTMLFormElement> = table.querySelectorAll('tbody .pj-checkbox input');
-
-    if (headCheckbox !== null) {
-        headCheckbox.closest('.pj-checkbox').addEventListener('click', (): void => {
-            toggleCheckAll(headCheckbox, dataCheckboxes);
-        });
-    }
-
-    checkChanges(headCheckbox, dataCheckboxes);
 }
 
 export function bindShowingRowActions(table: HTMLElement): void {
@@ -84,66 +75,4 @@ function bindClosingActions(actions: HTMLElement): void {
             document.querySelector('body').removeEventListener('click', bindClosing);
         }
     });
-}
-
-export function getChecked(table: HTMLElement): Array<string> {
-    const checked = [];
-    const checkboxes: NodeListOf<HTMLFormElement> = table.querySelectorAll('tbody .pj-checkbox input');
-
-    checkboxes.forEach((checkbox: HTMLFormElement): void => {
-        if (checkbox.checked) {
-            checked.push(checkbox.id);
-        }
-    });
-
-    return checked;
-}
-
-function areCheckedAll(dataCheckboxes: NodeListOf<HTMLFormElement>): boolean {
-    for (const checkbox of dataCheckboxes) {
-        if (checkbox.checked === false) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-function isAtLeastOneChecked(dataCheckboxes: NodeListOf<HTMLFormElement>): boolean {
-    for (const dataCheckbox of dataCheckboxes) {
-        if (dataCheckbox.checked === true) {
-            return true;
-        }
-    }
-
-    return false;
-}
-
-function toggleCheckAll(headCheckbox: HTMLFormElement, dataCheckboxes: NodeListOf<HTMLFormElement>): void {
-    const checkedAll = areCheckedAll(dataCheckboxes);
-    headCheckbox.checked = !checkedAll;
-
-    dataCheckboxes.forEach((checkbox: HTMLFormElement): void => {
-        changeCheckboxState(checkbox, !checkedAll);
-    });
-}
-
-function checkChanges(headCheckbox: HTMLFormElement, dataCheckboxes: NodeListOf<HTMLFormElement>): void {
-    dataCheckboxes.forEach((checkbox: HTMLFormElement): void => {
-        checkbox.closest('.pj-checkbox').addEventListener('click', (): void => {
-            changeCheckboxState(checkbox, !checkbox.checked);
-            headCheckbox.checked = areCheckedAll(dataCheckboxes);
-        });
-    });
-}
-
-function toggleRowActivation(checkbox: HTMLElement, shouldBeActive: boolean): void {
-    const row = checkbox.closest('tr');
-
-    shouldBeActive ? row.classList.add('active') : row.classList.remove('active');
-}
-
-function changeCheckboxState(checkbox: HTMLFormElement, active: boolean): void {
-    checkbox.checked = active;
-    toggleRowActivation(checkbox, active);
 }
