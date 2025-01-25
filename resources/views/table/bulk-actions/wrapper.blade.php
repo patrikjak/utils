@@ -7,6 +7,7 @@
                 <x-pjutils::button
                     :button-type="$bulkAction->type"
                     data-action="{{ $bulkAction->action }}"
+                    data-method="{{ $bulkAction->method }}"
                 >
                     @if($bulkAction->icon !== null)
                         {!! $bulkAction->icon->getAsHtml() !!}

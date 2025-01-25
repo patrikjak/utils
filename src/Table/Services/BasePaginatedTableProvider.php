@@ -12,6 +12,7 @@ use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\Exceptions\MissingTableParametersException;
 use Patrikjak\Utils\Table\View\Body;
+use Patrikjak\Utils\Table\View\Head;
 use Patrikjak\Utils\Table\View\Pagination\Paginator;
 
 abstract class BasePaginatedTableProvider extends BaseTableProvider implements
@@ -37,6 +38,7 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
         $this->table = $this->getTable($parameters);
 
         return [
+            'head' => $this->getHeadHTML(),
             'body' => $this->getBodyHTML(),
             'pagination' => $this->getPaginationHTML(),
         ];
@@ -75,6 +77,11 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
         $this->paginator = $this->getPaginator();
 
         return $this->paginator->getData();
+    }
+
+    protected function getHeadHTML(): string
+    {
+        return Blade::renderComponent(new Head($this->table));
     }
 
     protected function getBodyHTML(): string

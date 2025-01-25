@@ -38,6 +38,8 @@ export async function loadPage(table: HTMLElement, link: string): Promise<void> 
     setActionsToDefaultPosition(table);
 
     // @ts-ignore
+    loadTableHead(table, pageContent.head);
+    // @ts-ignore
     loadTableBody(table, pageContent.body);
     // @ts-ignore
     loadPagination(table, pageContent.pagination);
@@ -54,6 +56,11 @@ function getPageContent(link: string): Promise<object> {
             console.error('Error while loading page content');
         });
     });
+}
+
+function loadTableHead(table: HTMLElement, pageContent: string): void {
+    const tableHead = table.querySelector('thead');
+    tableHead.innerHTML = pageContent;
 }
 
 function loadTableBody(table: HTMLElement, pageContent: string): void {

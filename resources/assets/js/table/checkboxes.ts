@@ -1,3 +1,11 @@
+import {getData} from "../helpers/general";
+import {sendRequest} from "../helpers/connector";
+import notify from "../utils/notification";
+import {ResponseWithMessage} from "../interfaces/general";
+import {translator} from "../translator";
+
+const boundActions = new Set();
+
 export function bindChecking(table: HTMLElement): void
 {
     const headCheckbox: HTMLInputElement = table.querySelector('thead .pj-checkbox input');
@@ -7,13 +15,20 @@ export function bindChecking(table: HTMLElement): void
         return;
     }
 
-    bindCheckAll(headCheckbox, checkboxes);
+    headCheckbox.checked = areCheckedAllOnPage(checkboxes);
+
+    bindCheckAll(headCheckbox);
     bindCheckboxesChanges(headCheckbox, checkboxes);
+    bindActions(table);
 }
 
-function bindCheckAll(headCheckbox: HTMLInputElement, checkboxes: NodeListOf<HTMLInputElement>): void
+function bindCheckAll(headCheckbox: HTMLInputElement): void
 {
+    const table: HTMLElement = headCheckbox.closest('.pj-table-wrapper');
+
     headCheckbox.closest('.pj-checkbox').addEventListener('click', (): void => {
+        const checkboxes: NodeListOf<HTMLInputElement> = table.querySelectorAll('tbody .pj-checkbox input');
+
         toggleCheckAll(headCheckbox, checkboxes);
     });
 }
@@ -87,6 +102,10 @@ function handleCheckboxState(checkbox: HTMLInputElement, active: boolean): void
 
 function changeCheckboxState(checkbox: HTMLInputElement, active: boolean): void
 {
+    if (checkbox === null) {
+        return;
+    }
+
     checkbox.checked = active;
     toggleRowActivation(checkbox, active);
 }
@@ -169,4 +188,82 @@ function updateCheckedCheckboxesBulkActionsInfo(table: HTMLElement): void
 function getTableCheckedRows(tableId: string): string[]
 {
     return JSON.parse(sessionStorage.getItem(tableId) || '[]');
+}
+
+function removeTableCheckedRows(tableId: string): void
+{
+    sessionStorage.removeItem(tableId);
+}
+
+function bindActions(table: HTMLElement): void
+{
+    const bulkActionsElement: HTMLElement = table.querySelector('.bulk-actions-wrapper');
+
+    if (bulkActionsElement === null) {
+        return;
+    }
+
+    const actions: NodeListOf<HTMLButtonElement> = bulkActionsElement.querySelectorAll('.bulk-action button');
+
+    actions.forEach((action: HTMLButtonElement): void => {
+        if (boundActions.has(action)) {
+            return;
+        }
+
+        boundActions.add(action);
+
+        action.addEventListener('click', function handleActionButton(): void {
+            handleBulkAction(action, table);
+        });
+    });
+}
+
+function handleBulkAction(action: HTMLButtonElement, table: HTMLElement): void
+{
+    const checkedRows: string[] = getTableCheckedRows(table.id);
+
+    if (checkedRows.length === 0) {
+        return;
+    }
+
+    const url: string = getData(action, 'action');
+    const method: string = getData(action, 'method').toLowerCase();
+
+    sendRequest(url, method, prepareBulkActionData(checkedRows)).then((response: ResponseWithMessage): void => {
+        handleBulkActionSuccess(response, table, checkedRows);
+    }).catch((error: any): void => {
+        console.log(error);
+        notify(error?.data?.message ?? translator.t('errors.default.message'), 'Ooops!', 'error');
+    });
+}
+
+function prepareBulkActionData(checkedRows: string[]): FormData
+{
+    const data: FormData = new FormData();
+
+    checkedRows.forEach((rowId: string): void => {
+        data.append('bulkActionsIds[]', rowId);
+    });
+
+    return data;
+}
+
+function handleBulkActionSuccess(response: ResponseWithMessage, table: HTMLElement, checkedRows: string[]): void
+{
+    const headCheckbox: HTMLInputElement = table.querySelector('thead .pj-checkbox input');
+    headCheckbox.checked = false;
+
+    checkedRows.forEach((rowId: string): void => {
+        const checkbox: HTMLInputElement = table.querySelector(`tr[id='${rowId}'] .pj-checkbox input`);
+
+        if (checkbox === null) {
+            return;
+        }
+
+        handleCheckboxState(table.querySelector(`tr[id='${rowId}'] .pj-checkbox input`), false);
+    });
+
+    removeTableCheckedRows(table.id);
+    handleBulkActions(table);
+    notify(response.message, 'Success', 'success');
 }
