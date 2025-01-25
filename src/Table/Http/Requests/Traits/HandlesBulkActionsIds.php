@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Common\Http\Requests\Traits;
+namespace Patrikjak\Utils\Table\Http\Requests\Traits;
 
 use Illuminate\Support\Collection;
 

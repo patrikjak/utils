@@ -5,6 +5,7 @@ namespace Patrikjak\Utils\Tests\Integration\Table;
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
+use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkActionItem;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
@@ -79,6 +80,17 @@ class BasePaginatedTableProviderTest extends TestCase
         $this->tableMatchesSnapshot();
     }
 
+    public function testTableWithBulkActions(): void
+    {
+        $this->tableProvider->showCheckboxes();
+        $this->tableProvider->setBulkActions([
+            new BulkActionItem('Export', 'https://example.com/export'),
+            new BulkActionItem('Delete', 'https://example.com/delete', 'DELETE', Icon::TRASH, Type::DANGER),
+        ]);
+
+        $this->tableMatchesSnapshot();
+    }
+
     public function testTableWithCustomPaginationOptions(): void
     {
         $this->tableProvider->setPaginationOptions([5 => 5, 8 => 8, 10 => 10]);
@@ -92,6 +104,7 @@ class BasePaginatedTableProviderTest extends TestCase
 
         $this->assertMatchesHtmlSnapshot($htmlParts['body']);
         $this->assertMatchesHtmlSnapshot($htmlParts['pagination']);
+        $this->assertMatchesHtmlSnapshot($htmlParts['head']);
     }
 
     private function tableMatchesSnapshot(): void
