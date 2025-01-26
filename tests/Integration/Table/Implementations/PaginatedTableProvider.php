@@ -24,6 +24,8 @@ class PaginatedTableProvider extends BasePaginatedTableProvider implements Table
 
     private array $actions = [];
 
+    private array $bulkActions = [];
+
     private array $paginationOptions = [10 => 10, 20 => 20, 50 => 50, 100 => 100];
 
     public function getTableId(): string
@@ -81,6 +83,11 @@ class PaginatedTableProvider extends BasePaginatedTableProvider implements Table
         return $this->actions;
     }
 
+    public function getBulkActions(): array
+    {
+        return $this->bulkActions;
+    }
+
     protected function getPaginator(): TablePaginator
     {
         return new TablePaginator(
@@ -134,6 +141,11 @@ class PaginatedTableProvider extends BasePaginatedTableProvider implements Table
     public function setActions(array $actions): void
     {
         $this->actions = $actions;
+    }
+
+    public function setBulkActions(array $bulkActions): void
+    {
+        $this->bulkActions = $bulkActions;
     }
 
     public function setPaginationOptions(array $paginationOptions): void

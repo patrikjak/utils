@@ -36,6 +36,7 @@ abstract class BaseTableProvider implements TableProviderInterface
             $this->getExpandable(),
             $this->getActions(),
             $this instanceof SupportsPagination ? $this->getPaginationSettings() : null,
+            $this->getBulkActions(),
         );
     }
 
@@ -82,6 +83,14 @@ abstract class BaseTableProvider implements TableProviderInterface
      * @inheritdoc
      */
     public function getActions(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getBulkActions(): array
     {
         return [];
     }

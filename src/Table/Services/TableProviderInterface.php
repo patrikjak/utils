@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Services;
 
+use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkActionItem;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Table;
@@ -14,7 +15,9 @@ interface TableProviderInterface
 
     public function getTableId(): string;
 
-    /** @return array<string, string>|null */
+    /**
+     * @return array<string, string>|null
+     */
     public function getHeader(): ?array;
 
     /**
@@ -33,6 +36,13 @@ interface TableProviderInterface
 
     public function getExpandable(): ?string;
 
-    /** @return array<Item> */
+    /**
+     * @return array<Item>
+     */
     public function getActions(): array;
+
+    /**
+     * @return array<BulkActionItem>
+     */
+    public function getBulkActions(): array;
 }
