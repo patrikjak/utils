@@ -29,6 +29,7 @@ final readonly class Table
         public array $actions,
         public ?Settings $paginationSettings = null,
         public array $bulkActions = [],
+        public array $sortableColumns = [],
     ) {
     }
 
@@ -45,5 +46,10 @@ final readonly class Table
     public function hasPagination(): bool
     {
         return $this->paginationSettings !== null;
+    }
+
+    public function isSortable(): bool
+    {
+        return count($this->sortableColumns) > 0;
     }
 }

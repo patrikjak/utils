@@ -18,6 +18,7 @@ enum Icon: string
     case EYE_SLASH = 'eye_slash';
     case CIRCLE_EXCLAMATION = 'circle_exclamation';
     case INFO = 'info';
+    case SORT = 'sort';
 
     public function getAsHtml(): string
     {

@@ -8,7 +8,7 @@
     @endif
 
     @if($showOrder())
-        <td>{{ $loop->iteration }}</td>
+        <td>{{ ((($table->paginationSettings?->page ?? 1) - 1) * $table->paginationSettings?->pageSize ?? 1) + $loop->iteration }}</td>
     @endif
 
     @foreach($table->columns as $column)

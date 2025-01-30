@@ -37,6 +37,7 @@ abstract class BaseTableProvider implements TableProviderInterface
             $this->getActions(),
             $this instanceof SupportsPagination ? $this->getPaginationSettings() : null,
             $this->getBulkActions(),
+            $this->getSortableColumns(),
         );
     }
 
@@ -91,6 +92,14 @@ abstract class BaseTableProvider implements TableProviderInterface
      * @inheritdoc
      */
     public function getBulkActions(): array
+    {
+        return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSortableColumns(): array
     {
         return [];
     }

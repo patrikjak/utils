@@ -7,6 +7,7 @@ namespace Patrikjak\Utils\Table\Services;
 use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkActionItem;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
 use Patrikjak\Utils\Table\Dto\Table;
 
 interface TableProviderInterface
@@ -45,4 +46,9 @@ interface TableProviderInterface
      * @return array<BulkActionItem>
      */
     public function getBulkActions(): array;
+
+    /**
+     * @return array<SortableColumn>
+     */
+    public function getSortableColumns(): array;
 }

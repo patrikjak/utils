@@ -365,3 +365,80 @@
         overflow-x: auto;
     }
 }
+
+.table-options {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 1rem;
+    gap: .75rem;
+}
+
+.sorter-wrapper {
+    position: relative;
+
+    .clickable {
+        cursor: pointer;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        color: $font-light;
+        border-radius: 1rem;
+        padding: .5rem 1rem;
+        border: solid 1px $border;
+        font-size: .875rem;
+        transition-duration: .3s;
+
+        &:hover {
+            background-color: $primary-200;
+            border-color: $primary;
+        }
+    }
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .options {
+        display: none;
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background-color: $white;
+        border-radius: 1rem;
+        box-shadow: 0 0 16px 0 rgba(44, 44, 44, 0.16);
+        padding: .5rem;
+        z-index: 100;
+        transform: translateY(.5rem);
+        min-width: 100%;
+
+        .option {
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .5rem 1rem;
+            border-radius: 1rem;
+            transition-duration: .15s;
+            white-space: nowrap;
+
+
+            &:hover {
+                background-color: $primary-200;
+            }
+        }
+    }
+
+    &.active {
+        .clickable {
+            background-color: $primary-200;
+            border-color: $primary;
+        }
+
+        .options {
+            display: block;
+        }
+    }
+}

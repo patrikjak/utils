@@ -2,6 +2,12 @@
     class="pj-table-wrapper"
     id="{{ $tableId }}"
 >
+    @if($table->isSortable())
+        <div class="table-options">
+            <x-pjutils.table::sort.sorter :sortable-columns="$table->sortableColumns" />
+        </div>
+    @endif
+
     <table class="{{ $tableClass }}"
            @if($table->expandable !== null) data-expandable="{{ $table->expandable }}" @endif
     >

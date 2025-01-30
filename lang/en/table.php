@@ -9,5 +9,6 @@ return [
 
     'no_data_available' => 'No data available',
     'selected' => 'Selected',
+    'sort' => 'Sort',
 
 ];
