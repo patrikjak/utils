@@ -1,9 +1,9 @@
-import {findGetParameter, getData} from "../helpers/general";
 import {getDropdownValue} from "../utils/dropdown";
-import {getPageQueryForTable, loadPage} from "./pagination";
+import {TableWrapper} from "../interfaces/table";
+import {dispatchUpdateEvent} from "./table";
 
-export function bindPageSizeChange(table: HTMLElement): void {
-    const pageSize: HTMLElement = table.querySelector('.page-size');
+export function bindPageSizeChange(tableWrapper: TableWrapper): void {
+    const pageSize: HTMLElement = tableWrapper.querySelector('.page-size');
 
     if (!pageSize) {
         return;
@@ -12,15 +12,15 @@ export function bindPageSizeChange(table: HTMLElement): void {
     const dropdown: HTMLDivElement = pageSize.querySelector('.pj-dropdown');
 
     dropdown.addEventListener('change', async function (): Promise<void> {
-        const baseLink = getData(pageSize, 'href');
-        const pageKey = getPageQueryForTable(table);
-        const page = findGetParameter(pageKey);
-        let link = `${baseLink}?pageSize=${getDropdownValue(dropdown)}`;
-
-        if (page !== null && page !== 'null') {
-            link += `&${pageKey}=${page}`;
-        }
-
-        await loadPage(table, link);
+        dispatchUpdateEvent(tableWrapper, {
+            pageSize: parseInt(getDropdownValue(dropdown)),
+        });
     });
+}
+
+export function getCurrentPageSize(tableWrapper: TableWrapper): number {
+    const pageSize: HTMLElement = tableWrapper.querySelector('.page-size');
+    const dropdown: HTMLDivElement = pageSize.querySelector('.pj-dropdown');
+
+    return parseInt(getDropdownValue(dropdown));
 }

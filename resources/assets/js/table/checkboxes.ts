@@ -3,13 +3,13 @@ import {sendRequest} from "../helpers/connector";
 import notify from "../utils/notification";
 import {ResponseWithMessage} from "../interfaces/general";
 import {translator} from "../translator";
+import {TableWrapper} from "../interfaces/table";
 
 const boundActions = new Set();
 
-export function bindChecking(table: HTMLElement): void
-{
-    const headCheckbox: HTMLInputElement = table.querySelector('thead .pj-checkbox input');
-    const checkboxes: NodeListOf<HTMLInputElement> = table.querySelectorAll('tbody .pj-checkbox input');
+export function bindChecking(tableWrapper: TableWrapper): void {
+    const headCheckbox: HTMLInputElement = tableWrapper.querySelector('thead .pj-checkbox input');
+    const checkboxes: NodeListOf<HTMLInputElement> = tableWrapper.querySelectorAll('tbody .pj-checkbox input');
 
     if (headCheckbox === null || checkboxes.length === 0) {
         return;
@@ -19,59 +19,29 @@ export function bindChecking(table: HTMLElement): void
 
     bindCheckAll(headCheckbox);
     bindCheckboxesChanges(headCheckbox, checkboxes);
-    bindActions(table);
+    bindActions(tableWrapper);
 }
 
-function bindCheckAll(headCheckbox: HTMLInputElement): void
-{
-    const table: HTMLElement = headCheckbox.closest('.pj-table-wrapper');
+export function areCheckedAllOnPage(checkboxes: NodeListOf<HTMLInputElement>): boolean {
+    for (const checkbox of checkboxes) {
+        if (checkbox.checked === false) {
+            return false;
+        }
+    }
 
-    headCheckbox.closest('.pj-checkbox').addEventListener('click', (): void => {
-        const checkboxes: NodeListOf<HTMLInputElement> = table.querySelectorAll('tbody .pj-checkbox input');
-
-        toggleCheckAll(headCheckbox, checkboxes);
-    });
+    return true;
 }
 
-function bindCheckboxesChanges(headCheckbox: HTMLInputElement, checkboxes: NodeListOf<HTMLInputElement>): void
-{
-    const table: HTMLElement = headCheckbox.closest('.pj-table-wrapper');
-
-    checkboxes.forEach((checkbox: HTMLInputElement): void => {
-        checkbox.closest('.pj-checkbox').addEventListener('click', (): void => {
-            handleCheckboxState(checkbox, !checkbox.checked);
-            handleBulkActions(table);
-
-            headCheckbox.checked = areCheckedAllOnPage(checkboxes);
-        });
-    });
-}
-
-function toggleCheckAll(headCheckbox: HTMLInputElement, checkboxes: NodeListOf<HTMLInputElement>): void
-{
-    const table: HTMLElement = headCheckbox.closest('.pj-table-wrapper');
-    const checkedAll: boolean = areCheckedAllOnPage(checkboxes);
-
-    headCheckbox.checked = !checkedAll;
-
-    checkboxes.forEach((checkbox: HTMLInputElement): void => {
-        handleCheckboxState(checkbox, !checkedAll);
-    });
-
-    handleBulkActions(table);
-}
-
-export function checkSavedCheckboxes(tableId: string): void
-{
+export function checkSavedCheckboxes(tableId: string): void {
     const tablesChecked: string[] = getTableCheckedRows(tableId);
 
     if (tablesChecked.length === 0) {
         return;
     }
 
-    const table: HTMLElement = document.querySelector(`.pj-table-wrapper#${tableId}`);
-    const headCheckbox: HTMLInputElement = table.querySelector('thead .pj-checkbox input');
-    const checkboxes: NodeListOf<HTMLInputElement> = table.querySelectorAll('tbody .pj-checkbox input');
+    const tableWrapper: TableWrapper = document.querySelector(`.pj-table-wrapper#${tableId}`);
+    const headCheckbox: HTMLInputElement = tableWrapper.querySelector('thead .pj-checkbox input');
+    const checkboxes: NodeListOf<HTMLInputElement> = tableWrapper.querySelectorAll('tbody .pj-checkbox input');
 
     checkboxes.forEach((checkbox: HTMLInputElement): void => {
         const rowId: string = checkbox.closest('tr').id;
@@ -87,21 +57,66 @@ export function checkSavedCheckboxes(tableId: string): void
     }
 }
 
-function toggleRowActivation(checkbox: HTMLInputElement, shouldBeActive: boolean): void
-{
-    const row = checkbox.closest('tr');
+export function handleBulkActions(tableWrapper: TableWrapper): void {
+    const bulkActionsElement: HTMLElement = tableWrapper.querySelector('.bulk-actions-wrapper');
+
+    if (bulkActionsElement === null) {
+        return;
+    }
+
+    getCheckedCount(tableWrapper.id) > 0 ? bulkActionsElement.classList.remove('hidden') : bulkActionsElement.classList.add('hidden');
+
+    updateCheckedCheckboxesBulkActionsInfo(tableWrapper);
+}
+
+function bindCheckAll(headCheckbox: HTMLInputElement): void {
+    const tableWrapper: TableWrapper = headCheckbox.closest('.pj-table-wrapper');
+
+    headCheckbox.closest('.pj-checkbox').addEventListener('click', (): void => {
+        const checkboxes: NodeListOf<HTMLInputElement> = tableWrapper.querySelectorAll('tbody .pj-checkbox input');
+
+        toggleCheckAll(headCheckbox, checkboxes);
+    });
+}
+
+function bindCheckboxesChanges(headCheckbox: HTMLInputElement, checkboxes: NodeListOf<HTMLInputElement>): void {
+    const tableWrapper: TableWrapper = headCheckbox.closest('.pj-table-wrapper');
+
+    checkboxes.forEach((checkbox: HTMLInputElement): void => {
+        checkbox.closest('.pj-checkbox').addEventListener('click', (): void => {
+            handleCheckboxState(checkbox, !checkbox.checked);
+            handleBulkActions(tableWrapper);
+
+            headCheckbox.checked = areCheckedAllOnPage(checkboxes);
+        });
+    });
+}
+
+function toggleCheckAll(headCheckbox: HTMLInputElement, checkboxes: NodeListOf<HTMLInputElement>): void {
+    const tableWrapper: TableWrapper = headCheckbox.closest('.pj-table-wrapper');
+    const checkedAll: boolean = areCheckedAllOnPage(checkboxes);
+
+    headCheckbox.checked = !checkedAll;
+
+    checkboxes.forEach((checkbox: HTMLInputElement): void => {
+        handleCheckboxState(checkbox, !checkedAll);
+    });
+
+    handleBulkActions(tableWrapper);
+}
+
+function toggleRowActivation(checkbox: HTMLInputElement, shouldBeActive: boolean): void {
+    const row: HTMLTableRowElement = checkbox.closest('tr');
 
     shouldBeActive ? row.classList.add('active') : row.classList.remove('active');
 }
 
-function handleCheckboxState(checkbox: HTMLInputElement, active: boolean): void
-{
+function handleCheckboxState(checkbox: HTMLInputElement, active: boolean): void {
     changeCheckboxState(checkbox, active);
     updateMemoryAfterChange(checkbox);
 }
 
-function changeCheckboxState(checkbox: HTMLInputElement, active: boolean): void
-{
+function changeCheckboxState(checkbox: HTMLInputElement, active: boolean): void {
     if (checkbox === null) {
         return;
     }
@@ -110,26 +125,13 @@ function changeCheckboxState(checkbox: HTMLInputElement, active: boolean): void
     toggleRowActivation(checkbox, active);
 }
 
-export function areCheckedAllOnPage(checkboxes: NodeListOf<HTMLInputElement>): boolean
-{
-    for (const checkbox of checkboxes) {
-        if (checkbox.checked === false) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-function getCheckedCount(tableId: string): number
-{
+function getCheckedCount(tableId: string): number {
     const tablesChecked: string[] = getTableCheckedRows(tableId);
 
     return tablesChecked.length;
 }
 
-function updateMemoryAfterChange(checkbox: HTMLInputElement): void
-{
+function updateMemoryAfterChange(checkbox: HTMLInputElement): void {
     const storageKey: string = checkbox.closest('.pj-table-wrapper').id;
     const isChecked: boolean = checkbox.checked;
     const rowId: string = checkbox.closest('tr').id;
@@ -137,8 +139,7 @@ function updateMemoryAfterChange(checkbox: HTMLInputElement): void
     isChecked ? saveCheckedCheckbox(storageKey, rowId) : removeCheckedCheckbox(storageKey, rowId);
 }
 
-function saveCheckedCheckbox(tableId: string, rowId: string): void
-{
+function saveCheckedCheckbox(tableId: string, rowId: string): void {
     const tablesChecked: string[] = getTableCheckedRows(tableId);
 
     if (tablesChecked.includes(rowId)) {
@@ -149,8 +150,7 @@ function saveCheckedCheckbox(tableId: string, rowId: string): void
     sessionStorage.setItem(tableId, JSON.stringify(tablesChecked));
 }
 
-function removeCheckedCheckbox(tableId: string, rowId: string): void
-{
+function removeCheckedCheckbox(tableId: string, rowId: string): void {
     const tablesChecked: string[] = getTableCheckedRows(tableId);
     const index: number = tablesChecked.indexOf(rowId);
 
@@ -161,43 +161,26 @@ function removeCheckedCheckbox(tableId: string, rowId: string): void
     sessionStorage.setItem(tableId, JSON.stringify(tablesChecked));
 }
 
-export function handleBulkActions(table: HTMLElement): void
-{
-    const bulkActionsElement: HTMLElement = table.querySelector('.bulk-actions-wrapper');
-
-    if (bulkActionsElement === null) {
-        return;
-    }
-
-    getCheckedCount(table.id) > 0 ? bulkActionsElement.classList.remove('hidden') : bulkActionsElement.classList.add('hidden');
-
-    updateCheckedCheckboxesBulkActionsInfo(table);
-}
-
-function updateCheckedCheckboxesBulkActionsInfo(table: HTMLElement): void
-{
-    const countInfo = table.querySelector('.bulk-actions-wrapper .selected .count');
+function updateCheckedCheckboxesBulkActionsInfo(tableWrapper: TableWrapper): void {
+    const countInfo = tableWrapper.querySelector('.bulk-actions-wrapper .selected .count');
 
     if (countInfo === null) {
         return;
     }
 
-    countInfo.textContent = getCheckedCount(table.id).toString();
+    countInfo.textContent = getCheckedCount(tableWrapper.id).toString();
 }
 
-function getTableCheckedRows(tableId: string): string[]
-{
+function getTableCheckedRows(tableId: string): string[] {
     return JSON.parse(sessionStorage.getItem(tableId) || '[]');
 }
 
-function removeTableCheckedRows(tableId: string): void
-{
+function removeTableCheckedRows(tableId: string): void {
     sessionStorage.removeItem(tableId);
 }
 
-function bindActions(table: HTMLElement): void
-{
-    const bulkActionsElement: HTMLElement = table.querySelector('.bulk-actions-wrapper');
+function bindActions(tableWrapper: TableWrapper): void {
+    const bulkActionsElement: HTMLElement = tableWrapper.querySelector('.bulk-actions-wrapper');
 
     if (bulkActionsElement === null) {
         return;
@@ -213,14 +196,13 @@ function bindActions(table: HTMLElement): void
         boundActions.add(action);
 
         action.addEventListener('click', function handleActionButton(): void {
-            handleBulkAction(action, table);
+            handleBulkAction(action, tableWrapper);
         });
     });
 }
 
-function handleBulkAction(action: HTMLButtonElement, table: HTMLElement): void
-{
-    const checkedRows: string[] = getTableCheckedRows(table.id);
+function handleBulkAction(action: HTMLButtonElement, tableWrapper: TableWrapper): void {
+    const checkedRows: string[] = getTableCheckedRows(tableWrapper.id);
 
     if (checkedRows.length === 0) {
         return;
@@ -230,15 +212,14 @@ function handleBulkAction(action: HTMLButtonElement, table: HTMLElement): void
     const method: string = getData(action, 'method').toLowerCase();
 
     sendRequest(url, method, prepareBulkActionData(checkedRows)).then((response: ResponseWithMessage): void => {
-        handleBulkActionSuccess(response, table, checkedRows);
+        handleBulkActionSuccess(response, tableWrapper, checkedRows);
     }).catch((error: any): void => {
         console.log(error);
         notify(error?.data?.message ?? translator.t('errors.default.message'), 'Ooops!', 'error');
     });
 }
 
-function prepareBulkActionData(checkedRows: string[]): FormData
-{
+function prepareBulkActionData(checkedRows: string[]): FormData {
     const data: FormData = new FormData();
 
     checkedRows.forEach((rowId: string): void => {
@@ -248,22 +229,21 @@ function prepareBulkActionData(checkedRows: string[]): FormData
     return data;
 }
 
-function handleBulkActionSuccess(response: ResponseWithMessage, table: HTMLElement, checkedRows: string[]): void
-{
-    const headCheckbox: HTMLInputElement = table.querySelector('thead .pj-checkbox input');
+function handleBulkActionSuccess(response: ResponseWithMessage, tableWrapper: TableWrapper, checkedRows: string[]): void {
+    const headCheckbox: HTMLInputElement = tableWrapper.querySelector('thead .pj-checkbox input');
     headCheckbox.checked = false;
 
     checkedRows.forEach((rowId: string): void => {
-        const checkbox: HTMLInputElement = table.querySelector(`tr[id='${rowId}'] .pj-checkbox input`);
+        const checkbox: HTMLInputElement = tableWrapper.querySelector(`tr[id='${rowId}'] .pj-checkbox input`);
 
         if (checkbox === null) {
             return;
         }
 
-        handleCheckboxState(table.querySelector(`tr[id='${rowId}'] .pj-checkbox input`), false);
+        handleCheckboxState(tableWrapper.querySelector(`tr[id='${rowId}'] .pj-checkbox input`), false);
     });
 
-    removeTableCheckedRows(table.id);
-    handleBulkActions(table);
-    notify(response.message, 'Success', 'success');
+    removeTableCheckedRows(tableWrapper.id);
+    handleBulkActions(tableWrapper);
+    notify(response.message, 'Super', 'success');
 }

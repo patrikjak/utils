@@ -187,6 +187,10 @@ export function findGetParameter(parameterName: string, url: string = window.loc
     return null;
 }
 
+export function urlIncludesGetParameters(url: string): boolean {
+    return url.includes('?');
+}
+
 export function removeClassesAfterAnimation(item: HTMLElement, classes: Array<string>, timeout: number = 200) {
     setTimeout(() => {
         item.classList.remove(...classes);
