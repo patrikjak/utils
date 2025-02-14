@@ -7,6 +7,8 @@ namespace Patrikjak\Utils\Table\Http\Requests;
 use Illuminate\Cookie\CookieJar;
 use Illuminate\Foundation\Http\FormRequest;
 use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Table\Dto\Sort\SortOrder;
 use stdClass;
 
 class TableParametersRequest extends FormRequest
@@ -19,7 +21,7 @@ class TableParametersRequest extends FormRequest
     {
         $this->tableId = $tableId;
 
-        $parameters = new Parameters($this->getCurrentPage(), $this->getPageSize());
+        $parameters = new Parameters($this->getCurrentPage(), $this->getPageSize(), $this->getSortCriteria());
 
         if ($this->shouldUpdateCookie) {
             $this->updateParametersCookie($parameters);
@@ -36,6 +38,11 @@ class TableParametersRequest extends FormRequest
     private function getPageSize(): int
     {
         return ($this->getPageSizeFromRequest() ?? $this->getPageSizeFromCookie()) ?? 10;
+    }
+
+    private function getSortCriteria(): ?SortCriteria
+    {
+        return ($this->getSortCriteriaFromRequest() ?? $this->getSortCriteriaFromCookie()) ?? null;
     }
 
     private function getPageFromRequest(): ?int
@@ -72,6 +79,35 @@ class TableParametersRequest extends FormRequest
     private function getPageSizeFromCookie(): ?int
     {
         return $this->getDecodedParametersFromCookie()?->pageSize ?? null;
+    }
+
+    private function getSortCriteriaFromRequest(): ?SortCriteria
+    {
+        $sortColumn = $this->input('sort');
+        $order = $this->input('order');
+
+        if ($order !== null) {
+            $order = SortOrder::tryFrom($order);
+        }
+
+        if ($sortColumn === null || $order === null) {
+            return null;
+        }
+
+        $this->shouldUpdateCookie = true;
+
+        return new SortCriteria($sortColumn, $order);
+    }
+
+    private function getSortCriteriaFromCookie(): ?SortCriteria
+    {
+        $sortCriteria = $this->getDecodedParametersFromCookie()?->sortCriteria ?? null;
+
+        if ($sortCriteria === null) {
+            return null;
+        }
+
+        return new SortCriteria($sortCriteria->column, SortOrder::from($sortCriteria->order));
     }
 
     private function getDecodedParametersFromCookie(): ?stdClass

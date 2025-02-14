@@ -31,6 +31,5 @@ export function getCurrentOrder(tableWrapper: TableWrapper): string {
 }
 
 function getColumnFromSelectedOption(option: HTMLElement): string {
-    console.log(getData(option, 'column'));
     return getData(option, 'column');
 }

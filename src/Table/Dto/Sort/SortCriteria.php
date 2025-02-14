@@ -9,4 +9,12 @@ final readonly class SortCriteria
         public SortOrder $order = SortOrder::ASC,
     ) {
     }
+
+    public function toArray(): array
+    {
+        return [
+            'column' => $this->column,
+            'order' => $this->order->value,
+        ];
+    }
 }

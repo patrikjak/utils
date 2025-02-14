@@ -7,6 +7,7 @@ namespace Patrikjak\Utils\Table\Dto;
 use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkActionItem;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
+use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
 
 final readonly class Table
 {
@@ -16,6 +17,7 @@ final readonly class Table
      * @param array<string> $columns
      * @param array<Item> $actions
      * @param array<BulkActionItem> $bulkActions
+     * @param array<SortableColumn> $sortableColumns
      */
     public function __construct(
         public string $tableId,
