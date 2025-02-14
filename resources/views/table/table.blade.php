@@ -1,15 +1,17 @@
+@use('Patrikjak\Utils\Table\Services\Renderable')
+
 <div
     class="pj-table-wrapper"
     id="{{ $tableId }}"
+    @if($table->htmlPartsUrl !== null) data-html-parts-url="{{ $table->htmlPartsUrl }}" @endif
 >
-    @if($table->isSortable())
-        <div class="table-options">
-            <x-pjutils.table::sort.sorter :sortable-columns="$table->sortableColumns" />
-        </div>
+    @if($showOptions)
+        <x-pjutils.table::options :table="$table" />
     @endif
 
-    <table class="{{ $tableClass }}"
-           @if($table->expandable !== null) data-expandable="{{ $table->expandable }}" @endif
+    <table
+        class="{{ $tableClass }}"
+        @if($table->expandable !== null) data-expandable="{{ $table->expandable }}" @endif
     >
 
         <x-pjutils.table::head :$table />

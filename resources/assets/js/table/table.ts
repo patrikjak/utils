@@ -8,6 +8,7 @@ import {pageKey, pageSizeKey} from "./constants";
 import {bindShowingRowActions, setActionsToDefaultPosition} from "./actions";
 import axios from "axios";
 import {bindDropdowns} from "../utils/dropdown";
+import {bindSorting, getCurrentOrder, getCurrentSort} from "./sort";
 
 export function bindTableFunctions(tableWrapper: TableWrapper | null = null): void {
     let tables: TableWrapper[] = Array.from(document.querySelectorAll('.pj-table-wrapper'));
@@ -31,10 +32,11 @@ export function dispatchUpdateEvent(tableWrapper: TableWrapper, detail: object =
 function bindUpdate(tableWrapper: TableWrapper): void {
     tableWrapper.addEventListener('update', function (event: CustomEvent): void {
         const pageCriteria: PageCriteria = getPageCriteria(tableWrapper, event);
+        const sortCriteria: SortCriteria = getSortCriteria(tableWrapper, event);
 
         setActionsToDefaultPosition(tableWrapper);
 
-        reloadTable(tableWrapper, pageCriteria).then((): void => {
+        reloadTable(tableWrapper, pageCriteria, sortCriteria).then((): void => {
             bindFunctions(tableWrapper);
             bindDropdowns(tableWrapper);
         });
@@ -47,6 +49,7 @@ function bindFunctions(tableWrapper: TableWrapper): void {
     bindPagination(tableWrapper);
     bindPageSizeChange(tableWrapper);
     bindOptions(tableWrapper);
+    bindSorting(tableWrapper);
 
     handleBulkActions(tableWrapper);
     checkSavedCheckboxes(tableWrapper.id);
@@ -67,6 +70,21 @@ function getPageCriteria(tableWrapper: TableWrapper, event: CustomEvent): PageCr
     return {page, pageSize};
 }
 
+function getSortCriteria(tableWrapper: TableWrapper, event: CustomEvent): SortCriteria {
+    let column: string | undefined = event.detail.column;
+    let order: string | undefined = event.detail.order;
+
+    if (column === undefined) {
+        column = getCurrentSort(tableWrapper);
+    }
+
+    if (order === undefined) {
+        order = getCurrentOrder(tableWrapper) ?? 'asc';
+    }
+
+    return {column, order};
+}
+
 async function reloadTable(
     tableWrapper: TableWrapper,
     pageCriteria: PageCriteria | null = null,
@@ -77,13 +95,20 @@ async function reloadTable(
 
     reloadTableHead(tableWrapper, tableParts.head);
     reloadTableBody(tableWrapper, tableParts.body);
-    reloadTablePagination(tableWrapper, tableParts.pagination);
+
+    if (tableParts.pagination) {
+        reloadTablePagination(tableWrapper, tableParts.pagination);
+    }
+
+    if (tableParts.options) {
+        reloadOptions(tableWrapper, tableParts.options);
+    }
 }
 
 function getTableUrl(
     tableWrapper: TableWrapper,
-    pageCriteria: PageCriteria|null = null,
-    sortCriteria: SortCriteria|null = null
+    pageCriteria: PageCriteria | null = null,
+    sortCriteria: SortCriteria | null = null,
 ): string {
     let url: string = getData(tableWrapper, 'html-parts-url');
 
@@ -121,6 +146,11 @@ function reloadTablePagination(tableWrapper: TableWrapper, pagination: string): 
     tablePagination.outerHTML = pagination;
 }
 
+function reloadOptions(tableWrapper: TableWrapper, options: string): void {
+    const tableOptions: HTMLElement = tableWrapper.querySelector('.table-options');
+    tableOptions.outerHTML = options;
+}
+
 function addPageCriteriaToUrl(url: string, pageCriteria: PageCriteria): string {
     urlIncludesGetParameters(url) ? url += '&' : url += '?';
 
@@ -128,8 +158,12 @@ function addPageCriteriaToUrl(url: string, pageCriteria: PageCriteria): string {
 }
 
 function addSortCriteriaToUrl(url: string, sortCriteria: SortCriteria): string {
+    if (sortCriteria.column === null) {
+        return url;
+    }
+
     urlIncludesGetParameters(url) ? url += '&' : url += '?';
 
-    return url + `sort=${sortCriteria.column}&direction=${sortCriteria.direction}`;
+    return url + `sort=${sortCriteria.column}&order=${sortCriteria.order}`;
 }
 

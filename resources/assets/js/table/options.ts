@@ -1,5 +1,7 @@
-export function bindOptions(table: HTMLElement): void {
-    const optionControllers: NodeListOf<HTMLElement> = table.querySelectorAll('.table-options .controller');
+import {TableWrapper} from "../interfaces/table";
+
+export function bindOptions(tableWrapper: TableWrapper): void {
+    const optionControllers: NodeListOf<HTMLElement> = tableWrapper.querySelectorAll('.table-options .controller');
 
     optionControllers.forEach((optionController: HTMLElement): void => {
         optionController.addEventListener('click', function (): void {

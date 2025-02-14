@@ -16,7 +16,10 @@ class Table extends Component
     public readonly string $tableClass;
 
     public readonly string $tableId;
+
     public readonly Table $component;
+
+    public bool $showOptions = false;
 
     public function __construct(public TableDto $table)
     {
@@ -27,6 +30,8 @@ class Table extends Component
 
     public function render(): View
     {
+        $this->showOptions = $this->table->isSortable();;
+
         return view('pjutils::table.table');
     }
 

@@ -11,16 +11,12 @@ use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\Exceptions\MissingTableParametersException;
-use Patrikjak\Utils\Table\View\Body;
-use Patrikjak\Utils\Table\View\Head;
 use Patrikjak\Utils\Table\View\Pagination\Paginator;
 
 abstract class BasePaginatedTableProvider extends BaseTableProvider implements
     TableProviderInterface,
     SupportsPagination
 {
-    protected ?Table $table = null;
-
     private TablePaginator $paginator;
 
     abstract protected function getPaginator(): TablePaginator;
@@ -32,16 +28,14 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
         return parent::getTable($parameters);
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public function getHtmlParts(Parameters $parameters): array
     {
-        $this->table = $this->getTable($parameters);
+        $baseParts = parent::getHtmlParts($parameters);
 
-        return [
-            'head' => $this->getHeadHTML(),
-            'body' => $this->getBodyHTML(),
-            'pagination' => $this->getPaginationHTML(),
-        ];
+        return array_merge($baseParts, ['pagination' => $this->getPaginationHTML()]);
     }
 
     public function getPaginationSettings(): Settings
@@ -66,7 +60,14 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
         return $this->parameters->page;
     }
 
-    /** @return array<int, int> */
+    public function getHtmlPartsUrl(): ?string
+    {
+        return $this->paginator->getPath();
+    }
+
+    /**
+     * @return array<int, int>
+     */
     protected function getPageSizeOptions(): array
     {
         return [10 => 10, 20 => 20, 50 => 50, 100 => 100];
@@ -77,16 +78,6 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
         $this->paginator = $this->getPaginator();
 
         return $this->paginator->getData();
-    }
-
-    protected function getHeadHTML(): string
-    {
-        return Blade::renderComponent(new Head($this->table));
-    }
-
-    protected function getBodyHTML(): string
-    {
-        return Blade::renderComponent(new Body($this->table));
     }
 
     protected function getPaginationHTML(): string

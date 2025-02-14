@@ -367,16 +367,89 @@
 }
 
 .table-options {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
     margin-bottom: 1rem;
-    gap: .75rem;
+
+    .controllers {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: .75rem;
+        position: relative;
+        margin-bottom: .5rem;
+    }
+
+    .option-values {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        width: 100%;
+        flex-wrap: wrap;
+        font-size: .875rem;
+
+        .group {
+            gap: .5rem;
+            display: inline-flex;
+            align-items: center;
+            justify-content: flex-start;
+            width: 100%;
+            flex-wrap: wrap;
+
+            &:not(:last-child) {
+                margin-bottom: .5rem;
+                padding-bottom: .5rem;
+                border-bottom: solid 1px $border;
+            }
+        }
+
+        .option {
+            display: inline-flex;
+            align-items: center;
+            gap: .5rem;
+            padding: .5rem 1rem;
+            border-radius: .5rem;
+            transition-duration: .15s;
+            white-space: nowrap;
+            background-color: $primary-100;
+
+            .icon svg {
+                width: 1rem;
+                height: 1rem;
+            }
+
+            &:hover {
+                background-color: $primary-200;
+            }
+
+            .close-button {
+                width: .875rem;
+                height: .875rem;
+                padding: .25rem;
+
+                .line {
+                    width: .875rem;
+                    height: .1rem;
+
+                    &:first-child {
+                        transform: rotate(45deg) translate(-1.75px, 4.25px);
+                    }
+
+                    &:last-child {
+                        transform: rotate(-45deg) translate(-3.25px, -2.75px);
+                    }
+                }
+            }
+        }
+
+        .option.sort-option .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+    }
 }
 
 .sorter-wrapper {
-    position: relative;
-
     .clickable {
         cursor: pointer;
         display: inline-flex;
@@ -401,18 +474,31 @@
         height: 1rem;
     }
 
+    .title {
+        font-size: .875rem;
+        display: block;
+        color: $primary;
+        width: 100%;
+        border-bottom: solid 1px $border;
+        padding: .5rem .75rem;
+        margin-bottom: .5rem;
+        font-weight: 500;
+    }
+
     .options {
         display: none;
         position: absolute;
         top: 100%;
         right: 0;
         background-color: $white;
-        border-radius: 1rem;
+        border-radius: .5rem;
         box-shadow: 0 0 16px 0 rgba(44, 44, 44, 0.16);
-        padding: .5rem;
+        padding: .5rem .75rem;
         z-index: 100;
         transform: translateY(.5rem);
-        min-width: 100%;
+        min-width: 35%;
+        max-height: 50vh;
+        overflow-y: auto;
 
         .option {
             cursor: pointer;
@@ -420,10 +506,19 @@
             align-items: center;
             gap: .5rem;
             padding: .5rem 1rem;
-            border-radius: 1rem;
+            border-radius: .5rem;
             transition-duration: .15s;
             white-space: nowrap;
+            margin-bottom: .5rem;
 
+            &:last-child {
+                margin-bottom: 0;
+            }
+
+            &.selected {
+                background-color: $primary-200;
+                cursor: default;
+            }
 
             &:hover {
                 background-color: $primary-200;
@@ -436,9 +531,9 @@
             background-color: $primary-200;
             border-color: $primary;
         }
+    }
 
-        .options {
-            display: block;
-        }
+    &.opened .options {
+        display: block;
     }
 }

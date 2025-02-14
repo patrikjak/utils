@@ -29,6 +29,7 @@ final readonly class Table
         public array $actions,
         public ?Settings $paginationSettings = null,
         public array $bulkActions = [],
+        public ?string $htmlPartsUrl = null,
         public array $sortableColumns = [],
     ) {
     }

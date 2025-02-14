@@ -1,6 +1,6 @@
 export type SortCriteria = {
-    column: string;
-    direction: string;
+    column: string | null;
+    order: string;
 };
 
 export type PageCriteria = {
@@ -11,7 +11,8 @@ export type PageCriteria = {
 export type TableParts = {
     body: string;
     head: string;
-    pagination: string;
+    pagination: string | null;
+    options: string | null;
 }
 
 export interface TableWrapper extends HTMLElement {
