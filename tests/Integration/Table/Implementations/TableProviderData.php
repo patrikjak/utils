@@ -2,7 +2,7 @@
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
 
-use Patrikjak\Utils\Table\Services\Cell;
+use Patrikjak\Utils\Table\Dto\Cells\CellFactory;
 
 trait TableProviderData
 {
@@ -10,32 +10,32 @@ trait TableProviderData
     {
         return [
             [
-                'id' => Cell::simple('1'),
-                'name' => Cell::simple('John Doe'),
-                'email' => Cell::simple('john.doe@example.com'),
-                'created_at' => Cell::simple('2021-01-01 00:00:00'),
-                'updated_at' => Cell::simple('2021-01-01 00:00:00'),
+                'id' => CellFactory::simple('1'),
+                'name' => CellFactory::simple('John Doe'),
+                'email' => CellFactory::simple('john.doe@example.com'),
+                'created_at' => CellFactory::simple('2021-01-01 00:00:00'),
+                'updated_at' => CellFactory::simple('2021-01-01 00:00:00'),
             ],
             [
-                'id' => Cell::simple('2'),
-                'name' => Cell::simple('Jane Doe'),
-                'email' => Cell::simple('jane.doe@example.com'),
-                'created_at' => Cell::simple('2021-01-02 00:00:00'),
-                'updated_at' => Cell::simple('2021-01-02 00:00:00'),
+                'id' => CellFactory::simple('2'),
+                'name' => CellFactory::simple('Jane Doe'),
+                'email' => CellFactory::simple('jane.doe@example.com'),
+                'created_at' => CellFactory::simple('2021-01-02 00:00:00'),
+                'updated_at' => CellFactory::simple('2021-01-02 00:00:00'),
             ],
             [
-                'id' => Cell::simple('3'),
-                'name' => Cell::simple('John Smith'),
-                'email' => Cell::simple('john.smith@example.com'),
-                'created_at' => Cell::simple('2021-01-03 00:00:00'),
-                'updated_at' => Cell::simple('2021-01-03 00:00:00'),
+                'id' => CellFactory::simple('3'),
+                'name' => CellFactory::simple('John Smith'),
+                'email' => CellFactory::simple('john.smith@example.com'),
+                'created_at' => CellFactory::simple('2021-01-03 00:00:00'),
+                'updated_at' => CellFactory::simple('2021-01-03 00:00:00'),
             ],
             [
-                'id' => Cell::simple('4'),
-                'name' => Cell::simple('Jane Smith'),
-                'email' => Cell::simple('jane.smith@example.com'),
-                'created_at' => Cell::simple('2021-01-04 00:00:00'),
-                'updated_at' => Cell::simple('2021-01-04 00:00:00'),
+                'id' => CellFactory::simple('4'),
+                'name' => CellFactory::simple('Jane Smith'),
+                'email' => CellFactory::simple('jane.smith@example.com'),
+                'created_at' => CellFactory::simple('2021-01-04 00:00:00'),
+                'updated_at' => CellFactory::simple('2021-01-04 00:00:00'),
             ],
         ];
     }

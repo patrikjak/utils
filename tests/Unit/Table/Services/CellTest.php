@@ -5,16 +5,16 @@ namespace Patrikjak\Utils\Tests\Unit\Table\Services;
 use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
+use Patrikjak\Utils\Table\Dto\Cells\CellFactory;
 use Patrikjak\Utils\Table\Enums\CellType;
 use Patrikjak\Utils\Table\Interfaces\Cells\Cell as CellInterface;
-use Patrikjak\Utils\Table\Services\Cell;
 use PHPUnit\Framework\TestCase;
 
 class CellTest extends TestCase
 {
     public function testSimpleCellCanBeCreated(): void
     {
-        $cell = Cell::simple('value');
+        $cell = CellFactory::simple('value');
 
         $this->assertEquals('value', $cell->value);
         $this->assertNull($cell->icon);
@@ -25,7 +25,7 @@ class CellTest extends TestCase
 
     public function testSimpleCellWithIconCanBeCreated(): void
     {
-        $cell = Cell::simple('value with icon', Icon::CHECK);
+        $cell = CellFactory::simple('value with icon', Icon::CHECK);
 
         $this->assertEquals('value with icon', $cell->value);
         $this->assertEquals(Icon::CHECK, $cell->getIcon());
@@ -36,7 +36,7 @@ class CellTest extends TestCase
 
     public function testDoubleCellCanBeCreated(): void
     {
-        $cell = Cell::double('value', 'addition');
+        $cell = CellFactory::double('value', 'addition');
 
         $this->assertEquals('value', $cell->value);
         $this->assertEquals('addition', $cell->addition);
@@ -47,7 +47,7 @@ class CellTest extends TestCase
 
     public function testChipCellCanBeCreated(): void
     {
-        $cell = Cell::chip('value');
+        $cell = CellFactory::chip('value');
 
         $this->assertEquals('value', $cell->value);
         $this->assertEquals(Type::NEUTRAL, $cell->type);

@@ -2,15 +2,13 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Services;
+namespace Patrikjak\Utils\Table\Dto\Cells;
 
 use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
-use Patrikjak\Utils\Table\Dto\Cells\Chip;
 use Patrikjak\Utils\Table\Dto\Cells\Double as DoubleCell;
-use Patrikjak\Utils\Table\Dto\Cells\Simple;
 
-readonly class Cell
+readonly class CellFactory
 {
     public static function simple(string $value, ?Icon $icon = null): Simple
     {

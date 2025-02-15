@@ -7,8 +7,8 @@ use Illuminate\Support\Collection;
 use Mockery\MockInterface;
 use Orchestra\Testbench\TestCase;
 use Patrikjak\Utils\Common\Interfaces\Paginator;
+use Patrikjak\Utils\Table\Dto\Pagination\PaginatorFactory;
 use Patrikjak\Utils\Table\Interfaces\Pagination\LinkItem;
-use Patrikjak\Utils\Table\Services\PaginatorFactory;
 
 class PaginatorFactoryTest extends TestCase
 {
