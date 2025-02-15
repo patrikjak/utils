@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\Dto;
 use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkActionItem;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
-use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
+use Patrikjak\Utils\Table\Dto\Sort\Settings as SortSettings;
 
 final readonly class Table
 {
@@ -17,7 +17,6 @@ final readonly class Table
      * @param array<string> $columns
      * @param array<Item> $actions
      * @param array<BulkActionItem> $bulkActions
-     * @param array<SortableColumn> $sortableColumns
      */
     public function __construct(
         public string $tableId,
@@ -32,7 +31,7 @@ final readonly class Table
         public ?Settings $paginationSettings = null,
         public array $bulkActions = [],
         public ?string $htmlPartsUrl = null,
-        public array $sortableColumns = [],
+        public ?SortSettings $sortSettings = null,
     ) {
     }
 
@@ -53,6 +52,10 @@ final readonly class Table
 
     public function isSortable(): bool
     {
-        return count($this->sortableColumns) > 0;
+        if ($this->sortSettings === null) {
+            return false;
+        }
+
+        return count($this->sortSettings->sortableColumns) > 0;
     }
 }

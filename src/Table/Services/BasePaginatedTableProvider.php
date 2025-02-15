@@ -35,7 +35,7 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
     {
         $baseParts = parent::getHtmlParts($parameters);
 
-        return array_merge($baseParts, ['pagination' => $this->getPaginationHTML()]);
+        return array_merge($baseParts, ['pagination' => $this->getPaginationHtml()]);
     }
 
     public function getPaginationSettings(): Settings
@@ -80,7 +80,7 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
         return $this->paginator->getData();
     }
 
-    protected function getPaginationHTML(): string
+    protected function getPaginationHtml(): string
     {
         return Blade::renderComponent(new Paginator($this->getPaginationSettings()));
     }

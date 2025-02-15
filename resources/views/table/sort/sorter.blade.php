@@ -7,12 +7,12 @@
     <div class="options">
         <span class="title">@lang('pjutils::table.sort_by')</span>
 
-        @foreach($sortableColumns as $column)
+        @foreach($settings->sortableColumns as $sortableColumn)
             <div
-                {{ $attributes->class(['option', 'selected' => in_array($column->column, $selectedColumns, true)]) }}
-                data-column="{{ $column->column }}"
+                {{ $attributes->class(['option', 'selected' => $sortableColumn->column === $selectedColumn]) }}
+                data-column="{{ $sortableColumn->column }}"
             >
-                <span>{{ $column->label }}</span>
+                <span>{{ $sortableColumn->label }}</span>
             </div>
         @endforeach
     </div>

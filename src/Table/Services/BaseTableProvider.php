@@ -6,6 +6,7 @@ namespace Patrikjak\Utils\Table\Services;
 
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Dto\Sort\Settings;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Head;
@@ -44,7 +45,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable
             $this instanceof SupportsPagination ? $this->getPaginationSettings() : null,
             $this->getBulkActions(),
             $this->getHtmlPartsUrl(),
-            $this->getSortableColumns(),
+            $this->getSortSettings(),
         );
     }
 
@@ -144,5 +145,14 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable
         }
 
         return Blade::renderComponent(new Options($this->table));
+    }
+
+    private function getSortSettings(): ?Settings
+    {
+        if (count($this->getSortableColumns()) === 0) {
+            return null;
+        }
+
+        return new Settings($this->getSortableColumns(), $this->parameters?->sortCriteria);
     }
 }
