@@ -1,6 +1,6 @@
 <?php
 
-namespace Patrikjak\Utils\Tests\Unit\Table\Services;
+namespace Patrikjak\Utils\Tests\Unit\Table\Dto\Pagination;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;

@@ -1,6 +1,6 @@
 <?php
 
-namespace Patrikjak\Utils\Tests\Unit\Table\Services;
+namespace Patrikjak\Utils\Tests\Unit\Table\Dto\Cells;
 
 use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
