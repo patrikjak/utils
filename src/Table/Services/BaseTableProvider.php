@@ -7,6 +7,7 @@ namespace Patrikjak\Utils\Table\Services;
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Sort\Settings;
+use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Head;
@@ -110,6 +111,11 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable
     public function getSortableColumns(): array
     {
         return [];
+    }
+
+    public function getSortCriteria(): ?SortCriteria
+    {
+        return $this->parameters?->sortCriteria;
     }
 
     public function getHtmlParts(Parameters $parameters): array

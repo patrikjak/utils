@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Services;
 
-use Closure;
 use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Dto\Cells\Chip;
