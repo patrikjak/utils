@@ -100,7 +100,7 @@ class BasePaginatedTableProviderTest extends TestCase
 
     public function testCanGetHtmlParts(): void
     {
-        $htmlParts = $this->tableProvider->getHtmlParts(new Parameters(1, 10));
+        $htmlParts = $this->tableProvider->getHtmlParts(new Parameters(1, 10, null));
 
         $this->assertMatchesHtmlSnapshot($htmlParts['body']);
         $this->assertMatchesHtmlSnapshot($htmlParts['pagination']);
@@ -109,7 +109,7 @@ class BasePaginatedTableProviderTest extends TestCase
 
     private function tableMatchesSnapshot(): void
     {
-        $table = $this->tableProvider->getTable(new Parameters(1, 10));
+        $table = $this->tableProvider->getTable(new Parameters(1, 10, null));
         $view = Blade::renderComponent(new Table($table));
 
         $this->assertMatchesHtmlSnapshot($view);
