@@ -20,8 +20,8 @@ class SortService
 
         $column = $criteria->column;
 
-        if ($columnsMask !== [] && array_key_exists($criteria->column, $columnsMask)) {
-            $column = $columnsMask[$criteria->column];
+        if ($columnsMask !== [] && in_array($criteria->column, $columnsMask, true)) {
+            $column = array_search($criteria->column, $columnsMask, true);
         }
 
         $query->orderBy($column, $criteria->order->value);
