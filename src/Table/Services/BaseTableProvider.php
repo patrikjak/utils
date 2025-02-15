@@ -118,6 +118,9 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable
         return $this->parameters?->sortCriteria;
     }
 
+    /**
+     * @inheritdoc
+     */
     public function getHtmlParts(Parameters $parameters): array
     {
         $this->table = $this->getTable($parameters);

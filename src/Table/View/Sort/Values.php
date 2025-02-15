@@ -33,7 +33,7 @@ class Values extends Component
 
         $sortableColumnsCollection = new Collection($this->settings->sortableColumns);
 
-        $labels = $sortableColumnsCollection->mapWithKeys(function (SortableColumn $column) {
+        $labels = $sortableColumnsCollection->mapWithKeys(static function (SortableColumn $column) {
             return [$column->column => $column->label];
         });
 

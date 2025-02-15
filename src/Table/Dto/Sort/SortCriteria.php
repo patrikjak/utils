@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Table\Dto\Sort;
 
 final readonly class SortCriteria
@@ -10,6 +12,9 @@ final readonly class SortCriteria
     ) {
     }
 
+    /**
+     * @return array{column: string, order: string}
+     */
     public function toArray(): array
     {
         return [

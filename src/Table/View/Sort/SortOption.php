@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Table\View\Sort;
 
 use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
