@@ -1,6 +1,7 @@
 export type SortCriteria = {
     column: string | null;
     order: string;
+    deleteSort: boolean;
 };
 
 export type PageCriteria = {

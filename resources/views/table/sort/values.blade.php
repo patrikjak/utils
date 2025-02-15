@@ -8,7 +8,7 @@
         data-column="{{ $option->criteria->column }}"
         data-order="{{ $option->criteria->order }}"
     >
-        <div class="icon">
+        <div class="icon sort-order">
             @if($option->criteria->order === SortOrder::ASC)
                 @icon('sort_asc')
             @else

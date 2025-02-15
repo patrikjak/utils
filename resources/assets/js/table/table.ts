@@ -4,7 +4,7 @@ import {bindPageSizeChange, getCurrentPageSize} from "./page-size";
 import {bindChecking, checkSavedCheckboxes, handleBulkActions} from "./checkboxes";
 import {bindOptions} from "./options";
 import {PageCriteria, SortCriteria, TableParts, TableWrapper} from "../interfaces/table";
-import {pageKey, pageSizeKey} from "./constants";
+import {deleteSortKey, orderKey, pageKey, pageSizeKey, sortKey} from "./constants";
 import {bindShowingRowActions, setActionsToDefaultPosition} from "./actions";
 import axios from "axios";
 import {bindDropdowns} from "../utils/dropdown";
@@ -73,6 +73,7 @@ function getPageCriteria(tableWrapper: TableWrapper, event: CustomEvent): PageCr
 function getSortCriteria(tableWrapper: TableWrapper, event: CustomEvent): SortCriteria {
     let column: string | undefined = event.detail.column;
     let order: string | undefined = event.detail.order;
+    const deleteSort: boolean = event.detail.deleteSort ?? false;
 
     if (column === undefined) {
         column = getCurrentSort(tableWrapper);
@@ -82,7 +83,7 @@ function getSortCriteria(tableWrapper: TableWrapper, event: CustomEvent): SortCr
         order = getCurrentOrder(tableWrapper) ?? 'asc';
     }
 
-    return {column, order};
+    return {column, order, deleteSort};
 }
 
 async function reloadTable(
@@ -164,6 +165,6 @@ function addSortCriteriaToUrl(url: string, sortCriteria: SortCriteria): string {
 
     urlIncludesGetParameters(url) ? url += '&' : url += '?';
 
-    return url + `sort=${sortCriteria.column}&order=${sortCriteria.order}`;
+    return url + `${sortKey}=${sortCriteria.column}&${orderKey}=${sortCriteria.order}&${deleteSortKey}=${sortCriteria.deleteSort}`;
 }
 

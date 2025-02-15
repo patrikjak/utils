@@ -17,6 +17,8 @@ class TableParametersRequest extends FormRequest
 
     private bool $shouldUpdateCookie = false;
 
+    private bool $checkSortCookie = true;
+
     public function getTableParameters(string $tableId): Parameters
     {
         $this->tableId = $tableId;
@@ -42,7 +44,17 @@ class TableParametersRequest extends FormRequest
 
     private function getSortCriteria(): ?SortCriteria
     {
-        return ($this->getSortCriteriaFromRequest() ?? $this->getSortCriteriaFromCookie()) ?? null;
+        $sortCriteriaFromRequest = $this->getSortCriteriaFromRequest();
+
+        if ($sortCriteriaFromRequest !== null) {
+            return $sortCriteriaFromRequest;
+        }
+
+        if (!$this->checkSortCookie) {
+            return null;
+        }
+
+        return $this->getSortCriteriaFromCookie() ?? null;
     }
 
     private function getPageFromRequest(): ?int
@@ -85,6 +97,14 @@ class TableParametersRequest extends FormRequest
     {
         $sortColumn = $this->input('sort');
         $order = $this->input('order');
+        $deleteSort = $this->boolean('deleteSort');
+
+        if ($deleteSort) {
+            $this->shouldUpdateCookie = true;
+            $this->checkSortCookie = false;
+
+            return null;
+        }
 
         if ($order !== null) {
             $order = SortOrder::tryFrom($order);
