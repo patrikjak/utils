@@ -101,4 +101,87 @@ class TableParametersRequestTest extends TestCase
         $this->assertSame(self::TABLE_ID, $cookie->getName());
         $this->assertSame(json_encode(['page' => 5, 'pageSize' => 40, 'sortCriteria' => null]), $cookie->getValue());
     }
+
+    public function testGetTableParametersSortCriteriaFromRequest(): void
+    {
+        $request = new TableParametersRequest([
+            'sort' => 'name',
+            'order' => 'desc',
+        ]);
+        $request->cookies->set(
+            self::TABLE_ID,
+            json_encode([
+                'page' => 5,
+                'pageSize' => 50,
+                'sortCriteria' => ['column' => 'location', 'order' => 'asc'],
+            ]),
+        );
+
+        $parameters = $request->getTableParameters(self::TABLE_ID);
+
+        $this->assertSame(5, $parameters->page);
+        $this->assertSame(50, $parameters->pageSize);
+        $this->assertSame('name', $parameters->sortCriteria->column);
+        $this->assertSame('desc', $parameters->sortCriteria->order->value);
+
+        $cookie = $this->cookieJar->getQueuedCookies()[0];
+
+        $this->assertNotNull($cookie);
+        $this->assertSame(self::TABLE_ID, $cookie->getName());
+        $this->assertSame(
+            json_encode(
+                ['page' => 5, 'pageSize' => 50, 'sortCriteria' => ['column' => 'name', 'order' => 'desc']],
+            ),
+            $cookie->getValue(),
+        );
+    }
+
+    public function testGetTableParametersSortCriteriaFromCookie(): void
+    {
+        $request = new TableParametersRequest();
+        $request->cookies->set(
+            self::TABLE_ID,
+            json_encode([
+                'page' => 5,
+                'pageSize' => 50,
+                'sortCriteria' => ['column' => 'location', 'order' => 'asc'],
+            ]),
+        );
+
+        $parameters = $request->getTableParameters(self::TABLE_ID);
+
+        $this->assertSame(5, $parameters->page);
+        $this->assertSame(50, $parameters->pageSize);
+        $this->assertSame('location', $parameters->sortCriteria->column);
+        $this->assertSame('asc', $parameters->sortCriteria->order->value);
+    }
+
+    public function testGetTableParametersWithDeleteSortCriteria(): void
+    {
+        $request = new TableParametersRequest([
+            'sort' => 'name',
+            'order' => 'desc',
+            'deleteSort' => true,
+        ]);
+        $request->cookies->set(
+            self::TABLE_ID,
+            json_encode([
+                'page' => 5,
+                'pageSize' => 50,
+                'sortCriteria' => ['column' => 'location', 'order' => 'asc'],
+            ]),
+        );
+
+        $parameters = $request->getTableParameters(self::TABLE_ID);
+
+        $this->assertSame(5, $parameters->page);
+        $this->assertSame(50, $parameters->pageSize);
+        $this->assertNull($parameters->sortCriteria);
+
+        $cookie = $this->cookieJar->getQueuedCookies()[0];
+
+        $this->assertNotNull($cookie);
+        $this->assertSame(self::TABLE_ID, $cookie->getName());
+        $this->assertSame(json_encode(['page' => 5, 'pageSize' => 50, 'sortCriteria' => null]), $cookie->getValue());
+    }
 }
