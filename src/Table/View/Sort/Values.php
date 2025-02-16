@@ -25,12 +25,8 @@ class Values extends Component
         return $this->view('pjutils::table.sort.values');
     }
 
-    private function getSortOption(): ?SortOption
+    private function getSortOption(): SortOption
     {
-        if ($this->settings->criteria === null) {
-            return null;
-        }
-
         $sortableColumnsCollection = new Collection($this->settings->sortableColumns);
 
         $labels = $sortableColumnsCollection->mapWithKeys(static function (SortableColumn $column) {

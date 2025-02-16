@@ -71,6 +71,7 @@ class SortAndFilterTableProviderTest extends TestCase
 
         $this->tableProvider->setSortCriteria($sortCriteria);
 
+        $this->tableMatchesSnapshot(new Parameters(1, 10, $sortCriteria));
         $this->assertEquals($sortCriteria, $this->tableProvider->getSortCriteria());
     }
 

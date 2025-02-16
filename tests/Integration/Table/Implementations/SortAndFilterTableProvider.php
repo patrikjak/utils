@@ -98,11 +98,6 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
         return $this->sortableColumns;
     }
 
-    public function getSortCriteria(): ?SortCriteria
-    {
-        return $this->sortCriteria;
-    }
-
     protected function getPaginator(): TablePaginator
     {
         return new TablePaginator(
