@@ -1,0 +1,16 @@
+<?php
+
+namespace Patrikjak\Utils\Table\Dto\Filter\Definitions\Text;
+
+enum TextFilterType: string
+{
+    case CONTAINS = 'contains';
+    case EQUALS = 'equals';
+    case STARTS_WITH = 'starts_with';
+    case ENDS_WITH = 'ends_with';
+
+    public function toLabel(): string
+    {
+        return __('pjutils::table.text_filter_types.' . $this->value);
+    }
+}

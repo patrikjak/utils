@@ -18,13 +18,31 @@ export function getDropdownValue(dropdown: HTMLDivElement): string {
 }
 
 function bindOpening(dropdown: HTMLDivElement): void {
-    const arrowWrapper = dropdown.querySelector('.arrow-wrapper');
+    const arrowWrapper: HTMLElement = dropdown.querySelector('.arrow-wrapper');
 
-    arrowWrapper.addEventListener('click', function (): void {
-        const arrow = arrowWrapper.querySelector('.arrow');
-        const isOpen = arrow.classList.contains('up');
+    dropdown.querySelector('.chosen').addEventListener('click', function (): void {
+        const arrow: HTMLElement = arrowWrapper.querySelector('.arrow');
+        const isOpen: boolean = arrow.classList.contains('up');
 
-        isOpen ? closeDropdown(dropdown) : openDropdown(dropdown);
+        if (isOpen) {
+            return;
+        }
+
+        openDropdown(dropdown);
+        setTimeout(function (): void {
+            bindClosing(dropdown);
+        }, 0);
+    });
+}
+
+function bindClosing(dropdown: HTMLDivElement): void {
+    document.addEventListener('click', function windowCloseDropdown(event: MouseEvent): void {
+        if (!(event.target instanceof Element)) {
+            return;
+        }
+
+        closeDropdown(dropdown);
+        document.removeEventListener('click', windowCloseDropdown);
     });
 }
 
@@ -34,8 +52,8 @@ function bindSelection(dropdown: HTMLDivElement): void {
     items.forEach(function (item: HTMLDivElement): void {
         item.addEventListener('click', function (): void {
             const selected: HTMLElement = dropdown.querySelector('.chosen');
-            const currentValue = getData(selected, 'value');
-            const newValue = getData(item, 'value');
+            const currentValue: string = getData(selected, 'value');
+            const newValue: string = getData(item, 'value');
 
             selected.querySelector('.label').textContent = item.textContent;
             setData(selected, 'value', newValue);

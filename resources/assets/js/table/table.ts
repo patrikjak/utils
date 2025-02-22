@@ -3,12 +3,23 @@ import {bindPagination, getCurrentPage} from "./pagination";
 import {bindPageSizeChange, getCurrentPageSize} from "./page-size";
 import {bindChecking, checkSavedCheckboxes, handleBulkActions} from "./checkboxes";
 import {bindOptions} from "./options";
-import {PageCriteria, SortCriteria, TableParts, TableWrapper} from "../interfaces/table";
+import {
+    DateFilter,
+    Filter,
+    FilterCriteria,
+    NumberFilter,
+    PageCriteria, SelectFilter,
+    SortCriteria,
+    TableParts,
+    TableWrapper,
+    TextFilter
+} from "../interfaces/table";
 import {deleteSortKey, orderKey, pageKey, pageSizeKey, sortKey} from "./constants";
 import {bindShowingRowActions, setActionsToDefaultPosition} from "./actions";
 import axios from "axios";
 import {bindDropdowns} from "../utils/dropdown";
 import {bindSorting, getCurrentOrder, getCurrentSort} from "./sort";
+import {bindFilter, getCurrentFilterCriteria} from "./filter";
 
 export function bindTableFunctions(tableWrapper: TableWrapper | null = null): void {
     let tables: TableWrapper[] = Array.from(document.querySelectorAll('.pj-table-wrapper'));
@@ -33,10 +44,11 @@ function bindUpdate(tableWrapper: TableWrapper): void {
     tableWrapper.addEventListener('update', function (event: CustomEvent): void {
         const pageCriteria: PageCriteria = getPageCriteria(tableWrapper, event);
         const sortCriteria: SortCriteria = getSortCriteria(tableWrapper, event);
+        const filterCriteria: FilterCriteria = getFilterCriteria(tableWrapper, event);
 
         setActionsToDefaultPosition(tableWrapper);
 
-        reloadTable(tableWrapper, pageCriteria, sortCriteria).then((): void => {
+        reloadTable(tableWrapper, pageCriteria, sortCriteria, filterCriteria).then((): void => {
             bindFunctions(tableWrapper);
             bindDropdowns(tableWrapper);
         });
@@ -50,6 +62,7 @@ function bindFunctions(tableWrapper: TableWrapper): void {
     bindPageSizeChange(tableWrapper);
     bindOptions(tableWrapper);
     bindSorting(tableWrapper);
+    bindFilter(tableWrapper);
 
     handleBulkActions(tableWrapper);
     checkSavedCheckboxes(tableWrapper.id);
@@ -86,12 +99,23 @@ function getSortCriteria(tableWrapper: TableWrapper, event: CustomEvent): SortCr
     return {column, order, deleteSort};
 }
 
+function getFilterCriteria(tableWrapper: TableWrapper, event: CustomEvent): FilterCriteria {
+    let filterCriteria: FilterCriteria | undefined = event.detail.filterCriteria;
+
+    if (filterCriteria === undefined) {
+        filterCriteria = getCurrentFilterCriteria(tableWrapper);
+    }
+
+    return filterCriteria;
+}
+
 async function reloadTable(
     tableWrapper: TableWrapper,
     pageCriteria: PageCriteria | null = null,
     sortCriteria: SortCriteria | null = null,
+    filterCriteria: FilterCriteria | null = null,
 ): Promise<void> {
-    const url: string = getTableUrl(tableWrapper, pageCriteria, sortCriteria);
+    const url: string = getTableUrl(tableWrapper, pageCriteria, sortCriteria, filterCriteria);
     const tableParts: TableParts = await getTableParts(url);
 
     reloadTableHead(tableWrapper, tableParts.head);
@@ -110,6 +134,7 @@ function getTableUrl(
     tableWrapper: TableWrapper,
     pageCriteria: PageCriteria | null = null,
     sortCriteria: SortCriteria | null = null,
+    filterCriteria: FilterCriteria | null = null,
 ): string {
     let url: string = getData(tableWrapper, 'html-parts-url');
 
@@ -119,6 +144,10 @@ function getTableUrl(
 
     if (sortCriteria !== null) {
         url = addSortCriteriaToUrl(url, sortCriteria);
+    }
+
+    if (filterCriteria !== null) {
+        url = addFilterCriteriaToUrl(url, filterCriteria);
     }
 
     return url;
@@ -168,3 +197,54 @@ function addSortCriteriaToUrl(url: string, sortCriteria: SortCriteria): string {
     return url + `${sortKey}=${sortCriteria.column}&${orderKey}=${sortCriteria.order}&${deleteSortKey}=${sortCriteria.deleteSort}`;
 }
 
+function addFilterCriteriaToUrl(url: string, filterCriteria: FilterCriteria): string {
+    if (filterCriteria === null) {
+        return url;
+    }
+
+    urlIncludesGetParameters(url) ? url += '&' : url += '?';
+
+    let filterQueries: string[] = [];
+
+    for (const filter of filterCriteria) {
+        filterQueries.push(getFilterQuery(filter));
+    }
+
+    return url + filterQueries.join('&');
+}
+
+function getFilterQuery(filter: Filter): string {
+    switch (filter.type) {
+        case 'text':
+            return getTextFilterQuery(<TextFilter> filter);
+        case 'number':
+        case 'date':
+            return getRangeFilterQuery(<NumberFilter | DateFilter> filter);
+        case 'select':
+            return getSelectFilterQuery(<SelectFilter> filter);
+    }
+}
+
+function getTextFilterQuery(filter: TextFilter): string {
+    return `${filter.column}=${filter.value}&${filter.column}Operator=${filter.filterType}`;
+}
+
+function getRangeFilterQuery(filter: NumberFilter | DateFilter): string {
+    if (filter.from === null && filter.to === null) {
+        return '';
+    }
+
+    if (filter.from === null) {
+        return `${filter.column}To=${filter.to}`;
+    }
+
+    if (filter.to === null) {
+        return `${filter.column}From=${filter.from}`;
+    }
+
+    return `${filter.column}From=${filter.from}&${filter.column}To=${filter.to}`;
+}
+
+function getSelectFilterQuery(filter: SelectFilter): string {
+    return `${filter.column}=${filter.value}`;
+}

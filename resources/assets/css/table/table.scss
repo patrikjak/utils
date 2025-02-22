@@ -449,7 +449,7 @@
     }
 }
 
-.sorter-wrapper {
+.table-options .controller {
     .clickable {
         cursor: pointer;
         display: inline-flex;
@@ -526,7 +526,7 @@
         }
     }
 
-    &.active {
+    &.active, &.opened {
         .clickable {
             background-color: $primary-200;
             border-color: $primary;
@@ -535,5 +535,16 @@
 
     &.opened .options {
         display: block;
+    }
+}
+
+#filter-modal {
+    .dropdown-wrapper {
+        width: 100% !important;
+    }
+
+    button {
+        margin-right: auto;
+        margin-left: auto;
     }
 }

@@ -5,6 +5,10 @@
         @if($table->isSortable())
             <x-pjutils.table::sort.sorter :settings="$table->sortSettings" />
         @endif
+
+        @if($table->isFilterable())
+            <x-pjutils.table::filter.filter-options :settings="$table->filterSettings" />
+        @endif
     </div>
 
     <div class="option-values">

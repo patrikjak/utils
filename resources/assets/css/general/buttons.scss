@@ -49,8 +49,9 @@
         box-shadow: 2px 4px 16px 0 rgba(44, 77, 186, .25);
     }
 
-    &.info {
+    &.info, &.primary {
         background-color: $info;
+        color: $white;
 
         svg {
             fill: $white;

@@ -2,6 +2,7 @@ import {createElement, hideElement, showElement} from "../helpers/general";
 import {closeButton} from "../components/icons";
 import {button} from "../components/general";
 import Form from "../form/Form";
+import {bindDropdowns} from "./dropdown";
 
 type callbackTuple = [[string, () => void | boolean]] | [];
 
@@ -23,6 +24,7 @@ export default class Modal {
         showElement(modal);
         this.bindClose(modal);
         this.bindCallbacks();
+        this.bindModalBody(modal);
         this.resetModalDefaults();
     }
 
@@ -46,6 +48,10 @@ export default class Modal {
                 this.close();
             });
         }
+    }
+
+    bindModalBody(modal: HTMLElement): void {
+        bindDropdowns(modal);
     }
 
     getModalHTML(): HTMLElement {
