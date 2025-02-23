@@ -50,7 +50,10 @@ class TableParametersRequestTest extends TestCase
 
         $this->assertNotNull($cookie);
         $this->assertSame(self::TABLE_ID, $cookie->getName());
-        $this->assertSame(json_encode(['page' => 2, 'pageSize' => 20, 'sortCriteria' => null]), $cookie->getValue());
+        $this->assertSame(
+            json_encode(['page' => 2, 'pageSize' => 20, 'sortCriteria' => null, 'filterCriteria' => null]),
+            $cookie->getValue(),
+        );
     }
 
     public function testGetTableParametersFromCookie(): void
@@ -80,7 +83,10 @@ class TableParametersRequestTest extends TestCase
 
         $this->assertNotNull($cookie);
         $this->assertSame(self::TABLE_ID, $cookie->getName());
-        $this->assertSame(json_encode(['page' => 4, 'pageSize' => 50, 'sortCriteria' => null]), $cookie->getValue());
+        $this->assertSame(
+            json_encode(['page' => 4, 'pageSize' => 50, 'sortCriteria' => null, 'filterCriteria' => null]),
+            $cookie->getValue(),
+        );
     }
 
     public function testGetTableParametersPageSizeFromRequest(): void
@@ -99,7 +105,10 @@ class TableParametersRequestTest extends TestCase
 
         $this->assertNotNull($cookie);
         $this->assertSame(self::TABLE_ID, $cookie->getName());
-        $this->assertSame(json_encode(['page' => 5, 'pageSize' => 40, 'sortCriteria' => null]), $cookie->getValue());
+        $this->assertSame(
+            json_encode(['page' => 5, 'pageSize' => 40, 'sortCriteria' => null, 'filterCriteria' => null]),
+            $cookie->getValue(),
+        );
     }
 
     public function testGetTableParametersSortCriteriaFromRequest(): void
@@ -130,7 +139,12 @@ class TableParametersRequestTest extends TestCase
         $this->assertSame(self::TABLE_ID, $cookie->getName());
         $this->assertSame(
             json_encode(
-                ['page' => 5, 'pageSize' => 50, 'sortCriteria' => ['column' => 'name', 'order' => 'desc']],
+                [
+                    'page' => 5,
+                    'pageSize' => 50,
+                    'sortCriteria' => ['column' => 'name', 'order' => 'desc'],
+                    'filterCriteria' => null,
+                ],
             ),
             $cookie->getValue(),
         );
@@ -182,6 +196,9 @@ class TableParametersRequestTest extends TestCase
 
         $this->assertNotNull($cookie);
         $this->assertSame(self::TABLE_ID, $cookie->getName());
-        $this->assertSame(json_encode(['page' => 5, 'pageSize' => 50, 'sortCriteria' => null]), $cookie->getValue());
+        $this->assertSame(
+            json_encode(['page' => 5, 'pageSize' => 50, 'sortCriteria' => null, 'filterCriteria' => null]),
+            $cookie->getValue(),
+        );
     }
 }
