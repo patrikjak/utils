@@ -12,12 +12,15 @@ use Patrikjak\Utils\Table\Enums\Filter\TextFilterType;
 
 class FilterForm extends Component
 {
+    /**
+     * @var array<string, string>
+     */
     public array $textFilterTypes = [];
 
     public function __construct(public FilterType $type)
     {
         $this->textFilterTypes = (new Collection(TextFilterType::cases()))->flatMap(
-            fn (TextFilterType $type) => [$type->value => $type->toLabel()],
+            static fn (TextFilterType $type) => [$type->value => $type->toLabel()],
         )->toArray();
     }
 

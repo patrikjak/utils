@@ -29,6 +29,9 @@ class Values extends Component
         return $this->view('pjutils::table.filter.values');
     }
 
+    /**
+     * @return array<FilterOption>
+     */
     private function getOptions(): array
     {
         $options = [];

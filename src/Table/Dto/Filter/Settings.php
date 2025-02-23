@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Table\Dto\Filter;
 
 use Patrikjak\Utils\Table\Dto\Filter\Criteria\FilterCriteria;

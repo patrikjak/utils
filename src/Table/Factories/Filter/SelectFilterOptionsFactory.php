@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Table\Factories\Filter;
 
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\Select\SelectFilterOption;
@@ -13,7 +15,7 @@ final readonly class SelectFilterOptionsFactory
     public static function createFromArray(array $options): SelectFilterOptions
     {
         return new SelectFilterOptions(array_map(
-            fn (string $value, string $label) => new SelectFilterOption($value, $label),
+            static fn (string $value, string $label) => new SelectFilterOption($value, $label),
             array_keys($options),
             $options,
         ));

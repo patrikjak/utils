@@ -281,17 +281,23 @@ class TableParametersRequest extends FormRequest
         return $this->getTextFilterCriteria((array) $filterData, $filterData->column);
     }
 
-    private function getSelectFilterCriteria(array $data, string $column): ?BaseFilterCriteria
+    /**
+     * @param array<string, string|int> $data
+     */
+    private function getSelectFilterCriteria(array $data, string $column): BaseFilterCriteria
     {
         return new SelectFilterCriteria($column, $data['value']);
     }
 
-    private function getSelectFilterCriteriaFromCookie(stdClass $filterData): ?BaseFilterCriteria
+    private function getSelectFilterCriteriaFromCookie(stdClass $filterData): BaseFilterCriteria
     {
         return $this->getSelectFilterCriteria((array) $filterData, $filterData->column);
     }
 
-    private function getDateFilterCriteria(array $data, string $column): ?BaseFilterCriteria
+    /**
+     * @param array<string, string> $data
+     */
+    private function getDateFilterCriteria(array $data, string $column): BaseFilterCriteria
     {
         $from = isset($data['from']) ? CarbonImmutable::make($data['from']) : null;
         $to = isset($data['to']) ? CarbonImmutable::make($data['to']) : null;
@@ -303,12 +309,15 @@ class TableParametersRequest extends FormRequest
         );
     }
 
-    private function getDateFilterCriteriaFromCookie(stdClass $filterData): ?BaseFilterCriteria
+    private function getDateFilterCriteriaFromCookie(stdClass $filterData): BaseFilterCriteria
     {
         return $this->getDateFilterCriteria((array) $filterData, $filterData->column);
     }
 
-    private function getNumberFilterCriteria(array $data, string $column): ?BaseFilterCriteria
+    /**
+     * @param array<string, string> $data
+     */
+    private function getNumberFilterCriteria(array $data, string $column): BaseFilterCriteria
     {
         $from = isset($data['from']) ? (float) $data['from'] : null;
         $to = isset($data['to']) ? (float) $data['to'] : null;
@@ -316,7 +325,7 @@ class TableParametersRequest extends FormRequest
         return new NumberFilterCriteria($column, $from, $to);
     }
 
-    private function getNumberFilterCriteriaFromCookie(stdClass $filterData): ?BaseFilterCriteria
+    private function getNumberFilterCriteriaFromCookie(stdClass $filterData): BaseFilterCriteria
     {
         return $this->getNumberFilterCriteria((array) $filterData, $filterData->column);
     }

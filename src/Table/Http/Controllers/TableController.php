@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Table\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;

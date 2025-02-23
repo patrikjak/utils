@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Table\Dto\Filter\Definitions\Select;
 
 use Illuminate\Contracts\Support\Arrayable;
@@ -22,7 +24,7 @@ final readonly class SelectFilterOptions implements Arrayable
     public function toArray(): array
     {
         $options = (new Collection($this->options))->flatMap(
-            fn (SelectFilterOption $option) => [$option->value => $option->label],
+            static fn (SelectFilterOption $option) => [$option->value => $option->label],
         )->toArray();
 
         return [

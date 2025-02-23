@@ -121,6 +121,9 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         return $this->parameters?->sortCriteria;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getFilterableColumns(): array
     {
         return [];
