@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\View\Compilers\BladeCompiler;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\View\Filter\FilterForm;
@@ -16,7 +17,7 @@ class TableController
     /**
      * @throws Throwable
      */
-    public function form(string $type, BladeCompiler $bladeCompiler): JsonResponse
+    public function form(string $type, BladeCompiler $bladeCompiler, Request $request): JsonResponse
     {
         $filterType = FilterType::tryFrom($type);
 
@@ -25,7 +26,11 @@ class TableController
         }
 
         return new JsonResponse([
-            'modal' => $bladeCompiler::renderComponent(new FilterForm($filterType)),
+            'modal' => $bladeCompiler::renderComponent(new FilterForm(
+                $filterType,
+                $request->input('from'),
+                $request->input('to'),
+            )),
         ]);
     }
 }

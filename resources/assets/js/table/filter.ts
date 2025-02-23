@@ -10,7 +10,7 @@ import {
 } from "../interfaces/table";
 import axios, {AxiosResponse} from "axios";
 import {filterModalUrl} from "./constants";
-import {getData} from "../helpers/general";
+import {getData, urlIncludesGetParameters} from "../helpers/general";
 import notify from "../utils/notification";
 import Modal from "../utils/Modal";
 import {translator} from "../translator";
@@ -59,7 +59,21 @@ function bindClosingOptions(tableWrapper: TableWrapper): void {
 
 async function showFilterModal(filterOption: HTMLElement): Promise<void> {
     const type: string = getData(filterOption, 'type');
-    const url: string = filterModalUrl.replace('{type}', type);
+    let url: string = filterModalUrl.replace('{type}', type);
+
+    if (type === 'date' || type === 'number') {
+        const from: string | null = getData(filterOption, 'from');
+        const to: string | null = getData(filterOption, 'to');
+
+        if (from !== null) {
+            url += `?from=${from}`;
+        }
+
+        if (to !== null) {
+            url += urlIncludesGetParameters(url) ? `&to=${to}` : `?to=${to}`;
+        }
+    }
+
     const filterForm: FilterModalResponse | void = await axios.get(url)
         .then((response: AxiosResponse): FilterModalResponse | void => {
             return response.data;

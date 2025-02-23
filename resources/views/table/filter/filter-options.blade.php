@@ -1,5 +1,6 @@
 @use('Patrikjak\Utils\Common\Enums\Filter\FilterType')
 @use('Patrikjak\Utils\Table\Dto\Filter\Definitions\NeedsData')
+@use('Patrikjak\Utils\Table\Dto\Filter\Definitions\RangeData')
 
 <div class="controller filter-options-wrapper">
     <div class="clickable">
@@ -17,6 +18,16 @@
                 data-type="{{ $filterableColumn->filterDefinition->getType()->value }}"
                 @if($filterableColumn->filterDefinition instanceof NeedsData)
                     data-options-url="{{ $filterableColumn->filterDefinition->getDataUrl() }}"
+                @endif
+
+                @if($filterableColumn->filterDefinition instanceof RangeData)
+                    @if($filterableColumn->filterDefinition->getMin() !== null)
+                        data-from="{{ $filterableColumn->filterDefinition->getMin() }}"
+                    @endif
+
+                    @if($filterableColumn->filterDefinition->getMax() !== null)
+                        data-to="{{ $filterableColumn->filterDefinition->getMax() }}"
+                   @endif
                 @endif
             >
                 <span>{{ $filterableColumn->label }}</span>
