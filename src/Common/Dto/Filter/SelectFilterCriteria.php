@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Common\Dto\Filter;
 
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 
-class SelectFilterCriteria extends BaseFilterCriteria
+class SelectFilterCriteria extends AbstractFilterCriteria
 {
     public function __construct(string $column, public string $value)
     {

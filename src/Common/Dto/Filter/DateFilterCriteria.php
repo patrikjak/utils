@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\Dto\Filter;
 use Carbon\CarbonInterface;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 
-class DateFilterCriteria extends BaseFilterCriteria
+class DateFilterCriteria extends AbstractFilterCriteria
 {
     public function __construct(string $column, public ?CarbonInterface $from, public ?CarbonInterface $to)
     {

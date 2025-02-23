@@ -18,7 +18,9 @@ return [
     'filter_type' => 'Filter type',
     'text_filter_types' => [
         'contains' => 'Contains',
+        'not_contains' => 'Not contains',
         'equals' => 'Equals',
+        'not_equals' => 'Not equals',
         'starts_with' => 'Starts with',
         'ends_with' => 'Ends with'
     ],

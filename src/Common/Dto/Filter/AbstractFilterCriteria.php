@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\Dto\Filter;
 use Illuminate\Contracts\Support\Arrayable;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 
-abstract class BaseFilterCriteria implements Arrayable
+abstract class AbstractFilterCriteria implements Arrayable
 {
     abstract public function getType(): FilterType;
 

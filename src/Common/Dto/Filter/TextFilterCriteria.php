@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\Dto\Filter;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
 
-class TextFilterCriteria extends BaseFilterCriteria
+class TextFilterCriteria extends AbstractFilterCriteria
 {
     public function __construct(string $column, public ?string $value, public TextFilterType $filterType)
     {

@@ -4,8 +4,8 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Dto\Filter\Definitions\Number;
 
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterDefinition;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
+use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterDefinition;
 
 class NumberFilterDefinition implements FilterDefinition
 {

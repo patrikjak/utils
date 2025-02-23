@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\Dto\Filter;
 final readonly class FilterCriteria
 {
     /**
-     * @param array<BaseFilterCriteria> $filters
+     * @param array<AbstractFilterCriteria> $filters
      */
     public function __construct(public array $filters)
     {
@@ -19,7 +19,7 @@ final readonly class FilterCriteria
     public function toArray(): array
     {
         return array_map(
-            static fn (BaseFilterCriteria $filter) => $filter->toArray(),
+            static fn (AbstractFilterCriteria $filter) => $filter->toArray(),
             $this->filters
         );
     }

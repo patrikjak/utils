@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\Http\Requests;
 use Carbon\CarbonImmutable;
 use Illuminate\Cookie\CookieJar;
 use Illuminate\Foundation\Http\FormRequest;
-use Patrikjak\Utils\Common\Dto\Filter\BaseFilterCriteria;
+use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;
@@ -265,7 +265,7 @@ class TableParametersRequest extends FormRequest
     /**
      * @param array<string, mixed> $data
      */
-    private function getTextFilterCriteria(array $data, string $column): ?BaseFilterCriteria
+    private function getTextFilterCriteria(array $data, string $column): ?AbstractFilterCriteria
     {
         $operator = TextFilterType::tryFrom($data['operator']);
 
@@ -276,7 +276,7 @@ class TableParametersRequest extends FormRequest
         return new TextFilterCriteria($column, $data['value'], $operator);
     }
 
-    private function getTextFilterCriteriaFromCookie(stdClass $filterData): ?BaseFilterCriteria
+    private function getTextFilterCriteriaFromCookie(stdClass $filterData): ?AbstractFilterCriteria
     {
         return $this->getTextFilterCriteria((array) $filterData, $filterData->column);
     }
@@ -284,12 +284,12 @@ class TableParametersRequest extends FormRequest
     /**
      * @param array<string, string|int> $data
      */
-    private function getSelectFilterCriteria(array $data, string $column): BaseFilterCriteria
+    private function getSelectFilterCriteria(array $data, string $column): AbstractFilterCriteria
     {
         return new SelectFilterCriteria($column, $data['value']);
     }
 
-    private function getSelectFilterCriteriaFromCookie(stdClass $filterData): BaseFilterCriteria
+    private function getSelectFilterCriteriaFromCookie(stdClass $filterData): AbstractFilterCriteria
     {
         return $this->getSelectFilterCriteria((array) $filterData, $filterData->column);
     }
@@ -297,7 +297,7 @@ class TableParametersRequest extends FormRequest
     /**
      * @param array<string, string> $data
      */
-    private function getDateFilterCriteria(array $data, string $column): BaseFilterCriteria
+    private function getDateFilterCriteria(array $data, string $column): AbstractFilterCriteria
     {
         $from = isset($data['from']) ? CarbonImmutable::make($data['from']) : null;
         $to = isset($data['to']) ? CarbonImmutable::make($data['to']) : null;
@@ -309,7 +309,7 @@ class TableParametersRequest extends FormRequest
         );
     }
 
-    private function getDateFilterCriteriaFromCookie(stdClass $filterData): BaseFilterCriteria
+    private function getDateFilterCriteriaFromCookie(stdClass $filterData): AbstractFilterCriteria
     {
         return $this->getDateFilterCriteria((array) $filterData, $filterData->column);
     }
@@ -317,7 +317,7 @@ class TableParametersRequest extends FormRequest
     /**
      * @param array<string, string> $data
      */
-    private function getNumberFilterCriteria(array $data, string $column): BaseFilterCriteria
+    private function getNumberFilterCriteria(array $data, string $column): AbstractFilterCriteria
     {
         $from = isset($data['from']) ? (float) $data['from'] : null;
         $to = isset($data['to']) ? (float) $data['to'] : null;
@@ -325,7 +325,7 @@ class TableParametersRequest extends FormRequest
         return new NumberFilterCriteria($column, $from, $to);
     }
 
-    private function getNumberFilterCriteriaFromCookie(stdClass $filterData): BaseFilterCriteria
+    private function getNumberFilterCriteriaFromCookie(stdClass $filterData): AbstractFilterCriteria
     {
         return $this->getNumberFilterCriteria((array) $filterData, $filterData->column);
     }

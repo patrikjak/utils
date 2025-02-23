@@ -1,8 +1,8 @@
-@use('Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria;use Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria;use Patrikjak\Utils\Common\Enums\Filter\FilterType')
+@use('Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria')
 @use('Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria')
 @use('Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria')
-@use('Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria')
 @use('Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria')
+@use('Patrikjak\Utils\Common\Enums\Filter\FilterType')
 
 @lang('pjutils::table.filtered_by')
 

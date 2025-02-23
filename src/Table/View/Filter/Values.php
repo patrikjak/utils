@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\View\Filter;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Common\Dto\Filter\BaseFilterCriteria;
+use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterableColumn;
 use Patrikjak\Utils\Table\Dto\Filter\Settings;
 
@@ -42,7 +42,7 @@ class Values extends Component
         });
 
         foreach ($this->settings->criteria->filters as $filter) {
-            assert($filter instanceof BaseFilterCriteria);
+            assert($filter instanceof AbstractFilterCriteria);
 
             $label = $labels->get($filter->column);
             $options[] = new FilterOption($label, $filter);

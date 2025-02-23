@@ -12,7 +12,7 @@ class SortService
     /**
      * @param array<string, string> $columnsMask
      */
-    public function applySort(Builder $query, ?SortCriteria $criteria, ?array $columnsMask = []): void
+    public function applySort(Builder $query, ?SortCriteria $criteria, array $columnsMask = []): void
     {
         if ($criteria === null) {
             return;

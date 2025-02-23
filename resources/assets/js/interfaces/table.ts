@@ -38,7 +38,7 @@ export interface Filter {
 
 export interface TextFilter extends Filter {
     type: 'text';
-    filterType: 'contains' | 'equals' | 'starts_with' | 'ends_with';
+    filterType: 'contains' | 'not_contains' |'equals' | 'not_equals' | 'starts_with' | 'ends_with';
     value: string;
 }
 

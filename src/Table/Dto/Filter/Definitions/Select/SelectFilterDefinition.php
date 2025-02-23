@@ -4,9 +4,9 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Dto\Filter\Definitions\Select;
 
+use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterDefinition;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\NeedsData;
-use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 
 readonly class SelectFilterDefinition implements FilterDefinition, NeedsData
 {

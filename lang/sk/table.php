@@ -18,7 +18,9 @@ return [
     'filter_type' => 'Typ filtra',
     'text_filter_types' => [
         'contains' => 'Obsahuje',
-        'equals' => 'Rovná sa',
+        'not_contains' => 'Neobsahuje',
+        'equals' => 'Je rovné',
+        'not_equals' => 'Je nerovné',
         'starts_with' => 'Začína na',
         'ends_with' => 'Končí na',
     ],

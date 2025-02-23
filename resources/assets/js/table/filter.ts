@@ -155,7 +155,7 @@ function getTextFilter(modal: HTMLElement, column: string): Filter {
     const filterType: string = getDropdownValue(modal.querySelector('.pj-dropdown'));
     const valueInput: HTMLInputElement = modal.querySelector('[name="filter_value"]');
 
-    if (!['contains', 'equals', 'starts_with', 'ends_with'].includes(filterType)) {
+    if (!['contains', 'not_contains', 'equals', 'not_equals', 'starts_with', 'ends_with'].includes(filterType)) {
         throw new Error('Invalid filter type');
     }
 
