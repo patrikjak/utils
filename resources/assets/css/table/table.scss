@@ -401,10 +401,15 @@
             }
         }
 
+        .filter-values .values {
+            display: flex;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
         .option {
             display: inline-flex;
             align-items: center;
-            gap: .5rem;
             padding: .5rem 1rem;
             border-radius: .5rem;
             transition-duration: .15s;
@@ -440,11 +445,19 @@
             }
         }
 
-        .option.sort-option .icon {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
+        .option.sort-option {
+            gap: .5rem;
+
+            .icon {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+            }
+        }
+
+        .option.filter-option .close-button {
+            margin-left: .5rem;
         }
     }
 }

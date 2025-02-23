@@ -1,6 +1,6 @@
 <?php
 
-namespace Patrikjak\Utils\Table\Dto\Filter\Definitions\Text;
+namespace Patrikjak\Utils\Table\Enums\Filter;
 
 enum TextFilterType: string
 {

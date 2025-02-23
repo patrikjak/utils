@@ -27,5 +27,7 @@ return [
     'filter_from' => 'From',
     'filter_to' => 'To',
     'filter_available_options' => 'Available options',
+    'filter_min' => 'Min',
+    'filter_max' => 'Max',
 
 ];

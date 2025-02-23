@@ -27,5 +27,7 @@ return [
     'filter_from' => 'Od',
     'filter_to' => 'Do',
     'filter_available_options' => 'Dostupné možnosti',
+    'filter_min' => 'Min',
+    'filter_max' => 'Max',
 
 ];

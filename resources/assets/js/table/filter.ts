@@ -20,12 +20,39 @@ import {getDropdownValue} from "../utils/dropdown";
 let filterModal: Modal | null = null;
 
 export function bindFilter(tableWrapper: TableWrapper): void {
+    bindClosingOptions(tableWrapper);
     const options: NodeListOf<HTMLElement> = tableWrapper.querySelectorAll('.table-options .filter-options-wrapper .option');
 
     options.forEach((option: HTMLElement): void => {
         option.addEventListener('click', async function (): Promise<void> {
             await showFilterModal(this);
             bindFiltering(tableWrapper, this);
+        });
+    });
+}
+
+export function getCurrentFilterCriteria(tableWrapper: TableWrapper): FilterCriteria {
+    return {
+        filters: getCurrentFilters(tableWrapper),
+        deleteFilters: false,
+    };
+}
+
+function bindClosingOptions(tableWrapper: TableWrapper): void {
+    const options: NodeListOf<HTMLElement> = tableWrapper.querySelectorAll('.table-options .filter-values .values .option');
+
+    options.forEach((option: HTMLElement): void => {
+        option.querySelector('.close-button').addEventListener('click', function (): void {
+            option.remove();
+
+            const optionsCount: number = tableWrapper.querySelectorAll('.table-options .filter-values .values .option').length;
+
+            dispatchUpdateEvent(tableWrapper, {
+                filterCriteria: {
+                    filters: getCurrentFilters(tableWrapper),
+                    deleteFilters: optionsCount === 0,
+                },
+            });
         });
     });
 }
@@ -73,15 +100,14 @@ function bindFiltering(tableWrapper: TableWrapper, option: HTMLElement): void {
 
     modal.querySelector('.footer button').addEventListener('click', function (): void {
         dispatchUpdateEvent(tableWrapper, {
-            filterCriteria: [getFilterFromOption(option)],
+            filterCriteria: {
+                filters: [...getCurrentFilters(tableWrapper), getFilterFromOption(option)],
+                deleteFilters: false,
+            },
         });
 
         filterModal.close();
     });
-}
-
-export function getCurrentFilterCriteria(tableWrapper: TableWrapper): FilterCriteria {
-    return null;
 }
 
 function getFilterFromOption(option: HTMLElement): Filter {
@@ -105,6 +131,26 @@ function getFilterFromOption(option: HTMLElement): Filter {
     }
 }
 
+function getFilterFromFilterValue(filterValue: HTMLElement): Filter {
+    const type: string = getData(filterValue, 'type');
+    const column: string = getData(filterValue, 'column');
+
+    try {
+        switch (type) {
+            case 'text':
+                return getTextFilterFromFilterValue(filterValue, column);
+            case 'number':
+                return getNumberFilterFromFilterValue(filterValue, column);
+            case 'date':
+                return getDateFilterFromFilterValue(filterValue, column);
+            case 'select':
+                return getSelectFilterFromFilterValue(filterValue, column);
+        }
+    } catch (e) {
+        console.error(e);
+    }
+}
+
 function getTextFilter(modal: HTMLElement, column: string): Filter {
     const filterType: string = getDropdownValue(modal.querySelector('.pj-dropdown'));
     const valueInput: HTMLInputElement = modal.querySelector('[name="filter_value"]');
@@ -118,6 +164,60 @@ function getTextFilter(modal: HTMLElement, column: string): Filter {
         type: 'text',
         filterType: filterType,
         value: valueInput.value,
+    };
+}
+
+function getTextFilterFromFilterValue(filterValue: HTMLElement, column: string): Filter {
+    const filterType: string = getData(filterValue, 'operator');
+    const value: string = getData(filterValue, 'value');
+
+    return <TextFilter> {
+        column,
+        type: 'text',
+        filterType,
+        value,
+    };
+}
+
+function getNumberFilterFromFilterValue(filterValue: HTMLElement, column: string): Filter {
+    let from: string | number = getData(filterValue, 'from');
+    let to: string | number = getData(filterValue, 'to');
+
+    if (from !== null) {
+        from = parseFloat(from);
+    }
+
+    if (to !== null) {
+        to = parseFloat(to);
+    }
+
+    return <NumberFilter> {
+        column,
+        type: 'number',
+        from,
+        to,
+    };
+}
+
+function getDateFilterFromFilterValue(filterValue: HTMLElement, column: string): Filter {
+    const from: string = getData(filterValue, 'from');
+    const to: string = getData(filterValue, 'to');
+
+    return <DateFilter> {
+        column,
+        type: 'date',
+        from,
+        to,
+    };
+}
+
+function getSelectFilterFromFilterValue(filterValue: HTMLElement, column: string): Filter {
+    const value: string = getData(filterValue, 'value');
+
+    return <SelectFilter> {
+        column,
+        type: 'select',
+        value,
     };
 }
 
@@ -183,6 +283,14 @@ function getSelectFilter(modal: HTMLElement, column: string): Filter {
     };
 }
 
-function getCurrentFilters() {
-    // TODO: Implement
+function getCurrentFilters(tableWrapper: TableWrapper): Filter[] {
+    const filterValues: NodeListOf<HTMLElement> = tableWrapper.querySelectorAll('.table-options .filter-values .values .option');
+
+    let filters: Filter[] = [];
+
+    filterValues.forEach((filterValue: HTMLElement): void => {
+        filters.push(getFilterFromFilterValue(filterValue));
+    });
+
+    return filters;
 }

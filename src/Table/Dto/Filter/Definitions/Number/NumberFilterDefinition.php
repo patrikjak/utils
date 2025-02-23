@@ -7,7 +7,7 @@ use Patrikjak\Utils\Table\Dto\Filter\FilterType;
 
 class NumberFilterDefinition implements FilterDefinition
 {
-    public function __construct(public ?int $min = null, public ?int $max = null)
+    public function __construct(public ?float $min = null, public ?float $max = null)
     {
     }
 

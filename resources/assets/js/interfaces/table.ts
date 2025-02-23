@@ -9,7 +9,10 @@ export type PageCriteria = {
     pageSize: number;
 }
 
-export type FilterCriteria = Filter[] | null;
+export type FilterCriteria = {
+    filters: Filter [] | null,
+    deleteFilters: boolean;
+};
 
 export type TableParts = {
     body: string;

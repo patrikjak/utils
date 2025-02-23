@@ -67,7 +67,6 @@ final readonly class Table
             return false;
         }
 
-
         return count($this->filterSettings->filterableColumns) > 0;
     }
 }

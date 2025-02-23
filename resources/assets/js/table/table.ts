@@ -14,7 +14,7 @@ import {
     TableWrapper,
     TextFilter
 } from "../interfaces/table";
-import {deleteSortKey, orderKey, pageKey, pageSizeKey, sortKey} from "./constants";
+import {deleteFilterKey, deleteSortKey, filterKey, orderKey, pageKey, pageSizeKey, sortKey} from "./constants";
 import {bindShowingRowActions, setActionsToDefaultPosition} from "./actions";
 import axios from "axios";
 import {bindDropdowns} from "../utils/dropdown";
@@ -198,53 +198,66 @@ function addSortCriteriaToUrl(url: string, sortCriteria: SortCriteria): string {
 }
 
 function addFilterCriteriaToUrl(url: string, filterCriteria: FilterCriteria): string {
-    if (filterCriteria === null) {
+    if (filterCriteria?.deleteFilters) {
+        urlIncludesGetParameters(url) ? url += '&' : url += '?';
+        url =  url + `${deleteFilterKey}=${filterCriteria.deleteFilters}`;
+    }
+
+    if (filterCriteria === null || filterCriteria.filters.length === 0) {
         return url;
     }
 
     urlIncludesGetParameters(url) ? url += '&' : url += '?';
 
     let filterQueries: string[] = [];
+    let i: number = 0;
 
-    for (const filter of filterCriteria) {
-        filterQueries.push(getFilterQuery(filter));
+    for (const filter of filterCriteria.filters) {
+        filterQueries.push(getFilterQuery(filter, i));
+        i++;
     }
 
-    return url + filterQueries.join('&');
+    return url + filterQueries.join('&') + `&${deleteFilterKey}=${filterCriteria.deleteFilters}`;
 }
 
-function getFilterQuery(filter: Filter): string {
+function getFilterQuery(filter: Filter, index: number): string {
     switch (filter.type) {
         case 'text':
-            return getTextFilterQuery(<TextFilter> filter);
+            return getTextFilterQuery(<TextFilter> filter, index);
         case 'number':
         case 'date':
-            return getRangeFilterQuery(<NumberFilter | DateFilter> filter);
+            return getRangeFilterQuery(<NumberFilter | DateFilter> filter, index);
         case 'select':
-            return getSelectFilterQuery(<SelectFilter> filter);
+            return getSelectFilterQuery(<SelectFilter> filter, index);
     }
 }
 
-function getTextFilterQuery(filter: TextFilter): string {
-    return `${filter.column}=${filter.value}&${filter.column}Operator=${filter.filterType}`;
+function getTextFilterQuery(filter: TextFilter, index: number): string {
+    return `${filterKey}[${filter.column}][${index}][value]=${filter.value}
+        &${filterKey}[${filter.column}][${index}][operator]=${filter.filterType}
+        &${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
 }
 
-function getRangeFilterQuery(filter: NumberFilter | DateFilter): string {
+function getRangeFilterQuery(filter: NumberFilter | DateFilter, index: number): string {
     if (filter.from === null && filter.to === null) {
         return '';
     }
 
+    const filterTypeQuery: string = `&${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
+
     if (filter.from === null) {
-        return `${filter.column}To=${filter.to}`;
+        return `${filterKey}[${filter.column}][${index}][to]=${filter.to}${filterTypeQuery}`;
     }
 
     if (filter.to === null) {
-        return `${filter.column}From=${filter.from}`;
+        return `${filterKey}[${filter.column}][${index}][from]=${filter.from}${filterTypeQuery}`;
     }
 
-    return `${filter.column}From=${filter.from}&${filter.column}To=${filter.to}`;
+    return `${filterKey}[${filter.column}][${index}][from]=${filter.from}
+        &${filterKey}[${filter.column}][${index}][to]=${filter.to}${filterTypeQuery}`;
 }
 
-function getSelectFilterQuery(filter: SelectFilter): string {
-    return `${filter.column}=${filter.value}`;
+function getSelectFilterQuery(filter: SelectFilter, index: number): string {
+    return `${filterKey}[${filter.column}][${index}][value]=${filter.value}
+        &${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
 }
