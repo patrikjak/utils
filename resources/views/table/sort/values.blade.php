@@ -1,4 +1,4 @@
-@use('Patrikjak\Utils\Table\Dto\Sort\SortOrder')
+@use('Patrikjak\Utils\Table\Enums\Sort\SortOrder')
 
 @lang('pjutils::table.sorted_by')
 

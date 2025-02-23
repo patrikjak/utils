@@ -2,7 +2,7 @@
 
 namespace Patrikjak\Utils\Table\Dto\Filter\Criteria;
 
-use Patrikjak\Utils\Table\Dto\Filter\FilterType;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 
 class SelectFilterCriteria extends BaseFilterCriteria
 {

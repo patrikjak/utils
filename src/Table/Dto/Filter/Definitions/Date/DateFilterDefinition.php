@@ -4,7 +4,7 @@ namespace Patrikjak\Utils\Table\Dto\Filter\Definitions\Date;
 
 use Carbon\CarbonInterface;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterDefinition;
-use Patrikjak\Utils\Table\Dto\Filter\FilterType;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 
 class DateFilterDefinition implements FilterDefinition
 {

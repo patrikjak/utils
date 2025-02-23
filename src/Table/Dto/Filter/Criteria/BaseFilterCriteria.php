@@ -3,7 +3,7 @@
 namespace Patrikjak\Utils\Table\Dto\Filter\Criteria;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Patrikjak\Utils\Table\Dto\Filter\FilterType;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 
 abstract class BaseFilterCriteria implements Arrayable
 {

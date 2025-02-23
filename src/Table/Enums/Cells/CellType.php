@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Enums;
+namespace Patrikjak\Utils\Table\Enums\Cells;
 
 enum CellType: string
 {

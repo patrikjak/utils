@@ -3,7 +3,7 @@
 namespace Patrikjak\Utils\Table\Dto\Filter\Criteria;
 
 use Carbon\CarbonInterface;
-use Patrikjak\Utils\Table\Dto\Filter\FilterType;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 
 class DateFilterCriteria extends BaseFilterCriteria
 {

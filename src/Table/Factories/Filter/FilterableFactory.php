@@ -1,9 +1,10 @@
 <?php
 
-namespace Patrikjak\Utils\Table\Dto\Filter\Definitions;
+namespace Patrikjak\Utils\Table\Factories\Filter;
 
 use Carbon\CarbonInterface;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\Date\DateFilterDefinition;
+use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterDefinition;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\Number\NumberFilterDefinition;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\Select\SelectFilterDefinition;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\Text\TextFilterDefinition;

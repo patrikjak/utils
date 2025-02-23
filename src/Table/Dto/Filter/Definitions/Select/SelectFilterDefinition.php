@@ -4,7 +4,7 @@ namespace Patrikjak\Utils\Table\Dto\Filter\Definitions\Select;
 
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterDefinition;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\NeedsData;
-use Patrikjak\Utils\Table\Dto\Filter\FilterType;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 
 readonly class SelectFilterDefinition implements FilterDefinition, NeedsData
 {

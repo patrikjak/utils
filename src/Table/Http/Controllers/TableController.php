@@ -4,7 +4,7 @@ namespace Patrikjak\Utils\Table\Http\Controllers;
 
 use Illuminate\Http\JsonResponse;
 use Illuminate\View\Compilers\BladeCompiler;
-use Patrikjak\Utils\Table\Dto\Filter\FilterType;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\View\Filter\FilterForm;
 use Symfony\Component\HttpFoundation\Response;
 use Throwable;

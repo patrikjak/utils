@@ -6,7 +6,7 @@ use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
 use Patrikjak\Utils\Table\Dto\Cells\CellFactory;
-use Patrikjak\Utils\Table\Enums\CellType;
+use Patrikjak\Utils\Table\Enums\Cells\CellType;
 use Patrikjak\Utils\Table\Interfaces\Cells\Cell as CellInterface;
 use PHPUnit\Framework\TestCase;
 

@@ -13,11 +13,11 @@ use Patrikjak\Utils\Table\Dto\Filter\Criteria\FilterCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Criteria\NumberFilterCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Criteria\SelectFilterCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Criteria\TextFilterCriteria;
-use Patrikjak\Utils\Table\Dto\Filter\FilterType;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
-use Patrikjak\Utils\Table\Dto\Sort\SortOrder;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\Enums\Filter\TextFilterType;
+use Patrikjak\Utils\Table\Enums\Sort\SortOrder;
 use stdClass;
 
 class TableParametersRequest extends FormRequest

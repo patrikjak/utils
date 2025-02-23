@@ -3,7 +3,7 @@
 namespace Patrikjak\Utils\Table\Dto\Filter\Definitions\Number;
 
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterDefinition;
-use Patrikjak\Utils\Table\Dto\Filter\FilterType;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 
 class NumberFilterDefinition implements FilterDefinition
 {

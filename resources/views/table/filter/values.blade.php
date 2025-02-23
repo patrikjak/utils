@@ -1,4 +1,4 @@
-@use('Patrikjak\Utils\Table\Dto\Filter\FilterType')
+@use('Patrikjak\Utils\Table\Dto\Filter\Criteria\DateFilterCriteria;use Patrikjak\Utils\Table\Dto\Filter\Criteria\NumberFilterCriteria;use Patrikjak\Utils\Table\Dto\Filter\Criteria\SelectFilterCriteria;use Patrikjak\Utils\Table\Dto\Filter\Criteria\TextFilterCriteria;use Patrikjak\Utils\Table\Enums\Filter\FilterType')
 @use('Patrikjak\Utils\Table\Dto\Filter\Criteria\TextFilterCriteria')
 @use('Patrikjak\Utils\Table\Dto\Filter\Criteria\SelectFilterCriteria')
 @use('Patrikjak\Utils\Table\Dto\Filter\Criteria\DateFilterCriteria')
@@ -18,7 +18,7 @@
             @endif
             @if($option->criteria instanceof DateFilterCriteria || $option->criteria instanceof NumberFilterCriteria)
                 @if($option->criteria->from !== null) data-from="{{ $option->criteria->from }}" @endif
-                @if($option->criteria->to !== null) data-to="{{ $option->criteria->to }}" @endif
+            @if($option->criteria->to !== null) data-to="{{ $option->criteria->to }}" @endif
             @endif
         >
             <span class="label">{{ $option->label }}</span>
@@ -37,17 +37,20 @@
 
             @if($option->criteria instanceof DateFilterCriteria)
                 @if($option->criteria->from !== null)
-                    <span class="from">&nbsp; {{ strtolower(__('pjutils::table.filter_from')) }} - {{ $option->criteria->getFormattedFrom() }}</span>
+                    <span
+                        class="from">&nbsp; {{ strtolower(__('pjutils::table.filter_from')) }} - {{ $option->criteria->getFormattedFrom() }}</span>
                 @endif
 
                 @if($option->criteria->to !== null)
-                    <span class="to">&nbsp; {{ strtolower(__('pjutils::table.filter_to')) }} - {{ $option->criteria->getFormattedTo() }}</span>
+                    <span
+                        class="to">&nbsp; {{ strtolower(__('pjutils::table.filter_to')) }} - {{ $option->criteria->getFormattedTo() }}</span>
                 @endif
             @endif
 
             @if($option->criteria instanceof NumberFilterCriteria)
                 @if($option->criteria->from !== null)
-                    <span class="from">&nbsp; {{ strtolower(__('pjutils::table.filter_min')) }} {{ $option->criteria->from }}</span>
+                    <span
+                        class="from">&nbsp; {{ strtolower(__('pjutils::table.filter_min')) }} {{ $option->criteria->from }}</span>
                 @endif
 
                 @if($option->criteria->to !== null)

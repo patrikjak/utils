@@ -7,7 +7,7 @@ use Illuminate\Database\DatabaseManager;
 use Orchestra\Testbench\TestCase;
 use Patrikjak\Utils\Common\Services\QueryBuilder\SortService;
 use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
-use Patrikjak\Utils\Table\Dto\Sort\SortOrder;
+use Patrikjak\Utils\Table\Enums\Sort\SortOrder;
 
 class SortServiceTest extends TestCase
 {
