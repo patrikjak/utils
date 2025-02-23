@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\Dto;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Patrikjak\Utils\Table\Dto\Filter\Criteria\FilterCriteria;
-use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 
 final readonly class Parameters implements Arrayable
 {

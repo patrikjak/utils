@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Dto\Filter\Criteria;
+namespace Patrikjak\Utils\Common\Dto\Filter;
 
 use Carbon\CarbonInterface;
-use Patrikjak\Utils\Table\Enums\Filter\FilterType;
+use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 
 class DateFilterCriteria extends BaseFilterCriteria
 {

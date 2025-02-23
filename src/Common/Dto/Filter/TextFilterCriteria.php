@@ -2,10 +2,10 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Dto\Filter\Criteria;
+namespace Patrikjak\Utils\Common\Dto\Filter;
 
-use Patrikjak\Utils\Table\Enums\Filter\FilterType;
-use Patrikjak\Utils\Table\Enums\Filter\TextFilterType;
+use Patrikjak\Utils\Common\Enums\Filter\FilterType;
+use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
 
 class TextFilterCriteria extends BaseFilterCriteria
 {

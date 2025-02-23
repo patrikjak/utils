@@ -1,13 +1,13 @@
 <?php
 
-namespace Patrikjak\Utils\Tests\Unit\Table\Dto\Pagination;
+namespace Patrikjak\Utils\Tests\Unit\Table\Factories\Pagination;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Mockery\MockInterface;
 use Orchestra\Testbench\TestCase;
 use Patrikjak\Utils\Common\Interfaces\Paginator;
-use Patrikjak\Utils\Table\Dto\Pagination\PaginatorFactory;
+use Patrikjak\Utils\Table\Factories\Pagination\PaginatorFactory;
 use Patrikjak\Utils\Table\Interfaces\Pagination\LinkItem;
 
 class PaginatorFactoryTest extends TestCase

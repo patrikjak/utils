@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\View\Filter;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dto\Filter\Criteria\BaseFilterCriteria;
+use Patrikjak\Utils\Common\Dto\Filter\BaseFilterCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterableColumn;
 use Patrikjak\Utils\Table\Dto\Filter\Settings;
 

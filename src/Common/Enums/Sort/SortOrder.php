@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Enums\Sort;
+namespace Patrikjak\Utils\Common\Enums\Sort;
 
 enum SortOrder: string
 {

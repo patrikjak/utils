@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\View\Filter;
 
-use Patrikjak\Utils\Table\Dto\Filter\Criteria\BaseFilterCriteria;
+use Patrikjak\Utils\Common\Dto\Filter\BaseFilterCriteria;
 
 final readonly class FilterOption
 {

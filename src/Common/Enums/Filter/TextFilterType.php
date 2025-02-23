@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Enums\Filter;
+namespace Patrikjak\Utils\Common\Enums\Filter;
 
 enum TextFilterType: string
 {

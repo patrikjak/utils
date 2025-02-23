@@ -2,10 +2,12 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Table\Dto\Pagination;
+namespace Patrikjak\Utils\Table\Factories\Pagination;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
+use Patrikjak\Utils\Table\Dto\Pagination\Paginator;
 
 final readonly class PaginatorFactory
 {

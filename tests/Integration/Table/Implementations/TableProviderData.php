@@ -2,7 +2,7 @@
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
 
-use Patrikjak\Utils\Table\Dto\Cells\CellFactory;
+use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
 
 trait TableProviderData
 {

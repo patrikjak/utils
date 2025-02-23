@@ -5,11 +5,11 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\Services;
 
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Table\Dto\Filter\Criteria\FilterCriteria;
+use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Sort\Settings;
-use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Head;

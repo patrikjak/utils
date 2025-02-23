@@ -3,10 +3,10 @@
 namespace Patrikjak\Utils\Tests\Integration\Table;
 
 use Illuminate\Support\Facades\Blade;
+use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Common\Enums\Sort\SortOrder;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
-use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
-use Patrikjak\Utils\Table\Enums\Sort\SortOrder;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
 use Patrikjak\Utils\Table\View\Table;
 use Patrikjak\Utils\Tests\Integration\Table\Implementations\SortAndFilterTableProvider;

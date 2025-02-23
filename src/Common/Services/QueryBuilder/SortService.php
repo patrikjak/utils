@@ -5,7 +5,7 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Common\Services\QueryBuilder;
 
 use Illuminate\Contracts\Database\Query\Builder;
-use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
 
 class SortService
 {

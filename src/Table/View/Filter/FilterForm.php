@@ -7,8 +7,8 @@ namespace Patrikjak\Utils\Table\View\Filter;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Enums\Filter\FilterType;
-use Patrikjak\Utils\Table\Enums\Filter\TextFilterType;
+use Patrikjak\Utils\Common\Enums\Filter\FilterType;
+use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
 
 class FilterForm extends Component
 {

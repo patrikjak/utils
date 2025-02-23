@@ -1,4 +1,4 @@
-@use('Patrikjak\Utils\Table\Enums\Filter\FilterType')
+@use('Patrikjak\Utils\Common\Enums\Filter\FilterType')
 @use('Patrikjak\Utils\Table\Dto\Filter\Definitions\NeedsData')
 
 <div class="controller filter-options-wrapper">

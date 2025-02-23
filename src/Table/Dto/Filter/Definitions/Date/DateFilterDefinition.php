@@ -5,8 +5,8 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\Dto\Filter\Definitions\Date;
 
 use Carbon\CarbonInterface;
+use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterDefinition;
-use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 
 class DateFilterDefinition implements FilterDefinition
 {

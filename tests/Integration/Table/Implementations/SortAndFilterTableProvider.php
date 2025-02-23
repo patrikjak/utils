@@ -3,9 +3,9 @@
 namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
 
 use Illuminate\Support\Collection;
+use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
 use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
-use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
 use Patrikjak\Utils\Table\Services\BasePaginatedTableProvider;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
 
