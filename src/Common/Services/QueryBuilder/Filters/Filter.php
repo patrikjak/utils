@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
 
 interface Filter

@@ -4,7 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Contracts\Database\Query\Builder;
 use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;
@@ -23,7 +23,7 @@ class RangeFilter extends AbstractFilter implements Filter
         }
 
         if ($filterCriteria->from === null) {
-            $query->where(
+            $query->orWhere(
                 $this->getRealColumn($filterCriteria->column, $columnsMask),
                 '<=',
                 $filterCriteria->to,
@@ -33,7 +33,7 @@ class RangeFilter extends AbstractFilter implements Filter
         }
 
         if ($filterCriteria->to === null) {
-            $query->where(
+            $query->orWhere(
                 $this->getRealColumn($filterCriteria->column, $columnsMask),
                 '>=',
                 $filterCriteria->from,
@@ -42,7 +42,7 @@ class RangeFilter extends AbstractFilter implements Filter
             return;
         }
 
-        $query->whereBetween(
+        $query->orWhereBetween(
             $this->getRealColumn($filterCriteria->column, $columnsMask),
             [$filterCriteria->from, $filterCriteria->to],
         );
