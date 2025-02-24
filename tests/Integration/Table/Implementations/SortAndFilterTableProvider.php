@@ -3,6 +3,7 @@
 namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
 
 use Illuminate\Support\Collection;
+use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
 use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
@@ -32,6 +33,10 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
     private array $sortableColumns = [];
 
     private ?SortCriteria $sortCriteria = null;
+
+    private array $filterableColumns = [];
+
+    private ?FilterCriteria $filterCriteria = null;
 
     public function getTableId(): string
     {
@@ -98,6 +103,11 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
         return $this->sortableColumns;
     }
 
+    public function getFilterableColumns(): array
+    {
+        return $this->filterableColumns;
+    }
+
     protected function getPaginator(): TablePaginator
     {
         return new TablePaginator(
@@ -123,46 +133,6 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
         return $this->paginationOptions;
     }
 
-    public function setTableId(string $tableId): void
-    {
-        $this->tableId = $tableId;
-    }
-
-    public function setColumns(array $columns): void
-    {
-        $this->columns = $columns;
-    }
-
-    public function setRowId(string $rowId): void
-    {
-        $this->rowId = $rowId;
-    }
-
-    public function setShowOrder(bool $showOrder): void
-    {
-        $this->showOrder = $showOrder;
-    }
-
-    public function setShowCheckboxes(bool $showCheckboxes): void
-    {
-        $this->showCheckboxes = $showCheckboxes;
-    }
-
-    public function setActions(array $actions): void
-    {
-        $this->actions = $actions;
-    }
-
-    public function setBulkActions(array $bulkActions): void
-    {
-        $this->bulkActions = $bulkActions;
-    }
-
-    public function setPaginationOptions(array $paginationOptions): void
-    {
-        $this->paginationOptions = $paginationOptions;
-    }
-
     public function setSortableColumns(array $sortableColumns): void
     {
         $this->sortableColumns = $sortableColumns;
@@ -171,5 +141,15 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
     public function setSortCriteria(?SortCriteria $sortCriteria): void
     {
         $this->sortCriteria = $sortCriteria;
+    }
+
+    public function setFilterableColumns(array $filterableColumns): void
+    {
+        $this->filterableColumns = $filterableColumns;
+    }
+
+    public function setFilterCriteria(?FilterCriteria $filterCriteria): void
+    {
+        $this->filterCriteria = $filterCriteria;
     }
 }
