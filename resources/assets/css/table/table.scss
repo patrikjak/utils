@@ -552,6 +552,10 @@
 }
 
 #filter-modal {
+    .pj-dropdown {
+        display: block;
+    }
+
     .dropdown-wrapper {
         width: 100% !important;
     }
