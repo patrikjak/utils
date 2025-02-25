@@ -16,7 +16,7 @@ class HeaderTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     public function testComponentCanBeRenderedWithoutLogo(): void
@@ -27,7 +27,7 @@ class HeaderTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     #[DefineEnvironment('setCustomAppName')]
@@ -39,7 +39,7 @@ class HeaderTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     #[DefineEnvironment('setCustomEmailLogoPath')]
@@ -51,7 +51,7 @@ class HeaderTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     #[DefineEnvironment('setCustomAppUrl')]
@@ -63,6 +63,6 @@ class HeaderTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 }

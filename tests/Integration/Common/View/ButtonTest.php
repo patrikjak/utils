@@ -50,7 +50,7 @@ class ButtonTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     public function testButtonCanBeRenderedWithAttributes(): void

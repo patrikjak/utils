@@ -16,6 +16,6 @@ class LayoutTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 }

@@ -85,6 +85,6 @@ class BaseTableProviderTest extends TestCase
         $table = $this->tableProvider->getTable();
         $view = Blade::renderComponent(new Table($table));
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 }

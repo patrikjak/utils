@@ -16,7 +16,7 @@ class DropdownTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     public function testDropdownCanBeRenderedWithSelectedValue(): void
@@ -31,6 +31,6 @@ class DropdownTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 }

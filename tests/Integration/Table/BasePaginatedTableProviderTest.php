@@ -114,6 +114,6 @@ class BasePaginatedTableProviderTest extends TestCase
         $table = $this->tableProvider->getTable(new Parameters(1, 10, null, null));
         $view = Blade::renderComponent(new Table($table));
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 }

@@ -184,6 +184,6 @@ class SortAndFilterTableProviderTest extends TestCase
         
         $view = Blade::render('<x-pjutils.table::table :$table />', ['table' => $table]);
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 }

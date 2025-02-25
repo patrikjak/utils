@@ -16,7 +16,7 @@ class FooterTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     public function testComponentCanBeRenderedWithCustomFooterText(): void
@@ -27,7 +27,7 @@ class FooterTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     #[DefineEnvironment('setCustomAppName')]
@@ -39,6 +39,6 @@ class FooterTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 }
