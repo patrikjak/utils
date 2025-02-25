@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Table\Factories\Filter;
 
 use Patrikjak\Utils\Table\Factories\Filter\SelectFilterOptionsFactory;

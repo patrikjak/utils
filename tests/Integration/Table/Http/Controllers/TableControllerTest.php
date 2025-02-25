@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Table\Http\Controllers;
 
 use Patrikjak\Utils\Tests\Integration\Table\TestCase;
