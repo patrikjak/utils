@@ -5,15 +5,17 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\Services;
 
 use Illuminate\Support\Facades\Blade;
+use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
+use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Sort\Settings;
-use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Head;
 use Patrikjak\Utils\Table\View\Options;
 
-abstract class BaseTableProvider implements TableProviderInterface, Sortable
+abstract class BaseTableProvider implements TableProviderInterface, Sortable, Filterable
 {
     protected ?Parameters $parameters;
 
@@ -47,6 +49,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable
             $this->getBulkActions(),
             $this->getHtmlPartsUrl(),
             $this->getSortSettings(),
+            $this->getFilterSettings(),
         );
     }
 
@@ -119,6 +122,19 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getFilterableColumns(): array
+    {
+        return [];
+    }
+
+    public function getFilterCriteria(): ?FilterCriteria
+    {
+        return $this->parameters?->filterCriteria;
+    }
+
+    /**
      * @inheritdoc
      */
     public function getHtmlParts(Parameters $parameters): array
@@ -163,5 +179,14 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable
         }
 
         return new Settings($this->getSortableColumns(), $this->parameters?->sortCriteria);
+    }
+
+    private function getFilterSettings(): ?FilterSettings
+    {
+        if (count($this->getFilterableColumns()) === 0) {
+            return null;
+        }
+
+        return new FilterSettings($this->getFilterableColumns(), $this->parameters?->filterCriteria);
     }
 }

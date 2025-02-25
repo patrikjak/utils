@@ -30,7 +30,7 @@ class Table extends Component
 
     public function render(): View
     {
-        $this->showOptions = $this->table->isSortable();
+        $this->showOptions = $this->table->isSortable() || $this->table->isFilterable();
 
         return view('pjutils::table.table');
     }

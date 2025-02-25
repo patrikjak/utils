@@ -1,13 +1,15 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Common\Services\QueryBuilder;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
 use Orchestra\Testbench\TestCase;
+use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Common\Enums\Sort\SortOrder;
 use Patrikjak\Utils\Common\Services\QueryBuilder\SortService;
-use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
-use Patrikjak\Utils\Table\Dto\Sort\SortOrder;
 
 class SortServiceTest extends TestCase
 {

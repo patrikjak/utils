@@ -4,6 +4,8 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Dto\Sort;
 
+use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
+
 final readonly class Settings
 {
     /**

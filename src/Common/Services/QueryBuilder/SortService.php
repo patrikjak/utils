@@ -5,14 +5,14 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Common\Services\QueryBuilder;
 
 use Illuminate\Contracts\Database\Query\Builder;
-use Patrikjak\Utils\Table\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
 
 class SortService
 {
     /**
      * @param array<string, string> $columnsMask
      */
-    public function applySort(Builder $query, ?SortCriteria $criteria, ?array $columnsMask = []): void
+    public function applySort(Builder $query, ?SortCriteria $criteria, array $columnsMask = []): void
     {
         if ($criteria === null) {
             return;

@@ -35,8 +35,14 @@ export function getCurrentSort(tableWrapper: TableWrapper): string | null {
     return getData(sortOption, 'column');
 }
 
-export function getCurrentOrder(tableWrapper: TableWrapper): string {
-    return null;
+export function getCurrentOrder(tableWrapper: TableWrapper): string | null {
+    if (!tableIsSorted(tableWrapper)) {
+        return null;
+    }
+
+    const sortOption: HTMLElement = tableWrapper.querySelector('.table-options .sort-values .option');
+
+    return getData(sortOption, 'order');
 }
 
 function getColumnFromSelectedOption(option: HTMLElement): string {

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Common\View\Form;
 
 use Illuminate\Support\Facades\Blade;
@@ -10,7 +12,7 @@ class InputTest extends TestCase
     public function testInputCanBeRendered(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.input name="name" label="Name" />
             HTML
         ));
@@ -19,7 +21,7 @@ class InputTest extends TestCase
     public function testRequiredInputCanBeRendered(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.input name="name" label="Name" required />
             HTML
         ));
@@ -28,7 +30,7 @@ class InputTest extends TestCase
     public function testInputCanBeRenderedWithAttributes(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.input name="name" label="Name" class="custom class" id="custom-id" />
             HTML
         ));
@@ -37,7 +39,7 @@ class InputTest extends TestCase
     public function testInputCanBeRenderedWithError(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.input name="name" label="Name" error="Error message" />
             HTML
         ));

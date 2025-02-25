@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Common\View\Form;
 
 use Illuminate\Support\Facades\Blade;
@@ -10,7 +12,7 @@ class FileTest extends TestCase
     public function testFileCanBeRendered(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.file name="file" label="File" />
             HTML
         ));
@@ -19,7 +21,7 @@ class FileTest extends TestCase
     public function testRequiredFileCanBeRendered(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.file name="file" label="File" required />
             HTML
         ));
@@ -28,7 +30,7 @@ class FileTest extends TestCase
     public function testFileCanBeRenderedWithAttributes(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.file name="file" label="File" class="custom class" id="custom-id" />
             HTML
         ));
@@ -37,7 +39,7 @@ class FileTest extends TestCase
     public function testFileCanBeRenderedWithError(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.file name="file" label="File" error="Error message" />
             HTML
         ));

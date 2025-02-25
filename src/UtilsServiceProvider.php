@@ -20,6 +20,7 @@ class UtilsServiceProvider extends ServiceProvider
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'pjutils');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'pjutils');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }
 
     public function register(): void
