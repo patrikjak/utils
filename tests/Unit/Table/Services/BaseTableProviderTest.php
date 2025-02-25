@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Tests\Unit\Table\Services;
 
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
-use Patrikjak\Utils\Tests\Integration\Table\Implementations\TableProvider;
+use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\TableProvider;
 use PHPUnit\Framework\TestCase;
 
 class BaseTableProviderTest extends TestCase

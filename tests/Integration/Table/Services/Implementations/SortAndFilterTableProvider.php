@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
+namespace Patrikjak\Utils\Tests\Integration\Table\Services\Implementations;
 
 use Illuminate\Support\Collection;
 use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;

@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Tests\Integration\Table;
+namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Common\Enums\Icon;
@@ -10,7 +10,8 @@ use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
 use Patrikjak\Utils\Table\View\Table;
-use Patrikjak\Utils\Tests\Integration\Table\Implementations\TableProvider;
+use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\TableProvider;
+use Patrikjak\Utils\Tests\Integration\Table\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class BaseTableProviderTest extends TestCase

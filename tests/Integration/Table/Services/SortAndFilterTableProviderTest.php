@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Tests\Integration\Table;
+namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Blade;
@@ -20,7 +20,8 @@ use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
 use Patrikjak\Utils\Table\Factories\Filter\FilterableFactory;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
 use Patrikjak\Utils\Table\View\Table;
-use Patrikjak\Utils\Tests\Integration\Table\Implementations\SortAndFilterTableProvider;
+use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\SortAndFilterTableProvider;
+use Patrikjak\Utils\Tests\Integration\Table\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class SortAndFilterTableProviderTest extends TestCase

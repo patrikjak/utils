@@ -2,7 +2,7 @@
 
 declare(strict_types = 1);
 
-namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
+namespace Patrikjak\Utils\Tests\Integration\Table\Services\Implementations;
 
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Services\BaseTableProvider;

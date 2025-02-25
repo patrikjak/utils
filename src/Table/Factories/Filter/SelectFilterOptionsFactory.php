@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Factories\Filter;
 
+use Illuminate\Support\Collection;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\Select\SelectFilterOption;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\Select\SelectFilterOptions;
 
@@ -14,10 +15,8 @@ final readonly class SelectFilterOptionsFactory
      */
     public static function createFromArray(array $options): SelectFilterOptions
     {
-        return new SelectFilterOptions(array_map(
-            static fn (string $value, string $label) => new SelectFilterOption($value, $label),
-            array_keys($options),
-            $options,
-        ));
+        return new SelectFilterOptions((new Collection($options))->map(
+            static fn (string $label, string $value) => new SelectFilterOption($value, $label)
+        )->toArray());
     }
 }
