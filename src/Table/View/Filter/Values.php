@@ -45,6 +45,11 @@ class Values extends Component
             assert($filter instanceof AbstractFilterCriteria);
 
             $label = $labels->get($filter->column);
+
+            if ($label === null) {
+                continue;
+            }
+
             $options[] = new FilterOption($label, $filter);
         }
 

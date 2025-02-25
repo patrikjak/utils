@@ -117,6 +117,21 @@ class FilterServiceTest extends TestCase
     /**
      * @throws BindingResolutionException
      */
+    public function testDoNotApplyRangeFilterWithEmptyValues(): void
+    {
+        $sortService = $this->app->make(FilterService::class);
+        $query = $this->app->make(DatabaseManager::class)->table('users')->select();
+
+        $sortService->applyFilter($query, new FilterCriteria([
+            new DateFilterCriteria('created_at', null, null),
+        ]));
+
+        $this->assertStringNotContainsString('where', $query->toSql());
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
     public function testCanApplyFilterWithNullValue(): void
     {
         $sortService = $this->app->make(FilterService::class);

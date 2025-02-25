@@ -125,6 +125,7 @@ class SortAndFilterTableProviderTest extends TestCase
             new FilterableColumn('Email', 'email', FilterableFactory::select('http://example.com/data')),
             new FilterableColumn('Created at', 'created_at', FilterableFactory::date()),
             new FilterableColumn('Updated at', 'updated_at', FilterableFactory::date()),
+            new FilterableColumn('Deleted at', 'deleted_at', FilterableFactory::date()),
             new FilterableColumn('Random number', 'random_number', FilterableFactory::number()),
         ]);
 
@@ -133,6 +134,11 @@ class SortAndFilterTableProviderTest extends TestCase
             new SelectFilterCriteria('email', 'example@email.com'),
             new DateFilterCriteria('created_at', CarbonImmutable::make('2024-12-01'), null),
             new DateFilterCriteria('updated_at', null, null),
+            new DateFilterCriteria(
+                'deleted_at',
+                CarbonImmutable::make('2024-12-01'),
+                CarbonImmutable::make('2024-12-31'),
+            ),
             new NumberFilterCriteria('random_number', -5, 5),
         ]);
 
