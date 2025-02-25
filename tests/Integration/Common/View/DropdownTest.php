@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Common\View;
 
 use Patrikjak\Utils\Tests\Integration\TestCase;
@@ -9,18 +11,18 @@ class DropdownTest extends TestCase
     public function testDropdownCanBeRendered(): void
     {
         $view = $this->blade(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::dropdown :items="['Item 1', 'Item 2', 'Item 3']" label="Simple dropdown" />
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     public function testDropdownCanBeRenderedWithSelectedValue(): void
     {
         $view = $this->blade(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::dropdown 
                     :items="['item1' => 'Item 1', 'item2' => 'Item 2', 'item3' => 'Item 3']" 
                     label="Simple dropdown" 
@@ -29,6 +31,6 @@ class DropdownTest extends TestCase
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 }

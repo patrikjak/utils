@@ -10,6 +10,7 @@
     <arg value="sp"/>
 
     <file>src</file>
+    <file>tests</file>
 
     <!-- ARRAYS -->
     <rule ref="SlevomatCodingStandard.Arrays.ArrayAccess"/>

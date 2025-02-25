@@ -16,8 +16,11 @@ class UtilsServiceProvider extends ServiceProvider
         $this->publishViews();
         $this->publishConfig();
 
+        $this->extendBlade();
+
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'pjutils');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'pjutils');
+        $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
     }
 
     public function register(): void
@@ -63,5 +66,12 @@ class UtilsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/pjutils.php' => config_path('pjutils.php'),
         ], 'pjutils-config');
+    }
+
+    private function extendBlade(): void
+    {
+        Blade::directive('icon', static function ($icon) {
+            return "<?php echo \Patrikjak\Utils\Common\Enums\Icon::from($icon)->getAsHtml(); ?>";
+        });
     }
 }

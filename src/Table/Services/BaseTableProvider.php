@@ -4,12 +4,22 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Services;
 
+use Illuminate\Support\Facades\Blade;
+use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
+use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Dto\Sort\Settings;
 use Patrikjak\Utils\Table\Dto\Table;
+use Patrikjak\Utils\Table\View\Body;
+use Patrikjak\Utils\Table\View\Head;
+use Patrikjak\Utils\Table\View\Options;
 
-abstract class BaseTableProvider implements TableProviderInterface
+abstract class BaseTableProvider implements TableProviderInterface, Sortable, Filterable
 {
     protected ?Parameters $parameters;
+
+    protected ?Table $table = null;
 
     /**
      * @inheritdoc
@@ -37,6 +47,9 @@ abstract class BaseTableProvider implements TableProviderInterface
             $this->getActions(),
             $this instanceof SupportsPagination ? $this->getPaginationSettings() : null,
             $this->getBulkActions(),
+            $this->getHtmlPartsUrl(),
+            $this->getSortSettings(),
+            $this->getFilterSettings(),
         );
     }
 
@@ -93,5 +106,87 @@ abstract class BaseTableProvider implements TableProviderInterface
     public function getBulkActions(): array
     {
         return [];
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getSortableColumns(): array
+    {
+        return [];
+    }
+
+    public function getSortCriteria(): ?SortCriteria
+    {
+        return $this->parameters?->sortCriteria;
+    }
+
+    /**
+     * @inheritDoc
+     */
+    public function getFilterableColumns(): array
+    {
+        return [];
+    }
+
+    public function getFilterCriteria(): ?FilterCriteria
+    {
+        return $this->parameters?->filterCriteria;
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getHtmlParts(Parameters $parameters): array
+    {
+        $this->table = $this->getTable($parameters);
+
+        return [
+            'head' => $this->getHeadHtml(),
+            'body' => $this->getBodyHtml(),
+            'options' => $this->getOptionsHtml(),
+        ];
+    }
+
+    public function getHtmlPartsUrl(): ?string
+    {
+        return null;
+    }
+
+    protected function getHeadHtml(): string
+    {
+        return Blade::renderComponent(new Head($this->table));
+    }
+
+    protected function getBodyHtml(): string
+    {
+        return Blade::renderComponent(new Body($this->table));
+    }
+
+    protected function getOptionsHtml(): ?string
+    {
+        if (!$this->table->isSortable()) {
+            return null;
+        }
+
+        return Blade::renderComponent(new Options($this->table));
+    }
+
+    private function getSortSettings(): ?Settings
+    {
+        if (count($this->getSortableColumns()) === 0) {
+            return null;
+        }
+
+        return new Settings($this->getSortableColumns(), $this->parameters?->sortCriteria);
+    }
+
+    private function getFilterSettings(): ?FilterSettings
+    {
+        if (count($this->getFilterableColumns()) === 0) {
+            return null;
+        }
+
+        return new FilterSettings($this->getFilterableColumns(), $this->parameters?->filterCriteria);
     }
 }

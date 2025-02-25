@@ -1,9 +1,17 @@
+@use('Patrikjak\Utils\Table\Services\Renderable')
+
 <div
     class="pj-table-wrapper"
     id="{{ $tableId }}"
+    @if($table->htmlPartsUrl !== null) data-html-parts-url="{{ $table->htmlPartsUrl }}" @endif
 >
-    <table class="{{ $tableClass }}"
-           @if($table->expandable !== null) data-expandable="{{ $table->expandable }}" @endif
+    @if($showOptions)
+        <x-pjutils.table::options :table="$table" />
+    @endif
+
+    <table
+        class="{{ $tableClass }}"
+        @if($table->expandable !== null) data-expandable="{{ $table->expandable }}" @endif
     >
 
         <x-pjutils.table::head :$table />

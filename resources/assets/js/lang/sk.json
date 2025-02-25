@@ -47,5 +47,10 @@
 			"title": "Ups, došlo k neočakávanej chybe",
 			"message": "Prepáčte, ale došlo k chybe, skúste to prosím neskôr"
 		}
+	},
+	"table": {
+		"filter": {
+			"title": "Filter"
+		}
 	}
 }

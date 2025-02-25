@@ -6,7 +6,9 @@ namespace Patrikjak\Utils\Table\Dto;
 
 use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkActionItem;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
+use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
+use Patrikjak\Utils\Table\Dto\Sort\Settings as SortSettings;
 
 final readonly class Table
 {
@@ -29,6 +31,9 @@ final readonly class Table
         public array $actions,
         public ?Settings $paginationSettings = null,
         public array $bulkActions = [],
+        public ?string $htmlPartsUrl = null,
+        public ?SortSettings $sortSettings = null,
+        public ?FilterSettings $filterSettings = null,
     ) {
     }
 
@@ -45,5 +50,23 @@ final readonly class Table
     public function hasPagination(): bool
     {
         return $this->paginationSettings !== null;
+    }
+
+    public function isSortable(): bool
+    {
+        if ($this->sortSettings === null) {
+            return false;
+        }
+
+        return count($this->sortSettings->sortableColumns) > 0;
+    }
+
+    public function isFilterable(): bool
+    {
+        if ($this->filterSettings === null) {
+            return false;
+        }
+
+        return count($this->filterSettings->filterableColumns) > 0;
     }
 }

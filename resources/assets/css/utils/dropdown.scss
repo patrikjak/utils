@@ -4,6 +4,8 @@
     max-width: 100%;
     margin-top: 1rem;
     font-size: .875rem;
+    cursor: pointer;
+    display: inline-block;
 
     .label {
         cursor: default;
@@ -12,6 +14,7 @@
     }
 
     .dropdown-wrapper {
+        z-index: 10;
         display: inline-block;
         border-radius: 8px;
         transition-duration: .3s;

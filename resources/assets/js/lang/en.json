@@ -47,5 +47,10 @@
 			"title": "Ops, an unexpected error has occurred",
 			"message": "I'm sorry, but an error has occurred, please try again later"
 		}
+	},
+	"table": {
+		"filter": {
+			"title": "Filter"
+		}
 	}
 }
