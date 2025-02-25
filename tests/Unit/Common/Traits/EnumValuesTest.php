@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Common\Traits;
 
 use Orchestra\Testbench\TestCase;

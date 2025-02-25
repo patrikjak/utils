@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
 
+use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Services\BaseTableProvider;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
 
@@ -11,6 +14,9 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
 
     private string $tableId = 'table';
 
+    /**
+     * @var array<string>
+     */
     private array $columns = ['id', 'name', 'email', 'created_at', 'updated_at'];
 
     private string $rowId = 'id';
@@ -19,6 +25,9 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
 
     private bool $showCheckboxes = false;
 
+    /**
+     * @var array<Item>
+     */
     private array $actions = [];
 
     public function getTableId(): string
@@ -38,11 +47,17 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getData(): array
     {
         return $this->getTableData();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getColumns(): array
     {
         return $this->columns;
@@ -63,6 +78,9 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
         return $this->showCheckboxes;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getActions(): array
     {
         return $this->actions;
@@ -73,6 +91,9 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
         $this->tableId = $tableId;
     }
 
+    /**
+     * @param array<string> $columns
+     */
     public function setColumns(array $columns): void
     {
         $this->columns = $columns;
@@ -93,6 +114,9 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
         $this->showCheckboxes = $showCheckboxes;
     }
 
+    /**
+     * @param array<Item> $actions
+     */
     public function setActions(array $actions): void
     {
         $this->actions = $actions;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Table;
 
 use Illuminate\Support\Facades\Blade;
@@ -18,13 +20,6 @@ class BaseTableProviderTest extends TestCase
     private TableProviderInterface $tableProvider;
 
     private Table $table;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->tableProvider = new TableProvider();
-    }
 
     public function testTableCanBeRendered(): void
     {
@@ -76,6 +71,13 @@ class BaseTableProviderTest extends TestCase
         ]);
 
         $this->tableMatchesSnapshot();
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->tableProvider = new TableProvider();
     }
 
     private function tableMatchesSnapshot(): void

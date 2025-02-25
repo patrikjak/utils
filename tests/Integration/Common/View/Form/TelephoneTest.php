@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Common\View\Form;
 
 use Illuminate\Support\Facades\Blade;
@@ -10,7 +12,7 @@ class TelephoneTest extends TestCase
     public function testTelephoneInputCanBeRendered(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.telephone name="name" label="Name" />
             HTML
         ));
@@ -28,7 +30,7 @@ class TelephoneTest extends TestCase
     public function testRequiredTelephoneInputCanBeRendered(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.telephone name="name" label="Name" required />
             HTML
         ));
@@ -37,7 +39,7 @@ class TelephoneTest extends TestCase
     public function testTelephoneInputCanBeRenderedWithAttributes(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.telephone name="name" label="Name" class="custom class" id="custom-id" />
             HTML
         ));
@@ -46,7 +48,7 @@ class TelephoneTest extends TestCase
     public function testTelephoneInputCanBeRenderedWithError(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.telephone name="name" label="Name" error="Error message" />
             HTML
         ));

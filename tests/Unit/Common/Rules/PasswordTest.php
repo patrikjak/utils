@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Common\Rules;
 
 use Illuminate\Support\Facades\Validator;
@@ -10,6 +12,9 @@ use PHPUnit\Framework\Attributes\DataProvider;
 
 class PasswordTest extends TestCase
 {
+    /**
+     * @param array<array<string>> $messages
+     */
     #[DataProvider('passwordDataProvider')]
     public function testPassword(
         ?string $password,
@@ -25,6 +30,9 @@ class PasswordTest extends TestCase
         $this->assertSame($messages, $validator->errors()->get('password'));
     }
 
+    /**
+     * @return iterable<array<string|bool|array<string>>>
+     */
     public static function passwordDataProvider(): iterable
     {
         yield 'Null' => [null, false, ['pjutils::validation.required']];

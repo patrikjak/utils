@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Common\Rules;
 
 use Illuminate\Support\Facades\Validator;
@@ -24,6 +26,9 @@ class TelephoneNumberTest extends TestCase
         $this->assertSame($passes, $validator->passes());
     }
 
+    /**
+     * @return iterable<array<string|bool>>
+     */
     public static function telephoneNumberDataProvider(): iterable
     {
         yield 'Null' => [null, TelephonePattern::SK, false];

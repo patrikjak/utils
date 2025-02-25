@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Common\View\Form;
 
 use Illuminate\Support\Facades\Blade;
@@ -9,15 +11,19 @@ class SelectTest extends TestCase
 {
     public function testSelectCanBeRendered(): void
     {
-        $this->assertMatchesHtmlSnapshot(Blade::render(<<<HTML
-<x-pjutils::form.select name="name" label="Name" :options="['value1' => 'Label 1', 'value2' => 'Label 2', 'value3' => 'Label 3']" />
+        $this->assertMatchesHtmlSnapshot(Blade::render(<<<'HTML'
+<x-pjutils::form.select 
+    name="name" 
+    label="Name" 
+    :options="['value1' => 'Label 1', 'value2' => 'Label 2', 'value3' => 'Label 3']" 
+/>
 HTML));
     }
 
     public function testSelectCanBeRenderedWithSelected(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.select 
                     name="name" 
                     label="Name" 
@@ -30,7 +36,7 @@ HTML));
     public function testRequiredSelectCanBeRendered(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.select 
                     name="name" 
                     label="Name" 
@@ -44,7 +50,7 @@ HTML));
     public function testSelectCanBeRenderedWithAttributes(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.select 
                     name="name" 
                     label="Name" 
@@ -59,7 +65,7 @@ HTML));
     public function testSelectCanBeRenderedWithError(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form.select 
                     name="name" 
                     label="Name" 

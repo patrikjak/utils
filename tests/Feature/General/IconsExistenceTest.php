@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Feature\General;
 
 use PHPUnit\Framework\TestCase;

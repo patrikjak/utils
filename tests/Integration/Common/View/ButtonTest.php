@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Common\View;
 
 use Illuminate\Support\Facades\Blade;
@@ -12,7 +14,7 @@ class ButtonTest extends TestCase
     public function testButtonCanBeRendered(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::button>Button</x-pjutils::button>
             HTML
         ));
@@ -26,24 +28,24 @@ class ButtonTest extends TestCase
             ['buttonType' => $type],
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     public function testButtonCanBeRenderedWithLink(): void
     {
         $view = $this->blade(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::button href="http://localhost">Button</x-pjutils::button>
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     public function testButtonCanBeRenderedWithLoader(): void
     {
         $view = $this->blade(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::button :loading="true">Button</x-pjutils::button>
             HTML
         );
@@ -54,12 +56,12 @@ class ButtonTest extends TestCase
     public function testButtonCanBeRenderedWithAttributes(): void
     {
         $view = $this->blade(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::button class="custom-class" id="custom-id" type="submit">Button</x-pjutils::button>
             HTML
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     #[DataProvider('buttonTypeProvider')]
@@ -70,7 +72,7 @@ class ButtonTest extends TestCase
             ['buttonType' => $type],
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     #[DataProvider('buttonTypeProvider')]
@@ -81,9 +83,12 @@ class ButtonTest extends TestCase
             ['buttonType' => $type],
         );
 
-        $this->assertMatchesHtmlSnapshot($view);
+        $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
+    /**
+     * @return iterable<string, array{Type}>
+     */
     public static function buttonTypeProvider(): iterable
     {
         yield 'neutral' => [Type::NEUTRAL];

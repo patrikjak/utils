@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
 
 use Illuminate\Support\Collection;
+use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkItem;
+use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
 use Patrikjak\Utils\Table\Services\BasePaginatedTableProvider;
@@ -14,6 +18,9 @@ class PaginatedTableProvider extends BasePaginatedTableProvider implements Table
 
     private string $tableId = 'table';
 
+    /**
+     * @var array<string> $columns
+     */
     private array $columns = ['id', 'name', 'email', 'created_at', 'updated_at'];
 
     private string $rowId = 'id';
@@ -22,10 +29,19 @@ class PaginatedTableProvider extends BasePaginatedTableProvider implements Table
 
     private bool $showCheckboxes = false;
 
+    /**
+     * @var array<Item>
+     */
     private array $actions = [];
 
+    /**
+     * @var array<BulkItem>
+     */
     private array $bulkActions = [];
 
+    /**
+     * @var array<int>
+     */
     private array $paginationOptions = [10 => 10, 20 => 20, 50 => 50, 100 => 100];
 
     public function getTableId(): string
@@ -33,7 +49,9 @@ class PaginatedTableProvider extends BasePaginatedTableProvider implements Table
         return $this->tableId;
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     public function getHeader(): ?array
     {
         return [
@@ -45,9 +63,12 @@ class PaginatedTableProvider extends BasePaginatedTableProvider implements Table
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getData(): array
     {
-        return $this->getPageData()->map(function (array $user) {
+        return $this->getPageData()->map(static function (array $user) {
             return [
                 'id' => $user['id'],
                 'name' => $user['name'],
@@ -58,6 +79,9 @@ class PaginatedTableProvider extends BasePaginatedTableProvider implements Table
         })->toArray();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getColumns(): array
     {
         return $this->columns;
@@ -78,14 +102,72 @@ class PaginatedTableProvider extends BasePaginatedTableProvider implements Table
         return $this->showCheckboxes;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getActions(): array
     {
         return $this->actions;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getBulkActions(): array
     {
         return $this->bulkActions;
+    }
+
+    public function setTableId(string $tableId): void
+    {
+        $this->tableId = $tableId;
+    }
+
+    /**
+     * @param array<string> $columns
+     */
+    public function setColumns(array $columns): void
+    {
+        $this->columns = $columns;
+    }
+
+    public function setRowId(string $rowId): void
+    {
+        $this->rowId = $rowId;
+    }
+
+    public function setShowOrder(bool $showOrder): void
+    {
+        $this->showOrder = $showOrder;
+    }
+
+    public function setShowCheckboxes(bool $showCheckboxes): void
+    {
+        $this->showCheckboxes = $showCheckboxes;
+    }
+
+    /**
+     * @param array<Item> $actions
+     */
+    public function setActions(array $actions): void
+    {
+        $this->actions = $actions;
+    }
+
+    /**
+     * @param array<BulkItem> $bulkActions
+     */
+    public function setBulkActions(array $bulkActions): void
+    {
+        $this->bulkActions = $bulkActions;
+    }
+
+    /**
+     * @param array<int, int> $paginationOptions
+     */
+    public function setPaginationOptions(array $paginationOptions): void
+    {
+        $this->paginationOptions = $paginationOptions;
     }
 
     protected function getPaginator(): TablePaginator
@@ -107,49 +189,11 @@ class PaginatedTableProvider extends BasePaginatedTableProvider implements Table
         );
     }
 
-    /** @inheritDoc */
+    /**
+     * @inheritDoc
+     */
     protected function getPageSizeOptions(): array
     {
         return $this->paginationOptions;
-    }
-
-    public function setTableId(string $tableId): void
-    {
-        $this->tableId = $tableId;
-    }
-
-    public function setColumns(array $columns): void
-    {
-        $this->columns = $columns;
-    }
-
-    public function setRowId(string $rowId): void
-    {
-        $this->rowId = $rowId;
-    }
-
-    public function setShowOrder(bool $showOrder): void
-    {
-        $this->showOrder = $showOrder;
-    }
-
-    public function setShowCheckboxes(bool $showCheckboxes): void
-    {
-        $this->showCheckboxes = $showCheckboxes;
-    }
-
-    public function setActions(array $actions): void
-    {
-        $this->actions = $actions;
-    }
-
-    public function setBulkActions(array $bulkActions): void
-    {
-        $this->bulkActions = $bulkActions;
-    }
-
-    public function setPaginationOptions(array $paginationOptions): void
-    {
-        $this->paginationOptions = $paginationOptions;
     }
 }

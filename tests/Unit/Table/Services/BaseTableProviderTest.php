@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Table\Services;
 
 use Patrikjak\Utils\Table\Dto\Table;
@@ -10,11 +12,6 @@ use PHPUnit\Framework\TestCase;
 class BaseTableProviderTest extends TestCase
 {
     private TableProviderInterface $tableProvider;
-
-    protected function setUp(): void
-    {
-        $this->tableProvider = new TableProvider();
-    }
 
     public function testCanGetTableInstance(): void
     {
@@ -54,5 +51,10 @@ class BaseTableProviderTest extends TestCase
         $this->assertArrayHasKey('email', $data[0]);
         $this->assertArrayHasKey('created_at', $data[0]);
         $this->assertArrayHasKey('updated_at', $data[0]);
+    }
+
+    protected function setUp(): void
+    {
+        $this->tableProvider = new TableProvider();
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Table\Factories\Pagination;
 
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -36,7 +38,7 @@ class PaginatorFactoryTest extends TestCase
 
     private function getMockedLengthAwarePaginator(): MockInterface
     {
-        return $this->mock(LengthAwarePaginator::class, function (MockInterface $mock) {
+        return $this->mock(LengthAwarePaginator::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('currentPage')->andReturn(1);
             $mock->shouldReceive('perPage')->andReturn(10);
             $mock->shouldReceive('getCollection')->andReturn(new Collection());

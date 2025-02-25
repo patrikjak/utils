@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Table;
 
 use Illuminate\Support\Facades\Blade;
@@ -20,13 +22,6 @@ class BasePaginatedTableProviderTest extends TestCase
     private TableProviderInterface $tableProvider;
 
     private Table $table;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->tableProvider = new PaginatedTableProvider();
-    }
 
     public function testTableCanBeRendered(): void
     {
@@ -105,6 +100,13 @@ class BasePaginatedTableProviderTest extends TestCase
         $this->assertMatchesHtmlSnapshot($htmlParts['body']);
         $this->assertMatchesHtmlSnapshot($htmlParts['pagination']);
         $this->assertMatchesHtmlSnapshot($htmlParts['head']);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->tableProvider = new PaginatedTableProvider();
     }
 
     private function tableMatchesSnapshot(): void

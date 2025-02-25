@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Common\Http\Middlewares;
 
 use Exception;
@@ -46,7 +48,14 @@ class VerifyRecaptchaTest extends TestCase
 
     public function testCustomExceptionParameter(): void
     {
-        $this->assertEquals(sprintf('%s:%s', VerifyRecaptcha::class, Exception::class), VerifyRecaptcha::withExceptionClass(Exception::class));
+        $this->assertEquals(
+            sprintf(
+                '%s:%s',
+                VerifyRecaptcha::class,
+                Exception::class,
+            ),
+            VerifyRecaptcha::withExceptionClass(Exception::class),
+        );
     }
 
     public function testFailedHandleWithCustomException(): void
@@ -56,7 +65,7 @@ class VerifyRecaptchaTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $this->getMiddleware()->handle($request, function ($request) {
+        $this->getMiddleware()->handle($request, static function ($request) {
             return response('OK');
         }, Exception::class);
     }
@@ -67,7 +76,7 @@ class VerifyRecaptchaTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
 
-        $this->getMiddleware()->handle($request, function ($request) {
+        $this->getMiddleware()->handle($request, static function ($request) {
             return response('OK');
         }, (new class {})::class);
     }
@@ -84,7 +93,7 @@ class VerifyRecaptchaTest extends TestCase
     {
         $this->instance(Factory::class, Mockery::mock(
             Factory::class,
-            function (MockInterface $mock) use ($successful) {
+            static function (MockInterface $mock) use ($successful): void {
                 $mock->shouldReceive('asForm')->andReturnSelf();
                 $mock->shouldReceive('post')->andReturnSelf();
                 $mock->shouldReceive('json')->andReturn(['success' => $successful]);
@@ -94,7 +103,7 @@ class VerifyRecaptchaTest extends TestCase
 
     private function getMiddlewareResponse(Request $request): Response
     {
-        return $this->getMiddleware()->handle($request, function ($request) {
+        return $this->getMiddleware()->handle($request, static function ($request) {
             return response('OK');
         });
     }

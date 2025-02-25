@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Common\View;
 
 use Illuminate\Support\Facades\Blade;
@@ -11,7 +13,7 @@ class FormTest extends TestCase
     public function testFormCanBeRendered(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form action="#">
                     <x-pjutils::form.input name="name" label="Name" />
                 </x-pjutils::form>
@@ -34,7 +36,7 @@ class FormTest extends TestCase
     public function testFormCanBeRenderedWithDataAttributes(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form action="#" :data-attributes="['attr' => 'value']">
                     <x-pjutils::form.input name="name" label="Name" />
                 </x-pjutils::form>
@@ -45,7 +47,7 @@ class FormTest extends TestCase
     public function testFormCanBeRenderedWithRedirect(): void
     {
         $this->assertMatchesHtmlSnapshot(Blade::render(
-            <<<HTML
+            <<<'HTML'
                 <x-pjutils::form action="#" redirect="http://localhost">
                     <x-pjutils::form.input name="name" label="Name" />
                 </x-pjutils::form>
@@ -53,6 +55,9 @@ class FormTest extends TestCase
         ));
     }
 
+    /**
+     * @return iterable<array{string}>
+     */
     public static function methodDataProvider(): iterable
     {
         yield 'GET' => ['GET'];

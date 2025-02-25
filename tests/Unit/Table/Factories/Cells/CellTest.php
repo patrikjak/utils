@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Table\Factories\Cells;
 
 use Patrikjak\Utils\Common\Enums\Icon;

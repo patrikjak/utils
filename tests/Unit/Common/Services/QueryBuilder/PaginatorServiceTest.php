@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Common\Services\QueryBuilder;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
@@ -16,7 +18,7 @@ class PaginatorServiceTest extends TestCase
      */
     public function testPaginate(): void
     {
-        $builder = $this->partialMock(Builder::class, function (MockInterface $mock) {
+        $builder = $this->partialMock(Builder::class, static function (MockInterface $mock): void {
             $mock->shouldReceive('get')->once()->andReturn([]);
             $mock->shouldReceive('getCountForPagination')->once()->andReturn(10);
         });

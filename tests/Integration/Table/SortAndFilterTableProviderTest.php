@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Table;
 
 use Carbon\CarbonImmutable;
@@ -28,13 +30,6 @@ class SortAndFilterTableProviderTest extends TestCase
     private TableProviderInterface $tableProvider;
 
     private Table $table;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->tableProvider = new SortAndFilterTableProvider();
-    }
 
     public function testTableWithSortableColumns(): void
     {
@@ -172,6 +167,13 @@ class SortAndFilterTableProviderTest extends TestCase
         $this->assertMatchesHtmlSnapshot($htmlParts['pagination']);
         $this->assertMatchesHtmlSnapshot($htmlParts['head']);
         $this->assertMatchesHtmlSnapshot($htmlParts['options']);
+    }
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->tableProvider = new SortAndFilterTableProvider();
     }
 
     private function tableMatchesSnapshot(?Parameters $parameters = null): void

@@ -1,32 +1,24 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Unit\Table\Http\Request;
 
 use Carbon\CarbonInterface;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Cookie\CookieJar;
+use Orchestra\Testbench\TestCase;
 use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria;
 use Patrikjak\Utils\Table\Http\Requests\TableParametersRequest;
-use Orchestra\Testbench\TestCase;
 
 class TableParametersRequestTest extends TestCase
 {
     private const string TABLE_ID = 'table-id';
 
     private CookieJar $cookieJar;
-
-    /**
-     * @throws BindingResolutionException
-     */
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->cookieJar = $this->app->make(CookieJar::class);
-    }
 
     public function testGetTableParametersDefault(): void
     {
@@ -378,6 +370,26 @@ class TableParametersRequestTest extends TestCase
                         'type' => 'text',
                         'operator' => 'contains',
                     ],
+                    [
+                        'column' => 'name',
+                        'value' => 'John',
+                        'type' => 'text',
+                    ],
+                    [
+                        'column' => 'color',
+                        'value' => 'red',
+                        'type' => 'select',
+                    ],
+                    [
+                        'column' => 'created_at',
+                        'from' => '2024-12-01',
+                        'to' => '2024-12-31',
+                    ],
+                    [
+                        'column' => 'random_number',
+                        'from' => 10,
+                        'type' => 'number',
+                    ],
                 ],
             ]),
         );
@@ -396,5 +408,15 @@ class TableParametersRequestTest extends TestCase
             json_encode(['page' => 5, 'pageSize' => 50, 'sortCriteria' => null, 'filterCriteria' => null]),
             $cookie->getValue(),
         );
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->cookieJar = $this->app->make(CookieJar::class);
     }
 }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration;
 
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
@@ -11,6 +13,9 @@ class TestCase extends OrchestraTestCase
     use MatchesSnapshots;
     use InteractsWithViews;
 
+    /**
+     * @inheritDoc
+     */
     protected function getPackageProviders($app): array
     {
         return [

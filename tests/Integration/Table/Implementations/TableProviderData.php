@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
 
 use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
 
 trait TableProviderData
 {
+    /**
+     * @return array<array<string, mixed>>
+     */
     public function getTableData(): array
     {
         return [

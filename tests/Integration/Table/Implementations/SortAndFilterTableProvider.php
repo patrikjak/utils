@@ -1,12 +1,18 @@
 <?php
 
+declare(strict_types = 1);
+
 namespace Patrikjak\Utils\Tests\Integration\Table\Implementations;
 
 use Illuminate\Support\Collection;
 use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkItem;
+use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
+use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterableColumn;
 use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
+use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
 use Patrikjak\Utils\Table\Services\BasePaginatedTableProvider;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
 
@@ -16,6 +22,9 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
 
     private string $tableId = 'table';
 
+    /**
+     * @var array<string>
+     */
     private array $columns = ['id', 'name', 'email', 'created_at', 'updated_at'];
 
     private string $rowId = 'id';
@@ -24,16 +33,31 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
 
     private bool $showCheckboxes = false;
 
+    /**
+     * @var array<Item>
+     */
     private array $actions = [];
 
+    /**
+     * @var array<BulkItem>
+     */
     private array $bulkActions = [];
 
+    /**
+     * @var array<int, int>
+     */
     private array $paginationOptions = [10 => 10, 20 => 20, 50 => 50, 100 => 100];
 
+    /**
+     * @var array<SortableColumn>
+     */
     private array $sortableColumns = [];
 
     private ?SortCriteria $sortCriteria = null;
 
+    /**
+     * @var array<FilterableColumn>
+     */
     private array $filterableColumns = [];
 
     private ?FilterCriteria $filterCriteria = null;
@@ -55,9 +79,12 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
         ];
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getData(): array
     {
-        return $this->getPageData()->map(function (array $user) {
+        return $this->getPageData()->map(static function (array $user) {
             return [
                 'id' => $user['id'],
                 'name' => $user['name'],
@@ -68,6 +95,9 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
         })->toArray();
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getColumns(): array
     {
         return $this->columns;
@@ -88,24 +118,62 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
         return $this->showCheckboxes;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getActions(): array
     {
         return $this->actions;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getBulkActions(): array
     {
         return $this->bulkActions;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getSortableColumns(): array
     {
         return $this->sortableColumns;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getFilterableColumns(): array
     {
         return $this->filterableColumns;
+    }
+
+    /**
+     * @param array<SortableColumn> $sortableColumns
+     */
+    public function setSortableColumns(array $sortableColumns): void
+    {
+        $this->sortableColumns = $sortableColumns;
+    }
+
+    public function setSortCriteria(?SortCriteria $sortCriteria): void
+    {
+        $this->sortCriteria = $sortCriteria;
+    }
+
+    /**
+     * @param array<FilterableColumn> $filterableColumns
+     */
+    public function setFilterableColumns(array $filterableColumns): void
+    {
+        $this->filterableColumns = $filterableColumns;
+    }
+
+    public function setFilterCriteria(?FilterCriteria $filterCriteria): void
+    {
+        $this->filterCriteria = $filterCriteria;
     }
 
     protected function getPaginator(): TablePaginator
@@ -131,25 +199,5 @@ class SortAndFilterTableProvider extends BasePaginatedTableProvider implements T
     protected function getPageSizeOptions(): array
     {
         return $this->paginationOptions;
-    }
-
-    public function setSortableColumns(array $sortableColumns): void
-    {
-        $this->sortableColumns = $sortableColumns;
-    }
-
-    public function setSortCriteria(?SortCriteria $sortCriteria): void
-    {
-        $this->sortCriteria = $sortCriteria;
-    }
-
-    public function setFilterableColumns(array $filterableColumns): void
-    {
-        $this->filterableColumns = $filterableColumns;
-    }
-
-    public function setFilterCriteria(?FilterCriteria $filterCriteria): void
-    {
-        $this->filterCriteria = $filterCriteria;
     }
 }
