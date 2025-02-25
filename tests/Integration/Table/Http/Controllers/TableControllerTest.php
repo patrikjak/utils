@@ -15,4 +15,11 @@ class TableControllerTest extends TestCase
         $response->assertOk();
         $this->assertMatchesJsonSnapshot($response->getContent());
     }
+
+    public function testModalFormWithoutType(): void
+    {
+        $response = $this->get(route('table.filter-modal', ['type' => 'wrong']));
+
+        $response->assertBadRequest();
+    }
 }
