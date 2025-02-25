@@ -30,6 +30,10 @@ class TableParametersRequestFilterTest extends TestCase
                         'type' => 'text',
                         'operator' => 'contains',
                     ],
+                    [
+                        'value' => 'Doe',
+                        'type' => 'text',
+                    ],
                 ],
                 'email' => [
                     [
@@ -121,14 +125,12 @@ class TableParametersRequestFilterTest extends TestCase
                     [
                         'column' => 'location',
                         'value' => 'New York',
-                        'type' => 'text',
                         'operator' => 'contains',
                     ],
                     [
                         'column' => 'name',
                         'value' => 'John',
                         'type' => 'text',
-                        'operator' => 'contains',
                     ],
                     [
                         'column' => 'color',
@@ -154,31 +156,21 @@ class TableParametersRequestFilterTest extends TestCase
 
         $this->assertSame(5, $parameters->page);
         $this->assertSame(50, $parameters->pageSize);
-        $this->assertCount(5, $parameters->filterCriteria->filters);
+        $this->assertCount(3, $parameters->filterCriteria->filters);
 
-        $this->assertInstanceOf(TextFilterCriteria::class, $parameters->filterCriteria->filters[0]);
-        $this->assertSame('location', $parameters->filterCriteria->filters[0]->column);
-        $this->assertSame('New York', $parameters->filterCriteria->filters[0]->value);
-        $this->assertSame('contains', $parameters->filterCriteria->filters[0]->filterType->value);
+        $this->assertInstanceOf(SelectFilterCriteria::class, $parameters->filterCriteria->filters[0]);
+        $this->assertSame('color', $parameters->filterCriteria->filters[0]->column);
+        $this->assertSame('red', $parameters->filterCriteria->filters[0]->value);
 
-        $this->assertInstanceOf(TextFilterCriteria::class, $parameters->filterCriteria->filters[1]);
-        $this->assertSame('name', $parameters->filterCriteria->filters[1]->column);
-        $this->assertSame('John', $parameters->filterCriteria->filters[1]->value);
-        $this->assertSame('contains', $parameters->filterCriteria->filters[1]->filterType->value);
+        $this->assertInstanceOf(DateFilterCriteria::class, $parameters->filterCriteria->filters[1]);
+        $this->assertSame('created_at', $parameters->filterCriteria->filters[1]->column);
+        $this->assertInstanceOf(CarbonInterface::class, $parameters->filterCriteria->filters[1]->from);
+        $this->assertInstanceOf(CarbonInterface::class, $parameters->filterCriteria->filters[1]->to);
 
-        $this->assertInstanceOf(SelectFilterCriteria::class, $parameters->filterCriteria->filters[2]);
-        $this->assertSame('color', $parameters->filterCriteria->filters[2]->column);
-        $this->assertSame('red', $parameters->filterCriteria->filters[2]->value);
-
-        $this->assertInstanceOf(DateFilterCriteria::class, $parameters->filterCriteria->filters[3]);
-        $this->assertSame('created_at', $parameters->filterCriteria->filters[3]->column);
-        $this->assertInstanceOf(CarbonInterface::class, $parameters->filterCriteria->filters[3]->from);
-        $this->assertInstanceOf(CarbonInterface::class, $parameters->filterCriteria->filters[3]->to);
-
-        $this->assertInstanceOf(NumberFilterCriteria::class, $parameters->filterCriteria->filters[4]);
-        $this->assertSame('random_number', $parameters->filterCriteria->filters[4]->column);
-        $this->assertSame(10.0, $parameters->filterCriteria->filters[4]->from);
-        $this->assertNull($parameters->filterCriteria->filters[4]->to);
+        $this->assertInstanceOf(NumberFilterCriteria::class, $parameters->filterCriteria->filters[2]);
+        $this->assertSame('random_number', $parameters->filterCriteria->filters[2]->column);
+        $this->assertSame(10.0, $parameters->filterCriteria->filters[2]->from);
+        $this->assertNull($parameters->filterCriteria->filters[2]->to);
     }
 
     public function testGetTableParametersFilterCriteriaFromRequestWithInvalidType(): void

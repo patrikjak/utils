@@ -217,6 +217,10 @@ class TableParametersRequest extends FormRequest
         }
 
         foreach ($filterCriteria as $criteria) {
+            if (!isset($criteria->type, $criteria->column)) {
+                continue;
+            }
+
             $type = FilterType::tryFrom($criteria->type);
 
             if ($type === null) {
@@ -267,6 +271,10 @@ class TableParametersRequest extends FormRequest
      */
     private function getTextFilterCriteria(array $data, string $column): ?AbstractFilterCriteria
     {
+        if (!isset($data['operator'])) {
+            return null;
+        }
+
         $operator = TextFilterType::tryFrom($data['operator']);
 
         if ($operator === null) {
