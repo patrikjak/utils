@@ -6,14 +6,12 @@ namespace Patrikjak\Utils\Common\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Common\Enums\Type;
 
 class Button extends Component
 {
     public string $classes;
 
     public function __construct(
-        public Type $buttonType = Type::INFO,
         public ?string $href = null,
         public bool $loading = false,
         public bool $bordered = false,
@@ -32,13 +30,13 @@ class Button extends Component
     {
         $classes = ['pj-btn'];
 
-        $typeClass = match (true) {
-            $this->texted === true => sprintf('%s-%s', $this->buttonType->value, 'texted'),
-            $this->bordered === true => sprintf('%s-%s', $this->buttonType->value, 'bordered'),
-            default => $this->buttonType->value,
-        };
+        if ($this->texted) {
+            $classes[] = 'texted';
+        }
 
-        $classes[] = $typeClass;
+        if ($this->bordered) {
+            $classes[] = 'bordered';
+        }
 
         if ($this->loading) {
             $classes[] = 'loading';

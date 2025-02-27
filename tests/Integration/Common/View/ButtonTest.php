@@ -21,10 +21,10 @@ class ButtonTest extends TestCase
     }
 
     #[DataProvider('buttonTypeProvider')]
-    public function testButtonCanBeRenderedWithButtonTypes(Type $type): void
+    public function testButtonCanBeRenderedWithButtonTypes(string $type): void
     {
         $view = $this->blade(
-            '<x-pjutils::button :button-type="$buttonType">Button</x-pjutils::button>',
+            '<x-pjutils::button :class="$buttonType">Button</x-pjutils::button>',
             ['buttonType' => $type],
         );
 
@@ -65,10 +65,10 @@ class ButtonTest extends TestCase
     }
 
     #[DataProvider('buttonTypeProvider')]
-    public function testBorderedButtonCanBeRendered(Type $type): void
+    public function testBorderedButtonCanBeRendered(string $type): void
     {
         $view = $this->blade(
-            '<x-pjutils::button :bordered="true" :button-type="$buttonType">Button</x-pjutils::button>',
+            '<x-pjutils::button :bordered="true" :class="$buttonType">Button</x-pjutils::button>',
             ['buttonType' => $type],
         );
 
@@ -76,10 +76,10 @@ class ButtonTest extends TestCase
     }
 
     #[DataProvider('buttonTypeProvider')]
-    public function testTextedButtonCanBeRendered(Type $type): void
+    public function testTextedButtonCanBeRendered(string $type): void
     {
         $view = $this->blade(
-            '<x-pjutils::button :texted="true" :button-type="$buttonType">Button</x-pjutils::button>',
+            '<x-pjutils::button :texted="true" :class="$buttonType">Button</x-pjutils::button>',
             ['buttonType' => $type],
         );
 
@@ -87,14 +87,14 @@ class ButtonTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{Type}>
+     * @return iterable<string, array{string}>
      */
     public static function buttonTypeProvider(): iterable
     {
-        yield 'neutral' => [Type::NEUTRAL];
-        yield 'info' => [Type::INFO];
-        yield 'success' => [Type::SUCCESS];
-        yield 'warning' => [Type::WARNING];
-        yield 'danger' => [Type::DANGER];
+        yield 'neutral' => ['neutral'];
+        yield 'info' => ['info'];
+        yield 'success' => ['success'];
+        yield 'warning' => ['warning'];
+        yield 'danger' => ['danger'];
     }
 }
