@@ -1,3 +1,5 @@
+@use "../variables" as *;
+
 .close-button {
     margin: 0;
     padding: .5rem;
@@ -77,4 +79,80 @@
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.bg-primary {
+    background-color: $primary;
+    color: $white;
+}
+
+.bg-primary-light {
+   background-color: $primary-200;
+   color: $primary;
+}
+
+.bg-primary-dark {
+    background-color: $primary-hover;
+    color: $white;
+}
+
+.bg-success {
+    background-color: $success;
+    color: $white;
+}
+
+.bg-success-light {
+    background-color: $success-light;
+    color: $success-dark;
+}
+
+.bg-success-dark {
+    background-color: $success-dark;
+    color: $white;
+}
+
+.bg-danger {
+    background-color: $danger;
+    color: $white;
+}
+
+.bg-danger-light {
+    background-color: $danger-light;
+    color: $danger-dark;
+}
+
+.bg-danger-dark {
+    background-color: $danger-dark;
+    color: $white;
+}
+
+.bg-warning {
+    background-color: $warning;
+    color: $white;
+}
+
+.bg-warning-light {
+    background-color: $warning-light;
+    color: $warning-dark;
+}
+
+.bg-warning-dark {
+    background-color: $warning-dark;
+    color: $white;
+}
+
+.text-primary {
+    color: $primary;
+}
+
+.text-success {
+    color: $success;
+}
+
+.text-danger {
+    color: $danger;
+}
+
+.text-warning {
+    color: $warning;
 }

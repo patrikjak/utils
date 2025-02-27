@@ -32,7 +32,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    padding: .75rem 2.5rem;
+    padding: .75rem 1.5rem;
     background-color: $primary;
     transition: .3s;
     border: none;
@@ -44,12 +44,35 @@
     margin-top: 1rem;
     transition-duration: .3s;
 
-    &:hover {
-        background-color: $info;
-        box-shadow: 2px 4px 16px 0 rgba(44, 77, 186, .25);
+    &.bordered {
+        background-color: $white;
+        color: $info;
+        border: solid 1px $info;
+
+        &:hover {
+            background-color: $info-light;
+        }
     }
 
-    &.info, &.primary {
+    &.texted {
+        background-color: $white;
+        color: $info;
+
+        &:hover {
+            text-decoration: underline;
+            background-color: $white;
+        }
+    }
+
+    &:hover {
+        background-color: $primary-hover;
+    }
+
+    &.info {
+        background-color: #3b82f6;
+    }
+
+    &.info {
         background-color: $info;
         color: $white;
 
@@ -59,27 +82,24 @@
 
         &:hover {
             background-color: $info-dark;
-            box-shadow: 2px 4px 16px 0 rgba(44, 77, 186, .25);
         }
     }
 
-    &.info-bordered {
+    &.bordered.info {
         background-color: $white;
         color: $info;
         border: solid 1px $info;
 
         &:hover {
             background-color: $info-light;
-            box-shadow: none;
         }
     }
 
-    &.info-texted {
+    &.texted.info {
         background-color: $white;
         color: $info;
 
         &:hover {
-            box-shadow: none;
             text-decoration: underline;
             background-color: $white;
         }
@@ -90,28 +110,25 @@
         color: $font;
 
         &:hover {
-            background-color: $gray-100;
-            box-shadow: 2px 4px 16px 0 rgba(44, 44, 44, .25);
+            background-color: $gray-300;
         }
     }
 
-    &.neutral-bordered {
+    &.bordered.neutral {
         background-color: $white;
         color: $font;
         border: solid 1px $border;
 
         &:hover {
             background-color: $gray-100;
-            box-shadow: none;
         }
     }
 
-    &.neutral-texted {
+    &.texted.neutral {
         background-color: $white;
         color: $font;
 
         &:hover {
-            box-shadow: none;
             text-decoration: underline;
             background-color: $white;
         }
@@ -126,11 +143,10 @@
 
         &:hover {
             background-color: $success-dark;
-            box-shadow: 2px 4px 16px 0 rgba(0, 164, 44, .25);
         }
     }
 
-    &.success-bordered {
+    &.bordered.success {
         border: solid 1px $success;
         color: $success;
         background-color: $white;
@@ -141,12 +157,11 @@
         }
     }
 
-    &.success-texted {
+    &.texted.success {
         background-color: $white;
         color: $success;
 
         &:hover {
-            box-shadow: none;
             text-decoration: underline;
             background-color: $white;
         }
@@ -161,27 +176,24 @@
 
         &:hover {
             background-color: $danger-dark;
-            box-shadow: 2px 4px 16px 0 rgba(238, 38, 66, .25);
         }
     }
 
-    &.danger-bordered {
+    &.bordered.danger {
         border: solid 1px $danger;
         color: $danger;
         background-color: $white;
 
         &:hover {
             background-color: $danger-light;
-            box-shadow: none;
         }
     }
 
-    &.danger-texted {
+    &.texted.danger {
         background-color: $white;
         color: $danger;
 
         &:hover {
-            box-shadow: none;
             text-decoration: underline;
             background-color: $white;
         }
@@ -196,27 +208,24 @@
 
         &:hover {
             background-color: $warning-dark;
-            box-shadow: 2px 4px 16px 0 rgba(253, 160, 0, .25);
         }
     }
 
-    &.warning-bordered {
+    &.bordered.warning {
         border: solid 1px $warning;
         color: $warning;
         background-color: $white;
 
         &:hover {
             background-color: $warning-light;
-            box-shadow: none;
         }
     }
 
-    &.warning-texted {
+    &.texted.warning {
         background-color: $white;
         color: $warning;
 
         &:hover {
-            box-shadow: none;
             text-decoration: underline;
             background-color: $white;
         }

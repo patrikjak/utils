@@ -5,7 +5,7 @@
         @foreach($bulkActions as $bulkAction)
             <div class="bulk-action">
                 <x-pjutils::button
-                    :button-type="$bulkAction->type"
+                    :class="$bulkAction->type->value"
                     data-action="{{ $bulkAction->action }}"
                     data-method="{{ $bulkAction->method }}"
                 >
