@@ -43,7 +43,7 @@ class Form extends Component
 
     private function resolveDataAttributes(): string
     {
-        return (new Collection($this->dataAttributes))
+        return new Collection($this->dataAttributes)
             ->map(static fn ($value, $key) => sprintf('data-%s=%s', $key, $value))
             ->implode(' ');
     }

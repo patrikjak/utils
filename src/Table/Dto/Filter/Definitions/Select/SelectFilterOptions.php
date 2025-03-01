@@ -23,7 +23,7 @@ final readonly class SelectFilterOptions implements Arrayable
      */
     public function toArray(): array
     {
-        $options = (new Collection($this->options))->mapWithKeys(
+        $options = new Collection($this->options)->mapWithKeys(
             static fn (SelectFilterOption $option) => [$option->value => $option->label],
         )->toArray();
 
