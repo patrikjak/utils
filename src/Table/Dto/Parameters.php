@@ -19,7 +19,7 @@ final readonly class Parameters implements Arrayable
     }
 
     /**
-     * @return array<string, int|string|null>
+     * @return array<string, array<array<float|string>|string>|int|null>
      */
     public function toArray(): array
     {

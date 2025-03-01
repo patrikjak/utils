@@ -1,0 +1,13 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Trait Patrikjak\\Utils\\Common\\Http\\Requests\\Traits\\ValidationException is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Common/Http/Requests/Traits/ValidationException.php
+
+		-
+			message: '#^Trait Patrikjak\\Utils\\Table\\Http\\Requests\\Traits\\HandlesBulkActionsIds is used zero times and is not analysed\.$#'
+			identifier: trait.unused
+			count: 1
+			path: src/Table/Http/Requests/Traits/HandlesBulkActionsIds.php

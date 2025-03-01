@@ -19,7 +19,7 @@ final readonly class SelectFilterOptions implements Arrayable
     }
 
     /**
-     * @return array<string, string>
+     * @return array<string, array<string, mixed>|string>
      */
     public function toArray(): array
     {

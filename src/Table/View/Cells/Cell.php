@@ -44,8 +44,6 @@ abstract class Cell extends Component
 
     private function hasIcon(): bool
     {
-        return $this->cell instanceof SupportsIcon
-            && $this->cell->getIcon() !== null
-            && $this->cell->getIcon()->value !== '';
+        return $this->cell instanceof SupportsIcon && $this->cell->getIcon() !== null;
     }
 }
