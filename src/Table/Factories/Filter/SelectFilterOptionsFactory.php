@@ -15,7 +15,7 @@ final readonly class SelectFilterOptionsFactory
      */
     public static function createFromArray(array $options): SelectFilterOptions
     {
-        return new SelectFilterOptions((new Collection($options))->map(
+        return new SelectFilterOptions(new Collection($options)->map(
             static fn (string $label, string $value) => new SelectFilterOption($value, $label)
         )->toArray());
     }

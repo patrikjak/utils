@@ -2,7 +2,7 @@
     "name": "patrikjak/utils",
     "description": "A simple utility package for Laravel",
     "keywords": ["laravel", "utils", "utility", "tables"],
-    "version": "2.1.0",
+    "version": "2.2.0",
     "type": "library",
     "license": "MIT",
     "autoload": {
@@ -17,15 +17,15 @@
         }
     ],
     "require": {
-        "php": "^8.3",
-        "laravel/framework": "^11.31.0"
+        "php": "^8.4",
+        "laravel/framework": "^12.0.0"
     },
     "require-dev": {
-        "phpstan/phpstan": "^1.12",
+        "phpstan/phpstan": "^2.1",
         "slevomat/coding-standard": "^8.14",
         "phpunit/phpunit": "^11.4",
         "spatie/phpunit-snapshot-assertions": "^5.1",
-        "orchestra/testbench": "^9.5"
+        "orchestra/testbench": "^10.0"
     },
     "config": {
         "allow-plugins": {

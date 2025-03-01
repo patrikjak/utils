@@ -30,7 +30,6 @@ class FilterService
         foreach ($groupedFilters as $filters) {
             $query->where(function (Builder $query) use ($filters, $columnsMask): void {
                 foreach ($filters as $filter) {
-                    assert($filter instanceof AbstractFilterCriteria);
                     $filterStrategy = $this->getFilterStrategy($filter->getType());
 
                     $filterStrategy->filter($query, $filter, $columnsMask);

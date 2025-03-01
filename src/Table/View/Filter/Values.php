@@ -42,8 +42,6 @@ class Values extends Component
         });
 
         foreach ($this->settings->criteria->filters as $filter) {
-            assert($filter instanceof AbstractFilterCriteria);
-
             $label = $labels->get($filter->column);
 
             if ($label === null) {

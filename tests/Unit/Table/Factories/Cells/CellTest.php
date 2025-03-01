@@ -30,7 +30,7 @@ class CellTest extends TestCase
         $cell = CellFactory::simple('value with icon', Icon::CHECK);
 
         $this->assertEquals('value with icon', $cell->value);
-        $this->assertEquals(Icon::CHECK, $cell->getIcon());
+        $this->assertEquals(Icon::CHECK, $cell->icon);
         $this->assertEquals(CellType::SIMPLE, $cell->getType());
         $this->assertInstanceOf(AbstractCell::class, $cell);
         $this->assertInstanceOf(CellInterface::class, $cell);

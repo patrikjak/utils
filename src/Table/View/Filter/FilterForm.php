@@ -19,7 +19,7 @@ class FilterForm extends Component
 
     public function __construct(public FilterType $type, public ?string $min = null, public ?string $max = null)
     {
-        $this->textFilterTypes = (new Collection(TextFilterType::cases()))->flatMap(
+        $this->textFilterTypes = new Collection(TextFilterType::cases())->flatMap(
             static fn (TextFilterType $type) => [$type->value => $type->toLabel()],
         )->toArray();
     }

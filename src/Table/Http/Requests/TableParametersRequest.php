@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Table\Http\Requests;
 
 use Carbon\CarbonImmutable;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Cookie\CookieJar;
 use Illuminate\Foundation\Http\FormRequest;
 use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
@@ -103,7 +104,7 @@ class TableParametersRequest extends FormRequest
 
     private function getPageFromCookie(): ?int
     {
-        return $this->getDecodedParametersFromCookie()?->page ?? null;
+        return $this->getDecodedParametersFromCookie()->page ?? null;
     }
 
     private function getPageSizeFromRequest(): ?int
@@ -121,7 +122,7 @@ class TableParametersRequest extends FormRequest
 
     private function getPageSizeFromCookie(): ?int
     {
-        return $this->getDecodedParametersFromCookie()?->pageSize ?? null;
+        return $this->getDecodedParametersFromCookie()->pageSize ?? null;
     }
 
     private function getSortCriteriaFromRequest(): ?SortCriteria
@@ -152,7 +153,7 @@ class TableParametersRequest extends FormRequest
 
     private function getSortCriteriaFromCookie(): ?SortCriteria
     {
-        $sortCriteria = $this->getDecodedParametersFromCookie()?->sortCriteria ?? null;
+        $sortCriteria = $this->getDecodedParametersFromCookie()->sortCriteria ?? null;
 
         if ($sortCriteria === null) {
             return null;
@@ -210,7 +211,7 @@ class TableParametersRequest extends FormRequest
     private function getFilterCriteriaFromCookie(): ?FilterCriteria
     {
         $filters = [];
-        $filterCriteria = $this->getDecodedParametersFromCookie()?->filterCriteria ?? null;
+        $filterCriteria = $this->getDecodedParametersFromCookie()->filterCriteria ?? null;
 
         if ($filterCriteria === null) {
             return null;
@@ -251,13 +252,15 @@ class TableParametersRequest extends FormRequest
         return $cookie ? json_decode($cookie) : null;
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     private function updateParametersCookie(Parameters $parameters): void
     {
         $tableParameters = json_decode($this->cookie($this->tableId, '{}'), true);
         $updatedParameters = array_merge($tableParameters, $parameters->toArray());
 
         $cookieManager = app()->make(CookieJar::class);
-        assert($cookieManager instanceof CookieJar);
 
         $cookieManager->queue(
             $this->tableId,
