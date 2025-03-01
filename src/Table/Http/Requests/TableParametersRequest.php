@@ -104,7 +104,7 @@ class TableParametersRequest extends FormRequest
 
     private function getPageFromCookie(): ?int
     {
-        return $this->getDecodedParametersFromCookie()?->page;
+        return $this->getDecodedParametersFromCookie()->page ?? null;
     }
 
     private function getPageSizeFromRequest(): ?int
@@ -122,7 +122,7 @@ class TableParametersRequest extends FormRequest
 
     private function getPageSizeFromCookie(): ?int
     {
-        return $this->getDecodedParametersFromCookie()?->pageSize;
+        return $this->getDecodedParametersFromCookie()->pageSize ?? null;
     }
 
     private function getSortCriteriaFromRequest(): ?SortCriteria
@@ -153,7 +153,7 @@ class TableParametersRequest extends FormRequest
 
     private function getSortCriteriaFromCookie(): ?SortCriteria
     {
-        $sortCriteria = $this->getDecodedParametersFromCookie()?->sortCriteria;
+        $sortCriteria = $this->getDecodedParametersFromCookie()->sortCriteria ?? null;
 
         if ($sortCriteria === null) {
             return null;
@@ -211,7 +211,7 @@ class TableParametersRequest extends FormRequest
     private function getFilterCriteriaFromCookie(): ?FilterCriteria
     {
         $filters = [];
-        $filterCriteria = $this->getDecodedParametersFromCookie()?->filterCriteria;
+        $filterCriteria = $this->getDecodedParametersFromCookie()->filterCriteria ?? null;
 
         if ($filterCriteria === null) {
             return null;
