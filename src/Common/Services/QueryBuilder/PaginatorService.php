@@ -13,8 +13,6 @@ class PaginatorService
     {
         $query = $query->paginate($perPage, page: $page);
 
-        assert($query instanceof LengthAwarePaginator);
-
         if ($path !== null) {
             $query->withPath($path);
         }
