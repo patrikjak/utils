@@ -8,8 +8,16 @@ use Illuminate\Console\Command;
 
 class InstallCommand extends Command
 {
+    /**
+     * @var string
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $signature = 'install:pjutils';
 
+    /**
+     * @var string
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     */
     protected $description = 'Install patrikjak/utils package';
 
     public function handle(): void
