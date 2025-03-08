@@ -6,6 +6,7 @@ namespace Patrikjak\Utils;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
+use Patrikjak\Utils\Common\Console\Commands\InstallCommand;
 
 class UtilsServiceProvider extends ServiceProvider
 {
@@ -21,6 +22,7 @@ class UtilsServiceProvider extends ServiceProvider
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'pjutils');
         $this->loadTranslationsFrom(__DIR__ . '/../lang', 'pjutils');
         $this->loadRoutesFrom(__DIR__ . '/../routes/web.php');
+        $this->loadCommands();
     }
 
     public function register(): void
@@ -73,5 +75,12 @@ class UtilsServiceProvider extends ServiceProvider
         Blade::directive('icon', static function ($icon) {
             return "<?php echo \Patrikjak\Utils\Common\Enums\Icon::from($icon)->getAsHtml(); ?>";
         });
+    }
+
+    private function loadCommands(): void
+    {
+        $this->commands([
+            InstallCommand::class,
+        ]);
     }
 }
