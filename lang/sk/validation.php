@@ -33,7 +33,8 @@ return [
     ],
     'recaptcha' => 'Formulár neprešiel testom reCAPTCHA',
     'required' => '{1} :attribute je povinný|{2} :attribute je povinná|{3} :attribute je povinné',
-    'telephone_format' => 'attribute musí byť platné telefónne číslo vo formáte :format',
+    'telephone_format' => ':attribute musí byť platné telefónne číslo vo formáte :format',
+    'telephone_format_multiple' => ':attribute musí byť platné telefónne číslo v medzinárodnom formáte (+421123456789)',
     'unique' => '{1} :attribute je už použitý|{2} :attribute je už použitá|{3} :attribute je už použité',
 
 ];

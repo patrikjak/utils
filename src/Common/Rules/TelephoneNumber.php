@@ -11,7 +11,10 @@ use Patrikjak\Utils\Common\Services\TelephonePattern;
 
 final readonly class TelephoneNumber implements ValidationRule
 {
-    public function __construct(private TelephonePattern $pattern = TelephonePattern::SK)
+    /**
+     * @param TelephonePattern|array<TelephonePattern|mixed> $pattern
+     */
+    public function __construct(private TelephonePattern|array $pattern = TelephonePattern::SK)
     {
     }
 
@@ -21,13 +24,29 @@ final readonly class TelephoneNumber implements ValidationRule
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
         if ($value === null) {
-            $fail(__('pjutils::validation.required', ['attribute' => $attribute]));
+            $fail(__('pjutils::validation.required'));
 
             return;
         }
 
-        if (!preg_match($this->pattern->value, $value)) {
-            $fail(__('pjutils::validation.telephone_format', ['format' => $this->pattern->getExample()]));
+        if (!is_array($this->pattern)) {
+            if (!preg_match($this->pattern->value, $value)) {
+                $fail(__('pjutils::validation.telephone_format', ['format' => $this->pattern->getExample()]));
+            }
+
+            return;
         }
+
+        foreach ($this->pattern as $pattern) {
+            if (!$pattern instanceof TelephonePattern) {
+                continue;
+            }
+
+            if (preg_match($pattern->value, $value)) {
+                return;
+            }
+        }
+
+        $fail(__('pjutils::validation.telephone_format_multiple'));
     }
 }
