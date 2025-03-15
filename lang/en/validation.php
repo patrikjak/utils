@@ -34,6 +34,7 @@ return [
     'recaptcha' => 'The form did not pass the reCAPTCHA test',
     'required' => 'The :attribute field is required',
     'telephone_format' => 'The :attribute must be a valid telephone number in the format :format',
+    'telephone_format_multiple' => 'The :attribute must be a valid telephone number in international format (+421123456789)',
     'unique' => 'The :attribute has already been taken',
 
 ];
