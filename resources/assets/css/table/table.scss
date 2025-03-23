@@ -109,6 +109,10 @@
         &.actions {
             position: relative;
         }
+
+        &.link a {
+            color: $primary;
+        }
     }
 
     .pj-checkbox {

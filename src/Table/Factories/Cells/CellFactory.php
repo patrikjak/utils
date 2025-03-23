@@ -8,6 +8,7 @@ use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Dto\Cells\Chip;
 use Patrikjak\Utils\Table\Dto\Cells\Double as DoubleCell;
+use Patrikjak\Utils\Table\Dto\Cells\Link;
 use Patrikjak\Utils\Table\Dto\Cells\Simple;
 
 readonly class CellFactory
@@ -25,5 +26,10 @@ readonly class CellFactory
     public static function chip(string $value, Type $type = Type::NEUTRAL): Chip
     {
         return new Chip($value, $type);
+    }
+
+    public static function link(string $value, string $href): Link
+    {
+        return new Link($value, $href);
     }
 }

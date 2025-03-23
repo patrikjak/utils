@@ -16,6 +16,7 @@ class UtilsServiceProvider extends ServiceProvider
         $this->publishAssets();
         $this->publishViews();
         $this->publishConfig();
+        $this->publishTranslations();
 
         $this->extendBlade();
 
@@ -68,6 +69,13 @@ class UtilsServiceProvider extends ServiceProvider
         $this->publishes([
             __DIR__ . '/../config/pjutils.php' => config_path('pjutils.php'),
         ], 'pjutils-config');
+    }
+
+    private function publishTranslations(): void
+    {
+        $this->publishes([
+            __DIR__ . '/../lang' => lang_path('vendor/pjutils'),
+        ], 'pjutils-translations');
     }
 
     private function extendBlade(): void

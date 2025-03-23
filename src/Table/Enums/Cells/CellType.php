@@ -11,4 +11,6 @@ enum CellType: string
     case DOUBLE = 'double';
 
     case CHIP = 'chip';
+
+    case LINK = 'link';
 }
