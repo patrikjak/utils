@@ -17,7 +17,7 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
     /**
      * @var array<string>
      */
-    private array $columns = ['id', 'name', 'email', 'created_at', 'updated_at'];
+    private array $columns = ['id', 'name', 'email', 'link', 'created_at', 'updated_at'];
 
     private string $rowId = 'id';
 
@@ -42,6 +42,7 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
             'id' => 'ID',
             'name' => 'Name',
             'email' => 'Email',
+            'link' => 'Link',
             'created_at' => 'Created at',
             'updated_at' => 'Updated at',
         ];
