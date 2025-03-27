@@ -187,6 +187,10 @@ export function findGetParameter(parameterName: string, url: string = window.loc
     return null;
 }
 
+export function getBaseUrl(): string {
+    return window.location.origin;
+}
+
 export function urlIncludesGetParameters(url: string): boolean {
     return url.includes('?');
 }
