@@ -6,4 +6,4 @@ export const deleteSortKey = 'deleteSort';
 export const filterKey = 'filter';
 export const deleteFilterKey = 'deleteFilters';
 
-export const filterModalUrl = 'pjutils/table/filter-form/{type}';
+export const filterModalUrl = '/pjutils/table/filter-form/{type}';
