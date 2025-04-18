@@ -16,8 +16,12 @@ trait FileUpload
     public function getNewFiles(string $inputName): Collection
     {
         assert($this instanceof FormRequest);
+        $deleted = $this->getFilesToDelete($inputName);
 
-        return new Collection($this->file($inputName) ?? []);
+        return new Collection($this->file($inputName) ?? [])
+            ->filter(function (UploadedFile $file) use ($deleted) {
+                return !$deleted->contains($file->getClientOriginalName());
+            });
     }
 
     /**
