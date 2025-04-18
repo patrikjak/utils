@@ -19,7 +19,7 @@ trait FileUpload
         $deleted = $this->getFilesToDelete($inputName);
 
         return new Collection($this->file($inputName) ?? [])
-            ->filter(function (UploadedFile $file) use ($deleted) {
+            ->filter(static function (UploadedFile $file) use ($deleted) {
                 return !$deleted->contains($file->getClientOriginalName());
             });
     }
