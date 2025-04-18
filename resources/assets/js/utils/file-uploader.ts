@@ -46,19 +46,12 @@ export function bindUploader(uploader: HTMLElement): void {
 function bindDelete(filePreview: HTMLElement, uploader: HTMLElement, file: File|string): void {
     const deleteButton: HTMLElement = filePreview.querySelector('.delete-button');
     const fileInput: HTMLInputElement = uploader.querySelector('input[type="file"]');
-    const files: FileList = fileInput.files;
 
     deleteButton.addEventListener('click', (): void => {
         const preview: HTMLElement = filePreview.closest('.pj-photo-preview');
         preview.remove();
 
         const fileName: string = typeof file === 'string' ? file : file.name;
-
-        for (let i = 0; i < files.length; i++) {
-            if (files[i].name === fileName) {
-                return;
-            }
-        }
 
         const deletedFileInput = createElement('input', null, {
             type: 'hidden',
