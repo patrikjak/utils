@@ -14,6 +14,7 @@ export default defineConfig({
                 "resources/assets/css/utils/dropdown.scss",
                 "resources/assets/css/utils/modal.scss",
                 "resources/assets/css/utils/notification.scss",
+                "resources/assets/css/utils/file-uploader.scss",
             ],
             refresh: true,
         }),

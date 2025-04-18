@@ -1,0 +1,46 @@
+@use "../variables" as *;
+
+.pj-photo-uploader {
+    margin-top: 1rem;
+
+    .previews {
+        margin-top: 2%;
+        display: flex;
+        gap: 1rem;
+        width: 100%;
+        overflow-x: auto;
+
+        .pj-photo-preview {
+            position: relative;
+            padding-top: .75rem;
+
+            .delete-button {
+                position: absolute;
+                top: 0;
+                right: -.75rem;
+                background-color: $danger;
+                border-radius: 100%;
+                cursor: pointer;
+                transition-duration: .3s;
+
+                &:hover {
+                    background-color: $danger-dark;
+                }
+            }
+
+            .close-button {
+                transform: translateX(1px);
+
+                .line {
+                    background-color: $white;
+                }
+            }
+
+            img {
+                width: 150px;
+                height: 150px;
+                object-fit: cover;
+            }
+        }
+    }
+}
