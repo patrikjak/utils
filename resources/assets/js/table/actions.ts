@@ -1,4 +1,4 @@
-import {getCss, insertAfter} from "../helpers/general";
+import {getData, insertAfter, isEmpty} from "../helpers/general";
 import {TableWrapper} from "../interfaces/table";
 
 export function bindShowingRowActions(tableWrapper: TableWrapper): void {
@@ -28,7 +28,7 @@ export function doAction(tableWrapper: TableWrapper, actionId: string, callback:
         const tableActions: HTMLElement = this.closest('.table-actions');
         tableActions.style.display = 'none';
 
-        callback(this.closest('tr').id);
+        callback(tableWrapper.querySelector('tr.active-actions').id);
     });
 }
 
@@ -36,20 +36,55 @@ function showAction(actionButton: HTMLElement, actions: HTMLElement): void {
     actions.style.display = 'inline-block';
     actions.style.position = 'absolute';
 
-    const actionsWidth: number = parseFloat(getCss(actions, 'width'));
-    const rowHeight: number = parseFloat(getCss(actionButton, 'height'));
+    const row = actionButton.closest('tr');
+    row.classList.add('active-actions');
 
-    actions.style.top = (rowHeight / 2) + 'px';
-    actions.style.left = (0 - actionsWidth) + 'px';
+    hideHiddenActions(actionButton, actions);
 
-    insertAfter(actions, actionButton.querySelector('.hellip'));
+    const tableWrapper: HTMLElement = actionButton.closest('.table-wrapper');
+    const visibleWidth: number = tableWrapper.clientWidth;
+
+    const actionButtonPositions = actionButton.getBoundingClientRect();
+    const actionsPositions = actions.getBoundingClientRect();
+    const tableWrapperPositions = tableWrapper.getBoundingClientRect();
+
+    const actionsNewLeftPosition: number = visibleWidth - actionButtonPositions.width - actionsPositions.width;
+
+    actions.style.top = (actionButtonPositions.top - tableWrapperPositions.top + (actionButtonPositions.height / 2) / 2) + 'px';
+    actions.style.left = actionsNewLeftPosition + 'px';
 
     setTimeout((): void => {
-        bindClosingActions(actions);
+        bindClosingActions(actionButton, actions);
     }, 0);
 }
 
-function bindClosingActions(actions: HTMLElement): void {
+function hideHiddenActions(actionButton: HTMLElement, actions: HTMLElement): void {
+    const row = actionButton.closest('tr');
+    const hiddenActions = getData(row, 'hidden-actions');
+    let explodedHiddenActions: string[] = [];
+
+    if (hiddenActions !== null && hiddenActions !== '') {
+        explodedHiddenActions = hiddenActions.split(',');
+    }
+
+    const actionElements: NodeListOf<HTMLElement> = actions.querySelectorAll('.action');
+
+    actionElements.forEach((actionElement: HTMLElement): void => {
+        if (isEmpty(explodedHiddenActions)) {
+            actionElement.style.display = 'flex';
+
+            return;
+        }
+
+        for (const hiddenAction of explodedHiddenActions) {
+            actionElement.style.display = actionElement.classList.contains(hiddenAction)
+                ? 'none'
+                : 'flex';
+        }
+    });
+}
+
+function bindClosingActions(actionButton: HTMLElement, actions: HTMLElement): void {
     document.querySelector('body').addEventListener('click', function bindClosing(e): void {
         if (e.target instanceof Element) {
             const targetIsActionButton: boolean = e.target.classList.contains('hellip') ||
@@ -57,6 +92,10 @@ function bindClosingActions(actions: HTMLElement): void {
 
             if (!targetIsActionButton) {
                 actions.style.display = 'none';
+                setTimeout((): void => {
+                    const row = actionButton.closest('tr');
+                    row.classList.remove('active-actions');
+                }, 100);
             }
 
             document.querySelector('body').removeEventListener('click', bindClosing);

@@ -8,4 +8,5 @@
     :label="__('pjutils::table.filter_value')"
     name="filter_value"
     :placeholder="__('pjutils::table.filter_value_placeholder')"
+    autofocus
 />

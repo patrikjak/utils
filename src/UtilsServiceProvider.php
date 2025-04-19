@@ -83,6 +83,10 @@ class UtilsServiceProvider extends ServiceProvider
         Blade::directive('icon', static function ($icon) {
             return "<?php echo \Patrikjak\Utils\Common\Enums\Icon::from($icon)->getAsHtml(); ?>";
         });
+
+        Blade::directive('customIcon', static function ($icon) {
+            return "<?php echo \Patrikjak\Utils\Common\Enums\Icon::getCustomAsHtml($icon); ?>";
+        });
     }
 
     private function loadCommands(): void

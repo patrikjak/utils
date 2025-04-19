@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
+use Patrikjak\Utils\Table\Dto\Cells\Simple;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
 use Patrikjak\Utils\Table\View\Table;
 use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\TableProvider;
@@ -69,6 +70,13 @@ class BaseTableProviderTest extends TestCase
             new Item('Delete', 'delete', type: Type::DANGER),
             new Item('Show', 'show', Icon::EYE),
             new Item('Hide', 'hide', Icon::EYE_SLASH, Type::DANGER),
+            new Item('Hidden for some rows', 'dynamic', visible: static function (array $row): bool {
+                $rowId = $row['id'] ?? null;
+                assert($rowId instanceof Simple);
+
+                return $rowId->value !== '1';
+            }),
+            new Item('Hidden for all items', 'hidden', visible: false),
         ]);
 
         $this->tableMatchesSnapshot();
