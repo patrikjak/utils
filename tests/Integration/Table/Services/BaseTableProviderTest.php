@@ -76,6 +76,7 @@ class BaseTableProviderTest extends TestCase
 
                 return $rowId->value !== '1';
             }),
+            new Item('Hidden for all items', 'hidden', visible: false),
         ]);
 
         $this->tableMatchesSnapshot();
