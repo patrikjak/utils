@@ -1,5 +1,13 @@
 @use "../variables" as *;
 
+.pj-table-wrapper {
+    position: relative;
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+}
+
 .pj-table {
     border-collapse: collapse;
     width: 100%;
@@ -107,6 +115,7 @@
         }
 
         &.actions {
+            width: 1rem;
             position: relative;
         }
 
@@ -237,6 +246,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    left: 0;
 
     .links {
         display: flex;

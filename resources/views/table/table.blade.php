@@ -9,18 +9,20 @@
         <x-pjutils.table::options :table="$table" />
     @endif
 
-    <table
-        class="{{ $tableClass }}"
-        @if($table->expandable !== null) data-expandable="{{ $table->expandable }}" @endif
-    >
+    <div class="table-wrapper">
+        <table
+            class="{{ $tableClass }}"
+            @if($table->expandable !== null) data-expandable="{{ $table->expandable }}" @endif
+        >
 
-        <x-pjutils.table::head :$table />
-        <x-pjutils.table::body :$table />
+            <x-pjutils.table::head :$table />
+            <x-pjutils.table::body :$table />
 
-        @if($table->hasActions())
-            <x-pjutils.table::cells.actions.options :actions="$table->actions" />
-        @endif
-    </table>
+            @if($table->hasActions())
+                <x-pjutils.table::cells.actions.options :actions="$table->actions" />
+            @endif
+        </table>
+    </div>
 
     @if($table->hasBulkActions())
         <x-pjutils.table::bulk-actions.wrapper :bulk-actions="$table->bulkActions" />

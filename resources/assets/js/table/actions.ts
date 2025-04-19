@@ -36,13 +36,17 @@ function showAction(actionButton: HTMLElement, actions: HTMLElement): void {
     actions.style.display = 'inline-block';
     actions.style.position = 'absolute';
 
-    const actionsWidth: number = parseFloat(getCss(actions, 'width'));
-    const rowHeight: number = parseFloat(getCss(actionButton, 'height'));
+    const tableWrapper: HTMLElement = actionButton.closest('.table-wrapper');
+    const visibleWidth: number = tableWrapper.clientWidth;
 
-    actions.style.top = (rowHeight / 2) + 'px';
-    actions.style.left = (0 - actionsWidth) + 'px';
+    const actionButtonPositions = actionButton.getBoundingClientRect();
+    const actionsPositions = actions.getBoundingClientRect();
+    const tableWrapperPositions = tableWrapper.getBoundingClientRect();
 
-    insertAfter(actions, actionButton.querySelector('.hellip'));
+    const actionsNewLeftPosition: number = visibleWidth - actionButtonPositions.width - actionsPositions.width;
+
+    actions.style.top = (actionButtonPositions.top - tableWrapperPositions.top + (actionButtonPositions.height / 2) / 2) + 'px';
+    actions.style.left = actionsNewLeftPosition + 'px';
 
     setTimeout((): void => {
         bindClosingActions(actions);
