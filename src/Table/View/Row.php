@@ -58,6 +58,7 @@ class Row extends Component
         foreach ($actions as $action) {
             if ($action->visible === false) {
                 $hiddenActions[] = $action->classId;
+
                 continue;
             }
 
@@ -72,7 +73,7 @@ class Row extends Component
             $hiddenActions[] = $action->classId;
         }
 
-        $this->hiddenActions = implode(',', $hiddenActions);
+        $this->hiddenActions = count($hiddenActions) === 0 ? null : implode(',', $hiddenActions);
         $this->allActionsAreHidden = count($hiddenActions) === count($actions);
     }
 }
