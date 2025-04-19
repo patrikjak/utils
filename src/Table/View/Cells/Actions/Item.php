@@ -13,7 +13,7 @@ class Item extends Component
 {
     public readonly string $actionItemClass;
 
-    public ?Icon $icon = null;
+    public Icon|string|null $icon = null;
 
     public function __construct(public readonly ActionItem $action)
     {

@@ -12,7 +12,7 @@ final readonly class Item
     public function __construct(
         public string $label,
         public string $classId,
-        public ?Icon $icon = null,
+        public Icon|string|null $icon = null,
         public Type $type = Type::NEUTRAL,
     ) {
     }

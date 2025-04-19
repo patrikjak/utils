@@ -1,7 +1,13 @@
+@use('Patrikjak\Utils\Common\Enums\Icon')
+
 <div class="{{ $actionItemClass }}">
     @if($icon !== null)
         <div class="icon {{ $icon }}-icon">
-            {!! $icon->getAsHtml() !!}
+            @if($icon instanceof Icon)
+                {!! $icon->getAsHtml() !!}
+            @else
+                @customIcon($icon)
+            @endif
         </div>
     @endif
 
