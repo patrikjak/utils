@@ -70,7 +70,7 @@ class BaseTableProviderTest extends TestCase
             new Item('Delete', 'delete', type: Type::DANGER),
             new Item('Show', 'show', Icon::EYE),
             new Item('Hide', 'hide', Icon::EYE_SLASH, Type::DANGER),
-            new Item('Hidden for some rows', 'dynamic', visible: function (array $row): bool {
+            new Item('Hidden for some rows', 'dynamic', visible: static function (array $row): bool {
                 $rowId = $row['id'] ?? null;
                 assert($rowId instanceof Simple);
 
