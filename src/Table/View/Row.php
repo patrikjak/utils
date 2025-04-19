@@ -4,6 +4,7 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\View;
 
+use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Cells\Cell;
@@ -19,6 +20,10 @@ class Row extends Component
 
     public readonly ?string $rowClass;
 
+    public ?string $hiddenActions = null;
+
+    public bool $allActionsAreHidden = false;
+
     /**
      * @param array<string, scalar|array<string>> $row
      */
@@ -30,6 +35,8 @@ class Row extends Component
 
     public function render(): View
     {
+        $this->setHiddenActions();
+
         return view('pjutils::table.row');
     }
 
@@ -41,5 +48,31 @@ class Row extends Component
     private function resolveRowId(): string
     {
         return (string) $this->row[$this->table->rowId];
+    }
+
+    private function setHiddenActions(): void
+    {
+        $actions = $this->table->actions;
+        $hiddenActions = [];
+
+        foreach ($actions as $action) {
+            if ($action->visible === false) {
+                $hiddenActions[] = $action->classId;
+                continue;
+            }
+
+            if (!$action->visible instanceof Closure) {
+                continue;
+            }
+
+            if (call_user_func($action->visible, $this->row)) {
+                continue;
+            }
+
+            $hiddenActions[] = $action->classId;
+        }
+
+        $this->hiddenActions = implode(',', $hiddenActions);
+        $this->allActionsAreHidden = count($hiddenActions) === count($actions);
     }
 }

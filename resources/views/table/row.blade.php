@@ -1,5 +1,6 @@
 <tr id="{{ $rowId }}"
     @if(isset($rowClass)) class="{{ $rowClass }}" @endif
+    @isset($hiddenActions) data-hidden-actions="{{ $hiddenActions }}" @endisset
 >
     @if($showCheckboxes())
         <td class="check">
@@ -19,6 +20,10 @@
     @endforeach
 
     @if($hasActions())
-        <x-pjutils.table::cells.actions.dots />
+        @if($allActionsAreHidden)
+            <td></td>
+        @else
+            <x-pjutils.table::cells.actions.dots />
+        @endif
     @endif
 </tr>
