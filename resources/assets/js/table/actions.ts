@@ -101,14 +101,17 @@ function bindActions(actionButton: HTMLElement, actions: HTMLElement): void {
         const differentMethod: boolean = method !== null && method !== '' && method !== 'GET';
 
         if (isLink) {
-            bindActionClick(actionElement, link, differentMethod ? method : 'get');
+            bindActionClick(
+                actionElement,
+                link,
+                differentMethod ? method : 'get',
+                actionButton.closest('.pj-table-wrapper'),
+            );
         }
-
-        dispatchUpdateEvent(actionButton.closest('.pj-table-wrapper'));
     });
 }
 
-function bindActionClick(actionElement: HTMLElement, link: string, method: string): void {
+function bindActionClick(actionElement: HTMLElement, link: string, method: string, tableWrapper: TableWrapper): void {
     const clickHandler = function actionClick(): void {
         if (method !== 'get') {
             axios[method.toLowerCase()](link)
@@ -125,6 +128,8 @@ function bindActionClick(actionElement: HTMLElement, link: string, method: strin
         } else {
             window.location.href = link;
         }
+
+        dispatchUpdateEvent(tableWrapper);
     }
 
     removeOnClickListenersFromActions(actionElement.closest('.table-actions'), clickHandler);
