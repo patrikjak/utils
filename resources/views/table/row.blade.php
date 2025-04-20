@@ -23,7 +23,7 @@
         @if($allActionsAreHidden)
             <td></td>
         @else
-            <x-pjutils.table::cells.actions.dots />
+            <x-pjutils.table::cells.actions.dots :actions-data-attributes="$actionsDataAttributes" />
         @endif
     @endif
 </tr>

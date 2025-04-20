@@ -16,6 +16,8 @@ final readonly class Item
         public Icon|string|null $icon = null,
         public Type $type = Type::NEUTRAL,
         public bool|Closure $visible = true,
+        public string|Closure|null $href = null,
+        public ?string $method = null,
     ) {
     }
 }
