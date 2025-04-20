@@ -24,6 +24,8 @@ class Row extends Component
 
     public bool $allActionsAreHidden = false;
 
+    public ?string $actionsDataAttributes = null;
+
     /**
      * @param array<string, scalar|array<string>> $row
      */
@@ -36,6 +38,7 @@ class Row extends Component
     public function render(): View
     {
         $this->setHiddenActions();
+        $this->setActionsDataAttributes();
 
         return view('pjutils::table.row');
     }
@@ -75,5 +78,31 @@ class Row extends Component
 
         $this->hiddenActions = count($hiddenActions) === 0 ? null : implode(',', $hiddenActions);
         $this->allActionsAreHidden = count($hiddenActions) === count($actions);
+    }
+
+    private function setActionsDataAttributes(): void
+    {
+        $actions = $this->table->actions;
+        $dataAttributes = [];
+
+        foreach ($actions as $action) {
+            if (is_string($action->href)) {
+                $dataAttributes[] = sprintf('data-%s-href="%s"', $action->classId, $action->href);
+            }
+
+            if ($action->href instanceof Closure) {
+                $dataAttributes[] = sprintf(
+                    'data-%s-href="%s"',
+                    $action->classId,
+                    call_user_func($action->href, $this->row),
+                );
+            }
+
+            if ($action->method !== null) {
+                $dataAttributes[] = sprintf('data-%s-method="%s"', $action->classId, $action->method);
+            }
+        }
+
+        $this->actionsDataAttributes = count($dataAttributes) === 0 ? null : implode(' ', $dataAttributes);
     }
 }

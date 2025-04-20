@@ -9,6 +9,10 @@ use Illuminate\View\Component;
 
 class Dots extends Component
 {
+    public function __construct(public ?string $actionsDataAttributes = null)
+    {
+    }
+
     public function render(): View
     {
         return view('pjutils::table.cells.actions.dots');

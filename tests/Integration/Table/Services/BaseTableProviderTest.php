@@ -71,12 +71,25 @@ class BaseTableProviderTest extends TestCase
             new Item('Show', 'show', Icon::EYE),
             new Item('Hide', 'hide', Icon::EYE_SLASH, Type::DANGER),
             new Item('Hidden for some rows', 'dynamic', visible: static function (array $row): bool {
-                $rowId = $row['id'] ?? null;
+                $rowId = $row['id'];
                 assert($rowId instanceof Simple);
 
                 return $rowId->value !== '1';
             }),
             new Item('Hidden for all items', 'hidden', visible: false),
+            new Item('Static link', 'static-link', href: 'https://google.com'),
+            new Item('Dynamic link', 'dynamic-link', href: static function (array $row): string {
+                $rowId = $row['id'];
+                assert($rowId instanceof Simple);
+
+                return sprintf('dynamic-link/%s', $rowId->value);
+            }),
+            new Item(
+                'Different method',
+                'different-method',
+                href: 'https://example.com/different-method',
+                method: 'POST',
+            ),
         ]);
 
         $this->tableMatchesSnapshot();
