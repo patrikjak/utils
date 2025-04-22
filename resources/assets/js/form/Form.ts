@@ -146,13 +146,13 @@ export default class Form {
         return data;
     }
 
-    private addAdditionalDataToForm(data: FormData): void {
+    private async addAdditionalDataToForm(data: FormData): Promise<void> {
         if (this.additionalData === null) {
             return;
         }
 
         if (typeof this.additionalData === 'function') {
-            this.additionalData = this.additionalData();
+            this.additionalData = await this.additionalData();
 
             if (!(this.additionalData instanceof FormData)) {
                 return;
