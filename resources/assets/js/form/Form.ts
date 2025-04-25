@@ -108,7 +108,7 @@ export default class Form {
         );
     }
 
-    private submit(form: HTMLFormElement, customSubmitButton: HTMLElement = null): void {
+    private async submit(form: HTMLFormElement, customSubmitButton: HTMLElement = null): Promise<void> {
         const submitButton: HTMLElement = customSubmitButton ?? form.querySelector('[type="submit"]');
 
         if (submitButton) {
@@ -118,7 +118,7 @@ export default class Form {
         sendRequest(
             getFormAction(form),
             getFormMethod(form),
-            this.getData(form),
+            await this.getData(form),
             this.recaptchaAction,
         ).then(response => {
             this.successCallback(form, response);
@@ -133,33 +133,35 @@ export default class Form {
         });
     }
 
-    private getData(form: HTMLFormElement): FormData {
+    private async getData(form: HTMLFormElement): Promise<FormData> {
         let data = new FormData(form);
 
         for (const exception of this.excludedFields) {
             data.delete(exception);
         }
 
-        this.addAdditionalDataToForm(data);
+        await this.addAdditionalDataToForm(data);
         this.transferMultipleValuesToArray(form, data);
 
         return data;
     }
 
-    private addAdditionalDataToForm(data: FormData): void {
+    private async addAdditionalDataToForm(data: FormData): Promise<void> {
         if (this.additionalData === null) {
             return;
         }
 
-        if (typeof this.additionalData === 'function') {
-            this.additionalData = this.additionalData();
+        let resultOfCallable: FormData;
 
-            if (!(this.additionalData instanceof FormData)) {
+        if (typeof this.additionalData === 'function') {
+            resultOfCallable = await this.additionalData();
+
+            if (!(resultOfCallable instanceof FormData)) {
                 return;
             }
         }
 
-        for (const [key, value] of this.additionalData.entries()) {
+        for (const [key, value] of resultOfCallable.entries()) {
             data.append(key, value);
         }
     }
