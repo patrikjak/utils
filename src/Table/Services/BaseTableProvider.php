@@ -165,7 +165,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
 
     protected function getOptionsHtml(): ?string
     {
-        if (!$this->table->isSortable()) {
+        if (!$this->table->isSortable() && !$this->table->isFilterable()) {
             return null;
         }
 
