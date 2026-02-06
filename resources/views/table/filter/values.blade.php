@@ -38,9 +38,6 @@
 
             @if($option->criteria instanceof JsonFilterCriteria)
                 <span class="operator">: {{ strtolower($option->criteria->filterType->toLabel()) }} -</span>
-                @if($option->criteria->jsonPath)
-                    <span class="json-path">&nbsp;{{ $option->criteria->jsonPath }} -</span>
-                @endif
             @endif
 
             @if($option->criteria instanceof SelectFilterCriteria || $option->criteria instanceof TextFilterCriteria || $option->criteria instanceof JsonFilterCriteria)
