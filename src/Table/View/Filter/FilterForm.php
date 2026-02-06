@@ -23,8 +23,12 @@ class FilterForm extends Component
      */
     public array $jsonFilterTypes = [];
 
-    public function __construct(public FilterType $type, public ?string $min = null, public ?string $max = null)
-    {
+    public function __construct(
+        public FilterType $type,
+        public ?string $min = null,
+        public ?string $max = null,
+        public ?string $jsonPath = null
+    ) {
         $this->textFilterTypes = new Collection(TextFilterType::cases())->flatMap(
             static fn (TextFilterType $type) => [$type->value => $type->toLabel()],
         )->toArray();

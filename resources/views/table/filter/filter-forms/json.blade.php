@@ -4,11 +4,7 @@
     name="filter_type"
 />
 
-<x-pjutils::form.input
-    :label="__('pjutils::table.json_path')"
-    name="json_path"
-    :placeholder="__('pjutils::table.json_path_placeholder')"
-/>
+<input type="hidden" name="json_path" value="{{ $jsonPath }}">
 
 <x-pjutils::form.input
     :label="__('pjutils::table.filter_value')"

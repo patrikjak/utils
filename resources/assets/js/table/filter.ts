@@ -75,6 +75,14 @@ async function showFilterModal(filterOption: HTMLElement): Promise<void> {
         }
     }
 
+    if (type === 'json') {
+        const jsonPath: string | null = getData(filterOption, 'json-path');
+
+        if (jsonPath !== null) {
+            url += `?jsonPath=${jsonPath}`;
+        }
+    }
+
     const filterForm: FilterModalResponse | void = await axios.get(url)
         .then((response: AxiosResponse): FilterModalResponse | void => {
             return response.data;

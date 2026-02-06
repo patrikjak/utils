@@ -7,8 +7,10 @@ import {
     DateFilter,
     Filter,
     FilterCriteria,
+    JsonFilter,
     NumberFilter,
-    PageCriteria, SelectFilter,
+    PageCriteria,
+    SelectFilter,
     SortCriteria,
     TableParts,
     TableWrapper,
@@ -229,6 +231,8 @@ function getFilterQuery(filter: Filter, index: number): string {
             return getRangeFilterQuery(<NumberFilter | DateFilter> filter, index);
         case 'select':
             return getSelectFilterQuery(<SelectFilter> filter, index);
+        case 'json':
+            return getJsonFilterQuery(<JsonFilter> filter, index);
     }
 }
 
@@ -259,5 +263,12 @@ function getRangeFilterQuery(filter: NumberFilter | DateFilter, index: number): 
 
 function getSelectFilterQuery(filter: SelectFilter, index: number): string {
     return `${filterKey}[${filter.column}][${index}][value]=${filter.value}
+        &${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
+}
+
+function getJsonFilterQuery(filter: JsonFilter, index: number): string {
+    return `${filterKey}[${filter.column}][${index}][value]=${filter.value}
+        &${filterKey}[${filter.column}][${index}][operator]=${filter.filterType}
+        &${filterKey}[${filter.column}][${index}][jsonPath]=${filter.jsonPath ?? ''}
         &${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
 }

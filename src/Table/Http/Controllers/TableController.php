@@ -30,6 +30,7 @@ class TableController
                 $filterType,
                 $request->input('from'),
                 $request->input('to'),
+                $request->input('jsonPath'),
             )),
         ]);
     }
