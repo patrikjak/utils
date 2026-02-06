@@ -8,7 +8,6 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
-use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
 use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
 
 class FilterForm extends Component
@@ -18,19 +17,10 @@ class FilterForm extends Component
      */
     public array $textFilterTypes = [];
 
-    /**
-     * @var array<string, string>
-     */
-    public array $jsonFilterTypes = [];
-
     public function __construct(public FilterType $type, public ?string $min = null, public ?string $max = null)
     {
         $this->textFilterTypes = new Collection(TextFilterType::cases())->flatMap(
             static fn (TextFilterType $type) => [$type->value => $type->toLabel()],
-        )->toArray();
-
-        $this->jsonFilterTypes = new Collection(JsonFilterType::cases())->flatMap(
-            static fn (JsonFilterType $type) => [$type->value => $type->toLabel()],
         )->toArray();
     }
 

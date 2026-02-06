@@ -1,5 +1,4 @@
 @use('Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria')
-@use('Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria')
 @use('Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria')
 @use('Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria')
 @use('Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria')
@@ -14,11 +13,7 @@
             data-column="{{ $option->criteria->column }}"
             data-type="{{ $option->criteria->getType()->value }}"
             @if($option->criteria instanceof TextFilterCriteria) data-operator="{{ $option->criteria->filterType->value }}" @endif
-            @if($option->criteria instanceof JsonFilterCriteria)
-                data-operator="{{ $option->criteria->filterType->value }}"
-                data-json-path="{{ $option->criteria->jsonPath }}"
-            @endif
-            @if($option->criteria instanceof TextFilterCriteria || $option->criteria instanceof SelectFilterCriteria || $option->criteria instanceof JsonFilterCriteria)
+            @if($option->criteria instanceof TextFilterCriteria || $option->criteria instanceof SelectFilterCriteria)
                 data-value="{{ $option->criteria->value }}"
             @endif
             @if($option->criteria instanceof DateFilterCriteria || $option->criteria instanceof NumberFilterCriteria)
@@ -36,14 +31,7 @@
                 <span class="operator">: {{ strtolower($option->criteria->filterType->toLabel()) }} -</span>
             @endif
 
-            @if($option->criteria instanceof JsonFilterCriteria)
-                <span class="operator">: {{ strtolower($option->criteria->filterType->toLabel()) }} -</span>
-                @if($option->criteria->jsonPath)
-                    <span class="json-path">&nbsp;{{ $option->criteria->jsonPath }} -</span>
-                @endif
-            @endif
-
-            @if($option->criteria instanceof SelectFilterCriteria || $option->criteria instanceof TextFilterCriteria || $option->criteria instanceof JsonFilterCriteria)
+            @if($option->criteria instanceof SelectFilterCriteria || $option->criteria instanceof TextFilterCriteria)
                 <span class="value">&nbsp;{{ $option->criteria->value }}</span>
             @endif
 
