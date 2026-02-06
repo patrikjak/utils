@@ -58,10 +58,3 @@ export interface SelectFilter extends Filter {
     type: 'select';
     value: string;
 }
-
-export interface JsonFilter extends Filter {
-    type: 'json';
-    filterType: 'contains' | 'not_contains' | 'equals' | 'not_equals' | 'starts_with' | 'ends_with';
-    jsonPath: string | null;
-    value: string;
-}

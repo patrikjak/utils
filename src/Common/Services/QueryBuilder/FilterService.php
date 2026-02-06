@@ -10,7 +10,6 @@ use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\Filter;
-use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\JsonFilter;
 use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\RangeFilter;
 use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\SelectFilter;
 use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\TextFilter;
@@ -56,7 +55,6 @@ class FilterService
             FilterType::TEXT => new TextFilter(),
             FilterType::SELECT => new SelectFilter(),
             FilterType::DATE, FilterType::NUMBER => new RangeFilter(),
-            FilterType::JSON => new JsonFilter(),
         };
     }
 }
