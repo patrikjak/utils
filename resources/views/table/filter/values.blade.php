@@ -46,13 +46,15 @@
 
             @if($option->criteria instanceof DateFilterCriteria)
                 @if($option->criteria->from !== null)
-                    <span
-                        class="from">&nbsp; {{ strtolower(__('pjutils::table.filter_from')) }} - {{ $option->criteria->getFormattedFrom() }}</span>
+                    <span class="from">
+                        &nbsp; {{ strtolower(__('pjutils::table.filter_from')) }} - {{ $option->criteria->getFormattedFrom() }}
+                    </span>
                 @endif
 
                 @if($option->criteria->to !== null)
-                    <span
-                        class="to">&nbsp; {{ strtolower(__('pjutils::table.filter_to')) }} - {{ $option->criteria->getFormattedTo() }}</span>
+                    <span class="to">
+                        &nbsp; {{ strtolower(__('pjutils::table.filter_to')) }} - {{ $option->criteria->getFormattedTo() }}
+                    </span>
                 @endif
             @endif
 
