@@ -333,6 +333,10 @@ function getJsonFilter(modal: HTMLElement, column: string): Filter {
         throw new Error('Invalid filter type');
     }
 
+    if (valueInput.value === '') {
+        throw new Error('No filter value');
+    }
+
     return <JsonFilter> {
         column,
         type: 'json',

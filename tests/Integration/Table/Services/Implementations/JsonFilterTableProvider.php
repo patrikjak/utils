@@ -13,6 +13,7 @@ use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterableColumn;
 use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
 use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
+use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
 use Patrikjak\Utils\Table\Services\BasePaginatedTableProvider;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
 
@@ -90,17 +91,17 @@ class JsonFilterTableProvider extends BasePaginatedTableProvider implements Tabl
     {
         return $this->getPageData()->map(static function (array $item) {
             return [
-                'id' => $item['id'],
-                'name' => $item['name'],
-                'metadata' => $item['metadata'],
-                'data' => $item['data'],
-                'tags' => $item['tags'],
-                'settings' => $item['settings'],
-                'preferences' => $item['preferences'],
-                'contacts' => $item['contacts'],
-                'users' => $item['users'],
-                'matrix' => $item['matrix'],
-                'json_data' => $item['json_data'],
+                'id' => CellFactory::simple((string) $item['id']),
+                'name' => CellFactory::simple((string) $item['name']),
+                'metadata' => CellFactory::simple((string) $item['metadata']),
+                'data' => CellFactory::simple((string) $item['data']),
+                'tags' => CellFactory::simple((string) $item['tags']),
+                'settings' => CellFactory::simple((string) $item['settings']),
+                'preferences' => CellFactory::simple((string) $item['preferences']),
+                'contacts' => CellFactory::simple((string) $item['contacts']),
+                'users' => CellFactory::simple((string) $item['users']),
+                'matrix' => CellFactory::simple((string) $item['matrix']),
+                'json_data' => CellFactory::simple((string) $item['json_data']),
             ];
         })->toArray();
     }
@@ -207,11 +208,14 @@ class JsonFilterTableProvider extends BasePaginatedTableProvider implements Tabl
         $this->filterCriteria = $filterCriteria;
     }
 
-    protected function getPageData(): Collection
+    /**
+     * @return array<array<string, string>>
+     */
+    private function getTableData(): array
     {
-        $data = collect([
+        return [
             [
-                'id' => 1,
+                'id' => '1',
                 'name' => 'John Doe',
                 'metadata' => '{"email": "john@example.com", "phone": "+420123456789"}',
                 'data' => '{"address": {"city": "Prague", "country": "CZ"}, "status": "active"}',
@@ -224,7 +228,7 @@ class JsonFilterTableProvider extends BasePaginatedTableProvider implements Tabl
                 'json_data' => '{"search_value": "found", "other": "data"}',
             ],
             [
-                'id' => 2,
+                'id' => '2',
                 'name' => 'Jane Smith',
                 'metadata' => '{"email": "jane@example.com", "phone": "+420987654321"}',
                 'data' => '{"address": {"city": "Brno", "country": "CZ"}, "status": "inactive"}',
@@ -237,7 +241,7 @@ class JsonFilterTableProvider extends BasePaginatedTableProvider implements Tabl
                 'json_data' => '{"config": "value", "search_value": "test"}',
             ],
             [
-                'id' => 3,
+                'id' => '3',
                 'name' => 'Admin User',
                 'metadata' => '{"email": "admin@example.com", "phone": "+420555666777"}',
                 'data' => '{"address": {"city": "Ostrava", "country": "CZ"}, "status": "active"}',
@@ -249,27 +253,20 @@ class JsonFilterTableProvider extends BasePaginatedTableProvider implements Tabl
                 'matrix' => '{"values": [["x", "y"], ["z", "w"]]}',
                 'json_data' => '{"search_value": "admin_data", "type": "admin"}',
             ],
-        ]);
-
-        // Note: In real implementation, you would apply the JSON filter logic here
-        // For integration tests, we're testing the UI rendering and structure
-
-        return $data;
+        ];
     }
 
-    public function getTotal(): int
+    protected function getPaginator(): TablePaginator
     {
-        return $this->getPageData()->count();
-    }
-
-    public function getPaginator(): TablePaginator
-    {
-        $total = $this->getTotal();
-        $currentPage = 1;
-        $pageSize = 10;
-
-        return new TablePaginator([
-            new LinkItem('1', '1', true, false),
-        ], $currentPage, $total, $pageSize, $pageSize);
+        return new TablePaginator(
+            1,
+            10,
+            new Collection($this->getTableData()),
+            'https://example.com/table',
+            1,
+            new Collection([
+                new LinkItem('1', 'https://example.com/table/1', true),
+            ]),
+        );
     }
 }

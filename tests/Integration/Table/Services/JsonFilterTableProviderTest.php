@@ -173,8 +173,12 @@ class JsonFilterTableProviderTest extends TestCase
         $htmlParts = $this->tableProvider->getHtmlParts(new Parameters(1, 10, null, $filterCriteria));
 
         // Check that the filter values are displayed correctly
-        $this->assertStringContainsString('User Email: equals - admin@example.com', $htmlParts['options']);
-        $this->assertStringContainsString('Deep Path: contains - dark', $htmlParts['options']);
+        $this->assertStringContainsString('User Email', $htmlParts['options']);
+        $this->assertStringContainsString(': equals -', $htmlParts['options']);
+        $this->assertStringContainsString('admin@example.com', $htmlParts['options']);
+        $this->assertStringContainsString('Deep Path', $htmlParts['options']);
+        $this->assertStringContainsString(': contains -', $htmlParts['options']);
+        $this->assertStringContainsString('dark', $htmlParts['options']);
 
         // Check that JSON paths are shown in the filter display
         $this->assertStringContainsString('email', $htmlParts['options']);

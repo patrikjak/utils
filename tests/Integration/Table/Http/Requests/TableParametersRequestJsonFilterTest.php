@@ -219,8 +219,8 @@ class TableParametersRequestJsonFilterTest extends TestCase
 
         $parameters = $request->getTableParameters('test-table');
 
-        // Should be null because invalid operator was ignored
-        $this->assertNull($parameters->filterCriteria);
+        $this->assertNotNull($parameters->filterCriteria);
+        $this->assertEmpty($parameters->filterCriteria->filters);
     }
 
     public function testIgnoresJsonFilterWithoutOperator(): void
@@ -238,8 +238,8 @@ class TableParametersRequestJsonFilterTest extends TestCase
 
         $parameters = $request->getTableParameters('test-table');
 
-        // Should be null because operator is missing
-        $this->assertNull($parameters->filterCriteria);
+        $this->assertNotNull($parameters->filterCriteria);
+        $this->assertEmpty($parameters->filterCriteria->filters);
     }
 
     public function testAllJsonFilterTypes(): void

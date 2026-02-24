@@ -5,6 +5,7 @@ declare(strict_types = 1);
 namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
 use Illuminate\Contracts\Database\Query\Builder;
+use InvalidArgumentException;
 use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria;
 use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
@@ -18,27 +19,35 @@ class JsonFilter extends AbstractFilter implements Filter
     {
         assert($filterCriteria instanceof JsonFilterCriteria);
 
+        if ($filterCriteria->value === null || $filterCriteria->value === '') {
+            return;
+        }
+
         $column = $this->getRealColumn($filterCriteria->column, $columnsMask);
         $jsonPath = $this->buildJsonPath($filterCriteria->jsonPath);
-        $jsonExpression = sprintf('JSON_UNQUOTE(JSON_EXTRACT(%s, %s))', $column, $jsonPath);
 
         $operator = $this->getOperator($filterCriteria->filterType);
         $value = $this->getConditionValue($filterCriteria->filterType, $filterCriteria->value);
 
-        $query->orWhereRaw(sprintf('%s %s ?', $jsonExpression, $operator), [$value]);
+        $query->orWhereRaw(
+            sprintf('JSON_UNQUOTE(JSON_EXTRACT(%s, ?)) %s ?', $column, $operator),
+            [$jsonPath, $value],
+        );
     }
 
     private function buildJsonPath(?string $jsonPath): string
     {
         if ($jsonPath === null || $jsonPath === '') {
-            return "'$'";
+            return '$';
         }
 
-        if (!str_starts_with($jsonPath, '$.')) {
-            $jsonPath = '$.' . $jsonPath;
+        $normalizedPath = str_starts_with($jsonPath, '$.') ? $jsonPath : '$.' . $jsonPath;
+
+        if (preg_match('/^(\$\.)?[a-zA-Z0-9_.\[\]*]+$/', $normalizedPath) !== 1) {
+            throw new InvalidArgumentException('Invalid JSON path format');
         }
 
-        return sprintf('\'%s\'', $jsonPath);
+        return $normalizedPath;
     }
 
     private function getOperator(JsonFilterType $jsonFilterType): string
@@ -51,12 +60,8 @@ class JsonFilter extends AbstractFilter implements Filter
         };
     }
 
-    private function getConditionValue(JsonFilterType $jsonFilterType, ?string $value): string
+    private function getConditionValue(JsonFilterType $jsonFilterType, string $value): string
     {
-        if ($value === null) {
-            return '';
-        }
-
         return match ($jsonFilterType) {
             JsonFilterType::CONTAINS, JsonFilterType::NOT_CONTAINS => sprintf('%%%s%%', $value),
             JsonFilterType::STARTS_WITH => sprintf('%s%%', $value),

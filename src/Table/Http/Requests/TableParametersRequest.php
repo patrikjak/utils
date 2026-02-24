@@ -350,7 +350,7 @@ class TableParametersRequest extends FormRequest
      */
     private function getJsonFilterCriteria(array $data, string $column): ?AbstractFilterCriteria
     {
-        if (!isset($data['operator'])) {
+        if (!isset($data['operator'], $data['value'])) {
             return null;
         }
 

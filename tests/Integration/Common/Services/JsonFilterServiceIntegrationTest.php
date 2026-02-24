@@ -4,7 +4,6 @@ declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Tests\Integration\Common\Services;
 
-use Illuminate\Database\DatabaseManager;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
@@ -46,9 +45,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.email'))", $sql);
-        $this->assertStringContainsString('like ?', $sql);
-        $this->assertEquals(['%john%'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(metadata, ?)) like ?', $sql);
+        $this->assertEquals(['$.email', '%john%'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForEquals(): void
@@ -62,9 +60,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.status'))", $sql);
-        $this->assertStringContainsString('= ?', $sql);
-        $this->assertEquals(['active'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(data, ?)) = ?', $sql);
+        $this->assertEquals(['$.status', 'active'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForStartsWith(): void
@@ -78,9 +75,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.phone'))", $sql);
-        $this->assertStringContainsString('like ?', $sql);
-        $this->assertEquals(['+420%'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(metadata, ?)) like ?', $sql);
+        $this->assertEquals(['$.phone', '+420%'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForEndsWith(): void
@@ -94,9 +90,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.email'))", $sql);
-        $this->assertStringContainsString('like ?', $sql);
-        $this->assertEquals(['%.com'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(metadata, ?)) like ?', $sql);
+        $this->assertEquals(['$.email', '%.com'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForNotContains(): void
@@ -110,9 +105,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.status'))", $sql);
-        $this->assertStringContainsString('not like ?', $sql);
-        $this->assertEquals(['%inactive%'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(data, ?)) not like ?', $sql);
+        $this->assertEquals(['$.status', '%inactive%'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForNotEquals(): void
@@ -126,9 +120,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.status'))", $sql);
-        $this->assertStringContainsString('!= ?', $sql);
-        $this->assertEquals(['active'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(data, ?)) != ?', $sql);
+        $this->assertEquals(['$.status', 'active'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForNestedPath(): void
@@ -142,9 +135,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.address.city'))", $sql);
-        $this->assertStringContainsString('= ?', $sql);
-        $this->assertEquals(['Prague'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(data, ?)) = ?', $sql);
+        $this->assertEquals(['$.address.city', 'Prague'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForArrayIndex(): void
@@ -158,9 +150,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"tags\", '$.items[0]'))", $sql);
-        $this->assertStringContainsString('= ?', $sql);
-        $this->assertEquals(['admin'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(tags, ?)) = ?', $sql);
+        $this->assertEquals(['$.items[0]', 'admin'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForComplexArrayPath(): void
@@ -174,9 +165,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"contacts\", '$.phones[1]'))", $sql);
-        $this->assertStringContainsString('like ?', $sql);
-        $this->assertEquals(['%+420987654%'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(contacts, ?)) like ?', $sql);
+        $this->assertEquals(['$.phones[1]', '%+420987654%'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForRootPath(): void
@@ -190,9 +180,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"settings\", '$'))", $sql);
-        $this->assertStringContainsString('like ?', $sql);
-        $this->assertEquals(['%dark%'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(settings, ?)) like ?', $sql);
+        $this->assertEquals(['$', '%dark%'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForEmptyPath(): void
@@ -206,9 +195,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"settings\", '$'))", $sql);
-        $this->assertStringContainsString('like ?', $sql);
-        $this->assertEquals(['%light%'], $bindings);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(settings, ?)) like ?', $sql);
+        $this->assertEquals(['$', '%light%'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlForMultipleFilters(): void
@@ -223,16 +211,11 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        // Check both JSON extracts are in the SQL
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.email'))", $sql);
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(data, '$.status'))", $sql);
-
-        // Check logical operators
-        $this->assertStringContainsString('like ?', $sql);
-        $this->assertStringContainsString('= ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(metadata, ?)) like ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(data, ?)) = ?', $sql);
         $this->assertStringContainsString('and', $sql);
 
-        $this->assertEquals(['%john%', 'active'], $bindings);
+        $this->assertEquals(['$.email', '%john%', '$.status', 'active'], $bindings);
     }
 
     public function testJsonFilterGeneratesCorrectSqlWithColumnMask(): void
@@ -240,7 +223,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $query = DB::table($this->testTable)->select();
 
         $columnMask = [
-            'json_test_table.metadata' => 'user_metadata'
+            'json_test_table.metadata' => 'user_metadata',
         ];
 
         $this->filterService->applyFilter($query, new FilterCriteria([
@@ -249,7 +232,6 @@ class JsonFilterServiceIntegrationTest extends TestCase
 
         $sql = $query->toSql();
 
-        // Verify that the column mask is applied correctly
         $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(json_test_table.metadata', $sql);
         $this->assertStringNotContainsString('user_metadata', $sql);
     }
@@ -270,20 +252,18 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        // Verify all operators are correctly generated
         $this->assertStringContainsString('like ?', $sql);
         $this->assertStringContainsString('not like ?', $sql);
         $this->assertStringContainsString('= ?', $sql);
         $this->assertStringContainsString('!= ?', $sql);
 
-        // Verify value formatting
         $this->assertEquals([
-            '%val1%',     // CONTAINS
-            '%val2%',     // NOT_CONTAINS
-            'val3',       // EQUALS
-            'val4',       // NOT_EQUALS
-            'val5%',      // STARTS_WITH
-            '%val6'       // ENDS_WITH
+            '$.path', '%val1%',
+            '$.path', '%val2%',
+            '$.path', 'val3',
+            '$.path', 'val4',
+            '$.path', 'val5%',
+            '$.path', '%val6',
         ], $bindings);
     }
 
@@ -292,7 +272,6 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $query = DB::table($this->testTable)->select();
 
         $this->filterService->applyFilter($query, new FilterCriteria([
-            // Test different path formats
             new JsonFilterCriteria('col1', 'simple', 'val', JsonFilterType::EQUALS),
             new JsonFilterCriteria('col2', '$.already.prefixed', 'val', JsonFilterType::EQUALS),
             new JsonFilterCriteria('col3', 'nested.path', 'val', JsonFilterType::EQUALS),
@@ -300,14 +279,43 @@ class JsonFilterServiceIntegrationTest extends TestCase
             new JsonFilterCriteria('col5', 'complex[0].path[1]', 'val', JsonFilterType::EQUALS),
         ]));
 
-        $sql = $query->toSql();
+        $bindings = $query->getBindings();
 
-        // Verify all paths are correctly formatted with $.
-        $this->assertStringContainsString("'$.simple'", $sql);
-        $this->assertStringContainsString("'$.already.prefixed'", $sql);
-        $this->assertStringContainsString("'$.nested.path'", $sql);
-        $this->assertStringContainsString("'$.array[0]'", $sql);
-        $this->assertStringContainsString("'$.complex[0].path[1]'", $sql);
+        $this->assertContains('$.simple', $bindings);
+        $this->assertContains('$.already.prefixed', $bindings);
+        $this->assertContains('$.nested.path', $bindings);
+        $this->assertContains('$.array[0]', $bindings);
+        $this->assertContains('$.complex[0].path[1]', $bindings);
+    }
+
+    public function testJsonFilterSkipsEmptyValue(): void
+    {
+        $query = DB::table($this->testTable)->select();
+
+        $this->filterService->applyFilter($query, new FilterCriteria([
+            new JsonFilterCriteria('metadata', 'email', '', JsonFilterType::CONTAINS),
+        ]));
+
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+
+        $this->assertStringNotContainsString('JSON_UNQUOTE', $sql);
+        $this->assertEmpty($bindings);
+    }
+
+    public function testJsonFilterSkipsNullValue(): void
+    {
+        $query = DB::table($this->testTable)->select();
+
+        $this->filterService->applyFilter($query, new FilterCriteria([
+            new JsonFilterCriteria('metadata', 'email', null, JsonFilterType::CONTAINS),
+        ]));
+
+        $sql = $query->toSql();
+        $bindings = $query->getBindings();
+
+        $this->assertStringNotContainsString('JSON_UNQUOTE', $sql);
+        $this->assertEmpty($bindings);
     }
 
     private function createTestTable(): void
@@ -326,32 +334,30 @@ class JsonFilterServiceIntegrationTest extends TestCase
 
     private function seedTestData(): void
     {
-        // Note: We seed test data but don't actually execute JSON queries
-        // since SQLite doesn't support JSON functions. Tests focus on SQL generation.
         DB::table($this->testTable)->insert([
             [
                 'id' => 1,
                 'name' => 'John Doe',
                 'metadata' => json_encode([
                     'email' => 'john@example.com',
-                    'phone' => '+420123456789'
+                    'phone' => '+420123456789',
                 ]),
                 'data' => json_encode([
                     'address' => [
                         'city' => 'Prague',
-                        'country' => 'CZ'
+                        'country' => 'CZ',
                     ],
-                    'status' => 'active'
+                    'status' => 'active',
                 ]),
                 'tags' => json_encode([
-                    'items' => ['user', 'customer', 'premium']
+                    'items' => ['user', 'customer', 'premium'],
                 ]),
                 'contacts' => json_encode([
-                    'phones' => ['+420123456', '+420987654']
+                    'phones' => ['+420123456', '+420987654'],
                 ]),
                 'settings' => json_encode([
                     'theme' => 'dark',
-                    'notifications' => true
+                    'notifications' => true,
                 ]),
                 'created_at' => now(),
                 'updated_at' => now(),
