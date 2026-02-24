@@ -27,7 +27,7 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.email'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.email'))", $sql);
         $this->assertStringContainsString("like '%john@example.com%'", $sql);
     }
 
@@ -44,7 +44,7 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.email'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.email'))", $sql);
         $this->assertStringContainsString("not like '%spam%'", $sql);
     }
 
@@ -61,7 +61,7 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(settings, '$.theme'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"settings\", '$.theme'))", $sql);
         $this->assertStringContainsString("= 'dark'", $sql);
     }
 
@@ -78,7 +78,7 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(settings, '$.theme'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"settings\", '$.theme'))", $sql);
         $this->assertStringContainsString("!= 'light'", $sql);
     }
 
@@ -95,7 +95,7 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.phone'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.phone'))", $sql);
         $this->assertStringContainsString("like '+420%'", $sql);
     }
 
@@ -112,7 +112,7 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.email'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.email'))", $sql);
         $this->assertStringContainsString("like '%@example.com'", $sql);
     }
 
@@ -129,7 +129,7 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(data, '$.user.address.city'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.user.address.city'))", $sql);
         $this->assertStringContainsString("= 'Prague'", $sql);
     }
 
@@ -146,7 +146,7 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(data, '$'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$'))", $sql);
         $this->assertStringContainsString("like '%test%'", $sql);
     }
 
@@ -163,7 +163,7 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(data, '$'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$'))", $sql);
         $this->assertStringContainsString("= 'value'", $sql);
     }
 
@@ -180,7 +180,7 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(data, '$.name'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.name'))", $sql);
         $this->assertStringContainsString("= 'John'", $sql);
     }
 
@@ -198,8 +198,11 @@ class JsonFilterTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.email')) like '%john%'", $sql);
-        $this->assertStringContainsString("or JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.email')) not like '%spam%'", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.email')) like '%john%'", $sql);
+        $this->assertStringContainsString(
+            "or JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.email')) not like '%spam%'",
+            $sql,
+        );
     }
 
     /**
@@ -219,7 +222,7 @@ class JsonFilterTest extends TestCase
         );
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(users.metadata, '$.email'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"users\".\"metadata\", '$.email'))", $sql);
         $this->assertStringContainsString("like '%test%'", $sql);
     }
 
@@ -240,10 +243,13 @@ class JsonFilterTest extends TestCase
         $sql = $query->toRawSql();
 
         // First group (metadata column filters with OR)
-        $this->assertStringContainsString("where (JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.email')) like '%john%'", $sql);
-        $this->assertStringContainsString("or JSON_UNQUOTE(JSON_EXTRACT(metadata, '$.email')) like '%doe%')", $sql);
+        $this->assertStringContainsString(
+            "where (JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.email')) like '%john%'",
+            $sql,
+        );
+        $this->assertStringContainsString("or JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.email')) like '%doe%')", $sql);
 
         // Second group (settings column filter)
-        $this->assertStringContainsString("and (JSON_UNQUOTE(JSON_EXTRACT(settings, '$.theme')) = 'dark')", $sql);
+        $this->assertStringContainsString("and (JSON_UNQUOTE(JSON_EXTRACT(\"settings\", '$.theme')) = 'dark')", $sql);
     }
 }

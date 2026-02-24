@@ -29,7 +29,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(metadata, ?)) like ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("metadata", ?)) like ?', $sql);
         $this->assertEquals(['$.email', '%john%'], $bindings);
     }
 
@@ -44,7 +44,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(data, ?)) = ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("data", ?)) = ?', $sql);
         $this->assertEquals(['$.status', 'active'], $bindings);
     }
 
@@ -59,7 +59,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(metadata, ?)) like ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("metadata", ?)) like ?', $sql);
         $this->assertEquals(['$.phone', '+420%'], $bindings);
     }
 
@@ -74,7 +74,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(metadata, ?)) like ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("metadata", ?)) like ?', $sql);
         $this->assertEquals(['$.email', '%.com'], $bindings);
     }
 
@@ -89,7 +89,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(data, ?)) not like ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("data", ?)) not like ?', $sql);
         $this->assertEquals(['$.status', '%inactive%'], $bindings);
     }
 
@@ -104,7 +104,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(data, ?)) != ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("data", ?)) != ?', $sql);
         $this->assertEquals(['$.status', 'active'], $bindings);
     }
 
@@ -119,7 +119,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(data, ?)) = ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("data", ?)) = ?', $sql);
         $this->assertEquals(['$.address.city', 'Prague'], $bindings);
     }
 
@@ -134,7 +134,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(tags, ?)) = ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("tags", ?)) = ?', $sql);
         $this->assertEquals(['$.items[0]', 'admin'], $bindings);
     }
 
@@ -149,7 +149,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(contacts, ?)) like ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("contacts", ?)) like ?', $sql);
         $this->assertEquals(['$.phones[1]', '%+420987654%'], $bindings);
     }
 
@@ -164,7 +164,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(settings, ?)) like ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("settings", ?)) like ?', $sql);
         $this->assertEquals(['$', '%dark%'], $bindings);
     }
 
@@ -179,7 +179,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(settings, ?)) like ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("settings", ?)) like ?', $sql);
         $this->assertEquals(['$', '%light%'], $bindings);
     }
 
@@ -195,8 +195,8 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $sql = $query->toSql();
         $bindings = $query->getBindings();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(metadata, ?)) like ?', $sql);
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(data, ?)) = ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("metadata", ?)) like ?', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("data", ?)) = ?', $sql);
         $this->assertStringContainsString('and', $sql);
 
         $this->assertEquals(['$.email', '%john%', '$.status', 'active'], $bindings);
@@ -216,7 +216,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
 
         $sql = $query->toSql();
 
-        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT(json_test_table.metadata', $sql);
+        $this->assertStringContainsString('JSON_UNQUOTE(JSON_EXTRACT("json_test_table"."metadata"', $sql);
         $this->assertStringNotContainsString('user_metadata', $sql);
     }
 

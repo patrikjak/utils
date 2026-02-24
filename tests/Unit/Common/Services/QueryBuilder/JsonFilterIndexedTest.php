@@ -27,7 +27,7 @@ class JsonFilterIndexedTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(data, '$.items[0]'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.items[0]'))", $sql);
         $this->assertStringContainsString("= 'first'", $sql);
     }
 
@@ -44,7 +44,7 @@ class JsonFilterIndexedTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(data, '$.users[0].name'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.users[0].name'))", $sql);
         $this->assertStringContainsString("= 'John'", $sql);
     }
 
@@ -61,7 +61,7 @@ class JsonFilterIndexedTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(data, '$.matrix[0][1]'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.matrix[0][1]'))", $sql);
         $this->assertStringContainsString("like '%value%'", $sql);
     }
 
@@ -78,7 +78,7 @@ class JsonFilterIndexedTest extends TestCase
         ]));
 
         $sql = $query->toRawSql();
-        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(data, '$.items[2].name'))", $sql);
+        $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.items[2].name'))", $sql);
         $this->assertStringContainsString("= 'Test'", $sql);
     }
 }
