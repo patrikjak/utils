@@ -34,6 +34,10 @@ final readonly class FilterableFactory
         return new NumberFilterDefinition($min, $max);
     }
 
+    /**
+     * Note: jsonPath format is validated later in JsonFilter::buildJsonPath() when the query is executed.
+     * Valid format: simple dot-notation (e.g. "user.address.city") or array indices (e.g. "items[0].name").
+     */
     public static function json(?string $jsonPath = null): FilterDefinition
     {
         return new JsonFilterDefinition($jsonPath);

@@ -24,7 +24,9 @@ class JsonFilterTableProvider extends BasePaginatedTableProvider implements Tabl
     /**
      * @var array<string>
      */
-    private array $columns = ['id', 'name', 'metadata', 'data', 'tags', 'settings', 'preferences', 'contacts', 'users', 'matrix', 'json_data'];
+    private array $columns = [
+        'id', 'name', 'metadata', 'data', 'tags', 'settings', 'preferences', 'contacts', 'users', 'matrix', 'json_data',
+    ];
 
     private string $rowId = 'id';
 
@@ -170,6 +172,9 @@ class JsonFilterTableProvider extends BasePaginatedTableProvider implements Tabl
         return $this->sortableColumns;
     }
 
+    /**
+     * @param array<SortableColumn> $sortableColumns
+     */
     public function setSortableColumns(array $sortableColumns): void
     {
         $this->sortableColumns = $sortableColumns;
@@ -193,6 +198,9 @@ class JsonFilterTableProvider extends BasePaginatedTableProvider implements Tabl
         return $this->filterableColumns;
     }
 
+    /**
+     * @param array<FilterableColumn> $filterableColumns
+     */
     public function setFilterableColumns(array $filterableColumns): void
     {
         $this->filterableColumns = $filterableColumns;
@@ -206,6 +214,20 @@ class JsonFilterTableProvider extends BasePaginatedTableProvider implements Tabl
     public function setFilterCriteria(?FilterCriteria $filterCriteria): void
     {
         $this->filterCriteria = $filterCriteria;
+    }
+
+    protected function getPaginator(): TablePaginator
+    {
+        return new TablePaginator(
+            1,
+            10,
+            new Collection($this->getTableData()),
+            'https://example.com/table',
+            1,
+            new Collection([
+                new LinkItem('1', 'https://example.com/table/1', true),
+            ]),
+        );
     }
 
     /**
@@ -254,19 +276,5 @@ class JsonFilterTableProvider extends BasePaginatedTableProvider implements Tabl
                 'json_data' => '{"search_value": "admin_data", "type": "admin"}',
             ],
         ];
-    }
-
-    protected function getPaginator(): TablePaginator
-    {
-        return new TablePaginator(
-            1,
-            10,
-            new Collection($this->getTableData()),
-            'https://example.com/table',
-            1,
-            new Collection([
-                new LinkItem('1', 'https://example.com/table/1', true),
-            ]),
-        );
     }
 }

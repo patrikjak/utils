@@ -18,22 +18,6 @@ class JsonFilterServiceIntegrationTest extends TestCase
     private FilterService $filterService;
     private string $testTable = 'json_test_table';
 
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->filterService = $this->app->make(FilterService::class);
-
-        $this->createTestTable();
-        $this->seedTestData();
-    }
-
-    protected function tearDown(): void
-    {
-        Schema::dropIfExists($this->testTable);
-        parent::tearDown();
-    }
-
     public function testJsonFilterGeneratesCorrectSqlForContains(): void
     {
         $query = DB::table($this->testTable)->select();
@@ -318,9 +302,26 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $this->assertEmpty($bindings);
     }
 
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->filterService = $this->app->make(FilterService::class);
+
+        $this->createTestTable();
+        $this->seedTestData();
+    }
+
+    protected function tearDown(): void
+    {
+        Schema::dropIfExists($this->testTable);
+
+        parent::tearDown();
+    }
+
     private function createTestTable(): void
     {
-        Schema::create($this->testTable, function (Blueprint $table) {
+        Schema::create($this->testTable, static function (Blueprint $table): void {
             $table->id();
             $table->string('name');
             $table->json('metadata');

@@ -28,7 +28,7 @@ class TableControllerTest extends TestCase
     {
         $response = $this->get(route('table.filter-modal', [
             'type' => 'json',
-            'jsonPath' => 'email'
+            'jsonPath' => 'email',
         ]));
 
         $response->assertOk();
@@ -39,7 +39,7 @@ class TableControllerTest extends TestCase
     {
         $response = $this->get(route('table.filter-modal', [
             'type' => 'json',
-            'jsonPath' => 'user.address.city'
+            'jsonPath' => 'user.address.city',
         ]));
 
         $response->assertOk();
@@ -50,7 +50,7 @@ class TableControllerTest extends TestCase
     {
         $response = $this->get(route('table.filter-modal', [
             'type' => 'json',
-            'jsonPath' => 'items[0]'
+            'jsonPath' => 'items[0]',
         ]));
 
         $response->assertOk();
@@ -61,7 +61,7 @@ class TableControllerTest extends TestCase
     {
         $response = $this->get(route('table.filter-modal', [
             'type' => 'json',
-            'jsonPath' => 'users[0].profile.settings.theme'
+            'jsonPath' => 'users[0].profile.settings.theme',
         ]));
 
         $response->assertOk();
@@ -72,7 +72,7 @@ class TableControllerTest extends TestCase
     {
         $response = $this->get(route('table.filter-modal', [
             'type' => 'json',
-            'jsonPath' => null
+            'jsonPath' => null,
         ]));
 
         $response->assertOk();

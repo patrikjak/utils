@@ -267,8 +267,8 @@ function getSelectFilterQuery(filter: SelectFilter, index: number): string {
 }
 
 function getJsonFilterQuery(filter: JsonFilter, index: number): string {
-    return `${filterKey}[${filter.column}][${index}][value]=${filter.value}
-        &${filterKey}[${filter.column}][${index}][operator]=${filter.filterType}
-        &${filterKey}[${filter.column}][${index}][jsonPath]=${filter.jsonPath ?? ''}
+    return `${filterKey}[${filter.column}][${index}][value]=${encodeURIComponent(filter.value)}
+        &${filterKey}[${filter.column}][${index}][operator]=${encodeURIComponent(filter.filterType)}
+        &${filterKey}[${filter.column}][${index}][jsonPath]=${encodeURIComponent(filter.jsonPath ?? '')}
         &${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
 }

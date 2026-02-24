@@ -24,7 +24,7 @@ class JsonFilterCriteria extends AbstractFilterCriteria
     }
 
     /**
-     * @inheritdoc
+     * @inheritDoc
      */
     public function toArray(): array
     {

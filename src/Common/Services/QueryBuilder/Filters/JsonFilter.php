@@ -17,13 +17,15 @@ class JsonFilter extends AbstractFilter implements Filter
      */
     public function filter(Builder $query, AbstractFilterCriteria $filterCriteria, array $columnsMask = []): void
     {
-        assert($filterCriteria instanceof JsonFilterCriteria);
+        if (!$filterCriteria instanceof JsonFilterCriteria) {
+            throw new InvalidArgumentException('Expected JsonFilterCriteria instance');
+        }
 
         if ($filterCriteria->value === null || $filterCriteria->value === '') {
             return;
         }
 
-        $column = $this->getRealColumn($filterCriteria->column, $columnsMask);
+        $column = $query->getGrammar()->wrap($this->getRealColumn($filterCriteria->column, $columnsMask));
         $jsonPath = $this->buildJsonPath($filterCriteria->jsonPath);
 
         $operator = $this->getOperator($filterCriteria->filterType);
@@ -43,7 +45,7 @@ class JsonFilter extends AbstractFilter implements Filter
 
         $normalizedPath = str_starts_with($jsonPath, '$.') ? $jsonPath : '$.' . $jsonPath;
 
-        if (preg_match('/^(\$\.)?[a-zA-Z0-9_.\[\]*]+$/', $normalizedPath) !== 1) {
+        if (preg_match('/^\$(\.[a-zA-Z_][a-zA-Z0-9_]*|\[\d+\])*$/', $normalizedPath) !== 1) {
             throw new InvalidArgumentException('Invalid JSON path format');
         }
 
@@ -62,10 +64,12 @@ class JsonFilter extends AbstractFilter implements Filter
 
     private function getConditionValue(JsonFilterType $jsonFilterType, string $value): string
     {
+        $escapedValue = str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $value);
+
         return match ($jsonFilterType) {
-            JsonFilterType::CONTAINS, JsonFilterType::NOT_CONTAINS => sprintf('%%%s%%', $value),
-            JsonFilterType::STARTS_WITH => sprintf('%s%%', $value),
-            JsonFilterType::ENDS_WITH => sprintf('%%%s', $value),
+            JsonFilterType::CONTAINS, JsonFilterType::NOT_CONTAINS => sprintf('%%%s%%', $escapedValue),
+            JsonFilterType::STARTS_WITH => sprintf('%s%%', $escapedValue),
+            JsonFilterType::ENDS_WITH => sprintf('%%%s', $escapedValue),
             default => $value,
         };
     }
