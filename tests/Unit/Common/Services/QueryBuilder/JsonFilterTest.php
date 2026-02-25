@@ -6,6 +6,7 @@ namespace Patrikjak\Utils\Tests\Unit\Common\Services\QueryBuilder;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
+use InvalidArgumentException;
 use Orchestra\Testbench\TestCase;
 use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria;
@@ -224,6 +225,22 @@ class JsonFilterTest extends TestCase
         $sql = $query->toRawSql();
         $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"users\".\"metadata\", '$.email'))", $sql);
         $this->assertStringContainsString("like '%test%'", $sql);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testThrowsExceptionForInvalidJsonPath(): void
+    {
+        $filterService = $this->app->make(FilterService::class);
+        $query = $this->app->make(DatabaseManager::class)->table('users')->select();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Invalid JSON path format');
+
+        $filterService->applyFilter($query, new FilterCriteria([
+            new JsonFilterCriteria('data', 'invalid path!', 'value', JsonFilterType::EQUALS),
+        ]));
     }
 
     /**
