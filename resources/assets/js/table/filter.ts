@@ -49,6 +49,7 @@ function bindClosingOptions(tableWrapper: TableWrapper): void {
             const optionsCount: number = tableWrapper.querySelectorAll('.table-options .filter-values .values .option').length;
 
             dispatchUpdateEvent(tableWrapper, {
+                page: 1,
                 filterCriteria: {
                     filters: getCurrentFilters(tableWrapper),
                     deleteFilters: optionsCount === 0,
@@ -123,6 +124,7 @@ function bindFiltering(tableWrapper: TableWrapper, option: HTMLElement): void {
 
     modal.querySelector('.footer button').addEventListener('click', function (): void {
         dispatchUpdateEvent(tableWrapper, {
+            page: 1,
             filterCriteria: {
                 filters: [...getCurrentFilters(tableWrapper), getFilterFromOption(option)],
                 deleteFilters: false,
