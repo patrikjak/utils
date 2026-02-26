@@ -360,7 +360,7 @@ class TableParametersRequest extends FormRequest
             return null;
         }
 
-        $jsonPath = $data['jsonPath'] ?? null;
+        $jsonPath = $data['jsonPath'] ?: null;
 
         return new JsonFilterCriteria($column, $jsonPath, $data['value'], $operator);
     }
