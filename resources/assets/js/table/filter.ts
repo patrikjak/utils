@@ -180,11 +180,13 @@ function getFilterFromFilterValue(filterValue: HTMLElement): Filter {
     }
 }
 
+const VALID_TEXT_FILTER_TYPES = ['contains', 'not_contains', 'equals', 'not_equals', 'starts_with', 'ends_with'] as const;
+
 function getTextFilter(modal: HTMLElement, column: string): Filter {
     const filterType: string = getDropdownValue(modal.querySelector('.pj-dropdown'));
     const valueInput: HTMLInputElement = modal.querySelector('[name="filter_value"]');
 
-    if (!['contains', 'not_contains', 'equals', 'not_equals', 'starts_with', 'ends_with'].includes(filterType)) {
+    if (!VALID_TEXT_FILTER_TYPES.includes(filterType as typeof VALID_TEXT_FILTER_TYPES[number])) {
         throw new Error('Invalid filter type');
     }
 
@@ -326,14 +328,12 @@ function getSelectFilter(modal: HTMLElement, column: string): Filter {
     };
 }
 
-const VALID_JSON_FILTER_TYPES = ['contains', 'not_contains', 'equals', 'not_equals', 'starts_with', 'ends_with'] as const;
-
 function getJsonFilter(modal: HTMLElement, column: string): Filter {
     const filterType: string = getDropdownValue(modal.querySelector('.pj-dropdown'));
     const jsonPathInput: HTMLInputElement = modal.querySelector('[name="json_path"]');
     const valueInput: HTMLInputElement = modal.querySelector('[name="filter_value"]');
 
-    if (!VALID_JSON_FILTER_TYPES.includes(filterType as typeof VALID_JSON_FILTER_TYPES[number])) {
+    if (!VALID_TEXT_FILTER_TYPES.includes(filterType as typeof VALID_TEXT_FILTER_TYPES[number])) {
         throw new Error('Invalid filter type');
     }
 

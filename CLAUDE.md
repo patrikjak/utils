@@ -8,27 +8,29 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Commands
 
+All commands must be run via Docker. The `cli` service runs PHP (8.5), and the `node` service runs Node (25).
+
 ### Tests
 ```bash
-vendor/bin/phpunit                                    # all tests
-vendor/bin/phpunit --testsuite Unit                   # unit tests only
-vendor/bin/phpunit --testsuite Integration            # integration tests only
-vendor/bin/phpunit --testsuite Feature                # feature tests only
-vendor/bin/phpunit --filter TestClassName              # single test class
-vendor/bin/phpunit --filter testMethodName             # single test method
+docker compose run --rm cli vendor/bin/phpunit                                    # all tests
+docker compose run --rm cli vendor/bin/phpunit --testsuite Unit                   # unit tests only
+docker compose run --rm cli vendor/bin/phpunit --testsuite Integration            # integration tests only
+docker compose run --rm cli vendor/bin/phpunit --testsuite Feature                # feature tests only
+docker compose run --rm cli vendor/bin/phpunit --filter TestClassName              # single test class
+docker compose run --rm cli vendor/bin/phpunit --filter testMethodName             # single test method
 ```
 
 ### Linting & Static Analysis
 ```bash
-vendor/bin/phpcs --standard=ruleset.xml               # code style (Slevomat coding standard)
-vendor/bin/phpcbf --standard=ruleset.xml              # auto-fix code style
-vendor/bin/phpstan analyse                            # static analysis (level 6)
+docker compose run --rm cli vendor/bin/phpcs --standard=ruleset.xml               # code style (Slevomat coding standard)
+docker compose run --rm cli vendor/bin/phpcbf --standard=ruleset.xml              # auto-fix code style
+docker compose run --rm cli php -d memory_limit=2G vendor/bin/phpstan analyse     # static analysis (level 6)
 ```
 
 ### Frontend Assets
 ```bash
-npm run build                                         # build CSS assets via Vite
-npm run dev                                           # dev server with HMR
+docker compose run --rm node npm run build                                         # build CSS assets via Vite
+docker compose run --rm node npm run dev                                           # dev server with HMR
 ```
 
 ## Architecture

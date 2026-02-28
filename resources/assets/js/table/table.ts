@@ -237,8 +237,8 @@ function getFilterQuery(filter: Filter, index: number): string {
 }
 
 function getTextFilterQuery(filter: TextFilter, index: number): string {
-    return `${filterKey}[${filter.column}][${index}][value]=${filter.value}
-        &${filterKey}[${filter.column}][${index}][operator]=${filter.filterType}
+    return `${filterKey}[${filter.column}][${index}][value]=${encodeURIComponent(filter.value)}
+        &${filterKey}[${filter.column}][${index}][operator]=${encodeURIComponent(filter.filterType)}
         &${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
 }
 

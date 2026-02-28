@@ -70,7 +70,7 @@ class JsonFilter extends AbstractFilter implements Filter
             JsonFilterType::CONTAINS, JsonFilterType::NOT_CONTAINS => sprintf('%%%s%%', $escapedValue),
             JsonFilterType::STARTS_WITH => sprintf('%s%%', $escapedValue),
             JsonFilterType::ENDS_WITH => sprintf('%%%s', $escapedValue),
-            default => $value,
+            JsonFilterType::EQUALS, JsonFilterType::NOT_EQUALS => $value,
         };
     }
 }

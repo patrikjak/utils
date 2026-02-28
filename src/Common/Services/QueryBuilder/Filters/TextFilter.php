@@ -37,11 +37,13 @@ class TextFilter extends AbstractFilter implements Filter
 
     private function getConditionValue(TextFilterType $textFilterType, string $value): string
     {
+        $escapedValue = str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $value);
+
         return match ($textFilterType) {
-            TextFilterType::CONTAINS, TextFilterType::NOT_CONTAINS => sprintf('%%%s%%', $value),
-            TextFilterType::STARTS_WITH => sprintf('%s%%', $value),
-            TextFilterType::ENDS_WITH => sprintf('%%%s', $value),
-            default => $value,
+            TextFilterType::CONTAINS, TextFilterType::NOT_CONTAINS => sprintf('%%%s%%', $escapedValue),
+            TextFilterType::STARTS_WITH => sprintf('%s%%', $escapedValue),
+            TextFilterType::ENDS_WITH => sprintf('%%%s', $escapedValue),
+            TextFilterType::EQUALS, TextFilterType::NOT_EQUALS => $value,
         };
     }
 }

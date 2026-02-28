@@ -32,10 +32,10 @@ class TableParametersRequestJsonFilterTest extends TestCase
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
-        $this->assertEquals('metadata', $filter->column);
-        $this->assertEquals('email', $filter->jsonPath);
-        $this->assertEquals('john@example.com', $filter->value);
-        $this->assertEquals(JsonFilterType::CONTAINS, $filter->filterType);
+        $this->assertSame('metadata', $filter->column);
+        $this->assertSame('email', $filter->jsonPath);
+        $this->assertSame('john@example.com', $filter->value);
+        $this->assertSame(JsonFilterType::CONTAINS, $filter->filterType);
     }
 
     public function testCanParseNestedJsonPathFilter(): void
@@ -55,10 +55,10 @@ class TableParametersRequestJsonFilterTest extends TestCase
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
-        $this->assertEquals('data', $filter->column);
-        $this->assertEquals('user.address.city', $filter->jsonPath);
-        $this->assertEquals('Prague', $filter->value);
-        $this->assertEquals(JsonFilterType::EQUALS, $filter->filterType);
+        $this->assertSame('data', $filter->column);
+        $this->assertSame('user.address.city', $filter->jsonPath);
+        $this->assertSame('Prague', $filter->value);
+        $this->assertSame(JsonFilterType::EQUALS, $filter->filterType);
     }
 
     public function testCanParseArrayIndexJsonFilter(): void
@@ -78,10 +78,10 @@ class TableParametersRequestJsonFilterTest extends TestCase
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
-        $this->assertEquals('tags', $filter->column);
-        $this->assertEquals('items[0]', $filter->jsonPath);
-        $this->assertEquals('tech', $filter->value);
-        $this->assertEquals(JsonFilterType::STARTS_WITH, $filter->filterType);
+        $this->assertSame('tags', $filter->column);
+        $this->assertSame('items[0]', $filter->jsonPath);
+        $this->assertSame('tech', $filter->value);
+        $this->assertSame(JsonFilterType::STARTS_WITH, $filter->filterType);
     }
 
     public function testCanParseComplexArrayPathFilter(): void
@@ -101,10 +101,10 @@ class TableParametersRequestJsonFilterTest extends TestCase
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
-        $this->assertEquals('contacts', $filter->column);
-        $this->assertEquals('users[0].phones[1]', $filter->jsonPath);
-        $this->assertEquals('789', $filter->value);
-        $this->assertEquals(JsonFilterType::ENDS_WITH, $filter->filterType);
+        $this->assertSame('contacts', $filter->column);
+        $this->assertSame('users[0].phones[1]', $filter->jsonPath);
+        $this->assertSame('789', $filter->value);
+        $this->assertSame(JsonFilterType::ENDS_WITH, $filter->filterType);
     }
 
     public function testCanParseRootJsonFilter(): void
@@ -124,10 +124,10 @@ class TableParametersRequestJsonFilterTest extends TestCase
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
-        $this->assertEquals('settings', $filter->column);
+        $this->assertSame('settings', $filter->column);
         $this->assertNull($filter->jsonPath);
-        $this->assertEquals('search_term', $filter->value);
-        $this->assertEquals(JsonFilterType::CONTAINS, $filter->filterType);
+        $this->assertSame('search_term', $filter->value);
+        $this->assertSame(JsonFilterType::CONTAINS, $filter->filterType);
     }
 
     public function testCanParseEmptyJsonPathFilter(): void
@@ -147,10 +147,10 @@ class TableParametersRequestJsonFilterTest extends TestCase
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
-        $this->assertEquals('preferences', $filter->column);
-        $this->assertEquals('', $filter->jsonPath);
-        $this->assertEquals('unwanted', $filter->value);
-        $this->assertEquals(JsonFilterType::NOT_CONTAINS, $filter->filterType);
+        $this->assertSame('preferences', $filter->column);
+        $this->assertNull($filter->jsonPath);
+        $this->assertSame('unwanted', $filter->value);
+        $this->assertSame(JsonFilterType::NOT_CONTAINS, $filter->filterType);
     }
 
     public function testCanParseMultipleJsonFilters(): void
@@ -184,23 +184,20 @@ class TableParametersRequestJsonFilterTest extends TestCase
 
         $this->assertCount(3, $parameters->filterCriteria->filters);
 
-        // First filter
         $filter1 = $parameters->filterCriteria->filters[0];
-        $this->assertEquals('metadata', $filter1->column);
-        $this->assertEquals('email', $filter1->jsonPath);
-        $this->assertEquals('john', $filter1->value);
+        $this->assertSame('metadata', $filter1->column);
+        $this->assertSame('email', $filter1->jsonPath);
+        $this->assertSame('john', $filter1->value);
 
-        // Second filter
         $filter2 = $parameters->filterCriteria->filters[1];
-        $this->assertEquals('metadata', $filter2->column);
-        $this->assertEquals('phone', $filter2->jsonPath);
-        $this->assertEquals('+420', $filter2->value);
+        $this->assertSame('metadata', $filter2->column);
+        $this->assertSame('phone', $filter2->jsonPath);
+        $this->assertSame('+420', $filter2->value);
 
-        // Third filter
         $filter3 = $parameters->filterCriteria->filters[2];
-        $this->assertEquals('data', $filter3->column);
-        $this->assertEquals('status', $filter3->jsonPath);
-        $this->assertEquals('active', $filter3->value);
+        $this->assertSame('data', $filter3->column);
+        $this->assertSame('status', $filter3->jsonPath);
+        $this->assertSame('active', $filter3->value);
     }
 
     public function testIgnoresInvalidJsonFilterOperator(): void
@@ -230,7 +227,6 @@ class TableParametersRequestJsonFilterTest extends TestCase
                     'type' => 'json',
                     'jsonPath' => 'email',
                     'value' => 'test',
-                    // Missing 'operator'
                 ],
             ],
         ]);
@@ -267,7 +263,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
 
         foreach ($parameters->filterCriteria->filters as $index => $filter) {
             $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
-            $this->assertEquals($expectedTypes[$index], $filter->filterType);
+            $this->assertSame($expectedTypes[$index], $filter->filterType);
         }
     }
 
@@ -279,7 +275,6 @@ class TableParametersRequestJsonFilterTest extends TestCase
                     'type' => 'json',
                     'operator' => 'contains',
                     'jsonPath' => 'email',
-                    // Missing 'value'
                 ],
             ],
         ]);

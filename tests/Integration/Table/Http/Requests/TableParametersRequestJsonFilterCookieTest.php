@@ -36,10 +36,10 @@ class TableParametersRequestJsonFilterCookieTest extends TestCase
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
-        $this->assertEquals('metadata', $filter->column);
-        $this->assertEquals('email', $filter->jsonPath);
-        $this->assertEquals('john@example.com', $filter->value);
-        $this->assertEquals(JsonFilterType::CONTAINS, $filter->filterType);
+        $this->assertSame('metadata', $filter->column);
+        $this->assertSame('email', $filter->jsonPath);
+        $this->assertSame('john@example.com', $filter->value);
+        $this->assertSame(JsonFilterType::CONTAINS, $filter->filterType);
     }
 
     public function testCanParseMultipleJsonFiltersFromCookie(): void
@@ -73,17 +73,17 @@ class TableParametersRequestJsonFilterCookieTest extends TestCase
 
         $filter1 = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter1);
-        $this->assertEquals('metadata', $filter1->column);
-        $this->assertEquals('status', $filter1->jsonPath);
-        $this->assertEquals('active', $filter1->value);
-        $this->assertEquals(JsonFilterType::EQUALS, $filter1->filterType);
+        $this->assertSame('metadata', $filter1->column);
+        $this->assertSame('status', $filter1->jsonPath);
+        $this->assertSame('active', $filter1->value);
+        $this->assertSame(JsonFilterType::EQUALS, $filter1->filterType);
 
         $filter2 = $parameters->filterCriteria->filters[1];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter2);
-        $this->assertEquals('settings', $filter2->column);
-        $this->assertEquals('theme', $filter2->jsonPath);
-        $this->assertEquals('light', $filter2->value);
-        $this->assertEquals(JsonFilterType::NOT_EQUALS, $filter2->filterType);
+        $this->assertSame('settings', $filter2->column);
+        $this->assertSame('theme', $filter2->jsonPath);
+        $this->assertSame('light', $filter2->value);
+        $this->assertSame(JsonFilterType::NOT_EQUALS, $filter2->filterType);
     }
 
     public function testIgnoresInvalidJsonFilterOperatorFromCookie(): void

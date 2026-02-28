@@ -81,4 +81,68 @@ class JsonFilterIndexedTest extends TestCase
         $this->assertStringContainsString("JSON_UNQUOTE(JSON_EXTRACT(\"data\", '$.items[2].name'))", $sql);
         $this->assertStringContainsString("= 'Test'", $sql);
     }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testEscapesPercentInLikeFilter(): void
+    {
+        $filterService = $this->app->make(FilterService::class);
+        $query = $this->app->make(DatabaseManager::class)->table('users')->select();
+
+        $filterService->applyFilter($query, new FilterCriteria([
+            new JsonFilterCriteria('data', 'price', '50%', JsonFilterType::CONTAINS),
+        ]));
+
+        $sql = $query->toRawSql();
+        $this->assertStringContainsString("like '%50\\%%'", $sql);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testEscapesUnderscoreInLikeFilter(): void
+    {
+        $filterService = $this->app->make(FilterService::class);
+        $query = $this->app->make(DatabaseManager::class)->table('users')->select();
+
+        $filterService->applyFilter($query, new FilterCriteria([
+            new JsonFilterCriteria('data', 'code', 'A_B', JsonFilterType::STARTS_WITH),
+        ]));
+
+        $sql = $query->toRawSql();
+        $this->assertStringContainsString("like 'A\\_B%'", $sql);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testEscapesBackslashInLikeFilter(): void
+    {
+        $filterService = $this->app->make(FilterService::class);
+        $query = $this->app->make(DatabaseManager::class)->table('users')->select();
+
+        $filterService->applyFilter($query, new FilterCriteria([
+            new JsonFilterCriteria('data', 'path', 'C:\\Users', JsonFilterType::ENDS_WITH),
+        ]));
+
+        $sql = $query->toRawSql();
+        $this->assertStringContainsString("like '%C:\\\\Users'", $sql);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testDoesNotEscapeSpecialCharsForEqualsFilter(): void
+    {
+        $filterService = $this->app->make(FilterService::class);
+        $query = $this->app->make(DatabaseManager::class)->table('users')->select();
+
+        $filterService->applyFilter($query, new FilterCriteria([
+            new JsonFilterCriteria('data', 'discount', '50%', JsonFilterType::EQUALS),
+        ]));
+
+        $sql = $query->toRawSql();
+        $this->assertStringContainsString("= '50%'", $sql);
+    }
 }

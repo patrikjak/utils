@@ -259,14 +259,11 @@ class JsonFilterTest extends TestCase
 
         $sql = $query->toRawSql();
 
-        // First group (metadata column filters with OR)
         $this->assertStringContainsString(
             "where (JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.email')) like '%john%'",
             $sql,
         );
         $this->assertStringContainsString("or JSON_UNQUOTE(JSON_EXTRACT(\"metadata\", '$.email')) like '%doe%')", $sql);
-
-        // Second group (settings column filter)
         $this->assertStringContainsString("and (JSON_UNQUOTE(JSON_EXTRACT(\"settings\", '$.theme')) = 'dark')", $sql);
     }
 }
