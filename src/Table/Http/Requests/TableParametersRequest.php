@@ -11,11 +11,13 @@ use Illuminate\Foundation\Http\FormRequest;
 use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
+use Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
+use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
 use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
 use Patrikjak\Utils\Common\Enums\Sort\SortOrder;
 use Patrikjak\Utils\Table\Dto\Parameters;
@@ -193,6 +195,7 @@ class TableParametersRequest extends FormRequest
                     FilterType::SELECT => $this->getSelectFilterCriteria($rawFilterData, $column),
                     FilterType::DATE => $this->getDateFilterCriteria($rawFilterData, $column),
                     FilterType::NUMBER => $this->getNumberFilterCriteria($rawFilterData, $column),
+                    FilterType::JSON => $this->getJsonFilterCriteria($rawFilterData, $column),
                 };
 
                 if ($filter === null) {
@@ -233,6 +236,7 @@ class TableParametersRequest extends FormRequest
                 FilterType::SELECT => $this->getSelectFilterCriteriaFromCookie($criteria),
                 FilterType::DATE => $this->getDateFilterCriteriaFromCookie($criteria),
                 FilterType::NUMBER => $this->getNumberFilterCriteriaFromCookie($criteria),
+                FilterType::JSON => $this->getJsonFilterCriteriaFromCookie($criteria),
             };
 
             if ($filter === null) {
@@ -339,5 +343,30 @@ class TableParametersRequest extends FormRequest
     private function getNumberFilterCriteriaFromCookie(stdClass $filterData): AbstractFilterCriteria
     {
         return $this->getNumberFilterCriteria((array) $filterData, $filterData->column);
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    private function getJsonFilterCriteria(array $data, string $column): ?AbstractFilterCriteria
+    {
+        if (!isset($data['operator'], $data['value'])) {
+            return null;
+        }
+
+        $operator = JsonFilterType::tryFrom($data['operator']);
+
+        if ($operator === null) {
+            return null;
+        }
+
+        $jsonPath = $data['jsonPath'] ?: null;
+
+        return new JsonFilterCriteria($column, $jsonPath, $data['value'], $operator);
+    }
+
+    private function getJsonFilterCriteriaFromCookie(stdClass $filterData): ?AbstractFilterCriteria
+    {
+        return $this->getJsonFilterCriteria((array) $filterData, $filterData->column);
     }
 }

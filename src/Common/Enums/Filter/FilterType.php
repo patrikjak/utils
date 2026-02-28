@@ -10,4 +10,5 @@ enum FilterType: string
     case SELECT = 'select';
     case DATE = 'date';
     case NUMBER = 'number';
+    case JSON = 'json';
 }

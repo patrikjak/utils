@@ -2,12 +2,15 @@
     "name": "patrikjak/utils",
     "description": "A simple utility package for Laravel",
     "keywords": ["laravel", "utils", "utility", "tables"],
-    "version": "2.8.2",
     "type": "library",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Patrikjak\\Utils\\": "src/",
+            "Patrikjak\\Utils\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Patrikjak\\Utils\\Tests\\": "tests/"
         }
     },

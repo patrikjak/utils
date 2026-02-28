@@ -8,7 +8,9 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
+use Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterableColumn;
+use Patrikjak\Utils\Table\Dto\Filter\Definitions\Json\JsonFilterDefinition;
 use Patrikjak\Utils\Table\Dto\Filter\Settings;
 
 class Values extends Component
@@ -37,12 +39,8 @@ class Values extends Component
         $options = [];
         $filterableColumnsCollection = new Collection($this->settings->filterableColumns);
 
-        $labels = $filterableColumnsCollection->mapWithKeys(static function (FilterableColumn $column) {
-            return [$column->column => $column->label];
-        });
-
         foreach ($this->settings->criteria->filters as $filter) {
-            $label = $labels->get($filter->column);
+            $label = $this->getLabelForFilter($filter, $filterableColumnsCollection);
 
             if ($label === null) {
                 continue;
@@ -52,5 +50,30 @@ class Values extends Component
         }
 
         return $options;
+    }
+
+    /**
+     * @param Collection<int, FilterableColumn> $filterableColumns
+     */
+    private function getLabelForFilter(AbstractFilterCriteria $filter, Collection $filterableColumns): ?string
+    {
+        if ($filter instanceof JsonFilterCriteria) {
+            $match = $filterableColumns->first(
+                static fn (FilterableColumn $col) => $col->column === $filter->column
+                    && $col->filterDefinition instanceof JsonFilterDefinition
+                    && $col->filterDefinition->jsonPath === $filter->jsonPath,
+            );
+
+            $match ??= $filterableColumns->first(
+                static fn (FilterableColumn $col) => $col->column === $filter->column
+                    && $col->filterDefinition instanceof JsonFilterDefinition,
+            );
+
+            return $match?->label;
+        }
+
+        return $filterableColumns
+            ->mapWithKeys(static fn (FilterableColumn $col) => [$col->column => $col->label])
+            ->get($filter->column);
     }
 }

@@ -1,4 +1,5 @@
 @use('Patrikjak\Utils\Common\Enums\Filter\FilterType')
+@use('Patrikjak\Utils\Table\Dto\Filter\Definitions\Json\JsonFilterDefinition')
 @use('Patrikjak\Utils\Table\Dto\Filter\Definitions\NeedsData')
 @use('Patrikjak\Utils\Table\Dto\Filter\Definitions\RangeData')
 
@@ -18,6 +19,10 @@
                 data-type="{{ $filterableColumn->filterDefinition->getType()->value }}"
                 @if($filterableColumn->filterDefinition instanceof NeedsData)
                     data-options-url="{{ $filterableColumn->filterDefinition->getDataUrl() }}"
+                @endif
+
+                @if($filterableColumn->filterDefinition instanceof JsonFilterDefinition)
+                    data-json-path="{{ $filterableColumn->filterDefinition->jsonPath }}"
                 @endif
 
                 @if($filterableColumn->filterDefinition instanceof RangeData)

@@ -3,6 +3,7 @@ import {
     Filter,
     FilterCriteria,
     FilterModalResponse,
+    JsonFilter,
     NumberFilter,
     SelectFilter,
     TableWrapper,
@@ -48,6 +49,7 @@ function bindClosingOptions(tableWrapper: TableWrapper): void {
             const optionsCount: number = tableWrapper.querySelectorAll('.table-options .filter-values .values .option').length;
 
             dispatchUpdateEvent(tableWrapper, {
+                page: 1,
                 filterCriteria: {
                     filters: getCurrentFilters(tableWrapper),
                     deleteFilters: optionsCount === 0,
@@ -71,6 +73,14 @@ async function showFilterModal(filterOption: HTMLElement): Promise<void> {
 
         if (to !== null) {
             url += urlIncludesGetParameters(url) ? `&to=${to}` : `?to=${to}`;
+        }
+    }
+
+    if (type === 'json') {
+        const jsonPath: string | null = getData(filterOption, 'json-path');
+
+        if (jsonPath !== null) {
+            url += `?jsonPath=${encodeURIComponent(jsonPath)}`;
         }
     }
 
@@ -114,6 +124,7 @@ function bindFiltering(tableWrapper: TableWrapper, option: HTMLElement): void {
 
     modal.querySelector('.footer button').addEventListener('click', function (): void {
         dispatchUpdateEvent(tableWrapper, {
+            page: 1,
             filterCriteria: {
                 filters: [...getCurrentFilters(tableWrapper), getFilterFromOption(option)],
                 deleteFilters: false,
@@ -139,6 +150,8 @@ function getFilterFromOption(option: HTMLElement): Filter {
                 return getDateFilter(modal, column);
             case 'select':
                 return getSelectFilter(modal, column);
+            case 'json':
+                return getJsonFilter(modal, column);
         }
     } catch (e) {
         console.error(e);
@@ -159,17 +172,21 @@ function getFilterFromFilterValue(filterValue: HTMLElement): Filter {
                 return getDateFilterFromFilterValue(filterValue, column);
             case 'select':
                 return getSelectFilterFromFilterValue(filterValue, column);
+            case 'json':
+                return getJsonFilterFromFilterValue(filterValue, column);
         }
     } catch (e) {
         console.error(e);
     }
 }
 
+const VALID_TEXT_FILTER_TYPES = ['contains', 'not_contains', 'equals', 'not_equals', 'starts_with', 'ends_with'] as const;
+
 function getTextFilter(modal: HTMLElement, column: string): Filter {
     const filterType: string = getDropdownValue(modal.querySelector('.pj-dropdown'));
     const valueInput: HTMLInputElement = modal.querySelector('[name="filter_value"]');
 
-    if (!['contains', 'not_contains', 'equals', 'not_equals', 'starts_with', 'ends_with'].includes(filterType)) {
+    if (!VALID_TEXT_FILTER_TYPES.includes(filterType as typeof VALID_TEXT_FILTER_TYPES[number])) {
         throw new Error('Invalid filter type');
     }
 
@@ -235,6 +252,20 @@ function getSelectFilterFromFilterValue(filterValue: HTMLElement, column: string
     };
 }
 
+function getJsonFilterFromFilterValue(filterValue: HTMLElement, column: string): Filter {
+    const filterType: string = getData(filterValue, 'operator');
+    const jsonPath: string = getData(filterValue, 'json-path');
+    const value: string = getData(filterValue, 'value');
+
+    return <JsonFilter> {
+        column,
+        type: 'json',
+        filterType,
+        jsonPath: jsonPath ?? null,
+        value,
+    };
+}
+
 function getNumberFilter(modal: HTMLElement, column: string): Filter {
     const valueFromInput: HTMLInputElement = modal.querySelector('[name="filter_value_from"]');
     const valueToInput: HTMLInputElement = modal.querySelector('[name="filter_value_to"]');
@@ -294,6 +325,28 @@ function getSelectFilter(modal: HTMLElement, column: string): Filter {
         column: column,
         type: 'select',
         value: getDropdownValue(modal.querySelector('.pj-dropdown')),
+    };
+}
+
+function getJsonFilter(modal: HTMLElement, column: string): Filter {
+    const filterType: string = getDropdownValue(modal.querySelector('.pj-dropdown'));
+    const jsonPathInput: HTMLInputElement = modal.querySelector('[name="json_path"]');
+    const valueInput: HTMLInputElement = modal.querySelector('[name="filter_value"]');
+
+    if (!VALID_TEXT_FILTER_TYPES.includes(filterType as typeof VALID_TEXT_FILTER_TYPES[number])) {
+        throw new Error('Invalid filter type');
+    }
+
+    if (valueInput.value === '') {
+        throw new Error('No filter value');
+    }
+
+    return <JsonFilter> {
+        column,
+        type: 'json',
+        filterType: filterType,
+        jsonPath: jsonPathInput.value ?? null,
+        value: valueInput.value,
     };
 }
 

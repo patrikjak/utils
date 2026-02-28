@@ -24,8 +24,18 @@ return [
         'starts_with' => 'Starts with',
         'ends_with' => 'Ends with'
     ],
+    'json_filter_types' => [
+        'contains' => 'Contains',
+        'not_contains' => 'Not contains',
+        'equals' => 'Equals',
+        'not_equals' => 'Not equals',
+        'starts_with' => 'Starts with',
+        'ends_with' => 'Ends with'
+    ],
     'filter_value' => 'Filter value',
     'filter_value_placeholder' => 'Enter filter value',
+    'json_path' => 'JSON path',
+    'json_path_placeholder' => 'e.g., email or user.address.city',
     'filter_from' => 'From',
     'filter_to' => 'To',
     'filter_available_options' => 'Available options',
