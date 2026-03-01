@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
@@ -93,6 +93,14 @@ class BaseTableProviderTest extends TestCase
         ]);
 
         $this->tableMatchesSnapshot();
+    }
+
+    public function testTableLoaderIsAbsentForStaticTable(): void
+    {
+        $table = $this->tableProvider->getTable();
+        $view = Blade::renderComponent(new Table($table));
+
+        $this->assertStringNotContainsString('table-loader', $view);
     }
 
     protected function setUp(): void

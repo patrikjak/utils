@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Table\Factories\Filter;
 
@@ -21,7 +21,7 @@ class SelectFilterOptionsFactoryTest extends TestCase
         $arrayOptions = $selectFilterOptions->toArray();
 
         $this->assertCount(3, $selectFilterOptions->options);
-        
+
         $this->assertSame('1', $selectFilterOptions->options[1]->value);
         $this->assertSame('Option 1', $selectFilterOptions->options[1]->label);
 

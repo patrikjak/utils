@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
@@ -188,7 +188,7 @@ class SortAndFilterTableProviderTest extends TestCase
         $table = $this->tableProvider->getTable(
             $parameters ?? new Parameters(1, 10, null, null),
         );
-        
+
         $view = Blade::render('<x-pjutils.table::table :$table />', ['table' => $table]);
 
         $this->assertMatchesHtmlSnapshot((string) $view);
