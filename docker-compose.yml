@@ -6,19 +6,12 @@ services:
     container_name: "utils-cli"
     environment:
       XDEBUG_MODE: develop,debug,coverage
-    networks:
-      - shared
     volumes:
       - ".:/var/www"
 
   node:
     image: node:25-alpine
     container_name: "utils-node"
-    networks:
-      - shared
     volumes:
-      - ".:/var/www"
-
-networks:
-  shared:
-    driver: bridge
+      - ".:/app"
+    working_dir: /app
