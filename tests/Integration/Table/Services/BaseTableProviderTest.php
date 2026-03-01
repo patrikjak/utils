@@ -100,7 +100,7 @@ class BaseTableProviderTest extends TestCase
         $table = $this->tableProvider->getTable();
         $view = Blade::renderComponent(new Table($table));
 
-        $this->assertStringNotContainsString('table-loader', (string) $view);
+        $this->assertStringNotContainsString('table-loader', $view);
     }
 
     protected function setUp(): void
