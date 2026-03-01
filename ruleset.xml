@@ -1,94 +1,103 @@
 <?xml version="1.0"?>
-<ruleset name="Brace Slevomat Coding Style">
+<ruleset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         name="PSR-12 + PER-3 Standard"
+         xsi:noNamespaceSchemaLocation="vendor/squizlabs/php_codesniffer/phpcs.xsd">
 
+    <description>PSR-12 and PER-3 coding standards with minimal Slevomat additions for PHP 8.4+</description>
+
+    <!-- Configuration -->
     <config name="show_progress" value="1"/>
     <config name="tab_width" value="4"/>
-    <config name="php_version" value="8.4"/>
+    <config name="php_version" value="8.5"/>
     <config name="installed_paths" value="vendor/slevomat/coding-standard"/>
 
+    <!-- Command line arguments -->
     <arg name="colors"/>
+    <arg name="parallel" value="8"/>
     <arg value="sp"/>
+    <arg name="extensions" value="php"/>
 
+    <!-- Files to check -->
     <file>src</file>
     <file>tests</file>
 
-    <!-- ARRAYS -->
-    <rule ref="SlevomatCodingStandard.Arrays.ArrayAccess"/>
-    <rule ref="SlevomatCodingStandard.Arrays.SingleLineArrayWhitespace"/>
+    <!-- ===================================================================== -->
+    <!-- PSR-12 BASE STANDARD                                                  -->
+    <!-- ===================================================================== -->
+
+    <!-- Include full PSR-12 standard -->
+    <rule ref="PSR12"/>
+
+    <!-- ===================================================================== -->
+    <!-- PER-3 ESSENTIAL ADDITIONS                                             -->
+    <!-- ===================================================================== -->
+
+    <!-- Short form type keywords (bool not boolean, int not integer) -->
+    <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
+
+    <!-- Trailing commas in multiline arrays -->
     <rule ref="SlevomatCodingStandard.Arrays.TrailingArrayComma"/>
 
-    <!-- CLASSES -->
+    <!-- DNF type formatting -->
+    <rule ref="SlevomatCodingStandard.TypeHints.DNFTypeHintFormat"/>
+
+    <!-- Enum case spacing -->
+    <rule ref="SlevomatCodingStandard.Classes.EnumCaseSpacing"/>
+
+    <!-- Backed enum type spacing -->
     <rule ref="SlevomatCodingStandard.Classes.BackedEnumTypeSpacing"/>
-    <rule ref="SlevomatCodingStandard.Classes.ClassLength">
+
+    <!-- ===================================================================== -->
+    <!-- RECOMMENDED ADDITIONS (Best Practices)                                -->
+    <!-- ===================================================================== -->
+
+    <!-- Declare strict types -->
+    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes">
         <properties>
-            <property name="maxLinesLength" value="300"/>
+            <property name="spacesCountAroundEqualsSign" value="0"/>
+            <property name="declareOnFirstLine" value="false"/>
         </properties>
     </rule>
-    <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility"/>
-    <rule ref="SlevomatCodingStandard.Classes.ClassMemberSpacing"/>
-    <rule ref="SlevomatCodingStandard.Classes.ClassStructure"/>
-    <rule ref="SlevomatCodingStandard.Classes.ConstantSpacing"/>
-    <rule ref="SlevomatCodingStandard.Classes.EnumCaseSpacing"/>
-    <rule ref="SlevomatCodingStandard.Classes.MethodSpacing"/>
+
+    <!-- Modern class name reference (::class) -->
     <rule ref="SlevomatCodingStandard.Classes.ModernClassNameReference"/>
-    <rule ref="SlevomatCodingStandard.Classes.ParentCallSpacing"/>
-    <rule ref="SlevomatCodingStandard.Classes.PropertyDeclaration"/>
-    <rule ref="SlevomatCodingStandard.Classes.PropertySpacing"/>
-    <rule ref="SlevomatCodingStandard.Classes.RequireConstructorPropertyPromotion"/>
 
-    <!-- COMMENTING -->
-    <rule ref="SlevomatCodingStandard.Commenting.EmptyComment"/>
-
-    <!-- CONTROL STRUCTURES -->
-    <rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.DisallowTrailingMultiLineTernaryOperator"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.JumpStatementsSpacing"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.NewWithParentheses"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.RequireMultiLineCondition"/>
-    <rule ref="SlevomatCodingStandard.ControlStructures.RequireShortTernaryOperator"/>
-
-    <!-- EXCEPTIONS -->
-    <rule ref="SlevomatCodingStandard.ControlStructures.AssignmentInCondition"/>
-
-    <!-- FILES -->
-    <rule ref="SlevomatCodingStandard.Files.LineLength"/>
-
-    <!-- FUNCTIONS -->
-    <rule ref="SlevomatCodingStandard.Functions.ArrowFunctionDeclaration"/>
-    <rule ref="SlevomatCodingStandard.Functions.DisallowEmptyFunction"/>
-    <rule ref="SlevomatCodingStandard.Functions.StaticClosure"/>
-    <rule ref="SlevomatCodingStandard.Functions.StrictCall"/>
-
-    <!-- NAMESPACES -->
+    <!-- Alphabetically sorted use statements -->
     <rule ref="SlevomatCodingStandard.Namespaces.AlphabeticallySortedUses"/>
-    <rule ref="SlevomatCodingStandard.Namespaces.UseSpacing"/>
 
-    <!-- OPERATORS -->
-    <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators"/>
-    <rule ref="SlevomatCodingStandard.Operators.RequireCombinedAssignmentOperator"/>
+    <!-- Use statement spacing -->
+    <rule ref="SlevomatCodingStandard.Namespaces.UseSpacing">
+        <properties>
+            <property name="linesCountBeforeFirstUse" value="1"/>
+            <property name="linesCountBetweenUseTypes" value="1"/>
+            <property name="linesCountAfterLastUse" value="1"/>
+        </properties>
+    </rule>
 
-    <!-- PHP -->
-    <rule ref="SlevomatCodingStandard.PHP.RequireExplicitAssertion"/>
-    <rule ref="SlevomatCodingStandard.PHP.RequireNowdoc"/>
-    <rule ref="SlevomatCodingStandard.PHP.TypeCast"/>
-    <rule ref="SlevomatCodingStandard.PHP.UselessParentheses"/>
-
-    <!-- TYPE HINTS -->
-    <rule ref="SlevomatCodingStandard.TypeHints.DeclareStrictTypes"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.DNFTypeHintFormat"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.LongTypeHints"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint"/>
+    <!-- Type hint spacing -->
     <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHintSpacing"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>
-    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>
     <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHintSpacing"/>
+
+    <!-- Nullable type format -->
+    <rule ref="SlevomatCodingStandard.TypeHints.NullableTypeForNullDefaultValue"/>
+
+    <!-- Class constant visibility -->
+    <rule ref="SlevomatCodingStandard.Classes.ClassConstantVisibility"/>
+
+    <!-- Remove useless type hints -->
     <rule ref="SlevomatCodingStandard.TypeHints.UselessConstantTypeHint"/>
 
-    <!-- TYPE HINTS -->
-    <rule ref="SlevomatCodingStandard.Variables.UselessVariable"/>
+    <!-- Useless parentheses -->
+    <rule ref="SlevomatCodingStandard.PHP.UselessParentheses"/>
 
-    <!-- TYPE HINTS -->
+    <!-- Duplicate spaces -->
     <rule ref="SlevomatCodingStandard.Whitespaces.DuplicateSpaces"/>
+
+    <rule ref="SlevomatCodingStandard.TypeHints.ParameterTypeHint"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.ReturnTypeHint"/>
+    <rule ref="SlevomatCodingStandard.TypeHints.PropertyTypeHint"/>
+    <rule ref="SlevomatCodingStandard.Operators.DisallowEqualOperators"/>
+    <rule ref="SlevomatCodingStandard.Functions.DisallowEmptyFunction"/>
+    <rule ref="SlevomatCodingStandard.Classes.RequireConstructorPropertyPromotion"/>
 
 </ruleset>

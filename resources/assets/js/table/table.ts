@@ -117,18 +117,44 @@ async function reloadTable(
     sortCriteria: SortCriteria | null = null,
     filterCriteria: FilterCriteria | null = null,
 ): Promise<void> {
-    const url: string = getTableUrl(tableWrapper, pageCriteria, sortCriteria, filterCriteria);
-    const tableParts: TableParts = await getTableParts(url);
+    showTableLoader(tableWrapper);
 
-    reloadTableHead(tableWrapper, tableParts.head);
-    reloadTableBody(tableWrapper, tableParts.body);
+    try {
+        const url: string = getTableUrl(tableWrapper, pageCriteria, sortCriteria, filterCriteria);
+        const tableParts: TableParts | null = await getTableParts(url);
 
-    if (tableParts.pagination) {
-        reloadTablePagination(tableWrapper, tableParts.pagination);
+        if (tableParts === null) {
+            return;
+        }
+
+        reloadTableHead(tableWrapper, tableParts.head);
+        reloadTableBody(tableWrapper, tableParts.body);
+
+        if (tableParts.pagination) {
+            reloadTablePagination(tableWrapper, tableParts.pagination);
+        }
+
+        if (tableParts.options) {
+            reloadOptions(tableWrapper, tableParts.options);
+        }
+    } finally {
+        hideTableLoader(tableWrapper);
     }
+}
 
-    if (tableParts.options) {
-        reloadOptions(tableWrapper, tableParts.options);
+function showTableLoader(tableWrapper: TableWrapper): void {
+    const loader: HTMLElement | null = tableWrapper.querySelector('.table-loader');
+
+    if (loader !== null) {
+        loader.classList.remove('hidden');
+    }
+}
+
+function hideTableLoader(tableWrapper: TableWrapper): void {
+    const loader: HTMLElement | null = tableWrapper.querySelector('.table-loader');
+
+    if (loader !== null) {
+        loader.classList.add('hidden');
     }
 }
 
@@ -155,11 +181,14 @@ function getTableUrl(
     return url;
 }
 
-function getTableParts(url: string): Promise<TableParts> {
-    return new Promise((resolve: (tableParts: TableParts) => void): void => {
+function getTableParts(url: string): Promise<TableParts | null> {
+    return new Promise((resolve: (tableParts: TableParts | null) => void): void => {
         axios.get(url).then(response => {
             resolve(response.data);
-        }).catch((): void => console.log('Error while loading table parts'));
+        }).catch((): void => {
+            console.error('Error while loading table parts');
+            resolve(null);
+        });
     });
 }
 

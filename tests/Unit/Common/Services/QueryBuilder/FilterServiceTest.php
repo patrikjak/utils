@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Common\Services\QueryBuilder;
 
@@ -109,7 +109,8 @@ class FilterServiceTest extends TestCase
             new FilterCriteria([
                 new TextFilterCriteria('name', 'John', TextFilterType::CONTAINS),
             ]),
-            ['users.name' => 'name']);
+            ['users.name' => 'name']
+        );
 
         $this->assertStringContainsString("\"name\" like '%John%'", $query->toRawSql());
     }

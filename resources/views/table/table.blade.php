@@ -31,4 +31,14 @@
     @if($table->hasPagination())
         <x-pjutils.table::pagination.paginator :pagination-settings="$table->paginationSettings" />
     @endif
+
+    @if($table->htmlPartsUrl !== null)
+        <div class="table-loader hidden" role="status" aria-label="Loading">
+            <div class="loading-dots">
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+            </div>
+        </div>
+    @endif
 </div>

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
@@ -92,6 +92,14 @@ class BasePaginatedTableProviderTest extends TestCase
         $this->tableProvider->setPaginationOptions([5 => 5, 8 => 8, 10 => 10]);
 
         $this->tableMatchesSnapshot();
+    }
+
+    public function testTableLoaderIsPresent(): void
+    {
+        $table = $this->tableProvider->getTable(new Parameters(1, 10, null, null));
+        $view = Blade::renderComponent(new Table($table));
+
+        $this->assertStringContainsString('class="table-loader hidden"', (string) $view);
     }
 
     public function testCanGetHtmlParts(): void

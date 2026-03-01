@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Common\Http\Middlewares;
 
@@ -78,7 +78,8 @@ class VerifyRecaptchaTest extends TestCase
 
         $this->getMiddleware()->handle($request, static function ($request) {
             return response('OK');
-        }, (new class {})::class);
+        }, (new class {
+        })::class);
     }
 
     private function getMiddleware(): VerifyRecaptcha
@@ -97,8 +98,8 @@ class VerifyRecaptchaTest extends TestCase
                 $mock->shouldReceive('asForm')->andReturnSelf();
                 $mock->shouldReceive('post')->andReturnSelf();
                 $mock->shouldReceive('json')->andReturn(['success' => $successful]);
-            })
-        );
+            }
+        ));
     }
 
     private function getMiddlewareResponse(Request $request): Response

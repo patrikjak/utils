@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Table\Http\Request\Traits;
 
@@ -28,7 +28,7 @@ class HandlesBulkActionsIdsTest extends TestCase
         $request = new class extends FormRequest {
             use HandlesBulkActionsIds;
         };
-        
+
         $request->replace(['bulkActionsIds' => [1, 2, 3]]);
 
         $this->assertInstanceOf(Collection::class, $request->getBulkActionsIds());
