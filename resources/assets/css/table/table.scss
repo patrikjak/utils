@@ -125,6 +125,39 @@
             font-size: .75rem;
         }
 
+        .truncated {
+            cursor: help;
+
+            &[data-tooltip] {
+                position: relative;
+
+                &::after {
+                    content: attr(data-tooltip);
+                    position: absolute;
+                    bottom: calc(100% + .375rem);
+                    left: 50%;
+                    transform: translateX(-50%);
+                    background-color: $font;
+                    color: $white;
+                    font-size: .75rem;
+                    white-space: nowrap;
+                    padding: .375rem .5rem;
+                    border-radius: 6px;
+                    pointer-events: none;
+                    opacity: 0;
+                    transition: opacity .15s;
+                    z-index: 10;
+                    max-width: 300px;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+
+                &:hover::after {
+                    opacity: 1;
+                }
+            }
+        }
+
         &.chip {
             padding: 1.375rem .75rem;
         }

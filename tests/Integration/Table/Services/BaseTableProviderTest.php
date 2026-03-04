@@ -9,8 +9,10 @@ use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Cells\Simple;
+use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
 use Patrikjak\Utils\Table\View\Table;
+use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations;
 use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\TableProvider;
 use Patrikjak\Utils\Tests\Integration\Table\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -90,6 +92,61 @@ class BaseTableProviderTest extends TestCase
                 href: 'https://example.com/different-method',
                 method: 'POST',
             ),
+        ]);
+
+        $this->tableMatchesSnapshot();
+    }
+
+    public function testTableWithTruncatedCellsCanBeRendered(): void
+    {
+        $this->tableProvider->setData([
+            [
+                'id' => CellFactory::simple('1'),
+                'name' => CellFactory::simple('This is a very long name that exceeds the limit', maxLength: 10),
+                'email' => CellFactory::simple('john.doe@example.com'),
+                'link' => CellFactory::link(
+                    'A very long link label that will be truncated',
+                    'https://example.com',
+                    maxLength: 12,
+                ),
+                'created_at' => CellFactory::simple('2021-01-01 00:00:00'),
+                'updated_at' => CellFactory::simple('2021-01-01 00:00:00'),
+            ],
+        ]);
+
+        $this->tableMatchesSnapshot();
+    }
+
+    public function testTableWithDefaultMaxLengthCanBeRendered(): void
+    {
+        $this->tableProvider->setDefaultMaxLength(10);
+
+        $this->tableMatchesSnapshot();
+    }
+
+    public function testTableUsesConfigDefaultMaxLength(): void
+    {
+        config()->set('pjutils.table.default_max_length', 8);
+
+        $provider = new Implementations\MinimalTableProvider();
+        $table = $provider->getTable();
+        $view = Blade::renderComponent(new Table($table));
+
+        $this->assertMatchesHtmlSnapshot((string) $view);
+    }
+
+    public function testTableWithNoTruncationCellIgnoresDefaultMaxLength(): void
+    {
+        $this->tableProvider->setDefaultMaxLength(5);
+        $this->tableProvider->setData([
+            [
+                'id' => CellFactory::simple('1'),
+                'name' => CellFactory::simple('This is long but not truncated', noTruncation: true),
+                'email' => CellFactory::simple('john.doe@example.com'),
+                'link' => CellFactory::link('Test link', 'https://example.com'),
+                'created_at' => CellFactory::simple('2021-01-01 00:00:00'),
+                'updated_at' => CellFactory::simple('2021-01-01 00:00:00'),
+            ],
         ]);
 
         $this->tableMatchesSnapshot();

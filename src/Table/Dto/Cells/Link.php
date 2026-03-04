@@ -9,9 +9,13 @@ use Patrikjak\Utils\Table\Interfaces\Cells\Cell as CellInterface;
 
 class Link extends Cell implements CellInterface
 {
-    public function __construct(string $value, public string $href)
-    {
-        parent::__construct($value);
+    public function __construct(
+        string $value,
+        public string $href,
+        public ?int $maxLength = null,
+        public bool $noTruncation = false,
+    ) {
+        parent::__construct($value, $maxLength, $noTruncation);
     }
 
     public function getType(): CellType

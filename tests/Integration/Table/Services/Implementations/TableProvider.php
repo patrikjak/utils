@@ -14,6 +14,8 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
 
     private string $tableId = 'table';
 
+    private ?int $defaultMaxLength = null;
+
     /**
      * @var array<string>
      */
@@ -49,11 +51,16 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
     }
 
     /**
+     * @var array<array<string, mixed>>|null
+     */
+    private ?array $data = null;
+
+    /**
      * @inheritDoc
      */
     public function getData(): array
     {
-        return $this->getTableData();
+        return $this->data ?? $this->getTableData();
     }
 
     /**
@@ -87,9 +94,19 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
         return $this->actions;
     }
 
+    public function getDefaultMaxLength(): ?int
+    {
+        return $this->defaultMaxLength;
+    }
+
     public function setTableId(string $tableId): void
     {
         $this->tableId = $tableId;
+    }
+
+    public function setDefaultMaxLength(?int $defaultMaxLength): void
+    {
+        $this->defaultMaxLength = $defaultMaxLength;
     }
 
     /**
@@ -121,5 +138,13 @@ class TableProvider extends BaseTableProvider implements TableProviderInterface
     public function setActions(array $actions): void
     {
         $this->actions = $actions;
+    }
+
+    /**
+     * @param array<array<string, mixed>> $data
+     */
+    public function setData(array $data): void
+    {
+        $this->data = $data;
     }
 }

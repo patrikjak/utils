@@ -50,6 +50,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
             $this->getHtmlPartsUrl(),
             $this->getSortSettings(),
             $this->getFilterSettings(),
+            $this->getDefaultMaxLength(),
         );
     }
 
@@ -132,6 +133,13 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
     public function getFilterCriteria(): ?FilterCriteria
     {
         return $this->parameters?->filterCriteria;
+    }
+
+    public function getDefaultMaxLength(): ?int
+    {
+        $configured = config('pjutils.table.default_max_length');
+
+        return $configured !== null ? (int) $configured : null;
     }
 
     /**

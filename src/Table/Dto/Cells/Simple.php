@@ -11,9 +11,13 @@ use Patrikjak\Utils\Table\Interfaces\Cells\SupportsIcon;
 
 class Simple extends Cell implements CellInterface, SupportsIcon
 {
-    public function __construct(public string $value, public ?Icon $icon = null)
-    {
-        parent::__construct($value);
+    public function __construct(
+        public string $value,
+        public ?Icon $icon = null,
+        public ?int $maxLength = null,
+        public bool $noTruncation = false,
+    ) {
+        parent::__construct($value, $maxLength, $noTruncation);
     }
 
     public function getType(): CellType

@@ -16,6 +16,7 @@
         <x-dynamic-component :component="$getCellView($row[$column])"
                              :cell="$row[$column]"
                              :$column
+                             :defaultMaxLength="$table->defaultMaxLength"
         />
     @endforeach
 

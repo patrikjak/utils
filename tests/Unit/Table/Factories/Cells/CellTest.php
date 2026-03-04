@@ -57,4 +57,85 @@ class CellTest extends TestCase
         $this->assertInstanceOf(AbstractCell::class, $cell);
         $this->assertInstanceOf(CellInterface::class, $cell);
     }
+
+    public function testLinkCellCanBeCreated(): void
+    {
+        $cell = CellFactory::link('value', 'https://example.com');
+
+        $this->assertEquals('value', $cell->value);
+        $this->assertEquals('https://example.com', $cell->href);
+        $this->assertEquals(CellType::LINK, $cell->getType());
+        $this->assertInstanceOf(AbstractCell::class, $cell);
+        $this->assertInstanceOf(CellInterface::class, $cell);
+    }
+
+    public function testSimpleCellMaxLengthIsStoredCorrectly(): void
+    {
+        $cell = CellFactory::simple('value', maxLength: 3);
+
+        $this->assertEquals(3, $cell->maxLength);
+    }
+
+    public function testSimpleCellWithoutMaxLengthHasNullMaxLength(): void
+    {
+        $cell = CellFactory::simple('value');
+
+        $this->assertNull($cell->maxLength);
+    }
+
+    public function testDoubleCellMaxLengthIsStoredCorrectly(): void
+    {
+        $cell = CellFactory::double('value', 'addition', maxLength: 3);
+
+        $this->assertEquals(3, $cell->maxLength);
+    }
+
+    public function testChipCellMaxLengthIsStoredCorrectly(): void
+    {
+        $cell = CellFactory::chip('value', maxLength: 3);
+
+        $this->assertEquals(3, $cell->maxLength);
+    }
+
+    public function testLinkCellMaxLengthIsStoredCorrectly(): void
+    {
+        $cell = CellFactory::link('value', 'https://example.com', maxLength: 3);
+
+        $this->assertEquals(3, $cell->maxLength);
+    }
+
+    public function testSimpleCellNoTruncationDefaultsToFalse(): void
+    {
+        $cell = CellFactory::simple('value');
+
+        $this->assertFalse($cell->noTruncation);
+    }
+
+    public function testSimpleCellNoTruncationCanBeSetToTrue(): void
+    {
+        $cell = CellFactory::simple('value', noTruncation: true);
+
+        $this->assertTrue($cell->noTruncation);
+    }
+
+    public function testDoubleCellNoTruncationCanBeSetToTrue(): void
+    {
+        $cell = CellFactory::double('value', 'addition', noTruncation: true);
+
+        $this->assertTrue($cell->noTruncation);
+    }
+
+    public function testChipCellNoTruncationCanBeSetToTrue(): void
+    {
+        $cell = CellFactory::chip('value', noTruncation: true);
+
+        $this->assertTrue($cell->noTruncation);
+    }
+
+    public function testLinkCellNoTruncationCanBeSetToTrue(): void
+    {
+        $cell = CellFactory::link('value', 'https://example.com', noTruncation: true);
+
+        $this->assertTrue($cell->noTruncation);
+    }
 }

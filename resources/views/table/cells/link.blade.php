@@ -1,3 +1,3 @@
 <td class="{{ $cellClass }}">
-    <a href="{{ $link }}">{{ $cell->value }}</a>
+    <a href="{{ $link }}">{!! $cellContent !!}</a>
 </td>

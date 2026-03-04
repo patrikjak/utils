@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-`patrikjak/utils` v2.10.0 is a Laravel package (library) providing reusable UI components (tables, forms, modals, buttons, dropdowns, notifications, photo uploaders, email layouts) with both PHP backend (Blade components, DTOs, services, middleware) and frontend assets (SCSS, TypeScript). It is not a standalone app — it is installed into Laravel projects via Composer.
+`patrikjak/utils` is a Laravel package (library) providing reusable UI components (tables, forms, modals, buttons, dropdowns, notifications, photo uploaders, email layouts) with both PHP backend (Blade components, DTOs, services, middleware) and frontend assets (SCSS, TypeScript). It is not a standalone app — it is installed into Laravel projects via Composer.
 
 ## Commands
 

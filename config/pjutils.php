@@ -14,4 +14,16 @@ return [
      */
     'email_logo_path' => 'images/logo/logo.svg',
 
+    'table' => [
+
+        /**
+         * Global default maximum character length for table cell values.
+         * Cells exceeding this limit are truncated with an ellipsis and show the full value on hover.
+         * Can be overridden per table via getDefaultMaxLength() and per cell via the maxLength parameter.
+         * Set to null to disable truncation globally.
+         */
+        'default_max_length' => null,
+
+    ],
+
 ];

@@ -9,9 +9,13 @@ use Patrikjak\Utils\Table\Interfaces\Cells\Cell as CellInterface;
 
 class Double extends Cell implements CellInterface
 {
-    public function __construct(public string $value, public string $addition)
-    {
-        parent::__construct($value);
+    public function __construct(
+        public string $value,
+        public string $addition,
+        public ?int $maxLength = null,
+        public bool $noTruncation = false,
+    ) {
+        parent::__construct($value, $maxLength, $noTruncation);
     }
 
     public function getType(): CellType
