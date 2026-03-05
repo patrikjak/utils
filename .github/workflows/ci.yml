@@ -16,6 +16,3 @@ jobs:
     uses: patrikjak/workflows/.github/workflows/test.yml@main
     with:
       php-version: '8.5'
-      codecov-slug: patrikjak/utils
-    secrets:
-      codecov-token: ${{ secrets.CODECOV_TOKEN }}
