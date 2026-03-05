@@ -72,22 +72,29 @@ function bindFunctions(tableWrapper: TableWrapper): void {
 }
 
 let activeTooltip: HTMLElement | null = null;
+let hideTooltipTimeout: ReturnType<typeof setTimeout> | null = null;
 
 function bindTooltips(tableWrapper: TableWrapper): void {
     const elements: NodeListOf<HTMLElement> = tableWrapper.querySelectorAll('.truncated[data-tooltip]');
 
     elements.forEach((el: HTMLElement): void => {
         el.addEventListener('mouseenter', showTooltip);
-        el.addEventListener('mouseleave', hideTooltip);
+        el.addEventListener('mouseleave', scheduleHideTooltip);
     });
 }
 
 function showTooltip(event: MouseEvent): void {
+    cancelHideTooltip();
+
     const target: HTMLElement = event.currentTarget as HTMLElement;
     const text: string | null = target.getAttribute('data-tooltip');
 
     if (text === null) {
         return;
+    }
+
+    if (activeTooltip !== null) {
+        activeTooltip.remove();
     }
 
     const tooltip: HTMLDivElement = document.createElement('div');
@@ -105,8 +112,21 @@ function showTooltip(event: MouseEvent): void {
     tooltip.style.top = `${top}px`;
     tooltip.style.left = `${left}px`;
     tooltip.classList.add('visible');
+    tooltip.addEventListener('mouseenter', cancelHideTooltip);
+    tooltip.addEventListener('mouseleave', scheduleHideTooltip);
 
     activeTooltip = tooltip;
+}
+
+function scheduleHideTooltip(): void {
+    hideTooltipTimeout = setTimeout(hideTooltip, 100);
+}
+
+function cancelHideTooltip(): void {
+    if (hideTooltipTimeout !== null) {
+        clearTimeout(hideTooltipTimeout);
+        hideTooltipTimeout = null;
+    }
 }
 
 function hideTooltip(): void {
