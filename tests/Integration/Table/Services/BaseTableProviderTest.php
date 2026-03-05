@@ -132,7 +132,7 @@ class BaseTableProviderTest extends TestCase
         $table = $provider->getTable();
         $view = Blade::renderComponent(new Table($table));
 
-        $this->assertMatchesHtmlSnapshot((string) $view);
+        $this->assertMatchesHtmlSnapshot($view);
     }
 
     public function testTableWithNoTruncationCellIgnoresDefaultMaxLength(): void

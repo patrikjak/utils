@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\Services;
 
+use Illuminate\Contracts\Config\Repository as ConfigRepository;
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
@@ -135,9 +137,12 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         return $this->parameters?->filterCriteria;
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function getDefaultMaxLength(): ?int
     {
-        $configured = config('pjutils.table.default_max_length');
+        $configured = app()->make(ConfigRepository::class)->get('pjutils.table.default_max_length');
 
         return $configured !== null ? (int) $configured : null;
     }
