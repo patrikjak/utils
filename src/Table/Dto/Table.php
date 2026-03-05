@@ -34,6 +34,7 @@ final readonly class Table
         public ?string $htmlPartsUrl = null,
         public ?SortSettings $sortSettings = null,
         public ?FilterSettings $filterSettings = null,
+        public ?int $defaultMaxLength = null,
     ) {
     }
 

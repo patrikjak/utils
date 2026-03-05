@@ -1,5 +1,3 @@
 <td class="{{ $cellClass }}">
-    <span class="chip {{ $type }}">
-        {{ $cell->value }}
-    </span>
+    <span class="chip {{ $type }}">{!! $cellContent !!}</span>
 </td>

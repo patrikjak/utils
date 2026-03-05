@@ -45,4 +45,6 @@ interface TableProviderInterface
      * @return array<BulkActionItem>
      */
     public function getBulkActions(): array;
+
+    public function getDefaultMaxLength(): ?int;
 }

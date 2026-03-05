@@ -12,9 +12,9 @@ final class Chip extends Cell
 {
     public string $type;
 
-    public function __construct(AbstractCell $cell, string $column)
+    public function __construct(AbstractCell $cell, string $column, ?int $defaultMaxLength = null)
     {
-        parent::__construct($cell, $column);
+        parent::__construct($cell, $column, $defaultMaxLength);
 
         $this->type = $this->getType();
     }

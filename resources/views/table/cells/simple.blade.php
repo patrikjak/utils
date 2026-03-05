@@ -4,7 +4,7 @@
             {!! $icon->getAsHtml() !!}
     @endif
 
-    {{ $cell->value }}
+    {!! $cellContent !!}
 
     @if($icon !== null)
         </div>

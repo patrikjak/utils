@@ -10,9 +10,13 @@ use Patrikjak\Utils\Table\Interfaces\Cells\Cell as CellInterface;
 
 class Chip extends Cell implements CellInterface
 {
-    public function __construct(public string $value, public Type $type)
-    {
-        parent::__construct($value);
+    public function __construct(
+        public string $value,
+        public Type $type,
+        public ?int $maxLength = null,
+        public bool $noTruncation = false,
+    ) {
+        parent::__construct($value, $maxLength, $noTruncation);
     }
 
     public function getType(): CellType

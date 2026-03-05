@@ -1,5 +1,5 @@
 <td class="{{ $cellClass }}">
-    <span class="main">{{ $cell->value }}</span>
+    <span class="main">{!! $cellContent !!}</span>
     <br>
     <span class="addition">{{ $addition }}</span>
 </td>

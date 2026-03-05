@@ -65,9 +65,75 @@ function bindFunctions(tableWrapper: TableWrapper): void {
     bindOptions(tableWrapper);
     bindSorting(tableWrapper);
     bindFilter(tableWrapper);
+    bindTooltips(tableWrapper);
 
     handleBulkActions(tableWrapper);
     checkSavedCheckboxes(tableWrapper.id);
+}
+
+let activeTooltip: HTMLElement | null = null;
+let hideTooltipTimeout: ReturnType<typeof setTimeout> | null = null;
+
+function bindTooltips(tableWrapper: TableWrapper): void {
+    const elements: NodeListOf<HTMLElement> = tableWrapper.querySelectorAll('.truncated[data-tooltip]');
+
+    elements.forEach((el: HTMLElement): void => {
+        el.addEventListener('mouseenter', showTooltip);
+        el.addEventListener('mouseleave', scheduleHideTooltip);
+    });
+}
+
+function showTooltip(event: MouseEvent): void {
+    cancelHideTooltip();
+
+    const target: HTMLElement = event.currentTarget as HTMLElement;
+    const text: string | null = target.getAttribute('data-tooltip');
+
+    if (text === null) {
+        return;
+    }
+
+    if (activeTooltip !== null) {
+        activeTooltip.remove();
+    }
+
+    const tooltip: HTMLDivElement = document.createElement('div');
+    tooltip.className = 'pj-table-tooltip';
+    tooltip.textContent = text;
+    document.body.appendChild(tooltip);
+
+    const targetRect: DOMRect = target.getBoundingClientRect();
+    const tooltipRect: DOMRect = tooltip.getBoundingClientRect();
+
+    const top: number = targetRect.top - tooltipRect.height - 6;
+    const centeredLeft: number = targetRect.left + targetRect.width / 2 - tooltipRect.width / 2;
+    const left: number = Math.max(8, Math.min(centeredLeft, window.innerWidth - tooltipRect.width - 8));
+
+    tooltip.style.top = `${top}px`;
+    tooltip.style.left = `${left}px`;
+    tooltip.classList.add('visible');
+    tooltip.addEventListener('mouseenter', cancelHideTooltip);
+    tooltip.addEventListener('mouseleave', scheduleHideTooltip);
+
+    activeTooltip = tooltip;
+}
+
+function scheduleHideTooltip(): void {
+    hideTooltipTimeout = setTimeout(hideTooltip, 100);
+}
+
+function cancelHideTooltip(): void {
+    if (hideTooltipTimeout !== null) {
+        clearTimeout(hideTooltipTimeout);
+        hideTooltipTimeout = null;
+    }
+}
+
+function hideTooltip(): void {
+    if (activeTooltip !== null) {
+        activeTooltip.remove();
+        activeTooltip = null;
+    }
 }
 
 function getPageCriteria(tableWrapper: TableWrapper, event: CustomEvent): PageCriteria {

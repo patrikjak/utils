@@ -125,6 +125,10 @@
             font-size: .75rem;
         }
 
+        .truncated {
+            cursor: help;
+        }
+
         &.chip {
             padding: 1.375rem .75rem;
         }
@@ -600,5 +604,26 @@
     button {
         margin-right: auto;
         margin-left: auto;
+    }
+}
+
+.pj-table-tooltip {
+    position: fixed;
+    background-color: $font;
+    color: $white;
+    font-size: .75rem;
+    white-space: normal;
+    word-break: break-word;
+    max-width: 300px;
+    max-height: 200px;
+    overflow-y: auto;
+    padding: .375rem .5rem;
+    border-radius: 6px;
+    opacity: 0;
+    transition: opacity .15s;
+    z-index: 9999;
+
+    &.visible {
+        opacity: 1;
     }
 }
