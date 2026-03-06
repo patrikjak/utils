@@ -18,6 +18,33 @@ use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\TextFilter;
 class FilterService
 {
     /**
+     * @param array<string> $searchableColumns
+     * @param array<string, string> $columnsMask
+     */
+    public function applySearch(
+        Builder $query,
+        ?string $searchQuery,
+        array $searchableColumns,
+        array $columnsMask = [],
+    ): void {
+        if ($searchQuery === null || $searchQuery === '' || count($searchableColumns) === 0) {
+            return;
+        }
+
+        $escapedValue = str_replace(['\\', '%', '_'], ['\\\\', '\\%', '\\_'], $searchQuery);
+        $likeValue = sprintf('%%%s%%', $escapedValue);
+
+        $query->where(function (Builder $query) use ($searchableColumns, $likeValue, $columnsMask): void {
+            foreach ($searchableColumns as $column) {
+                $realColumn = $columnsMask !== [] && in_array($column, $columnsMask, true)
+                    ? array_search($column, $columnsMask, true)
+                    : $column;
+                $query->orWhere($realColumn, 'like', $likeValue);
+            }
+        });
+    }
+
+    /**
      * @param array<string, string> $columnsMask
      */
     public function applyFilter(Builder $query, ?FilterCriteria $filterCriteria, array $columnsMask = []): void

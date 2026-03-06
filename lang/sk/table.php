@@ -41,5 +41,6 @@ return [
     'filter_available_options' => 'Dostupné možnosti',
     'filter_min' => 'Min',
     'filter_max' => 'Max',
+    'search' => 'Hľadať',
 
 ];

@@ -41,5 +41,6 @@ return [
     'filter_available_options' => 'Available options',
     'filter_min' => 'Min',
     'filter_max' => 'Max',
+    'search' => 'Search',
 
 ];

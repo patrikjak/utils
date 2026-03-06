@@ -9,6 +9,10 @@
         @if($table->isFilterable())
             <x-pjutils.table::filter.filter-options :settings="$table->filterSettings"/>
         @endif
+
+        @if($table->isSearchable())
+            <x-pjutils.table::search.search-input :settings="$table->searchSettings"/>
+        @endif
     </div>
 
     @php

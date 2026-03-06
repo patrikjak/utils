@@ -11,13 +11,14 @@ use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Dto\Search\Settings as SearchSettings;
 use Patrikjak\Utils\Table\Dto\Sort\Settings;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Head;
 use Patrikjak\Utils\Table\View\Options;
 
-abstract class BaseTableProvider implements TableProviderInterface, Sortable, Filterable
+abstract class BaseTableProvider implements TableProviderInterface, Sortable, Filterable, Searchable
 {
     protected ?Parameters $parameters;
 
@@ -33,6 +34,9 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
      */
     abstract public function getData(): array;
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function getTable(?Parameters $parameters = null): Table
     {
         $this->parameters = $parameters;
@@ -53,6 +57,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
             $this->getSortSettings(),
             $this->getFilterSettings(),
             $this->getDefaultMaxLength(),
+            $this->getSearchSettings(),
         );
     }
 
@@ -138,6 +143,19 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
     }
 
     /**
+     * @inheritDoc
+     */
+    public function getSearchableColumns(): array
+    {
+        return [];
+    }
+
+    public function getSearchQuery(): ?string
+    {
+        return $this->parameters?->searchQuery;
+    }
+
+    /**
      * @throws BindingResolutionException
      */
     public function getDefaultMaxLength(): ?int
@@ -178,7 +196,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
 
     protected function getOptionsHtml(): ?string
     {
-        if (!$this->table->isSortable() && !$this->table->isFilterable()) {
+        if (!$this->table->isSortable() && !$this->table->isFilterable() && !$this->table->isSearchable()) {
             return null;
         }
 
@@ -201,5 +219,14 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         }
 
         return new FilterSettings($this->getFilterableColumns(), $this->parameters?->filterCriteria);
+    }
+
+    private function getSearchSettings(): ?SearchSettings
+    {
+        if (count($this->getSearchableColumns()) === 0) {
+            return null;
+        }
+
+        return new SearchSettings($this->getSearchableColumns(), $this->parameters?->searchQuery);
     }
 }

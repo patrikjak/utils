@@ -22,6 +22,7 @@ enum Icon: string
     case SORT_ASC = 'sort_asc';
     case SORT_DESC = 'sort_desc';
     case FILTER = 'filter';
+    case SEARCH = 'search';
 
     public function getAsHtml(): string
     {
