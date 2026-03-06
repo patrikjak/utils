@@ -10,18 +10,20 @@ import {
     JsonFilter,
     NumberFilter,
     PageCriteria,
+    SearchCriteria,
     SelectFilter,
     SortCriteria,
     TableParts,
     TableWrapper,
     TextFilter
 } from "../interfaces/table";
-import {deleteFilterKey, deleteSortKey, filterKey, orderKey, pageKey, pageSizeKey, sortKey} from "./constants";
+import {deleteFilterKey, deleteSearchKey, deleteSortKey, filterKey, orderKey, pageKey, pageSizeKey, searchKey, sortKey} from "./constants";
 import {bindShowingRowActions, setActionsToDefaultPosition} from "./actions";
 import axios from "axios";
 import {bindDropdowns} from "../utils/dropdown";
 import {bindSorting, getCurrentOrder, getCurrentSort} from "./sort";
 import {bindFilter, getCurrentFilterCriteria} from "./filter";
+import {bindSearch, getCurrentSearchCriteria} from "./search";
 
 export function bindTableFunctions(tableWrapper: TableWrapper | null = null): void {
     let tables: TableWrapper[] = Array.from(document.querySelectorAll('.pj-table-wrapper'));
@@ -47,10 +49,11 @@ function bindUpdate(tableWrapper: TableWrapper): void {
         const pageCriteria: PageCriteria = getPageCriteria(tableWrapper, event);
         const sortCriteria: SortCriteria = getSortCriteria(tableWrapper, event);
         const filterCriteria: FilterCriteria = getFilterCriteria(tableWrapper, event);
+        const searchCriteria: SearchCriteria = getSearchCriteria(tableWrapper, event);
 
         setActionsToDefaultPosition(tableWrapper);
 
-        reloadTable(tableWrapper, pageCriteria, sortCriteria, filterCriteria).then((): void => {
+        reloadTable(tableWrapper, pageCriteria, sortCriteria, filterCriteria, searchCriteria).then((): void => {
             bindFunctions(tableWrapper);
             bindDropdowns(tableWrapper);
         });
@@ -65,6 +68,7 @@ function bindFunctions(tableWrapper: TableWrapper): void {
     bindOptions(tableWrapper);
     bindSorting(tableWrapper);
     bindFilter(tableWrapper);
+    bindSearch(tableWrapper);
     bindTooltips(tableWrapper);
 
     handleBulkActions(tableWrapper);
@@ -177,16 +181,27 @@ function getFilterCriteria(tableWrapper: TableWrapper, event: CustomEvent): Filt
     return filterCriteria;
 }
 
+function getSearchCriteria(tableWrapper: TableWrapper, event: CustomEvent): SearchCriteria {
+    let searchCriteria: SearchCriteria | undefined = event.detail.searchCriteria;
+
+    if (searchCriteria === undefined) {
+        searchCriteria = getCurrentSearchCriteria(tableWrapper);
+    }
+
+    return searchCriteria;
+}
+
 async function reloadTable(
     tableWrapper: TableWrapper,
     pageCriteria: PageCriteria | null = null,
     sortCriteria: SortCriteria | null = null,
     filterCriteria: FilterCriteria | null = null,
+    searchCriteria: SearchCriteria | null = null,
 ): Promise<void> {
     showTableLoader(tableWrapper);
 
     try {
-        const url: string = getTableUrl(tableWrapper, pageCriteria, sortCriteria, filterCriteria);
+        const url: string = getTableUrl(tableWrapper, pageCriteria, sortCriteria, filterCriteria, searchCriteria);
         const tableParts: TableParts | null = await getTableParts(url);
 
         if (tableParts === null) {
@@ -229,6 +244,7 @@ function getTableUrl(
     pageCriteria: PageCriteria | null = null,
     sortCriteria: SortCriteria | null = null,
     filterCriteria: FilterCriteria | null = null,
+    searchCriteria: SearchCriteria | null = null,
 ): string {
     let url: string = getData(tableWrapper, 'html-parts-url');
 
@@ -242,6 +258,10 @@ function getTableUrl(
 
     if (filterCriteria !== null) {
         url = addFilterCriteriaToUrl(url, filterCriteria);
+    }
+
+    if (searchCriteria !== null) {
+        url = addSearchCriteriaToUrl(url, searchCriteria);
     }
 
     return url;
@@ -366,4 +386,14 @@ function getJsonFilterQuery(filter: JsonFilter, index: number): string {
         &${filterKey}[${filter.column}][${index}][operator]=${encodeURIComponent(filter.filterType)}
         &${filterKey}[${filter.column}][${index}][jsonPath]=${encodeURIComponent(filter.jsonPath ?? '')}
         &${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
+}
+
+function addSearchCriteriaToUrl(url: string, searchCriteria: SearchCriteria): string {
+    urlIncludesGetParameters(url) ? url += '&' : url += '?';
+
+    if (searchCriteria.deleteSearch || searchCriteria.query === null) {
+        return url + `${deleteSearchKey}=true`;
+    }
+
+    return url + `${searchKey}=${encodeURIComponent(searchCriteria.query)}&${deleteSearchKey}=false`;
 }

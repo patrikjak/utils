@@ -5,5 +5,7 @@ export const orderKey = 'order';
 export const deleteSortKey = 'deleteSort';
 export const filterKey = 'filter';
 export const deleteFilterKey = 'deleteFilters';
+export const searchKey = 'search';
+export const deleteSearchKey = 'deleteSearch';
 
 export const filterModalUrl = 'pjutils/table/filter-form/{type}';

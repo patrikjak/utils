@@ -8,6 +8,7 @@ use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkActionItem;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
+use Patrikjak\Utils\Table\Dto\Search\Settings as SearchSettings;
 use Patrikjak\Utils\Table\Dto\Sort\Settings as SortSettings;
 
 final readonly class Table
@@ -35,6 +36,7 @@ final readonly class Table
         public ?SortSettings $sortSettings = null,
         public ?FilterSettings $filterSettings = null,
         public ?int $defaultMaxLength = null,
+        public ?SearchSettings $searchSettings = null,
     ) {
     }
 
@@ -69,5 +71,14 @@ final readonly class Table
         }
 
         return count($this->filterSettings->filterableColumns) > 0;
+    }
+
+    public function isSearchable(): bool
+    {
+        if ($this->searchSettings === null) {
+            return false;
+        }
+
+        return count($this->searchSettings->searchableColumns) > 0;
     }
 }

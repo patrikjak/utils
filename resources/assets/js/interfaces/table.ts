@@ -14,6 +14,11 @@ export type FilterCriteria = {
     deleteFilters: boolean;
 };
 
+export type SearchCriteria = {
+    query: string | null;
+    deleteSearch: boolean;
+};
+
 export type TableParts = {
     body: string;
     head: string;

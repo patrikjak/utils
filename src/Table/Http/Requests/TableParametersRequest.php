@@ -33,6 +33,8 @@ class TableParametersRequest extends FormRequest
 
     private bool $checkFilterCookie = true;
 
+    private bool $checkSearchCookie = true;
+
     public function getTableParameters(string $tableId): Parameters
     {
         $this->tableId = $tableId;
@@ -42,6 +44,7 @@ class TableParametersRequest extends FormRequest
             $this->getPageSize(),
             $this->getSortCriteria(),
             $this->getFilterCriteria(),
+            $this->getSearchQuery(),
         );
 
         if ($this->shouldUpdateCookie) {
@@ -89,6 +92,21 @@ class TableParametersRequest extends FormRequest
         }
 
         return $this->getFilterCriteriaFromCookie() ?? null;
+    }
+
+    private function getSearchQuery(): ?string
+    {
+        $searchQueryFromRequest = $this->getSearchQueryFromRequest();
+
+        if ($searchQueryFromRequest !== null) {
+            return $searchQueryFromRequest === '' ? null : $searchQueryFromRequest;
+        }
+
+        if (!$this->checkSearchCookie) {
+            return null;
+        }
+
+        return $this->getSearchQueryFromCookie();
     }
 
     private function getPageFromRequest(): ?int
@@ -247,6 +265,35 @@ class TableParametersRequest extends FormRequest
         }
 
         return new FilterCriteria($filters);
+    }
+
+    private function getSearchQueryFromRequest(): ?string
+    {
+        $deleteSearch = $this->boolean('deleteSearch');
+
+        if ($deleteSearch) {
+            $this->shouldUpdateCookie = true;
+            $this->checkSearchCookie = false;
+
+            return '';
+        }
+
+        $searchQuery = $this->input('search');
+
+        if ($searchQuery === null) {
+            return null;
+        }
+
+        $this->shouldUpdateCookie = true;
+
+        return (string) $searchQuery;
+    }
+
+    private function getSearchQueryFromCookie(): ?string
+    {
+        $searchQuery = $this->getDecodedParametersFromCookie()->searchQuery ?? null;
+
+        return $searchQuery !== null ? (string) $searchQuery : null;
     }
 
     private function getDecodedParametersFromCookie(): ?stdClass

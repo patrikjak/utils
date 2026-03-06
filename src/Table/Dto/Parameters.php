@@ -15,11 +15,12 @@ final readonly class Parameters implements Arrayable
         public int $pageSize,
         public ?SortCriteria $sortCriteria,
         public ?FilterCriteria $filterCriteria,
+        public ?string $searchQuery = null,
     ) {
     }
 
     /**
-     * @return array<string, array<array<float|string>|string>|int|null>
+     * @return array<string, array<array<float|string>|string>|int|string|null>
      */
     public function toArray(): array
     {
@@ -28,6 +29,7 @@ final readonly class Parameters implements Arrayable
             'pageSize' => $this->pageSize,
             'sortCriteria' => $this->sortCriteria?->toArray(),
             'filterCriteria' => $this->filterCriteria?->toArray(),
+            'searchQuery' => $this->searchQuery,
         ];
     }
 }
