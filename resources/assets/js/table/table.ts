@@ -305,7 +305,17 @@ function reloadOptions(tableWrapper: TableWrapper, options: string): void {
         return;
     }
 
+    const searchInputFocused: boolean = tableOptions.querySelector('.search-input') === document.activeElement;
+
     tableOptions.outerHTML = options;
+
+    if (searchInputFocused) {
+        const newSearchInput: HTMLInputElement | null = tableWrapper.querySelector('.search-input');
+
+        if (newSearchInput !== null) {
+            newSearchInput.focus();
+        }
+    }
 }
 
 function addPageCriteriaToUrl(url: string, pageCriteria: PageCriteria): string {
