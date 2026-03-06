@@ -107,7 +107,7 @@ class FilterServiceSearchTest extends TestCase
         $filterService = $this->app->make(FilterService::class);
         $query = $this->app->make(DatabaseManager::class)->table('users')->select();
 
-        $filterService->applySearch($query, 'john', ['name'], ['name' => 'users.name']);
+        $filterService->applySearch($query, 'john', ['name'], ['users.name' => 'name']);
 
         $this->assertStringContainsString('"users"."name" like', $query->toRawSql());
     }

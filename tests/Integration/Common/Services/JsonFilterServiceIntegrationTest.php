@@ -207,7 +207,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $query = DB::table($this->testTable)->select();
 
         $columnMask = [
-            'user_metadata' => 'json_test_table.metadata',
+            'json_test_table.metadata' => 'user_metadata',
         ];
 
         $this->filterService->applyFilter($query, new FilterCriteria([

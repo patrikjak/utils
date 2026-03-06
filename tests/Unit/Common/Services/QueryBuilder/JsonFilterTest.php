@@ -219,7 +219,7 @@ class JsonFilterTest extends TestCase
             new FilterCriteria([
                 new JsonFilterCriteria('user_metadata', 'email', 'test', JsonFilterType::CONTAINS),
             ]),
-            ['user_metadata' => 'users.metadata']
+            ['users.metadata' => 'user_metadata']
         );
 
         $sql = $query->toRawSql();

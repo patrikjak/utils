@@ -34,7 +34,7 @@ class SortServiceTest extends TestCase
         $sortService = $this->app->make(SortService::class);
         $query = $this->app->make(DatabaseManager::class)->table('users')->select();
 
-        $sortService->applySort($query, new SortCriteria('name', SortOrder::DESC), ['name' => 'users.name']);
+        $sortService->applySort($query, new SortCriteria('name', SortOrder::DESC), ['users.name' => 'name']);
 
         $this->assertStringContainsString('order by "users"."name" desc', $query->toSql());
     }
