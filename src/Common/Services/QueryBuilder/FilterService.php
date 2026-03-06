@@ -36,7 +36,9 @@ class FilterService
 
         $query->where(function (Builder $query) use ($searchableColumns, $likeValue, $columnsMask): void {
             foreach ($searchableColumns as $column) {
-                $realColumn = $columnsMask[$column] ?? $column;
+                $realColumn = $columnsMask !== [] && in_array($column, $columnsMask, true)
+                    ? array_search($column, $columnsMask, true)
+                    : $column;
                 $query->orWhere($realColumn, 'like', $likeValue);
             }
         });
