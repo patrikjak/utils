@@ -305,7 +305,10 @@ function reloadOptions(tableWrapper: TableWrapper, options: string): void {
         return;
     }
 
-    const searchInputFocused: boolean = tableOptions.querySelector('.search-input') === document.activeElement;
+    const searchInput: HTMLInputElement | null = tableOptions.querySelector('.search-input');
+    const searchInputFocused: boolean = searchInput === document.activeElement;
+    const selectionStart: number | null = searchInput?.selectionStart ?? null;
+    const selectionEnd: number | null = searchInput?.selectionEnd ?? null;
 
     tableOptions.outerHTML = options;
 
@@ -314,6 +317,7 @@ function reloadOptions(tableWrapper: TableWrapper, options: string): void {
 
         if (newSearchInput !== null) {
             newSearchInput.focus();
+            newSearchInput.setSelectionRange(selectionStart, selectionEnd);
         }
     }
 }
