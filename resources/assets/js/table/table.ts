@@ -289,12 +289,22 @@ function reloadTableBody(tableWrapper: TableWrapper, body: string): void {
 }
 
 function reloadTablePagination(tableWrapper: TableWrapper, pagination: string): void {
-    const tablePagination: HTMLElement = tableWrapper.closest('.pj-table-wrapper').querySelector('.pagination');
+    const tablePagination: HTMLElement = tableWrapper.querySelector('.pagination');
+
+    if (tablePagination === null) {
+        return;
+    }
+
     tablePagination.outerHTML = pagination;
 }
 
 function reloadOptions(tableWrapper: TableWrapper, options: string): void {
     const tableOptions: HTMLElement = tableWrapper.querySelector('.table-options');
+
+    if (tableOptions === null) {
+        return;
+    }
+
     tableOptions.outerHTML = options;
 }
 
