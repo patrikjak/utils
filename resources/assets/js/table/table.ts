@@ -22,6 +22,7 @@ import axios from "axios";
 import {bindDropdowns} from "../utils/dropdown";
 import {bindSorting, getCurrentOrder, getCurrentSort} from "./sort";
 import {bindFilter, getCurrentFilterCriteria} from "./filter";
+import {loadTableState, saveTableState, TableStorageData} from "./storage";
 
 export function bindTableFunctions(tableWrapper: TableWrapper | null = null): void {
     let tables: TableWrapper[] = Array.from(document.querySelectorAll('.pj-table-wrapper'));
@@ -33,6 +34,7 @@ export function bindTableFunctions(tableWrapper: TableWrapper | null = null): vo
     tables.forEach((table: TableWrapper): void => {
         bindUpdate(table);
         bindFunctions(table);
+        restoreTableState(table);
     });
 }
 
@@ -203,9 +205,46 @@ async function reloadTable(
         if (tableParts.options) {
             reloadOptions(tableWrapper, tableParts.options);
         }
+
+        saveTableState(tableWrapper.id, getStateFromCriteria(pageCriteria, sortCriteria, filterCriteria));
     } finally {
         hideTableLoader(tableWrapper);
     }
+}
+
+function restoreTableState(tableWrapper: TableWrapper): void {
+    const state: TableStorageData | null = loadTableState(tableWrapper.id);
+
+    if (state === null) {
+        return;
+    }
+
+    const pageCriteria: PageCriteria = {page: state.page, pageSize: state.pageSize};
+    const sortCriteria: SortCriteria | null = state.sortColumn !== null
+        ? {column: state.sortColumn, order: state.sortOrder ?? 'asc', deleteSort: false}
+        : null;
+    const filterCriteria: FilterCriteria | null = state.filters !== null
+        ? {filters: state.filters, deleteFilters: false}
+        : null;
+
+    reloadTable(tableWrapper, pageCriteria, sortCriteria, filterCriteria).then((): void => {
+        bindFunctions(tableWrapper);
+        bindDropdowns(tableWrapper);
+    });
+}
+
+function getStateFromCriteria(
+    pageCriteria: PageCriteria | null,
+    sortCriteria: SortCriteria | null,
+    filterCriteria: FilterCriteria | null,
+): TableStorageData {
+    return {
+        page: pageCriteria?.page ?? 1,
+        pageSize: pageCriteria?.pageSize ?? 10,
+        sortColumn: sortCriteria?.deleteSort ? null : (sortCriteria?.column ?? null),
+        sortOrder: sortCriteria?.deleteSort ? null : (sortCriteria?.order ?? null),
+        filters: filterCriteria?.deleteFilters ? null : (filterCriteria?.filters ?? null),
+    };
 }
 
 function showTableLoader(tableWrapper: TableWrapper): void {

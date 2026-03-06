@@ -25,7 +25,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertNotNull($parameters->filterCriteria);
         $this->assertCount(1, $parameters->filterCriteria->filters);
@@ -51,7 +51,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
@@ -74,7 +74,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
@@ -97,7 +97,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
@@ -120,7 +120,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
@@ -143,7 +143,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
@@ -180,7 +180,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertCount(3, $parameters->filterCriteria->filters);
 
@@ -213,7 +213,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertNotNull($parameters->filterCriteria);
         $this->assertEmpty($parameters->filterCriteria->filters);
@@ -231,7 +231,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertNotNull($parameters->filterCriteria);
         $this->assertEmpty($parameters->filterCriteria->filters);
@@ -248,7 +248,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             'test6' => [['type' => 'json', 'operator' => 'ends_with', 'jsonPath' => 'path', 'value' => 'val']],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertCount(6, $parameters->filterCriteria->filters);
 
@@ -279,7 +279,7 @@ class TableParametersRequestJsonFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertNotNull($parameters->filterCriteria);
         $this->assertEmpty($parameters->filterCriteria->filters);

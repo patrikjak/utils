@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\Http\Requests;
 
 use Carbon\CarbonImmutable;
-use Illuminate\Contracts\Container\BindingResolutionException;
-use Illuminate\Cookie\CookieJar;
 use Illuminate\Foundation\Http\FormRequest;
 use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
 use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;
@@ -21,74 +19,27 @@ use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
 use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
 use Patrikjak\Utils\Common\Enums\Sort\SortOrder;
 use Patrikjak\Utils\Table\Dto\Parameters;
-use stdClass;
 
 class TableParametersRequest extends FormRequest
 {
-    private string $tableId;
-
-    private bool $shouldUpdateCookie = false;
-
-    private bool $checkSortCookie = true;
-
-    private bool $checkFilterCookie = true;
-
-    public function getTableParameters(string $tableId): Parameters
+    public function getTableParameters(): Parameters
     {
-        $this->tableId = $tableId;
-
-        $parameters = new Parameters(
+        return new Parameters(
             $this->getCurrentPage(),
             $this->getPageSize(),
-            $this->getSortCriteria(),
-            $this->getFilterCriteria(),
+            $this->getSortCriteriaFromRequest(),
+            $this->getFilterCriteriaFromRequest(),
         );
-
-        if ($this->shouldUpdateCookie) {
-            $this->updateParametersCookie($parameters);
-        }
-
-        return $parameters;
     }
 
     private function getCurrentPage(): int
     {
-        return ($this->getPageFromRequest() ?? $this->getPageFromCookie()) ?? 1;
+        return $this->getPageFromRequest() ?? 1;
     }
 
     private function getPageSize(): int
     {
-        return ($this->getPageSizeFromRequest() ?? $this->getPageSizeFromCookie()) ?? 10;
-    }
-
-    private function getSortCriteria(): ?SortCriteria
-    {
-        $sortCriteriaFromRequest = $this->getSortCriteriaFromRequest();
-
-        if ($sortCriteriaFromRequest !== null) {
-            return $sortCriteriaFromRequest;
-        }
-
-        if (!$this->checkSortCookie) {
-            return null;
-        }
-
-        return $this->getSortCriteriaFromCookie() ?? null;
-    }
-
-    private function getFilterCriteria(): ?FilterCriteria
-    {
-        $filterCriteriaFromRequest = $this->getFilterCriteriaFromRequest();
-
-        if ($filterCriteriaFromRequest !== null) {
-            return $filterCriteriaFromRequest;
-        }
-
-        if (!$this->checkFilterCookie) {
-            return null;
-        }
-
-        return $this->getFilterCriteriaFromCookie() ?? null;
+        return $this->getPageSizeFromRequest() ?? 10;
     }
 
     private function getPageFromRequest(): ?int
@@ -99,14 +50,7 @@ class TableParametersRequest extends FormRequest
             return null;
         }
 
-        $this->shouldUpdateCookie = true;
-
         return (int) $page;
-    }
-
-    private function getPageFromCookie(): ?int
-    {
-        return $this->getDecodedParametersFromCookie()->page ?? null;
     }
 
     private function getPageSizeFromRequest(): ?int
@@ -117,14 +61,7 @@ class TableParametersRequest extends FormRequest
             return null;
         }
 
-        $this->shouldUpdateCookie = true;
-
         return (int) $pageSize;
-    }
-
-    private function getPageSizeFromCookie(): ?int
-    {
-        return $this->getDecodedParametersFromCookie()->pageSize ?? null;
     }
 
     private function getSortCriteriaFromRequest(): ?SortCriteria
@@ -134,9 +71,6 @@ class TableParametersRequest extends FormRequest
         $deleteSort = $this->boolean('deleteSort');
 
         if ($deleteSort) {
-            $this->shouldUpdateCookie = true;
-            $this->checkSortCookie = false;
-
             return null;
         }
 
@@ -148,20 +82,7 @@ class TableParametersRequest extends FormRequest
             return null;
         }
 
-        $this->shouldUpdateCookie = true;
-
         return new SortCriteria($sortColumn, $order);
-    }
-
-    private function getSortCriteriaFromCookie(): ?SortCriteria
-    {
-        $sortCriteria = $this->getDecodedParametersFromCookie()->sortCriteria ?? null;
-
-        if ($sortCriteria === null) {
-            return null;
-        }
-
-        return new SortCriteria($sortCriteria->column, SortOrder::from($sortCriteria->order));
     }
 
     private function getFilterCriteriaFromRequest(): ?FilterCriteria
@@ -170,9 +91,6 @@ class TableParametersRequest extends FormRequest
         $deleteFilters = $this->boolean('deleteFilters');
 
         if ($deleteFilters) {
-            $this->shouldUpdateCookie = true;
-            $this->checkFilterCookie = false;
-
             return null;
         }
 
@@ -206,71 +124,7 @@ class TableParametersRequest extends FormRequest
             }
         }
 
-        $this->shouldUpdateCookie = true;
-
         return new FilterCriteria($filters);
-    }
-
-    private function getFilterCriteriaFromCookie(): ?FilterCriteria
-    {
-        $filters = [];
-        $filterCriteria = $this->getDecodedParametersFromCookie()->filterCriteria ?? null;
-
-        if ($filterCriteria === null) {
-            return null;
-        }
-
-        foreach ($filterCriteria as $criteria) {
-            if (!isset($criteria->type, $criteria->column)) {
-                continue;
-            }
-
-            $type = FilterType::tryFrom($criteria->type);
-
-            if ($type === null) {
-                continue;
-            }
-
-            $filter = match ($type) {
-                FilterType::TEXT => $this->getTextFilterCriteriaFromCookie($criteria),
-                FilterType::SELECT => $this->getSelectFilterCriteriaFromCookie($criteria),
-                FilterType::DATE => $this->getDateFilterCriteriaFromCookie($criteria),
-                FilterType::NUMBER => $this->getNumberFilterCriteriaFromCookie($criteria),
-                FilterType::JSON => $this->getJsonFilterCriteriaFromCookie($criteria),
-            };
-
-            if ($filter === null) {
-                continue;
-            }
-
-            $filters[] = $filter;
-        }
-
-        return new FilterCriteria($filters);
-    }
-
-    private function getDecodedParametersFromCookie(): ?stdClass
-    {
-        $cookie = $this->cookie($this->tableId);
-
-        return $cookie ? json_decode($cookie) : null;
-    }
-
-    /**
-     * @throws BindingResolutionException
-     */
-    private function updateParametersCookie(Parameters $parameters): void
-    {
-        $tableParameters = json_decode($this->cookie($this->tableId, '{}'), true);
-        $updatedParameters = array_merge($tableParameters, $parameters->toArray());
-
-        $cookieManager = app()->make(CookieJar::class);
-
-        $cookieManager->queue(
-            $this->tableId,
-            json_encode($updatedParameters),
-            60 * 24 * 365,
-        );
     }
 
     /**
@@ -291,22 +145,12 @@ class TableParametersRequest extends FormRequest
         return new TextFilterCriteria($column, $data['value'], $operator);
     }
 
-    private function getTextFilterCriteriaFromCookie(stdClass $filterData): ?AbstractFilterCriteria
-    {
-        return $this->getTextFilterCriteria((array) $filterData, $filterData->column);
-    }
-
     /**
      * @param array<string, string|int> $data
      */
     private function getSelectFilterCriteria(array $data, string $column): AbstractFilterCriteria
     {
         return new SelectFilterCriteria($column, $data['value']);
-    }
-
-    private function getSelectFilterCriteriaFromCookie(stdClass $filterData): AbstractFilterCriteria
-    {
-        return $this->getSelectFilterCriteria((array) $filterData, $filterData->column);
     }
 
     /**
@@ -324,11 +168,6 @@ class TableParametersRequest extends FormRequest
         );
     }
 
-    private function getDateFilterCriteriaFromCookie(stdClass $filterData): AbstractFilterCriteria
-    {
-        return $this->getDateFilterCriteria((array) $filterData, $filterData->column);
-    }
-
     /**
      * @param array<string, string> $data
      */
@@ -338,11 +177,6 @@ class TableParametersRequest extends FormRequest
         $to = isset($data['to']) ? (float) $data['to'] : null;
 
         return new NumberFilterCriteria($column, $from, $to);
-    }
-
-    private function getNumberFilterCriteriaFromCookie(stdClass $filterData): AbstractFilterCriteria
-    {
-        return $this->getNumberFilterCriteria((array) $filterData, $filterData->column);
     }
 
     /**
@@ -363,10 +197,5 @@ class TableParametersRequest extends FormRequest
         $jsonPath = $data['jsonPath'] ?: null;
 
         return new JsonFilterCriteria($column, $jsonPath, $data['value'], $operator);
-    }
-
-    private function getJsonFilterCriteriaFromCookie(stdClass $filterData): ?AbstractFilterCriteria
-    {
-        return $this->getJsonFilterCriteria((array) $filterData, $filterData->column);
     }
 }
