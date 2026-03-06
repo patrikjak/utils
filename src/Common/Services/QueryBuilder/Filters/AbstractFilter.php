@@ -11,8 +11,8 @@ abstract class AbstractFilter
      */
     public function getRealColumn(string $column, array $columnsMask): string
     {
-        if ($columnsMask !== [] && in_array($column, $columnsMask, true)) {
-            return array_search($column, $columnsMask, true);
+        if ($columnsMask !== [] && array_key_exists($column, $columnsMask)) {
+            return $columnsMask[$column];
         }
 
         return $column;

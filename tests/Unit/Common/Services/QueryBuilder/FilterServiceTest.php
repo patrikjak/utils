@@ -109,7 +109,7 @@ class FilterServiceTest extends TestCase
             new FilterCriteria([
                 new TextFilterCriteria('name', 'John', TextFilterType::CONTAINS),
             ]),
-            ['users.name' => 'name']
+            ['name' => 'users.name']
         );
 
         $this->assertStringContainsString("\"name\" like '%John%'", $query->toRawSql());

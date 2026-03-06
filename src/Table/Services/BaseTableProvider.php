@@ -18,7 +18,7 @@ use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Head;
 use Patrikjak\Utils\Table\View\Options;
 
-abstract class BaseTableProvider implements TableProviderInterface, Sortable, Filterable
+abstract class BaseTableProvider implements TableProviderInterface, Sortable, Filterable, Searchable
 {
     protected ?Parameters $parameters;
 
@@ -143,7 +143,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
     }
 
     /**
-     * @return array<string>
+     * @inheritDoc
      */
     public function getSearchableColumns(): array
     {
