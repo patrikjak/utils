@@ -593,17 +593,21 @@
 }
 
 .table-options .search-wrapper {
-    display: inline-flex;
-    align-items: center;
-    gap: .5rem;
     border-radius: 1rem;
-    padding: .5rem 1rem;
     border: solid 1px $border;
     transition-duration: .3s;
 
     &:focus-within {
         border-color: $primary;
         background-color: $primary-200;
+    }
+
+    label {
+        display: inline-flex;
+        align-items: center;
+        gap: .5rem;
+        padding: .5rem 1rem;
+        cursor: text;
     }
 
     .search-input {
