@@ -57,6 +57,20 @@
     }
 
     .pj-widget-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+
+        .pj-widget-header-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pj-widget-header-action {
+            flex-shrink: 0;
+        }
+
         padding: 1.25rem 1.5rem;
         border-bottom: 1px solid $border;
 

@@ -1,9 +1,16 @@
 <div {{ $attributes->merge(['class' => $classes]) }}>
     @if($title)
         <div class="pj-widget-header">
-            <p class="pj-widget-title">{{ $title }}</p>
-            @if($subtitle)
-                <p class="pj-widget-subtitle">{{ $subtitle }}</p>
+            <div class="pj-widget-header-main">
+                <p class="pj-widget-title">{{ $title }}</p>
+                @if($subtitle)
+                    <p class="pj-widget-subtitle">{{ $subtitle }}</p>
+                @endif
+            </div>
+            @if(isset($action) && $action->isNotEmpty())
+                <div class="pj-widget-header-action">
+                    {{ $action }}
+                </div>
             @endif
         </div>
     @endif

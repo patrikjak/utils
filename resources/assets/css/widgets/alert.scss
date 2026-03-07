@@ -11,6 +11,18 @@
     color: $font;
     font-size: .875rem;
 
+    .pj-alert-icon {
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        color: $info;
+
+        svg {
+            width: 1.125rem;
+            height: 1.125rem;
+        }
+    }
+
     .pj-alert-body {
         flex: 1;
 
@@ -46,6 +58,10 @@
         border-left-color: $success;
         background-color: $success-light;
 
+        .pj-alert-icon {
+            color: $success-dark;
+        }
+
         .pj-alert-title {
             color: $success-dark;
         }
@@ -55,6 +71,10 @@
         border-left-color: $danger;
         background-color: $danger-light;
 
+        .pj-alert-icon {
+            color: $danger-dark;
+        }
+
         .pj-alert-title {
             color: $danger-dark;
         }
@@ -63,6 +83,10 @@
     &.warning {
         border-left-color: $warning;
         background-color: $warning-light;
+
+        .pj-alert-icon {
+            color: $warning-dark;
+        }
 
         .pj-alert-title {
             color: $warning-dark;
