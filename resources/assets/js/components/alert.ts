@@ -1,0 +1,11 @@
+export function bindAlerts(): void {
+    document.querySelectorAll<HTMLButtonElement>('.pj-alert .pj-alert-dismiss').forEach((button) => {
+        button.addEventListener('click', () => {
+            const alert = button.closest<HTMLElement>('.pj-alert');
+
+            if (alert) {
+                alert.remove();
+            }
+        });
+    });
+}

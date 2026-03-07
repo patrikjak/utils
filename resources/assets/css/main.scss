@@ -7,3 +7,8 @@
 @use "utils/notification";
 @use "utils/modal";
 @use "utils/file-uploader";
+@use "widgets/widget";
+@use "widgets/details";
+@use "widgets/alert";
+@use "widgets/debug-backtrace";
+@use "widgets/stat-card";

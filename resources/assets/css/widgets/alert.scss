@@ -1,0 +1,71 @@
+@use "../variables" as *;
+
+.pj-alert {
+    display: flex;
+    align-items: flex-start;
+    gap: .75rem;
+    padding: 1rem 1.25rem;
+    border-radius: 8px;
+    border-left: 4px solid $primary;
+    background-color: $primary-100;
+    color: $font;
+    font-size: .875rem;
+
+    .pj-alert-body {
+        flex: 1;
+
+        .pj-alert-title {
+            font-weight: 600;
+            font-size: .9375rem;
+            margin: 0 0 .25rem;
+            color: $info;
+        }
+
+        .pj-alert-message {
+            margin: 0;
+            line-height: 1.5;
+        }
+    }
+
+    .pj-alert-dismiss {
+        flex-shrink: 0;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        line-height: 1;
+        color: $font-light;
+        font-size: 1.125rem;
+
+        &:hover {
+            color: $font;
+        }
+    }
+
+    &.success {
+        border-left-color: $success;
+        background-color: $success-light;
+
+        .pj-alert-title {
+            color: $success-dark;
+        }
+    }
+
+    &.danger {
+        border-left-color: $danger;
+        background-color: $danger-light;
+
+        .pj-alert-title {
+            color: $danger-dark;
+        }
+    }
+
+    &.warning {
+        border-left-color: $warning;
+        background-color: $warning-light;
+
+        .pj-alert-title {
+            color: $warning-dark;
+        }
+    }
+}
