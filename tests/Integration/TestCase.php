@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration;
 
+use BladeUI\Heroicons\BladeHeroiconsServiceProvider;
 use BladeUI\Icons\BladeIconsServiceProvider;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
@@ -22,6 +23,7 @@ class TestCase extends OrchestraTestCase
     {
         return [
             BladeIconsServiceProvider::class,
+            BladeHeroiconsServiceProvider::class,
             UtilsServiceProvider::class,
         ];
     }

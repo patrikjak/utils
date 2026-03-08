@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils;
 
-use BladeUI\Icons\Factory;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 use Patrikjak\Utils\Common\Console\Commands\InstallCommand;
@@ -30,23 +29,12 @@ class UtilsServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/pjutils.php', 'pjutils');
-        $this->registerIcons();
     }
 
     private function registerComponentNamespaces(): void
     {
         Blade::componentNamespace('Patrikjak\\Utils\\Common\\View', 'pjutils');
         Blade::componentNamespace('Patrikjak\\Utils\\Table\\View', 'pjutils.table');
-    }
-
-    private function registerIcons(): void
-    {
-        $this->callAfterResolving(Factory::class, static function (Factory $factory): void {
-            $factory->add('pjutils', [
-                'path' => __DIR__ . '/../resources/assets/images/icons',
-                'prefix' => 'pjutils',
-            ]);
-        });
     }
 
     private function publishAssets(): void
@@ -60,10 +48,6 @@ class UtilsServiceProvider extends ServiceProvider
             'pjutils-assets',
         );
 
-        $this->publishes(
-            [__DIR__ . '/../resources/assets/images' => public_path('vendor/pjutils/assets/images')],
-            ['pjutils-assets', 'pjutils-images'],
-        );
     }
 
     private function publishViews(): void
@@ -93,7 +77,7 @@ class UtilsServiceProvider extends ServiceProvider
     private function extendBlade(): void
     {
         Blade::directive('icon', static function (string $icon): string {
-            return "<?php echo svg('pjutils-' . \Patrikjak\Utils\Common\Enums\Icon::from($icon)->getIconName())->toHtml(); ?>";
+            return "<?php echo svg(\Patrikjak\Utils\Common\Enums\Icon::from($icon)->getIconName())->toHtml(); ?>";
         });
 
         Blade::directive('customIcon', static function (string $icon): string {

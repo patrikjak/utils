@@ -216,10 +216,7 @@
 
             svg {
                 height: 100%;
-
-                path {
-                    fill: $font-light;
-                }
+                color: $font-light;
             }
         }
 
@@ -233,8 +230,8 @@
         }
 
         &.info {
-            .icon svg path {
-                fill: $primary;
+            .icon svg {
+                color: $primary;
             }
 
             p {
@@ -243,8 +240,8 @@
         }
 
         &.success {
-            .icon svg path {
-                fill: $success;
+            .icon svg {
+                color: $success;
             }
 
             p {
@@ -257,8 +254,8 @@
         }
 
         &.warning {
-            .icon svg path {
-                fill: $warning;
+            .icon svg {
+                color: $warning;
             }
 
             p {
@@ -271,8 +268,8 @@
         }
 
         &.danger {
-            .icon svg path {
-                fill: $danger;
+            .icon svg {
+                color: $danger;
             }
 
             p {

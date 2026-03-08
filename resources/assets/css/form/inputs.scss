@@ -66,17 +66,14 @@ label {
             svg {
                 height: 100%;
                 padding: 12px;
-
-                path {
-                    fill: $font-light;
-                }
+                color: $font-light;
             }
 
             &:hover {
                 cursor: pointer;
 
-                svg.hoverable path {
-                    fill: $primary;
+                svg.hoverable {
+                    color: $primary;
                 }
             }
         }
@@ -87,8 +84,8 @@ label {
             border-color: $danger;
         }
 
-        .input .icon svg path {
-            fill: $danger;
+        .input .icon svg {
+            color: $danger;
         }
     }
 }

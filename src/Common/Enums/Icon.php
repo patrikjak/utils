@@ -26,17 +26,26 @@ enum Icon: string
 
     public function getAsHtml(): string
     {
-        return svg('pjutils-' . $this->getIconName())->toHtml();
+        return svg($this->getIconName())->toHtml();
     }
 
     public function getIconName(): string
     {
-        return str_replace('_', '-', $this->value);
-    }
-
-    public function getImagePath(): string
-    {
-        return asset(sprintf('vendor/pjutils/assets/images/icons/%s.svg', $this->getIconName()));
+        return match($this) {
+            self::CHECK => 'heroicon-o-check',
+            self::WARNING => 'heroicon-o-exclamation',
+            self::EDIT => 'heroicon-o-pencil-alt',
+            self::TRASH => 'heroicon-o-trash',
+            self::EYE => 'heroicon-o-eye',
+            self::EYE_SLASH => 'heroicon-o-eye-off',
+            self::CIRCLE_EXCLAMATION => 'heroicon-o-exclamation-circle',
+            self::INFO => 'heroicon-o-information-circle',
+            self::SORT => 'heroicon-o-switch-vertical',
+            self::SORT_ASC => 'heroicon-o-sort-ascending',
+            self::SORT_DESC => 'heroicon-o-sort-descending',
+            self::FILTER => 'heroicon-o-filter',
+            self::SEARCH => 'heroicon-o-search',
+        };
     }
 
     public static function getCustomAsHtml(string $icon): string
