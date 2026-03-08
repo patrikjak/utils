@@ -1,5 +1,48 @@
 @use "../variables" as *;
 
+.pj-clipboard-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    width: 1.5rem;
+    height: 1.5rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: $font-light;
+    padding: 0;
+    border-radius: 4px;
+    transition: color .2s, background-color .2s;
+
+    &:hover {
+        color: $primary;
+        background-color: $primary-100;
+    }
+
+    svg {
+        width: 1rem;
+        height: 1rem;
+    }
+
+    .pj-clipboard-icon-check {
+        display: none;
+        color: $success-dark;
+    }
+
+    &.copied {
+        color: $success-dark;
+
+        .pj-clipboard-icon-copy {
+            display: none;
+        }
+
+        .pj-clipboard-icon-check {
+            display: block;
+        }
+    }
+}
+
 .pj-clipboard {
     display: inline-flex;
     flex-direction: column;
@@ -28,49 +71,6 @@
     .pj-clipboard-value {
         color: $font;
         word-break: break-all;
-    }
-
-    .pj-clipboard-btn {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        width: 1.5rem;
-        height: 1.5rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: $font-light;
-        padding: 0;
-        border-radius: 4px;
-        transition: color .2s, background-color .2s;
-
-        &:hover {
-            color: $primary;
-            background-color: $primary-100;
-        }
-
-        svg {
-            width: 1rem;
-            height: 1rem;
-        }
-
-        .pj-clipboard-icon-check {
-            display: none;
-            color: $success-dark;
-        }
-
-        &.copied {
-            color: $success-dark;
-
-            .pj-clipboard-icon-copy {
-                display: none;
-            }
-
-            .pj-clipboard-icon-check {
-                display: block;
-            }
-        }
     }
 
     &.copied {
