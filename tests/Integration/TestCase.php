@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration;
 
+use BladeUI\Icons\BladeIconsServiceProvider;
 use Illuminate\Foundation\Testing\Concerns\InteractsWithViews;
 use Orchestra\Testbench\TestCase as OrchestraTestCase;
+use Patrikjak\Utils\UtilsServiceProvider;
 use Spatie\Snapshots\MatchesSnapshots;
 
 class TestCase extends OrchestraTestCase
@@ -19,7 +21,8 @@ class TestCase extends OrchestraTestCase
     protected function getPackageProviders($app): array
     {
         return [
-            'Patrikjak\Utils\UtilsServiceProvider',
+            BladeIconsServiceProvider::class,
+            UtilsServiceProvider::class,
         ];
     }
 }
