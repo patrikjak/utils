@@ -13,6 +13,7 @@ import {bindClipboard} from './components/clipboard';
 import {bindNumberInputs} from './form/number';
 import {bindComboboxes} from './form/combobox';
 import {bindTagsInputs} from './form/tags';
+import {bindAlerts} from './components/alert';
 import {bindRepeaters} from './form/repeater';
 
 declare global {
@@ -39,4 +40,5 @@ bindClipboard();
 bindNumberInputs();
 bindComboboxes();
 bindTagsInputs();
+bindAlerts();
 bindRepeaters();
