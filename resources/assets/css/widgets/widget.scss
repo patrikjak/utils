@@ -4,7 +4,6 @@
     background-color: $white;
     border: 1px solid $border;
     border-radius: 12px;
-    overflow: hidden;
 
     &.xs {
         max-width: 25%;
@@ -61,6 +60,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 1rem;
+        border-radius: 12px 12px 0 0;
 
         .pj-widget-header-main {
             flex: 1;
@@ -95,6 +95,7 @@
     .pj-widget-footer {
         padding: 1rem 1.5rem;
         border-top: 1px solid $border;
+        border-radius: 0 0 12px 12px;
         background-color: $gray-50;
         display: flex;
         align-items: center;
