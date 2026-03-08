@@ -27,6 +27,10 @@ function initCombobox(wrapper: HTMLElement): void {
         filterOptions(list, filterInput.value, emptyMessage);
     });
 
+    filterInput?.addEventListener('keydown', (event) => {
+        handleKeydown(event, wrapper, list, searchInput, hiddenInput);
+    });
+
     list.querySelectorAll<HTMLElement>('.pj-combobox-option').forEach((option) => {
         option.addEventListener('click', () => {
             selectOption(option, wrapper, list, searchInput, hiddenInput);
