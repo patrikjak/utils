@@ -1,0 +1,109 @@
+@use "../variables" as *;
+
+.pj-tags {
+    width: 100%;
+    margin-top: 1rem;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    label {
+        font-size: .875rem;
+    }
+
+    .pj-tags-control {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: .375rem;
+        min-height: 2.5rem;
+        padding: .375rem .625rem;
+        margin-top: .5rem;
+        background-color: $white;
+        border: solid 1px $border;
+        border-radius: 8px;
+        transition: border-color .3s;
+        cursor: text;
+
+        &:focus,
+        &:focus-within {
+            border-color: $primary;
+            outline: none;
+        }
+    }
+
+    .pj-tag-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: .25rem;
+        padding: .125rem .375rem .125rem .5rem;
+        background-color: $primary-100;
+        border-radius: 999px;
+        font-size: .8125rem;
+        color: $primary;
+        font-weight: 500;
+    }
+
+    .pj-tag-text {
+        line-height: 1.4;
+    }
+
+    .pj-tag-remove {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 1rem;
+        height: 1rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+        color: $primary;
+        border-radius: 50%;
+        transition: background-color .15s, color .15s;
+        flex-shrink: 0;
+
+        &:hover {
+            background-color: $primary;
+            color: $white;
+        }
+
+        svg {
+            width: .625rem;
+            height: .625rem;
+        }
+    }
+
+    .pj-tags-input {
+        flex: 1;
+        min-width: 8rem;
+        border: none;
+        outline: none;
+        font-size: .875rem;
+        font-family: inherit;
+        color: $font;
+        background: transparent;
+        padding: .125rem 0;
+
+        &::placeholder {
+            color: $gray-400;
+        }
+    }
+
+    .pj-tags-error {
+        display: flex;
+        align-items: center;
+        margin-top: .5rem;
+
+        .message {
+            font-size: .875rem;
+            color: $danger;
+            margin: 0;
+        }
+    }
+
+    &.error .pj-tags-control {
+        border-color: $danger;
+    }
+}

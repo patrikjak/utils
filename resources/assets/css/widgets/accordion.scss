@@ -1,0 +1,91 @@
+@use "../variables" as *;
+
+.pj-accordion {
+    border: solid 1px $border;
+    border-radius: 8px;
+    background-color: $white;
+    overflow: hidden;
+
+    & + .pj-accordion {
+        margin-top: .5rem;
+    }
+
+    .pj-accordion-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        padding: 1rem 1.25rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        text-align: left;
+        gap: 1rem;
+        transition: background-color .2s;
+
+        &:hover {
+            background-color: $gray-50;
+        }
+    }
+
+    .pj-accordion-title {
+        font-size: .9375rem;
+        font-weight: 500;
+        color: $font;
+        flex: 1;
+    }
+
+    .pj-accordion-arrow {
+        width: 1.125rem;
+        height: 1.125rem;
+        color: $font-light;
+        flex-shrink: 0;
+        transition: transform .25s ease;
+    }
+
+    .pj-accordion-body {
+        display: grid;
+        grid-template-rows: 0fr;
+        transition: grid-template-rows .25s ease;
+    }
+
+    .pj-accordion-content {
+        overflow: hidden;
+    }
+
+    &.open {
+        .pj-accordion-arrow {
+            transform: rotate(180deg);
+        }
+
+        .pj-accordion-body {
+            grid-template-rows: 1fr;
+        }
+
+        .pj-accordion-content {
+            padding: 0 1.25rem 1.25rem;
+        }
+    }
+}
+
+.pj-accordion-group {
+    .pj-accordion {
+        border-radius: 0;
+        margin-top: 0;
+        border-bottom: none;
+
+        &:first-child {
+            border-radius: 8px 8px 0 0;
+        }
+
+        &:last-child {
+            border-radius: 0 0 8px 8px;
+            border-bottom: solid 1px $border;
+        }
+
+        &:only-child {
+            border-radius: 8px;
+            border-bottom: solid 1px $border;
+        }
+    }
+}

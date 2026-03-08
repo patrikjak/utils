@@ -1,0 +1,47 @@
+@use "../variables" as *;
+
+.pj-tabs {
+    .pj-tabs-nav {
+        display: flex;
+        border-bottom: solid 2px $border;
+        gap: 0;
+        margin-bottom: 1.25rem;
+        overflow-x: auto;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+    }
+
+    .pj-tab-btn {
+        padding: .625rem 1.25rem;
+        background: none;
+        border: none;
+        border-bottom: solid 2px transparent;
+        margin-bottom: -2px;
+        cursor: pointer;
+        font-size: .9375rem;
+        font-family: inherit;
+        color: $font-light;
+        white-space: nowrap;
+        transition: color .2s, border-color .2s;
+
+        &:hover {
+            color: $font;
+        }
+
+        &.active {
+            color: $primary;
+            border-bottom-color: $primary;
+            font-weight: 500;
+        }
+    }
+
+    .pj-tab-panel {
+        display: none;
+
+        &.active {
+            display: block;
+        }
+    }
+}

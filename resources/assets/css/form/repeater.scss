@@ -1,0 +1,61 @@
+@use "../variables" as *;
+
+.pj-repeater {
+    width: 100%;
+
+    .pj-repeater-rows {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .pj-repeater-row {
+        display: flex;
+        align-items: flex-end;
+        gap: .75rem;
+        padding: 1rem;
+        border: solid 1px $border;
+        border-radius: 8px;
+        background-color: $gray-50;
+
+        & > * {
+            flex: 1;
+        }
+    }
+
+    .pj-repeater-remove {
+        flex: 0 0 auto;
+        align-self: flex-end;
+        height: 2.5rem;
+        padding: 0 .875rem;
+        background: none;
+        border: solid 1px $border;
+        border-radius: 8px;
+        font-size: .875rem;
+        font-family: inherit;
+        color: $danger;
+        cursor: pointer;
+        white-space: nowrap;
+        transition: background-color .2s, border-color .2s;
+
+        &:hover:not(:disabled) {
+            background-color: $danger-light;
+            border-color: $danger;
+        }
+
+        &:disabled {
+            color: $gray-300;
+            border-color: $gray-200;
+            cursor: not-allowed;
+        }
+    }
+
+    .pj-repeater-add {
+        margin-top: .875rem;
+
+        &:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+    }
+}

@@ -1,0 +1,33 @@
+<html><body>
+<div class="pj-repeater" data-min="1">
+    <div class="pj-repeater-rows">
+        <div class="pj-repeater-row" data-index="0">
+            <div class="pj-classic">
+            <label for="addresses[0][street]">Street</label>
+    
+            <input type="text" id="addresses[0][street]" name="addresses[0][street]">
+    
+    </div>
+            <button type="button" class="pj-repeater-remove" disabled>
+                Remove
+            </button>
+        </div>
+    </div>
+
+    <template class="pj-repeater-template">
+        <div class="pj-repeater-row" data-index="{index}">
+            <div class="pj-classic">
+            <label for="addresses[{index}][street]">Street</label>
+    
+            <input type="text" id="addresses[{index}][street]" name="addresses[{index}][street]">
+    
+    </div>
+            <button type="button" class="pj-repeater-remove">Remove</button>
+        </div>
+    </template>
+
+    <button type="button" class="pj-repeater-add pj-btn">
+        + Add address
+    </button>
+</div>
+</body></html>
