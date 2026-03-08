@@ -26,14 +26,17 @@ enum Icon: string
 
     public function getAsHtml(): string
     {
-        return file_get_contents(
-            sprintf('%s/../../../resources/views/icons/%s.blade.php', __DIR__, $this->value),
-        );
+        return svg('pjutils-' . $this->getIconName())->toHtml();
+    }
+
+    public function getIconName(): string
+    {
+        return str_replace('_', '-', $this->value);
     }
 
     public function getImagePath(): string
     {
-        return asset(sprintf('vendor/pjutils/assets/images/icons/%s.svg', $this->value));
+        return asset(sprintf('vendor/pjutils/assets/images/icons/%s.svg', $this->getIconName()));
     }
 
     public static function getCustomAsHtml(string $icon): string
