@@ -59,6 +59,18 @@
             display: none;
             color: $success-dark;
         }
+
+        &.copied {
+            color: $success-dark;
+
+            .pj-clipboard-icon-copy {
+                display: none;
+            }
+
+            .pj-clipboard-icon-check {
+                display: block;
+            }
+        }
     }
 
     &.copied {

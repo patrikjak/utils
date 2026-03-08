@@ -8,6 +8,7 @@
             type="button"
             class="pj-clipboard-btn"
             data-clipboard-value="{{ $value }}"
+            data-clipboard-trigger
             aria-label="Copy to clipboard"
         >
             <svg class="pj-clipboard-icon-copy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
