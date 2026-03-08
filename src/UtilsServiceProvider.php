@@ -41,13 +41,18 @@ class UtilsServiceProvider extends ServiceProvider
     {
         $this->publishes(
             [
-                __DIR__ . '/../resources/assets/css' => resource_path('css/vendor/pjutils'),
-                __DIR__ . '/../resources/assets/js' => resource_path('js/vendor/pjutils'),
                 __DIR__ . '/../public' => public_path('vendor/pjutils'),
             ],
             'pjutils-assets',
         );
 
+        $this->publishes(
+            [
+                __DIR__ . '/../resources/assets/css' => resource_path('css/vendor/pjutils'),
+                __DIR__ . '/../resources/assets/js' => resource_path('js/vendor/pjutils'),
+            ],
+            'pjutils-sources',
+        );
     }
 
     private function publishViews(): void
