@@ -42,24 +42,29 @@ function bindCollapse(el: HTMLElement): void {
         return;
     }
 
-    const hiddenCount = frames.length - threshold;
+    const collapsibleFrames = frames.slice(threshold);
+    const hiddenCount = collapsibleFrames.length;
+    const labelExpand = `Show ${hiddenCount} more frame${hiddenCount !== 1 ? 's' : ''}`;
+    const labelCollapse = 'Collapse';
 
-    frames.slice(threshold).forEach((frame) => {
+    collapsibleFrames.forEach((frame) => {
         frame.classList.add('pj-frame-collapsed');
     });
 
-    const expandBtn = document.createElement('button');
-    expandBtn.type = 'button';
-    expandBtn.className = 'pj-backtrace-expand';
-    expandBtn.textContent = `Show ${hiddenCount} more frame${hiddenCount !== 1 ? 's' : ''}`;
+    const toggleBtn = document.createElement('button');
+    toggleBtn.type = 'button';
+    toggleBtn.className = 'pj-backtrace-expand';
+    toggleBtn.textContent = labelExpand;
 
-    framesContainer.appendChild(expandBtn);
+    framesContainer.appendChild(toggleBtn);
 
-    expandBtn.addEventListener('click', () => {
-        framesContainer.querySelectorAll<HTMLElement>('.pj-frame-collapsed').forEach((frame) => {
-            frame.classList.remove('pj-frame-collapsed');
+    toggleBtn.addEventListener('click', () => {
+        const isCurrentlyCollapsed = collapsibleFrames[0].classList.contains('pj-frame-collapsed');
+
+        collapsibleFrames.forEach((frame) => {
+            frame.classList.toggle('pj-frame-collapsed', !isCurrentlyCollapsed);
         });
 
-        expandBtn.remove();
+        toggleBtn.textContent = isCurrentlyCollapsed ? labelCollapse : labelExpand;
     });
 }
