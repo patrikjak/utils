@@ -2,12 +2,15 @@ import {translator} from '../translator';
 
 export function bindDebugBacktraces(): void {
     document.querySelectorAll<HTMLElement>('.pj-debug-backtrace').forEach((el) => {
-        const expandBtn = bindCollapse(el);
-        bindVendorToggle(el, expandBtn);
+        const onVendorToggle = bindCollapse(el);
+        bindVendorToggle(el, onVendorToggle);
     });
 }
 
-function bindVendorToggle(el: HTMLElement, expandBtn: HTMLButtonElement | null): void {
+function bindVendorToggle(
+    el: HTMLElement,
+    onVendorToggle: ((isVendorHidden: boolean) => void) | null,
+): void {
     const toggle = el.querySelector<HTMLButtonElement>('.pj-backtrace-vendor-toggle');
 
     if (!toggle) {
@@ -30,30 +33,11 @@ function bindVendorToggle(el: HTMLElement, expandBtn: HTMLButtonElement | null):
             ? translator.t('debug_backtrace.show_vendor')
             : translator.t('debug_backtrace.hide_vendor');
 
-        if (expandBtn) {
-            syncExpandButton(expandBtn, framesContainer, isNowHidden);
-        }
+        onVendorToggle?.(isNowHidden);
     });
 }
 
-function syncExpandButton(
-    expandBtn: HTMLButtonElement,
-    framesContainer: HTMLElement,
-    isVendorHidden: boolean,
-): void {
-    if (!isVendorHidden) {
-        expandBtn.hidden = false;
-        return;
-    }
-
-    const threshold = parseInt(framesContainer.dataset.threshold ?? '5', 10);
-    const frames = Array.from(framesContainer.querySelectorAll<HTMLElement>(':scope > .pj-debug-backtrace-frame'));
-    const hasVisibleCollapsible = frames.slice(threshold).some((f) => !f.classList.contains('vendor'));
-
-    expandBtn.hidden = !hasVisibleCollapsible;
-}
-
-function bindCollapse(el: HTMLElement): HTMLButtonElement | null {
+function bindCollapse(el: HTMLElement): ((isVendorHidden: boolean) => void) | null {
     const framesContainer = el.querySelector<HTMLElement>('.pj-debug-backtrace-frames[data-collapsible="true"]');
 
     if (!framesContainer) {
@@ -68,9 +52,6 @@ function bindCollapse(el: HTMLElement): HTMLButtonElement | null {
     }
 
     const collapsibleFrames = frames.slice(threshold);
-    const hiddenCount = collapsibleFrames.length;
-    const labelExpand = translator.t('debug_backtrace.show_more', {count: hiddenCount});
-    const labelCollapse = translator.t('debug_backtrace.show_less');
 
     collapsibleFrames.forEach((frame) => {
         frame.classList.add('pj-frame-collapsed');
@@ -79,22 +60,63 @@ function bindCollapse(el: HTMLElement): HTMLButtonElement | null {
     const toggleBtn = document.createElement('button');
     toggleBtn.type = 'button';
     toggleBtn.className = 'pj-backtrace-expand';
-    toggleBtn.innerHTML = `<span>${labelExpand}</span><svg class="pj-backtrace-expand-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>`;
+    toggleBtn.innerHTML = `<span></span><svg class="pj-backtrace-expand-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" fill="currentColor"><path fill-rule="evenodd" d="M4.22 6.22a.75.75 0 0 1 1.06 0L8 8.94l2.72-2.72a.75.75 0 1 1 1.06 1.06l-3.25 3.25a.75.75 0 0 1-1.06 0L4.22 7.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd"/></svg>`;
 
     framesContainer.appendChild(toggleBtn);
 
     const label = toggleBtn.querySelector<HTMLSpanElement>('span')!;
 
+    const nonVendorCollapsible = (): HTMLElement[] => collapsibleFrames.filter((f) => !f.classList.contains('vendor'));
+    const isCollapsed = (): boolean => collapsibleFrames[0].classList.contains('pj-frame-collapsed');
+    const isVendorHidden = (): boolean => framesContainer.classList.contains('vendor-hidden');
+
+    const effectiveCollapsible = (): HTMLElement[] =>
+        isVendorHidden() ? nonVendorCollapsible() : collapsibleFrames;
+
+    const setExpandLabel = (count: number): void => {
+        label.textContent = translator.t('debug_backtrace.show_more', {count});
+        toggleBtn.classList.remove('expanded');
+    };
+
+    const setCollapseLabel = (): void => {
+        label.textContent = translator.t('debug_backtrace.show_less');
+        toggleBtn.classList.add('expanded');
+    };
+
+    // Set initial state: collapsed, all frames visible as vendor context dictates
+    setExpandLabel(collapsibleFrames.length);
+
     toggleBtn.addEventListener('click', () => {
-        const isCurrentlyCollapsed = collapsibleFrames[0].classList.contains('pj-frame-collapsed');
+        const wasCollapsed = isCollapsed();
 
         collapsibleFrames.forEach((frame) => {
-            frame.classList.toggle('pj-frame-collapsed', !isCurrentlyCollapsed);
+            frame.classList.toggle('pj-frame-collapsed', !wasCollapsed);
         });
 
-        label.textContent = isCurrentlyCollapsed ? labelCollapse : labelExpand;
-        toggleBtn.classList.toggle('expanded', isCurrentlyCollapsed);
+        if (wasCollapsed) {
+            setCollapseLabel();
+        } else {
+            // Collapsing — count reflects what is actually going away (visible ones)
+            setExpandLabel(effectiveCollapsible().length);
+        }
     });
 
-    return toggleBtn;
+    // Called by bindVendorToggle whenever vendor visibility changes
+    const onVendorToggle = (nowHidden: boolean): void => {
+        const visible = nowHidden ? nonVendorCollapsible() : collapsibleFrames;
+
+        if (visible.length === 0) {
+            toggleBtn.hidden = true;
+            return;
+        }
+
+        toggleBtn.hidden = false;
+
+        // Only update the label when collapsed; "Show less" stays correct in either vendor state
+        if (isCollapsed()) {
+            setExpandLabel(visible.length);
+        }
+    };
+
+    return onVendorToggle;
 }
