@@ -19,6 +19,8 @@ class DebugBacktrace extends Component
      */
     public ?array $normalizedLines;
 
+    public bool $hasVendorFrames;
+
     /**
      * Each frame may contain:
      *   - file?: string
@@ -35,9 +37,12 @@ class DebugBacktrace extends Component
         public ?string $trace = null,
         public ?string $title = null,
         public ?string $message = null,
+        public bool $collapse = true,
+        public int $collapseThreshold = 5,
     ) {
         $this->normalizedFrames = $this->normalizeFrames($frames);
         $this->normalizedLines = $lines !== null ? $this->normalizeLines($lines) : null;
+        $this->hasVendorFrames = $this->detectVendorFrames();
     }
 
     public function render(): View
@@ -69,6 +74,19 @@ class DebugBacktrace extends Component
         }
 
         return $result;
+    }
+
+    private function detectVendorFrames(): bool
+    {
+        $items = $this->normalizedLines ?? $this->normalizedFrames;
+
+        foreach ($items as $item) {
+            if ($item['is_vendor']) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     /**

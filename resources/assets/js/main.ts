@@ -15,6 +15,7 @@ import {bindComboboxes} from './form/combobox';
 import {bindTagsInputs} from './form/tags';
 import {bindAlerts} from './components/alert';
 import {bindRepeaters} from './form/repeater';
+import {bindDebugBacktraces} from './components/debug-backtrace';
 
 declare global {
     interface Window {
@@ -42,3 +43,4 @@ bindComboboxes();
 bindTagsInputs();
 bindAlerts();
 bindRepeaters();
+bindDebugBacktraces();
