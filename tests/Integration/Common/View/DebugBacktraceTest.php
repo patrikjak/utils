@@ -195,7 +195,7 @@ class DebugBacktraceTest extends TestCase
     public function testDebugBacktraceWithCollapseFalseDoesNotAddCollapsibleAttribute(): void
     {
         $frames = array_map(
-            static fn(int $i) => ['file' => "app/File{$i}.php", 'line' => $i, 'callable' => "Class{$i}->method"],
+            static fn (int $i) => ['file' => "app/File$i.php", 'line' => $i, 'callable' => "Class$i->method"],
             range(1, 8),
         );
 
@@ -210,7 +210,7 @@ class DebugBacktraceTest extends TestCase
     public function testDebugBacktraceRespectsCustomCollapseThreshold(): void
     {
         $frames = array_map(
-            static fn(int $i) => ['file' => "app/File{$i}.php", 'line' => $i, 'callable' => "Class{$i}->method"],
+            static fn (int $i) => ['file' => "app/File$i.php", 'line' => $i, 'callable' => "Class$i->method"],
             range(1, 4),
         );
 
