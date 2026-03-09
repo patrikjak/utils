@@ -1,0 +1,49 @@
+@use "../variables" as *;
+
+.pj-stat-card {
+    background-color: $white;
+    border: 1px solid $border;
+    border-radius: 12px;
+    padding: 1.5rem;
+    display: inline-flex;
+    flex-direction: column;
+    gap: .5rem;
+    min-width: 10rem;
+
+    .pj-stat-card-label {
+        font-size: .75rem;
+        color: $font-light;
+        font-weight: 500;
+        margin: 0;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+    }
+
+    .pj-stat-card-value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: $font;
+        line-height: 1.1;
+        margin: 0;
+    }
+
+    .pj-stat-card-trend {
+        display: inline-flex;
+        align-items: center;
+        gap: .25rem;
+        font-size: .8125rem;
+        font-weight: 500;
+
+        &.up {
+            color: $success-dark;
+        }
+
+        &.down {
+            color: $danger;
+        }
+
+        &.neutral {
+            color: $font-light;
+        }
+    }
+}

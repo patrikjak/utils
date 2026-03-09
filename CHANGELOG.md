@@ -7,6 +7,34 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.13.0] - 2026-03-09
+
+### Added
+
+- **Alert component** (`<x-pjutils-alert>`) with `AlertType` enum (info, success, danger, warning), optional title, and dismiss support with auto-binding on init
+- **Badge component** (`<x-pjutils-badge>`) with `BadgeType` enum (default, success, danger, warning, info)
+- **Progress component** (`<x-pjutils-progress>`) with `ProgressType` enum (default, success, danger, warning)
+- **Divider component** (`<x-pjutils-divider>`)
+- **Tabs / Tab components** (`<x-pjutils-tabs>`, `<x-pjutils-tab>`) with auto-binding on init
+- **Accordion / AccordionGroup components** (`<x-pjutils-accordion>`, `<x-pjutils-accordion-group>`) with auto-binding on init
+- **Details / Details Row components** (`<x-pjutils-details>`, `<x-pjutils-details-row>`)
+- **Empty state component** (`<x-pjutils-empty-state>`)
+- **Clipboard / ClipboardBtn components** (`<x-pjutils-clipboard>`, `<x-pjutils-clipboard-btn>`) with auto-binding on init
+- **DebugBacktrace component** (`<x-pjutils-debug-backtrace>`) with collapsible vendor frame toggle and localization support
+- **StatCard component** (`<x-pjutils-stat-card>`)
+- **SummaryCard component** (`<x-pjutils-summary-card>`)
+- **Widget / WidgetGrid components** (`<x-pjutils-widget>`, `<x-pjutils-widget-grid>`) with `WidgetSize`, `WidgetHeight`, and `WidgetGridGap` enums
+- **Form/Combobox component** (`<x-pjutils-form-combobox>`)
+- **Form/Number component** (`<x-pjutils-form-number>`)
+- **Form/Tags component** (`<x-pjutils-form-tags>`)
+- **Form/Repeater component** (`<x-pjutils-form-repeater>`)
+- **Form/Toggle component** (`<x-pjutils-form-toggle>`)
+- Modal, tabs, accordions, and clipboard auto-bindings in `window.pjutils` init
+
+### Changed
+
+- Icon system replaced with `blade-ui-kit/blade-heroicons`; `Icon` enum expanded with new icon values
+
 ## [2.12.0] - 2026-03-06
 
 ### Added

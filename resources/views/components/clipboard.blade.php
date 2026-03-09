@@ -1,0 +1,23 @@
+<div class="pj-clipboard">
+    @if($label !== null)
+        <span class="pj-clipboard-label">{{ $label }}</span>
+    @endif
+    <div class="pj-clipboard-row">
+        <span class="pj-clipboard-value">{{ $value }}</span>
+        <button
+            type="button"
+            class="pj-clipboard-btn"
+            data-clipboard-value="{{ $value }}"
+            data-clipboard-trigger
+            aria-label="Copy to clipboard"
+        >
+            <svg class="pj-clipboard-icon-copy" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <svg class="pj-clipboard-icon-check" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="4 12 9 17 20 6"></polyline>
+            </svg>
+        </button>
+    </div>
+</div>

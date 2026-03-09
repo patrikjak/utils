@@ -1,0 +1,43 @@
+@use "../variables" as *;
+
+.pj-details {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    border: 1px solid $border;
+    border-radius: 8px;
+    overflow: hidden;
+    margin: 0;
+
+    .pj-details-row {
+        display: contents;
+
+        dt {
+            font-size: .875rem;
+            font-weight: 500;
+            color: $font-light;
+            padding: .75rem 1rem;
+            background-color: $gray-50;
+            border-bottom: 1px solid $border;
+            white-space: nowrap;
+        }
+
+        dd {
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+            font-size: .875rem;
+            color: $font;
+            padding: .75rem 1rem;
+            margin: 0;
+            border-bottom: 1px solid $border;
+            word-break: break-word;
+        }
+
+        &:last-child {
+            dt,
+            dd {
+                border-bottom: none;
+            }
+        }
+    }
+}

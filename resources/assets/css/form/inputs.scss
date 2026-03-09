@@ -14,7 +14,7 @@ label {
         display: block;
         background-color: $white;
         border: solid 1px $border;
-        padding: 12px;
+        padding: .75rem;
         border-radius: 8px;
         margin-top: .5rem;
         transition-duration: .3s;
@@ -65,18 +65,15 @@ label {
 
             svg {
                 height: 100%;
-                padding: 12px;
-
-                path {
-                    fill: $font-light;
-                }
+                padding: .75rem;
+                color: $font-light;
             }
 
             &:hover {
                 cursor: pointer;
 
-                svg.hoverable path {
-                    fill: $primary;
+                svg.hoverable {
+                    color: $primary;
                 }
             }
         }
@@ -87,8 +84,8 @@ label {
             border-color: $danger;
         }
 
-        .input .icon svg path {
-            fill: $danger;
+        .input .icon svg {
+            color: $danger;
         }
     }
 }
@@ -286,8 +283,8 @@ label {
         border: none;
         border-right: solid 0.0625rem $border;
         border-radius: 7px 0 0 7px;
-        padding: 12px 16px;
-        margin-right: 16px;
+        padding: .75rem 1rem;
+        margin-right: 1rem;
         transition: .3s;
         cursor: pointer;
 

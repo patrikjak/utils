@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Common\Enums;
 
 use Patrikjak\Utils\Common\Traits\EnumValues;
+use RuntimeException;
 
 enum Icon: string
 {
@@ -26,19 +27,38 @@ enum Icon: string
 
     public function getAsHtml(): string
     {
-        return file_get_contents(
-            sprintf('%s/../../../resources/views/icons/%s.blade.php', __DIR__, $this->value),
-        );
+        return svg($this->getIconName())->toHtml();
     }
 
-    public function getImagePath(): string
+    public function getIconName(): string
     {
-        return asset(sprintf('vendor/pjutils/assets/images/icons/%s.svg', $this->value));
+        return match ($this) {
+            self::CHECK => 'heroicon-o-check',
+            self::WARNING => 'heroicon-o-exclamation',
+            self::EDIT => 'heroicon-o-pencil-alt',
+            self::TRASH => 'heroicon-o-trash',
+            self::EYE => 'heroicon-o-eye',
+            self::EYE_SLASH => 'heroicon-o-eye-off',
+            self::CIRCLE_EXCLAMATION => 'heroicon-o-exclamation-circle',
+            self::INFO => 'heroicon-o-information-circle',
+            self::SORT => 'heroicon-o-switch-vertical',
+            self::SORT_ASC => 'heroicon-o-sort-ascending',
+            self::SORT_DESC => 'heroicon-o-sort-descending',
+            self::FILTER => 'heroicon-o-filter',
+            self::SEARCH => 'heroicon-o-search',
+        };
     }
 
     public static function getCustomAsHtml(string $icon): string
     {
-        return file_get_contents(resource_path(sprintf('views/icons/%s.blade.php', $icon)));
+        $path = resource_path(sprintf('views/icons/%s.blade.php', $icon));
+        $contents = file_get_contents($path);
+
+        if ($contents === false) {
+            throw new RuntimeException(sprintf('Icon file not found: %s', $path));
+        }
+
+        return $contents;
     }
 
     public static function getCustomImagePath(string $icon): string

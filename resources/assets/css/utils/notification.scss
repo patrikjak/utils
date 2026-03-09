@@ -29,10 +29,7 @@
             box-sizing: content-box;
             padding: 12px;
             width: 32px;
-
-            path {
-                fill: $primary;
-            }
+            color: $primary;
         }
     }
 
@@ -58,13 +55,13 @@
 
     &.success {
         border-color: $success;
-        box-shadow: 8px 8px 40px -6px #EAF8DC;
+        box-shadow: 8px 8px 40px -6px $success-glow;
 
         .level {
             background-color: $success-light;
 
-            svg path {
-                fill: $success;
+            svg {
+                color: $success;
             }
         }
 
@@ -75,13 +72,13 @@
 
     &.warning {
         border-color: $warning;
-        box-shadow: 8px 8px 40px -6px #FFF7E5;
+        box-shadow: 8px 8px 40px -6px $warning-glow;
 
         .level {
             background-color: $warning-light;
 
-            svg path {
-                fill: $warning;
+            svg {
+                color: $warning;
             }
         }
 
@@ -92,16 +89,14 @@
 
     &.error {
         border-color: $danger;
-        box-shadow: 8px 8px 40px -6px #FFDBDE;
-
-        .level {
-            svg path {
-                fill: $danger;
-            }
-        }
+        box-shadow: 8px 8px 40px -6px $danger-glow;
 
         .level {
             background-color: $danger-light;
+
+            svg {
+                color: $danger;
+            }
         }
 
         .content .title {

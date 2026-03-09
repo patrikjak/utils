@@ -1,0 +1,189 @@
+@use "../variables" as *;
+
+.pj-debug-backtrace {
+    border: 1px solid $danger;
+    border-radius: 12px;
+    overflow: hidden;
+    font-size: .8125rem;
+
+    .pj-debug-backtrace-header {
+        padding: 1.25rem 1.5rem;
+        background-color: $danger;
+        color: $white;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 1rem;
+
+        .pj-debug-backtrace-header-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pj-debug-backtrace-title {
+            font-size: 1rem;
+            font-weight: 700;
+            margin: 0;
+        }
+
+        .pj-debug-backtrace-message {
+            font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+            font-size: .9375rem;
+            font-weight: 500;
+            margin: .375rem 0 0;
+            line-height: 1.4;
+            opacity: .9;
+        }
+
+        .pj-debug-backtrace-controls {
+            flex-shrink: 0;
+            display: flex;
+            align-items: flex-start;
+            gap: .5rem;
+        }
+
+        .pj-backtrace-vendor-toggle {
+            background: rgba($white, .15);
+            border: 1px solid rgba($white, .4);
+            color: $white;
+            padding: .25rem .625rem;
+            font-size: .75rem;
+            font-weight: 500;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color .15s;
+            white-space: nowrap;
+
+            &:hover {
+                background: rgba($white, .25);
+            }
+        }
+    }
+
+    .pj-debug-backtrace-raw {
+        margin: 0;
+        padding: 1.25rem 1.5rem;
+        background-color: $white;
+        font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+        font-size: .8125rem;
+        line-height: 1.7;
+        color: $font;
+        overflow-x: auto;
+        white-space: pre-wrap;
+        word-break: break-all;
+    }
+
+    .pj-debug-backtrace-frames {
+        background-color: $white;
+
+        &.vendor-hidden .pj-debug-backtrace-frame.vendor {
+            display: none;
+        }
+
+        .pj-debug-backtrace-frame {
+            display: grid;
+            grid-template-columns: 2.5rem 1fr;
+            border-bottom: 1px solid $border;
+            transition: background-color .15s;
+
+            &:last-child {
+                border-bottom: none;
+            }
+
+            &:hover {
+                background-color: $gray-50;
+            }
+
+            &.pj-frame-collapsed {
+                display: none;
+            }
+
+            &.vendor {
+                .pj-frame-number {
+                    color: $gray-400;
+                    background-color: $gray-100;
+                }
+
+                .pj-frame-content {
+                    .pj-frame-file {
+                        color: $gray-400;
+                    }
+
+                    .pj-frame-callable {
+                        color: $gray-400;
+                    }
+                }
+            }
+
+            .pj-frame-number {
+                display: flex;
+                align-items: flex-start;
+                justify-content: center;
+                padding: .875rem .25rem;
+                font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+                font-weight: 600;
+                font-size: .6875rem;
+                color: $danger;
+                background-color: $danger-light;
+            }
+
+            .pj-frame-content {
+                padding: .75rem 1.25rem;
+                min-width: 0;
+
+                .pj-frame-file {
+                    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+                    color: $font;
+                    word-break: break-all;
+                    line-height: 1.5;
+
+                    .pj-frame-line {
+                        font-weight: 700;
+                        color: $danger;
+                    }
+                }
+
+                .pj-frame-callable {
+                    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+                    color: $font-secondary;
+                    font-size: .75rem;
+                    margin-top: .25rem;
+                    word-break: break-all;
+                }
+            }
+        }
+
+        .pj-backtrace-expand {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .25rem;
+            width: 100%;
+            padding: .625rem 1.25rem;
+            background: none;
+            border: none;
+            border-top: 1px solid $border;
+            color: $font-secondary;
+            font-size: .8125rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: background-color .15s;
+            text-align: center;
+
+            &:hover {
+                background-color: $gray-50;
+            }
+
+            .pj-backtrace-expand-chevron {
+                width: 1rem;
+                height: 1rem;
+                flex-shrink: 0;
+                transition: transform .2s;
+            }
+
+            &.expanded .pj-backtrace-expand-chevron {
+                transform: rotate(180deg);
+            }
+        }
+    }
+}

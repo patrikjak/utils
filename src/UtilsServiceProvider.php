@@ -41,16 +41,17 @@ class UtilsServiceProvider extends ServiceProvider
     {
         $this->publishes(
             [
-                __DIR__ . '/../resources/assets/css' => resource_path('css/vendor/pjutils'),
-                __DIR__ . '/../resources/assets/js' => resource_path('js/vendor/pjutils'),
                 __DIR__ . '/../public' => public_path('vendor/pjutils'),
             ],
             'pjutils-assets',
         );
 
         $this->publishes(
-            [__DIR__ . '/../resources/assets/images' => public_path('vendor/pjutils/assets/images')],
-            ['pjutils-assets', 'pjutils-images'],
+            [
+                __DIR__ . '/../resources/assets/css' => resource_path('css/vendor/pjutils'),
+                __DIR__ . '/../resources/assets/js' => resource_path('js/vendor/pjutils'),
+            ],
+            'pjutils-sources',
         );
     }
 
@@ -80,11 +81,11 @@ class UtilsServiceProvider extends ServiceProvider
 
     private function extendBlade(): void
     {
-        Blade::directive('icon', static function ($icon) {
-            return "<?php echo \Patrikjak\Utils\Common\Enums\Icon::from($icon)->getAsHtml(); ?>";
+        Blade::directive('icon', static function (string $icon): string {
+            return "<?php echo svg(\Patrikjak\Utils\Common\Enums\Icon::from($icon)->getIconName())->toHtml(); ?>";
         });
 
-        Blade::directive('customIcon', static function ($icon) {
+        Blade::directive('customIcon', static function (string $icon): string {
             return "<?php echo \Patrikjak\Utils\Common\Enums\Icon::getCustomAsHtml($icon); ?>";
         });
     }

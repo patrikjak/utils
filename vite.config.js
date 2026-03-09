@@ -5,6 +5,7 @@ export default defineConfig({
     plugins: [
         laravel({
             input: [
+                "resources/assets/js/main.ts",
                 "resources/assets/css/main.scss",
                 "resources/assets/css/general/buttons.scss",
                 "resources/assets/css/general/general.scss",
@@ -22,6 +23,8 @@ export default defineConfig({
     build: {
         rollupOptions: {
             output: {
+                entryFileNames: '[name].js',
+                chunkFileNames: '[name].js',
                 assetFileNames: '[name].[ext]',
             }
         },

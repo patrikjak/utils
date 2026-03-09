@@ -33,6 +33,13 @@ docker compose run --rm node npm run build                                      
 docker compose run --rm node npm run dev                                           # dev server with HMR
 ```
 
+### After SCSS/TS Changes
+
+Consumer projects use a **static copy** of published assets (not symlinks). After building, re-publish assets in the consumer project:
+```bash
+php artisan vendor:publish --tag=pjutils-assets --force
+```
+
 ## Architecture
 
 ### Two Main Domains

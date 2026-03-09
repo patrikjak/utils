@@ -1,0 +1,134 @@
+@use "../variables" as *;
+
+.pj-widget {
+    background-color: $white;
+    border: 1px solid $border;
+    border-radius: 12px;
+
+    &.xs {
+        max-width: 25%;
+    }
+
+    &.sm {
+        max-width: 50%;
+    }
+
+    &.md {
+        max-width: 75%;
+    }
+
+    &.full {
+        width: 100%;
+    }
+
+    &.h-sm {
+        min-height: 10rem;
+    }
+
+    &.h-md {
+        min-height: 20rem;
+    }
+
+    &.h-lg {
+        min-height: 32rem;
+    }
+
+    &.h-full {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+
+        .pj-widget-body {
+            flex: 1;
+        }
+    }
+
+    &.col-span-2 {
+        grid-column: span 2;
+    }
+
+    &.col-span-3 {
+        grid-column: span 3;
+    }
+
+    &.col-span-4 {
+        grid-column: span 4;
+    }
+
+    .pj-widget-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        border-radius: 12px 12px 0 0;
+
+        .pj-widget-header-main {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .pj-widget-header-action {
+            flex-shrink: 0;
+        }
+
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid $border;
+
+        .pj-widget-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: $font;
+            margin: 0;
+        }
+
+        .pj-widget-subtitle {
+            font-size: .8125rem;
+            color: $font-light;
+            margin: .25rem 0 0;
+        }
+    }
+
+    .pj-widget-body {
+        padding: 1.5rem;
+    }
+
+    .pj-widget-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid $border;
+        border-radius: 0 0 12px 12px;
+        background-color: $gray-50;
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+    }
+}
+
+.pj-widget-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+
+    &.cols-1 {
+        grid-template-columns: 1fr;
+    }
+
+    &.cols-2 {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    &.cols-3 {
+        grid-template-columns: repeat(3, 1fr);
+    }
+
+    &.cols-4 {
+        grid-template-columns: repeat(4, 1fr);
+    }
+
+    &.gap-sm {
+        gap: .75rem;
+    }
+
+    &.gap-lg {
+        gap: 2rem;
+    }
+}

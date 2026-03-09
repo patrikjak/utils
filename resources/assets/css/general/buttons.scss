@@ -8,7 +8,7 @@
     width: 100%;
     padding: .5rem;
     border-radius: 8px;
-    border: solid #4285F4 1px; // google color
+    border: solid $google-blue 1px;
     transition-duration: .3s;
 
     .text {
@@ -42,7 +42,6 @@
     font-family: inherit;
     font-size: .9375rem;
     margin-top: 1rem;
-    transition-duration: .3s;
 
     &.bordered {
         background-color: $white;
@@ -69,15 +68,11 @@
     }
 
     &.info {
-        background-color: #3b82f6;
-    }
-
-    &.info {
         background-color: $info;
         color: $white;
 
         svg {
-            fill: $white;
+            color: $white;
         }
 
         &:hover {
@@ -138,7 +133,7 @@
         background-color: $success;
 
         svg {
-            fill: $white;
+            color: $white;
         }
 
         &:hover {
@@ -153,7 +148,6 @@
 
         &:hover {
             background-color: $success-light;
-            box-shadow: none;
         }
     }
 
@@ -171,7 +165,7 @@
         background-color: $danger;
 
         svg {
-            fill: $white;
+            color: $white;
         }
 
         &:hover {
@@ -203,7 +197,7 @@
         background-color: $warning;
 
         svg {
-            fill: $white;
+            color: $white;
         }
 
         &:hover {

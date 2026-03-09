@@ -11,7 +11,9 @@ The **Utils** package is a versatile utility toolkit designed to enhance Laravel
 - [Usage](#usage)
     - [CSS](#css)
     - [JavaScript](#javascript)
-        - [Dependencies](#dependencies)
+        - [Auto-initialization](#auto-initialization)
+        - [Programmatic API](#programmatic-api)
+        - [TypeScript](#typescript)
 ---
 
 What's included:
@@ -44,10 +46,18 @@ return [
 ];
 ```
 
-Next, publish the package assets:
+Next, publish the pre-built assets:
 
 ```bash
-php artisan vendor:publish --tag="assets" --force
+php artisan vendor:publish --tag="pjutils-assets" --force
+```
+
+This copies the compiled CSS and JS files to `public/vendor/pjutils/`. Re-run it with `--force` after every package update.
+
+If you want to customize the SCSS or TypeScript source files, publish them separately:
+
+```bash
+php artisan vendor:publish --tag="pjutils-sources"
 ```
 
 ## Usage
@@ -69,31 +79,92 @@ You need to set border-box box-sizing for all elements in your CSS file to preve
 ```
 
 ### JavaScript
-This package does not include a compiled JavaScript file. Instead, import and call functions directly within your main JavaScript file.
 
-Refer to the documentation for a list of available functions and usage examples.
+The package ships a pre-built ES module bundle. Include it as a `<script>` tag **before** your own scripts:
 
-#### Dependencies
-Utils requires the following dependencies to function properly:
-
-- [i18n-js](https://www.npmjs.com/package/i18n-js)
-- [axios](https://www.npmjs.com/package/axios)
-
-```bash
-npm install i18n-js axios
+```html
+<script src="{{ asset('vendor/pjutils/assets/main.js') }}" defer type="module"></script>
 ```
 
-To load correct language for JS you need to set lang attribute to html tag
-    
-```bladehtml
+`type="module"` is required. The bundle auto-initializes all components and exposes a `window.pjutils` global.
+
+#### Auto-initialization
+
+These components initialize automatically on page load — no manual calls needed:
+password visibility switch, table functions (pagination, sorting, filtering, search), dropdowns, file uploaders, accordions, tabs, clipboard, number inputs, comboboxes, tag inputs, repeaters.
+
+#### Programmatic API
+
+| Symbol | Type | Description |
+|--------|------|-------------|
+| `Form` | class | AJAX form submission with validation error handling |
+| `Modal` | class | Programmatic modal creation and control |
+| `notify` | function | Show notification messages |
+| `getData` | function | Read HTML data attributes from elements |
+| `doAction` | function | Bind custom row actions on a table |
+
+```javascript
+window.pjutils.notify('Saved', 'Success', 'success');
+
+new window.pjutils.Form().bindSubmit();
+
+const modal = new window.pjutils.Modal();
+modal.setTitle('Hello').setBody('<p>Content</p>').open();
+```
+
+#### TypeScript
+
+Add a declaration file at `resources/js/pjutils.d.ts` for full type safety — the `import type` imports are erased at build time, nothing from the vendor directory gets bundled:
+
+```typescript
+import type Form from '../../vendor/patrikjak/utils/resources/assets/js/form/Form';
+import type notify from '../../vendor/patrikjak/utils/resources/assets/js/utils/notification';
+import type Modal from '../../vendor/patrikjak/utils/resources/assets/js/utils/Modal';
+import type {getData} from '../../vendor/patrikjak/utils/resources/assets/js/helpers/general';
+import type {doAction} from '../../vendor/patrikjak/utils/resources/assets/js/table/actions';
+
+export {};
+
+declare global {
+    interface Window {
+        pjutils: {
+            Form: typeof Form;
+            notify: typeof notify;
+            Modal: typeof Modal;
+            getData: typeof getData;
+            doAction: typeof doAction;
+        };
+    }
+}
+```
+
+Make sure `resources/js` is included in your `tsconfig.json`:
+
+```json
+{
+    "compilerOptions": {
+        "target": "ESNext",
+        "module": "ESNext",
+        "moduleResolution": "bundler",
+        "strict": true,
+        "noEmit": true,
+        "skipLibCheck": true
+    },
+    "include": [
+        "resources/js/**/*"
+    ]
+}
+```
+
+To load the correct language for JS components, set the `lang` attribute on the `<html>` tag:
+
+```html
 <html lang="{{ config('app.locale') }}">
 ```
 
-Currently supported languages are:
-- en
-- sk
+Currently supported languages: `en`, `sk`.
 
-You will need to set up Vite build target to **esnext** in your `vite.config.js` file:
+Your `vite.config.js` must target **esnext**:
 
 ```javascript
 export default defineConfig({
@@ -102,3 +173,4 @@ export default defineConfig({
         target: 'esnext',
     },
 });
+```

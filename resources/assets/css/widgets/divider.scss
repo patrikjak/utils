@@ -1,0 +1,26 @@
+@use "../variables" as *;
+
+.pj-divider {
+    border: none;
+    border-top: 1px solid $border;
+    margin: 1.5rem 0;
+
+    &.pj-divider-labeled {
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+
+        &::before,
+        &::after {
+            content: '';
+            flex: 1;
+            border-top: 1px solid $border;
+        }
+    }
+
+    .pj-divider-label {
+        font-size: .8125rem;
+        color: $font-light;
+        white-space: nowrap;
+    }
+}

@@ -1,0 +1,50 @@
+@use "../variables" as *;
+
+.pj-progress {
+    width: 100%;
+
+    .pj-progress-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: .375rem;
+        font-size: .875rem;
+
+        .pj-progress-label {
+            color: $font-light;
+        }
+
+        .pj-progress-value {
+            font-weight: 500;
+            color: $font;
+            margin-left: auto;
+        }
+    }
+
+    .pj-progress-track {
+        width: 100%;
+        height: .5rem;
+        background-color: $gray-200;
+        border-radius: 999px;
+        overflow: hidden;
+    }
+
+    .pj-progress-fill {
+        height: 100%;
+        background-color: $primary;
+        border-radius: 999px;
+        transition: width .4s ease;
+    }
+
+    &.success .pj-progress-fill {
+        background-color: $success;
+    }
+
+    &.danger .pj-progress-fill {
+        background-color: $danger;
+    }
+
+    &.warning .pj-progress-fill {
+        background-color: $warning;
+    }
+}

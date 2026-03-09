@@ -1,0 +1,109 @@
+@use "../variables" as *;
+
+.pj-number {
+    width: 100%;
+    margin-top: 1rem;
+
+    &:first-child {
+        margin-top: 0;
+    }
+
+    label {
+        font-size: .875rem;
+    }
+
+    .pj-number-control {
+        display: inline-flex;
+        align-items: center;
+        margin-top: .5rem;
+        border: solid 1px $border;
+        border-radius: 8px;
+        overflow: hidden;
+        background-color: $white;
+        transition: border-color .3s;
+
+        &:focus-within {
+            border-color: $primary;
+        }
+    }
+
+    .pj-number-btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 2.5rem;
+        height: 2.5rem;
+        background-color: $gray-50;
+        border: none;
+        font-size: 1.25rem;
+        line-height: 1;
+        color: $font-light;
+        cursor: pointer;
+        transition: background-color .2s, color .2s;
+        flex-shrink: 0;
+
+        &:hover {
+            background-color: $primary-100;
+            color: $primary;
+        }
+
+        &:active {
+            background-color: $primary-200;
+        }
+
+        &:disabled {
+            background-color: $gray-100;
+            color: $gray-300;
+            cursor: not-allowed;
+        }
+    }
+
+    .pj-number-minus {
+        border-right: solid 1px $border;
+    }
+
+    .pj-number-plus {
+        border-left: solid 1px $border;
+    }
+
+    input[type="number"] {
+        width: 5rem;
+        height: 2.5rem;
+        border: none;
+        text-align: center;
+        font-size: .875rem;
+        font-family: inherit;
+        background-color: $white;
+        color: $font;
+        padding: 0 .5rem;
+
+        &:focus,
+        &:focus-visible {
+            outline: none;
+        }
+
+        -moz-appearance: textfield;
+
+        &::-webkit-outer-spin-button,
+        &::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+    }
+
+    .pj-number-error {
+        display: flex;
+        align-items: center;
+        margin-top: .5rem;
+
+        .message {
+            font-size: .875rem;
+            color: $danger;
+            margin: 0;
+        }
+    }
+
+    &.error .pj-number-control {
+        border-color: $danger;
+    }
+}
