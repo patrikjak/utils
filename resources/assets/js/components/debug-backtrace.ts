@@ -2,6 +2,12 @@ import {translator} from '../translator';
 
 export function bindDebugBacktraces(): void {
     document.querySelectorAll<HTMLElement>('.pj-debug-backtrace').forEach((el) => {
+        if (el.dataset.pjInitialised) {
+            return;
+        }
+
+        el.dataset.pjInitialised = '1';
+
         const onVendorToggle = bindCollapse(el);
         bindVendorToggle(el, onVendorToggle);
     });
@@ -83,7 +89,14 @@ function bindCollapse(el: HTMLElement): ((isVendorHidden: boolean) => void) | nu
         toggleBtn.classList.add('expanded');
     };
 
-    // Set initial state: collapsed, all frames visible as vendor context dictates
+    const hideExpandBtn = (): void => {
+        toggleBtn.style.display = 'none';
+    };
+
+    const showExpandBtn = (): void => {
+        toggleBtn.style.display = '';
+    };
+
     setExpandLabel(collapsibleFrames.length);
 
     toggleBtn.addEventListener('click', () => {
@@ -96,7 +109,6 @@ function bindCollapse(el: HTMLElement): ((isVendorHidden: boolean) => void) | nu
         if (wasCollapsed) {
             setCollapseLabel();
         } else {
-            // Collapsing — count reflects frames actually going away (vendor-aware)
             const count = effectiveCollapsible().length;
 
             if (count === 0) {
@@ -108,15 +120,6 @@ function bindCollapse(el: HTMLElement): ((isVendorHidden: boolean) => void) | nu
         }
     });
 
-    const hideExpandBtn = (): void => {
-        toggleBtn.style.display = 'none';
-    };
-
-    const showExpandBtn = (): void => {
-        toggleBtn.style.display = '';
-    };
-
-    // Called by bindVendorToggle whenever vendor visibility changes
     const onVendorToggle = (nowHidden: boolean): void => {
         const visible = nowHidden ? nonVendorCollapsible() : collapsibleFrames;
 
@@ -127,7 +130,6 @@ function bindCollapse(el: HTMLElement): ((isVendorHidden: boolean) => void) | nu
 
         showExpandBtn();
 
-        // Only update the label when collapsed; "Show less" stays correct in either vendor state
         if (isCollapsed()) {
             setExpandLabel(visible.length);
         }

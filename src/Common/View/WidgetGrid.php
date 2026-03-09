@@ -6,14 +6,15 @@ namespace Patrikjak\Utils\Common\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Common\Enums\WidgetGridGap;
 
-class WidgetGrid extends Component
+final class WidgetGrid extends Component
 {
     public string $classes;
 
     public function __construct(
         public int $cols = 2,
-        public string $gap = 'md',
+        public WidgetGridGap $gap = WidgetGridGap::MD,
     ) {
         $this->classes = $this->getClasses();
     }
@@ -31,8 +32,8 @@ class WidgetGrid extends Component
             $classes[] = "cols-{$this->cols}";
         }
 
-        if (in_array($this->gap, ['sm', 'lg'], true)) {
-            $classes[] = "gap-{$this->gap}";
+        if ($this->gap !== WidgetGridGap::MD) {
+            $classes[] = "gap-{$this->gap->value}";
         }
 
         return implode(' ', $classes);

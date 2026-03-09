@@ -1,13 +1,13 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Common\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class EmptyState extends Component
+final class EmptyState extends Component
 {
     public function __construct(
         public string $message = 'No data available',

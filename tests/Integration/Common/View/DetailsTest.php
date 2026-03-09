@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Tests\Integration\Common\View;
 
 use Patrikjak\Utils\Tests\Integration\TestCase;
 
-class DetailsTest extends TestCase
+final class DetailsTest extends TestCase
 {
     public function testDetailsCanBeRenderedWithRowsArray(): void
     {

@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class StatCard extends Component
+final class StatCard extends Component
 {
     public string $trendDirection;
 
@@ -30,13 +30,11 @@ class StatCard extends Component
             return 'neutral';
         }
 
-        $trimmed = ltrim($this->trend);
-
-        if (str_starts_with($trimmed, '+')) {
+        if (str_starts_with($this->trend, '+')) {
             return 'up';
         }
 
-        if (str_starts_with($trimmed, '-')) {
+        if (str_starts_with($this->trend, '-')) {
             return 'down';
         }
 

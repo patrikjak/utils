@@ -5,6 +5,12 @@ export function bindTabs(): void {
 }
 
 function initTabs(container: HTMLElement): void {
+    if (container.dataset.pjInitialised) {
+        return;
+    }
+
+    container.dataset.pjInitialised = '1';
+
     const panels = container.querySelectorAll<HTMLElement>('.pj-tab-panel');
 
     if (panels.length === 0) {
@@ -63,7 +69,7 @@ function initTabs(container: HTMLElement): void {
     container.insertBefore(nav, container.firstChild);
 }
 
-function activateTab(container: HTMLElement, activeButton: HTMLElement, activePanel: HTMLElement): void {
+function activateTab(container: HTMLElement, activeButton: HTMLButtonElement, activePanel: HTMLElement): void {
     container.querySelectorAll<HTMLElement>('.pj-tab-btn').forEach((btn) => {
         btn.classList.remove('active');
         btn.setAttribute('aria-selected', 'false');

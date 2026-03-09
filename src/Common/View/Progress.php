@@ -6,6 +6,7 @@ namespace Patrikjak\Utils\Common\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Common\Enums\ProgressType;
 
 final class Progress extends Component
 {
@@ -15,7 +16,7 @@ final class Progress extends Component
 
     public function __construct(
         public readonly int $value = 0,
-        public readonly string $type = 'default',
+        public readonly ProgressType $type = ProgressType::DEFAULT,
         public readonly ?string $label = null,
         public readonly bool $showLabel = true,
     ) {
@@ -32,8 +33,8 @@ final class Progress extends Component
     {
         $classes = ['pj-progress'];
 
-        if (in_array($this->type, ['success', 'danger', 'warning'], true)) {
-            $classes[] = $this->type;
+        if ($this->type !== ProgressType::DEFAULT) {
+            $classes[] = $this->type->value;
         }
 
         return implode(' ', $classes);

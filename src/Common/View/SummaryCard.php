@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Common\View;
 
@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Enums\Icon;
 
-class SummaryCard extends Component
+final class SummaryCard extends Component
 {
     public function __construct(
         public string $title,

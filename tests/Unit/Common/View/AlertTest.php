@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Common\View;
 
+use Patrikjak\Utils\Common\Enums\AlertType;
 use Patrikjak\Utils\Common\View\Alert;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class AlertTest extends TestCase
+final class AlertTest extends TestCase
 {
     public function testDefaultTypeIsInfoClass(): void
     {
@@ -18,27 +19,20 @@ class AlertTest extends TestCase
     }
 
     #[DataProvider('typedAlertProvider')]
-    public function testTypedAlertAddsTypeClass(string $type, string $expectedClass): void
+    public function testTypedAlertAddsTypeClass(AlertType $type, string $expectedClass): void
     {
         $alert = new Alert(type: $type);
 
         $this->assertSame($expectedClass, $alert->classes);
     }
 
-    public function testUnknownTypeDoesNotAddExtraClass(): void
-    {
-        $alert = new Alert(type: 'custom');
-
-        $this->assertSame('pj-alert', $alert->classes);
-    }
-
     /**
-     * @return iterable<string, array{string, string}>
+     * @return iterable<string, array{AlertType, string}>
      */
     public static function typedAlertProvider(): iterable
     {
-        yield 'success' => ['success', 'pj-alert success'];
-        yield 'danger' => ['danger', 'pj-alert danger'];
-        yield 'warning' => ['warning', 'pj-alert warning'];
+        yield 'success' => [AlertType::SUCCESS, 'pj-alert success'];
+        yield 'danger' => [AlertType::DANGER, 'pj-alert danger'];
+        yield 'warning' => [AlertType::WARNING, 'pj-alert warning'];
     }
 }

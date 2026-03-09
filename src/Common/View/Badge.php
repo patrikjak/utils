@@ -1,18 +1,19 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Common\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Common\Enums\BadgeType;
 
-class Badge extends Component
+final class Badge extends Component
 {
     public string $classes;
 
     public function __construct(
-        public string $type = 'default',
+        public BadgeType $type = BadgeType::DEFAULT,
     ) {
         $this->classes = $this->getClasses();
     }
@@ -26,8 +27,8 @@ class Badge extends Component
     {
         $classes = ['pj-badge'];
 
-        if (in_array($this->type, ['success', 'danger', 'warning', 'info'], true)) {
-            $classes[] = $this->type;
+        if ($this->type !== BadgeType::DEFAULT) {
+            $classes[] = $this->type->value;
         }
 
         return implode(' ', $classes);

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Common\View;
 
+use Patrikjak\Utils\Common\Enums\WidgetGridGap;
 use Patrikjak\Utils\Common\View\WidgetGrid;
 use PHPUnit\Framework\TestCase;
 
-class WidgetGridTest extends TestCase
+final class WidgetGridTest extends TestCase
 {
-    public function testDefaultIstwoCols(): void
+    public function testDefaultIsTwoCols(): void
     {
         $grid = new WidgetGrid();
 
@@ -46,21 +47,21 @@ class WidgetGridTest extends TestCase
 
     public function testDefaultGapIsMdNoClass(): void
     {
-        $grid = new WidgetGrid(gap: 'md');
+        $grid = new WidgetGrid(gap: WidgetGridGap::MD);
 
         $this->assertSame('pj-widget-grid cols-2', $grid->classes);
     }
 
     public function testSmGapAddsClass(): void
     {
-        $grid = new WidgetGrid(gap: 'sm');
+        $grid = new WidgetGrid(gap: WidgetGridGap::SM);
 
         $this->assertSame('pj-widget-grid cols-2 gap-sm', $grid->classes);
     }
 
     public function testLgGapAddsClass(): void
     {
-        $grid = new WidgetGrid(gap: 'lg');
+        $grid = new WidgetGrid(gap: WidgetGridGap::LG);
 
         $this->assertSame('pj-widget-grid cols-2 gap-lg', $grid->classes);
     }

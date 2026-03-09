@@ -1,9 +1,8 @@
 import {I18n} from "i18n-js";
 
-const locale = document.querySelector('html').lang;
-// @ts-ignore
+const locale = document.documentElement.lang;
 const translations = await import(`./lang/${locale}.json`);
-const i18nTranslations = {};
+const i18nTranslations: Record<string, object> = {};
 
 i18nTranslations[locale] = translations.default;
 

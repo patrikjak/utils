@@ -6,16 +6,18 @@ namespace Patrikjak\Utils\Common\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Common\Enums\WidgetHeight;
+use Patrikjak\Utils\Common\Enums\WidgetSize;
 
-class Widget extends Component
+final class Widget extends Component
 {
     public string $classes;
 
     public function __construct(
         public ?string $title = null,
         public ?string $subtitle = null,
-        public string $size = 'full',
-        public ?string $height = null,
+        public WidgetSize $size = WidgetSize::FULL,
+        public ?WidgetHeight $height = null,
         public int $colSpan = 1,
     ) {
         $this->classes = $this->getClasses();
@@ -28,14 +30,10 @@ class Widget extends Component
 
     private function getClasses(): string
     {
-        $classes = ['pj-widget'];
+        $classes = ['pj-widget', $this->size->value];
 
-        if (in_array($this->size, ['xs', 'sm', 'md', 'full'], true)) {
-            $classes[] = $this->size;
-        }
-
-        if ($this->height !== null && in_array($this->height, ['sm', 'md', 'lg', 'full'], true)) {
-            $classes[] = "h-{$this->height}";
+        if ($this->height !== null) {
+            $classes[] = "h-{$this->height->value}";
         }
 
         if ($this->colSpan > 1 && $this->colSpan <= 4) {

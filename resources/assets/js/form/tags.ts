@@ -5,6 +5,12 @@ export function bindTagsInputs(): void {
 }
 
 function initTagsInput(wrapper: HTMLElement): void {
+    if (wrapper.dataset.pjInitialised) {
+        return;
+    }
+
+    wrapper.dataset.pjInitialised = '1';
+
     const control = wrapper.querySelector<HTMLElement>('.pj-tags-control');
     const input = wrapper.querySelector<HTMLInputElement>('.pj-tags-input');
 
@@ -51,7 +57,12 @@ function addTag(control: HTMLElement, input: HTMLInputElement): void {
         return;
     }
 
-    const name = input.dataset.name ?? '';
+    const name = input.dataset.name;
+
+    if (!name) {
+        return;
+    }
+
     const chip = createChip(value, name);
     bindChipRemove(chip, control, input);
 

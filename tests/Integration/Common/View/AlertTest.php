@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Common\View;
 
+use Patrikjak\Utils\Common\Enums\AlertType;
 use Patrikjak\Utils\Tests\Integration\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
-class AlertTest extends TestCase
+final class AlertTest extends TestCase
 {
     public function testDefaultAlertCanBeRendered(): void
     {
@@ -17,7 +18,7 @@ class AlertTest extends TestCase
     }
 
     #[DataProvider('alertTypeProvider')]
-    public function testTypedAlertCanBeRendered(string $type): void
+    public function testTypedAlertCanBeRendered(AlertType $type): void
     {
         $view = $this->blade(
             '<x-pjutils::alert :type="$type">Alert message.</x-pjutils::alert>',
@@ -30,7 +31,8 @@ class AlertTest extends TestCase
     public function testAlertCanBeRenderedWithTitle(): void
     {
         $view = $this->blade(
-            '<x-pjutils::alert type="success" title="Saved">Changes saved successfully.</x-pjutils::alert>',
+            '<x-pjutils::alert :type="$type" title="Saved">Changes saved successfully.</x-pjutils::alert>',
+            ['type' => AlertType::SUCCESS],
         );
 
         $this->assertMatchesHtmlSnapshot((string) $view);
@@ -46,13 +48,13 @@ class AlertTest extends TestCase
     }
 
     /**
-     * @return iterable<string, array{string}>
+     * @return iterable<string, array{AlertType}>
      */
     public static function alertTypeProvider(): iterable
     {
-        yield 'success' => ['success'];
-        yield 'danger' => ['danger'];
-        yield 'warning' => ['warning'];
-        yield 'info' => ['info'];
+        yield 'success' => [AlertType::SUCCESS];
+        yield 'danger' => [AlertType::DANGER];
+        yield 'warning' => [AlertType::WARNING];
+        yield 'info' => [AlertType::INFO];
     }
 }

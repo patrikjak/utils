@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Common\View;
 
+use Patrikjak\Utils\Common\Enums\WidgetSize;
 use Patrikjak\Utils\Tests\Integration\TestCase;
 
-class WidgetTest extends TestCase
+final class WidgetTest extends TestCase
 {
     public function testWidgetCanBeRendered(): void
     {
@@ -33,14 +34,20 @@ class WidgetTest extends TestCase
 
     public function testWidgetCanBeRenderedWithSmSize(): void
     {
-        $view = $this->blade('<x-pjutils::widget size="sm">Content</x-pjutils::widget>');
+        $view = $this->blade(
+            '<x-pjutils::widget :size="$size">Content</x-pjutils::widget>',
+            ['size' => WidgetSize::SM],
+        );
 
         $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     public function testWidgetCanBeRenderedWithMdSize(): void
     {
-        $view = $this->blade('<x-pjutils::widget size="md">Content</x-pjutils::widget>');
+        $view = $this->blade(
+            '<x-pjutils::widget :size="$size">Content</x-pjutils::widget>',
+            ['size' => WidgetSize::MD],
+        );
 
         $this->assertMatchesHtmlSnapshot((string) $view);
     }

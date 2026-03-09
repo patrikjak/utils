@@ -6,13 +6,14 @@ namespace Patrikjak\Utils\Common\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Common\Enums\AlertType;
 
-class Alert extends Component
+final class Alert extends Component
 {
     public string $classes;
 
     public function __construct(
-        public string $type = 'info',
+        public AlertType $type = AlertType::INFO,
         public ?string $title = null,
         public bool $dismissible = true,
     ) {
@@ -28,8 +29,8 @@ class Alert extends Component
     {
         $classes = ['pj-alert'];
 
-        if (in_array($this->type, ['success', 'danger', 'warning'], true)) {
-            $classes[] = $this->type;
+        if ($this->type !== AlertType::INFO) {
+            $classes[] = $this->type->value;
         }
 
         if ($this->title !== null) {

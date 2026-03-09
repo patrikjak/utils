@@ -1,5 +1,11 @@
 export function bindAccordions(): void {
     document.querySelectorAll<HTMLButtonElement>('.pj-accordion-header').forEach((header) => {
+        if (header.dataset.pjInitialised) {
+            return;
+        }
+
+        header.dataset.pjInitialised = '1';
+
         header.addEventListener('click', () => {
             const accordion = header.closest<HTMLElement>('.pj-accordion');
 

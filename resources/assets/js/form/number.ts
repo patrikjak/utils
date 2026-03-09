@@ -1,5 +1,11 @@
 export function bindNumberInputs(): void {
     document.querySelectorAll<HTMLElement>('.pj-number-control').forEach((control) => {
+        if (control.dataset.pjInitialised) {
+            return;
+        }
+
+        control.dataset.pjInitialised = '1';
+
         const input = control.querySelector<HTMLInputElement>('input[type="number"]');
         const minusBtn = control.querySelector<HTMLButtonElement>('.pj-number-minus');
         const plusBtn = control.querySelector<HTMLButtonElement>('.pj-number-plus');

@@ -4,10 +4,12 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Common\View;
 
+use Patrikjak\Utils\Common\Enums\WidgetHeight;
+use Patrikjak\Utils\Common\Enums\WidgetSize;
 use Patrikjak\Utils\Common\View\Widget;
 use PHPUnit\Framework\TestCase;
 
-class WidgetTest extends TestCase
+final class WidgetTest extends TestCase
 {
     public function testDefaultSizeIsFullClass(): void
     {
@@ -18,56 +20,49 @@ class WidgetTest extends TestCase
 
     public function testXsSizeAddsXsClass(): void
     {
-        $widget = new Widget(size: 'xs');
+        $widget = new Widget(size: WidgetSize::XS);
 
         $this->assertSame('pj-widget xs', $widget->classes);
     }
 
     public function testSmSizeAddsSmClass(): void
     {
-        $widget = new Widget(size: 'sm');
+        $widget = new Widget(size: WidgetSize::SM);
 
         $this->assertSame('pj-widget sm', $widget->classes);
     }
 
     public function testMdSizeAddsMdClass(): void
     {
-        $widget = new Widget(size: 'md');
+        $widget = new Widget(size: WidgetSize::MD);
 
         $this->assertSame('pj-widget md', $widget->classes);
     }
 
-    public function testInvalidSizeFallsBackToBaseClassOnly(): void
-    {
-        $widget = new Widget(size: 'xl');
-
-        $this->assertSame('pj-widget', $widget->classes);
-    }
-
     public function testHeightSmAddsHSmClass(): void
     {
-        $widget = new Widget(height: 'sm');
+        $widget = new Widget(height: WidgetHeight::SM);
 
         $this->assertSame('pj-widget full h-sm', $widget->classes);
     }
 
     public function testHeightMdAddsHMdClass(): void
     {
-        $widget = new Widget(height: 'md');
+        $widget = new Widget(height: WidgetHeight::MD);
 
         $this->assertSame('pj-widget full h-md', $widget->classes);
     }
 
     public function testHeightLgAddsHLgClass(): void
     {
-        $widget = new Widget(height: 'lg');
+        $widget = new Widget(height: WidgetHeight::LG);
 
         $this->assertSame('pj-widget full h-lg', $widget->classes);
     }
 
     public function testHeightFullAddsHFullClass(): void
     {
-        $widget = new Widget(height: 'full');
+        $widget = new Widget(height: WidgetHeight::FULL);
 
         $this->assertSame('pj-widget full h-full', $widget->classes);
     }
@@ -95,7 +90,7 @@ class WidgetTest extends TestCase
 
     public function testCombinedSizeHeightColSpan(): void
     {
-        $widget = new Widget(size: 'sm', height: 'md', colSpan: 2);
+        $widget = new Widget(size: WidgetSize::SM, height: WidgetHeight::MD, colSpan: 2);
 
         $this->assertSame('pj-widget sm h-md col-span-2', $widget->classes);
     }

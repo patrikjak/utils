@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Common\View;
 
+use Patrikjak\Utils\Common\Enums\WidgetGridGap;
 use Patrikjak\Utils\Tests\Integration\TestCase;
 
-class WidgetGridTest extends TestCase
+final class WidgetGridTest extends TestCase
 {
     public function testWidgetGridCanBeRendered(): void
     {
@@ -55,11 +56,12 @@ class WidgetGridTest extends TestCase
     {
         $view = $this->blade(
             <<<'HTML'
-                <x-pjutils::widget-grid gap="sm">
+                <x-pjutils::widget-grid :gap="$gap">
                     <x-pjutils::widget title="A">Content A</x-pjutils::widget>
                     <x-pjutils::widget title="B">Content B</x-pjutils::widget>
                 </x-pjutils::widget-grid>
             HTML,
+            ['gap' => WidgetGridGap::SM],
         );
 
         $this->assertMatchesHtmlSnapshot((string) $view);

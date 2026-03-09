@@ -7,27 +7,21 @@ namespace Patrikjak\Utils\Common\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class DebugBacktrace extends Component
+final class DebugBacktrace extends Component
 {
     /**
      * @var array<int, array<string, mixed>>
      */
-    public array $normalizedFrames;
+    public readonly array $normalizedFrames;
 
     /**
      * @var array<int, array<string, mixed>>|null
      */
-    public ?array $normalizedLines;
+    public readonly ?array $normalizedLines;
 
-    public bool $hasVendorFrames;
+    public readonly bool $hasVendorFrames;
 
     /**
-     * Each frame may contain:
-     *   - file?: string
-     *   - line?: int|null
-     *   - callable?: string
-     *   - vendor?: bool  (auto-detected from /vendor/ in file path when omitted)
-     *
      * @param array<int, array<string, mixed>> $frames
      * @param array<int, string>|null $lines
      */

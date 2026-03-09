@@ -8,7 +8,7 @@ use Patrikjak\Utils\Common\View\StatCard;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-class StatCardTest extends TestCase
+final class StatCardTest extends TestCase
 {
     public function testNoTrendIsNeutral(): void
     {

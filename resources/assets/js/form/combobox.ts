@@ -5,6 +5,12 @@ export function bindComboboxes(): void {
 }
 
 function initCombobox(wrapper: HTMLElement): void {
+    if (wrapper.dataset.pjInitialised) {
+        return;
+    }
+
+    wrapper.dataset.pjInitialised = '1';
+
     const searchInput = wrapper.querySelector<HTMLInputElement>('.pj-combobox-search');
     const filterInput = wrapper.querySelector<HTMLInputElement>('.pj-combobox-filter');
     const hiddenInput = wrapper.querySelector<HTMLInputElement>('.pj-combobox-hidden');
@@ -145,7 +151,7 @@ function handleKeydown(
     }
 }
 
-function navigateOptions(list: HTMLElement, direction: number): void {
+function navigateOptions(list: HTMLElement, direction: 1 | -1): void {
     const options = Array.from(list.querySelectorAll<HTMLElement>('.pj-combobox-option:not([hidden])'));
     const currentIndex = options.findIndex((opt) => opt.classList.contains('highlighted'));
     const nextIndex = Math.max(0, Math.min(options.length - 1, currentIndex + direction));

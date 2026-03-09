@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Details extends Component
+final class Details extends Component
 {
     /**
      * @param array<string, string> $rows

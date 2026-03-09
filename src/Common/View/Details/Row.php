@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View\Details;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-class Row extends Component
+final class Row extends Component
 {
     public function __construct(
         public string $label,

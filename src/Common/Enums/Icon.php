@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Common\Enums;
 
 use Patrikjak\Utils\Common\Traits\EnumValues;
+use RuntimeException;
 
 enum Icon: string
 {
@@ -31,7 +32,7 @@ enum Icon: string
 
     public function getIconName(): string
     {
-        return match($this) {
+        return match ($this) {
             self::CHECK => 'heroicon-o-check',
             self::WARNING => 'heroicon-o-exclamation',
             self::EDIT => 'heroicon-o-pencil-alt',
@@ -50,7 +51,14 @@ enum Icon: string
 
     public static function getCustomAsHtml(string $icon): string
     {
-        return file_get_contents(resource_path(sprintf('views/icons/%s.blade.php', $icon)));
+        $path = resource_path(sprintf('views/icons/%s.blade.php', $icon));
+        $contents = file_get_contents($path);
+
+        if ($contents === false) {
+            throw new RuntimeException(sprintf('Icon file not found: %s', $path));
+        }
+
+        return $contents;
     }
 
     public static function getCustomImagePath(string $icon): string

@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Tests\Integration\Common\View;
 
 use Patrikjak\Utils\Tests\Integration\TestCase;
 
-class StatCardTest extends TestCase
+final class StatCardTest extends TestCase
 {
     public function testStatCardCanBeRendered(): void
     {

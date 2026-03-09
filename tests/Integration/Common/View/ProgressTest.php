@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Common\View;
 
+use Patrikjak\Utils\Common\Enums\ProgressType;
 use Patrikjak\Utils\Tests\Integration\TestCase;
 
 final class ProgressTest extends TestCase
@@ -31,21 +32,30 @@ final class ProgressTest extends TestCase
 
     public function testSuccessProgressCanBeRendered(): void
     {
-        $view = $this->blade('<x-pjutils::progress :value="100" type="success" label="Complete" />');
+        $view = $this->blade(
+            '<x-pjutils::progress :value="100" :type="$type" label="Complete" />',
+            ['type' => ProgressType::SUCCESS],
+        );
 
         $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     public function testDangerProgressCanBeRendered(): void
     {
-        $view = $this->blade('<x-pjutils::progress :value="20" type="danger" />');
+        $view = $this->blade(
+            '<x-pjutils::progress :value="20" :type="$type" />',
+            ['type' => ProgressType::DANGER],
+        );
 
         $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
     public function testWarningProgressCanBeRendered(): void
     {
-        $view = $this->blade('<x-pjutils::progress :value="55" type="warning" />');
+        $view = $this->blade(
+            '<x-pjutils::progress :value="55" :type="$type" />',
+            ['type' => ProgressType::WARNING],
+        );
 
         $this->assertMatchesHtmlSnapshot((string) $view);
     }

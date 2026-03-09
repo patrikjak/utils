@@ -55,7 +55,7 @@
 
     &.success {
         border-color: $success;
-        box-shadow: 8px 8px 40px -6px #EAF8DC;
+        box-shadow: 8px 8px 40px -6px $success-glow;
 
         .level {
             background-color: $success-light;
@@ -72,7 +72,7 @@
 
     &.warning {
         border-color: $warning;
-        box-shadow: 8px 8px 40px -6px #FFF7E5;
+        box-shadow: 8px 8px 40px -6px $warning-glow;
 
         .level {
             background-color: $warning-light;
@@ -89,7 +89,7 @@
 
     &.error {
         border-color: $danger;
-        box-shadow: 8px 8px 40px -6px #FFDBDE;
+        box-shadow: 8px 8px 40px -6px $danger-glow;
 
         .level {
             background-color: $danger-light;

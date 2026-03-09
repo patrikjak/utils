@@ -5,6 +5,12 @@ export function bindRepeaters(): void {
 }
 
 function initRepeater(repeater: HTMLElement): void {
+    if (repeater.dataset.pjInitialised) {
+        return;
+    }
+
+    repeater.dataset.pjInitialised = '1';
+
     const min = parseInt(repeater.dataset.min ?? '1');
     const template = repeater.querySelector<HTMLTemplateElement>('.pj-repeater-template');
     const rows = repeater.querySelector<HTMLElement>('.pj-repeater-rows');
