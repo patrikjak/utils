@@ -6,13 +6,14 @@ namespace Patrikjak\Utils\Common\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Common\Enums\BadgeType;
 use Patrikjak\Utils\Common\Enums\Icon;
 
 final class SummaryCard extends Component
 {
     public function __construct(
         public string $title,
-        public ?string $status = null,
+        public ?BadgeType $status = null,
         public ?string $statusLabel = null,
         public ?Icon $icon = null,
     ) {
