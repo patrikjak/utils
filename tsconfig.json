@@ -2,6 +2,8 @@
 	"compilerOptions": {
 		"module": "esnext",
 		"target": "esnext",
+		"moduleResolution": "bundler",
+		"resolveJsonModule": true,
 		"sourceMap": true,
 	},
 }
