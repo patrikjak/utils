@@ -32,6 +32,10 @@ class Alert extends Component
             $classes[] = $this->type;
         }
 
+        if ($this->title !== null) {
+            $classes[] = 'has-title';
+        }
+
         return implode(' ', $classes);
     }
 }

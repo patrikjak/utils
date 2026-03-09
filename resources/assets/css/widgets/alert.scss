@@ -10,6 +10,10 @@
     color: $font;
     font-size: .875rem;
 
+    &.has-title {
+        align-items: flex-start;
+    }
+
     .pj-alert-icon {
         flex-shrink: 0;
         display: flex;

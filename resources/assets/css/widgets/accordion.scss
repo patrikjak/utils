@@ -51,6 +51,8 @@
 
     .pj-accordion-content {
         overflow: hidden;
+        padding: 0 1.25rem;
+        transition: padding .25s ease;
     }
 
     &.open {
