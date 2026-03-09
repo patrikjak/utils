@@ -52,5 +52,14 @@
 		"filter": {
 			"title": "Filter"
 		}
+	},
+	"debug_backtrace": {
+		"hide_vendor": "Hide vendor",
+		"show_vendor": "Show vendor",
+		"show_more": {
+			"one": "Show 1 more frame",
+			"other": "Show %{count} more frames"
+		},
+		"show_less": "Show less"
 	}
 }

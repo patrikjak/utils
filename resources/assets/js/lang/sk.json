@@ -52,5 +52,14 @@
 		"filter": {
 			"title": "Filter"
 		}
+	},
+	"debug_backtrace": {
+		"hide_vendor": "Skryť vendor",
+		"show_vendor": "Zobraziť vendor",
+		"show_more": {
+			"one": "Zobraziť 1 ďalší rámec",
+			"other": "Zobraziť %{count} ďalšie rámce"
+		},
+		"show_less": "Zobraziť menej"
 	}
 }

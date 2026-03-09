@@ -11,10 +11,8 @@
                 <button
                     type="button"
                     class="pj-backtrace-vendor-toggle"
-                    data-label-show="Show vendor"
-                    data-label-hide="Hide vendor"
                     aria-pressed="true"
-                >Hide vendor</button>
+                ></button>
             </div>
         @endif
     </div>

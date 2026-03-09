@@ -154,7 +154,10 @@
         }
 
         .pj-backtrace-expand {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: .25rem;
             width: 100%;
             padding: .625rem 1.25rem;
             background: none;
@@ -169,6 +172,17 @@
 
             &:hover {
                 background-color: $gray-50;
+            }
+
+            .pj-backtrace-expand-chevron {
+                width: 1rem;
+                height: 1rem;
+                flex-shrink: 0;
+                transition: transform .2s;
+            }
+
+            &.expanded .pj-backtrace-expand-chevron {
+                transform: rotate(180deg);
             }
         }
     }
