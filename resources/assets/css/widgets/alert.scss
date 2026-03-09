@@ -12,6 +12,10 @@
 
     &.has-title {
         align-items: flex-start;
+
+        .pj-alert-icon {
+            margin-top: .125rem;
+        }
     }
 
     .pj-alert-icon {
