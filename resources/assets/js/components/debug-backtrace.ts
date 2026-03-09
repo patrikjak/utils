@@ -96,21 +96,36 @@ function bindCollapse(el: HTMLElement): ((isVendorHidden: boolean) => void) | nu
         if (wasCollapsed) {
             setCollapseLabel();
         } else {
-            // Collapsing — count reflects what is actually going away (visible ones)
-            setExpandLabel(effectiveCollapsible().length);
+            // Collapsing — count reflects frames actually going away (vendor-aware)
+            const count = effectiveCollapsible().length;
+
+            if (count === 0) {
+                hideExpandBtn();
+                return;
+            }
+
+            setExpandLabel(count);
         }
     });
+
+    const hideExpandBtn = (): void => {
+        toggleBtn.style.display = 'none';
+    };
+
+    const showExpandBtn = (): void => {
+        toggleBtn.style.display = '';
+    };
 
     // Called by bindVendorToggle whenever vendor visibility changes
     const onVendorToggle = (nowHidden: boolean): void => {
         const visible = nowHidden ? nonVendorCollapsible() : collapsibleFrames;
 
         if (visible.length === 0) {
-            toggleBtn.hidden = true;
+            hideExpandBtn();
             return;
         }
 
-        toggleBtn.hidden = false;
+        showExpandBtn();
 
         // Only update the label when collapsed; "Show less" stays correct in either vendor state
         if (isCollapsed()) {
