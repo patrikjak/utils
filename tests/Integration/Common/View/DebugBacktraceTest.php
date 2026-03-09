@@ -42,7 +42,11 @@ class DebugBacktraceTest extends TestCase
         ];
 
         $view = $this->blade(
-            '<x-pjutils::debug-backtrace :frames="$frames" title="RuntimeException" message="Connection refused" />',
+            '<x-pjutils::debug-backtrace 
+                :frames="$frames" 
+                title="RuntimeException" 
+                message="Connection refused" 
+            />',
             ['frames' => $frames],
         );
 
@@ -121,7 +125,11 @@ class DebugBacktraceTest extends TestCase
     {
         $frames = [
             ['file' => '/app/Services/PaymentService.php', 'line' => 88, 'callable' => 'PaymentService->charge'],
-            ['file' => '/vendor/laravel/framework/src/Illuminate/Routing/Router.php', 'line' => 787, 'callable' => 'Router->dispatch'],
+            [
+                'file' => '/vendor/laravel/framework/src/Illuminate/Routing/Router.php',
+                'line' => 787,
+                'callable' => 'Router->dispatch',
+            ],
         ];
 
         $rendered = (string) $this->blade(
@@ -137,7 +145,11 @@ class DebugBacktraceTest extends TestCase
     {
         $frames = [
             ['file' => 'app/Services/PaymentService.php', 'line' => 88, 'callable' => 'PaymentService->charge'],
-            ['file' => 'app/Http/Controllers/OrderController.php', 'line' => 34, 'callable' => 'OrderController->store'],
+            [
+                'file' => 'app/Http/Controllers/OrderController.php',
+                'line' => 34,
+                'callable' => 'OrderController->store',
+            ],
         ];
 
         $rendered = (string) $this->blade(
