@@ -1,0 +1,55 @@
+@use "../variables" as *;
+
+.pj-summary-card {
+    background-color: $white;
+    border: 1px solid $border;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+
+    .pj-summary-card-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: .5rem;
+        padding: 1.25rem 1.5rem;
+        border-bottom: 1px solid $border;
+
+        .pj-summary-card-icon {
+            display: flex;
+            align-items: center;
+            color: $primary;
+            flex-shrink: 0;
+
+            svg {
+                width: 1.125rem;
+                height: 1.125rem;
+            }
+        }
+
+        .pj-summary-card-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: $primary;
+            margin: 0;
+        }
+    }
+
+    .pj-summary-card-body {
+        flex: 1;
+        padding: 1.5rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .pj-summary-card-footer {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid $border;
+        border-radius: 0 0 12px 12px;
+        background-color: $gray-50;
+        display: flex;
+        align-items: center;
+        gap: .75rem;
+    }
+}
