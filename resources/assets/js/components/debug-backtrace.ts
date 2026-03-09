@@ -2,12 +2,12 @@ import {translator} from '../translator';
 
 export function bindDebugBacktraces(): void {
     document.querySelectorAll<HTMLElement>('.pj-debug-backtrace').forEach((el) => {
-        bindVendorToggle(el);
-        bindCollapse(el);
+        const expandBtn = bindCollapse(el);
+        bindVendorToggle(el, expandBtn);
     });
 }
 
-function bindVendorToggle(el: HTMLElement): void {
+function bindVendorToggle(el: HTMLElement, expandBtn: HTMLButtonElement | null): void {
     const toggle = el.querySelector<HTMLButtonElement>('.pj-backtrace-vendor-toggle');
 
     if (!toggle) {
@@ -29,21 +29,42 @@ function bindVendorToggle(el: HTMLElement): void {
         toggle.textContent = isNowHidden
             ? translator.t('debug_backtrace.show_vendor')
             : translator.t('debug_backtrace.hide_vendor');
+
+        if (expandBtn) {
+            syncExpandButton(expandBtn, framesContainer, isNowHidden);
+        }
     });
 }
 
-function bindCollapse(el: HTMLElement): void {
+function syncExpandButton(
+    expandBtn: HTMLButtonElement,
+    framesContainer: HTMLElement,
+    isVendorHidden: boolean,
+): void {
+    if (!isVendorHidden) {
+        expandBtn.hidden = false;
+        return;
+    }
+
+    const threshold = parseInt(framesContainer.dataset.threshold ?? '5', 10);
+    const frames = Array.from(framesContainer.querySelectorAll<HTMLElement>(':scope > .pj-debug-backtrace-frame'));
+    const hasVisibleCollapsible = frames.slice(threshold).some((f) => !f.classList.contains('vendor'));
+
+    expandBtn.hidden = !hasVisibleCollapsible;
+}
+
+function bindCollapse(el: HTMLElement): HTMLButtonElement | null {
     const framesContainer = el.querySelector<HTMLElement>('.pj-debug-backtrace-frames[data-collapsible="true"]');
 
     if (!framesContainer) {
-        return;
+        return null;
     }
 
     const threshold = parseInt(framesContainer.dataset.threshold ?? '5', 10);
     const frames = Array.from(framesContainer.querySelectorAll<HTMLElement>(':scope > .pj-debug-backtrace-frame'));
 
     if (frames.length <= threshold) {
-        return;
+        return null;
     }
 
     const collapsibleFrames = frames.slice(threshold);
@@ -74,4 +95,6 @@ function bindCollapse(el: HTMLElement): void {
         label.textContent = isCurrentlyCollapsed ? labelCollapse : labelExpand;
         toggleBtn.classList.toggle('expanded', isCurrentlyCollapsed);
     });
+
+    return toggleBtn;
 }
