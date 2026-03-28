@@ -18,7 +18,7 @@
         </table>
     </div>
 
-    @if($table->hasActions())
+    @if($table->hasDropdownActions())
         <x-pjutils.table::cells.actions.options :actions="$table->actions" />
     @endif
 

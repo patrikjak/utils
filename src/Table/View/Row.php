@@ -101,10 +101,10 @@ class Row extends Component
 
     private function setHiddenActions(): void
     {
-        $actions = $this->dropdownActions;
+        $dropdownActions = $this->dropdownActions;
         $hiddenActions = [];
 
-        foreach ($actions as $action) {
+        foreach ($dropdownActions as $action) {
             if ($action->visible === false) {
                 $hiddenActions[] = $action->classId;
 
@@ -124,7 +124,7 @@ class Row extends Component
 
         $this->hiddenActions = count($hiddenActions) === 0 ? null : implode(',', $hiddenActions);
         $this->allActionsAreHidden = $this->hasDropdownActions
-            && count($hiddenActions) === count($actions);
+            && count($hiddenActions) === count($dropdownActions);
     }
 
     private function setActionsDataAttributes(): void

@@ -24,7 +24,13 @@ export function bindShowingRowActions(tableWrapper: TableWrapper): void {
         const actionButtons: NodeListOf<HTMLElement> = tableWrapper.querySelectorAll('tr td.actions');
 
         actionButtons.forEach((actionButton: HTMLElement): void => {
-            actionButton.querySelector('.hellip').addEventListener('click', (): void => {
+            const hellip: HTMLElement | null = actionButton.querySelector('.hellip');
+
+            if (hellip === null) {
+                return;
+            }
+
+            hellip.addEventListener('click', (): void => {
                 showAction(actionButton, tableWrapper.querySelector('.table-actions'));
             });
         });
@@ -50,11 +56,14 @@ export function doAction(tableWrapper: TableWrapper, actionId: string, callback:
     });
 }
 
-function showAction(actionButton: HTMLElement, actions: HTMLElement): void {
-    // Render off-screen first so we can measure the real height
+function renderOffScreenForMeasurement(actions: HTMLElement): void {
     actions.style.visibility = 'hidden';
     actions.style.display = 'inline-block';
     actions.style.position = 'fixed';
+}
+
+function showAction(actionButton: HTMLElement, actions: HTMLElement): void {
+    renderOffScreenForMeasurement(actions);
 
     const row = actionButton.closest('tr');
     row.classList.add('active-actions');
@@ -141,7 +150,7 @@ function bindActionClick(actionElement: HTMLElement, link: string, method: strin
                     notify(message, title, level);
                 })
                 .catch((): void => {
-                    console.log('Error during action');
+                    console.error('Error during action');
                 });
         } else {
             window.location.href = link;
@@ -155,7 +164,7 @@ function bindActionClick(actionElement: HTMLElement, link: string, method: strin
     actionElement.addEventListener('click', clickHandler);
 }
 
-function removeOnClickListenersFromActions(actions: HTMLElement, action): void {
+function removeOnClickListenersFromActions(actions: HTMLElement, action: () => void): void {
     actions.addEventListener('close', function (): void {
         const actionElements: NodeListOf<HTMLElement> = actions.querySelectorAll('.action');
 

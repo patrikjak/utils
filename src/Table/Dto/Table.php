@@ -48,6 +48,11 @@ final readonly class Table
         return count($this->actions) > 0;
     }
 
+    public function hasDropdownActions(): bool
+    {
+        return array_any($this->actions, fn (Item $action) => !$action->inline);
+    }
+
     public function hasBulkActions(): bool
     {
         return count($this->bulkActions) > 0;
