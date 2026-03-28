@@ -50,7 +50,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
             $this->getTableId(),
             $header,
             $data,
-            array_keys($header ?? []),
+            array_keys($header),
             $this->getRowId(),
             $this->showCheckboxes(),
             $this->showOrder(),

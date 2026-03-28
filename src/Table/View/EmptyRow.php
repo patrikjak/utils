@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\View;
 
@@ -25,7 +25,7 @@ class EmptyRow extends Component
 
         $emptyState = $table->emptyState;
 
-        $this->title = $emptyState?->title ?? __('pjutils::table.no_data_available');
+        $this->title = $emptyState !== null ? $emptyState->title : __('pjutils::table.no_data_available');
         $this->description = $emptyState?->description;
         $this->icon = $emptyState?->icon;
     }
