@@ -53,5 +53,9 @@
         align-items: center;
         justify-content: center;
         gap: .75rem;
+
+        .pj-btn {
+            margin-top: 0;
+        }
     }
 }
