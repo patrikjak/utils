@@ -21,14 +21,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **`data-loading` guard** — the table wrapper receives a `data-loading` attribute during AJAX reloads, preventing duplicate concurrent requests and disabling sort header clicks and pagination links while loading
 - **`visibleColumns` parameter** — `Parameters` DTO and `TableParametersRequest` now carry an optional `visibleColumns` array, passed as `visibleColumns[]` query parameters and used by `BaseTableProvider` to filter headers and row data server-side
 - **Language keys** — `columns` key added to `lang/en/table.php` and `lang/sk/table.php` for the column visibility toggle label
+- **Inline action buttons** — table actions can now be rendered as inline buttons directly in the row by setting `inline: true` on an `Item`; mixed tables can have some actions inline and others in the dropdown, appearing side by side in the same cell; the `Type` parameter controls the button colour; buttons have comfortable spacing and their background transitions in sync with the row hover
+- **`hasDropdownActions()` on `Table` DTO** — the `.table-actions` dropdown panel is now only rendered when at least one action is not inline, preventing a JS crash on inline-only tables
 
 ### Changed
 
 - Sortable column state is now expressed via `sorted-asc` / `sorted-desc` CSS classes on `<th>` elements rather than a separate sort values component; the `sort/values.blade.php` partial is no longer rendered in the options panel
-- `applyColumnVisibility` in `BaseTableProvider` now uses `getRowId()` instead of the hardcoded string `'id'`, correctly preserving custom row ID keys when filtering data
-- `ColumnVisibilityToggle` now derives visible columns by intersecting `columnVisibility->columns` keys with the currently filtered header, rather than taking `array_keys($table->header)` directly
-- `getVisibleColumns()` in `TableParametersRequest` now returns `null` for any non-array input (the comma-separated string fallback has been removed)
-- `table.blade.php` uses the `@class` directive for the `sticky-header` modifier instead of string concatenation
 
 ## [2.13.0] - 2026-03-09
 
