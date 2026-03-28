@@ -1,58 +1,6 @@
 <html><body>
 <div class="pj-table-wrapper" id="table" data-html-parts-url="https://example.com/table">
-            <div class="table-options">
-    <div class="controllers">
-                    <div class="controller sorter-wrapper">
-    <div class="clickable">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M7 16V4m0 0L3 8m4-4l4 4m6 0v12m0 0l4-4m-4 4l-4-4"></path>
-</svg>        <span>Sort</span>
-    </div>
-
-    <div class="options">
-        <span class="title">Sort by</span>
-
-                    <div class="option" data-column="id">
-                <span>ID</span>
-            </div>
-                    <div class="option selected" data-column="name">
-                <span>Name</span>
-            </div>
-                    <div class="option" data-column="email">
-                <span>Email</span>
-            </div>
-                    <div class="option" data-column="created_at">
-                <span>Created at</span>
-            </div>
-                    <div class="option" data-column="updated_at">
-                <span>Updated at</span>
-            </div>
-            </div>
-</div>        
-        
-            </div>
-
     
-            <div class="option-values">
-                            <div class="group sort-values">
-                    Sorted by
-<div class="values">
-    <div class="option sort-option" data-column="name" data-order="desc">
-        <div class="icon sort-order">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24" stroke-width="2" stroke="currentColor" aria-hidden="true">
-  <path stroke-linecap="round" stroke-linejoin="round" d="M3 4h13M3 8h9m-9 4h9m5-4v12m0 0l-4-4m4 4l4-4"></path>
-</svg>                    </div>
-
-        <span>Name</span>
-
-        <div class="close-button">
-    <div class="line"></div>
-    <div class="line"></div>
-</div>    </div>
-</div>                </div>
-            
-                    </div>
-    </div>    
     <div class="table-wrapper">
         <table class="pj-table">
 
@@ -60,11 +8,11 @@
     <tr>
         
         
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Created at</th>
-                    <th>Updated at</th>
+                                <th data-sort-column="id" class="sortable">ID</th>
+                                <th data-sort-column="name" class="sortable sorted-desc">Name</th>
+                                <th data-sort-column="email" class="sortable">Email</th>
+                                <th data-sort-column="created_at" class="sortable">Created at</th>
+                                <th data-sort-column="updated_at" class="sortable">Updated at</th>
         
             </tr>
 </thead>            <tbody>

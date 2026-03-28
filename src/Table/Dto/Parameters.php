@@ -10,12 +10,16 @@ use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
 
 final readonly class Parameters implements Arrayable
 {
+    /**
+     * @param array<string>|null $visibleColumns
+     */
     public function __construct(
         public int $page,
         public int $pageSize,
         public ?SortCriteria $sortCriteria,
         public ?FilterCriteria $filterCriteria,
         public ?string $searchQuery = null,
+        public ?array $visibleColumns = null,
     ) {
     }
 
@@ -30,6 +34,7 @@ final readonly class Parameters implements Arrayable
             'sortCriteria' => $this->sortCriteria?->toArray(),
             'filterCriteria' => $this->filterCriteria?->toArray(),
             'searchQuery' => $this->searchQuery,
+            'visibleColumns' => $this->visibleColumns,
         ];
     }
 }

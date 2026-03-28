@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\Dto;
 
@@ -37,6 +37,9 @@ final readonly class Table
         public ?FilterSettings $filterSettings = null,
         public ?int $defaultMaxLength = null,
         public ?SearchSettings $searchSettings = null,
+        public bool $stickyHeader = false,
+        public ?EmptyState $emptyState = null,
+        public ?ColumnVisibility $columnVisibility = null,
     ) {
     }
 
@@ -80,5 +83,10 @@ final readonly class Table
         }
 
         return count($this->searchSettings->searchableColumns) > 0;
+    }
+
+    public function hasColumnVisibility(): bool
+    {
+        return $this->columnVisibility !== null;
     }
 }

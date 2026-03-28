@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Tests\Integration\Common\View;
 
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Common\Enums\Type;
+use Patrikjak\Utils\Common\Enums\ButtonSize;
 use Patrikjak\Utils\Tests\Integration\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 
@@ -86,6 +86,39 @@ class ButtonTest extends TestCase
         $this->assertMatchesHtmlSnapshot((string) $view);
     }
 
+    #[DataProvider('buttonTypeProvider')]
+    public function testGhostButtonCanBeRendered(string $type): void
+    {
+        $view = $this->blade(
+            '<x-pjutils::button :ghost="true" :class="$buttonType">Button</x-pjutils::button>',
+            ['buttonType' => $type],
+        );
+
+        $this->assertMatchesHtmlSnapshot((string) $view);
+    }
+
+    public function testPillButtonCanBeRendered(): void
+    {
+        $view = $this->blade(
+            <<<'HTML'
+                <x-pjutils::button :pill="true">Button</x-pjutils::button>
+            HTML
+        );
+
+        $this->assertMatchesHtmlSnapshot((string) $view);
+    }
+
+    #[DataProvider('buttonSizeProvider')]
+    public function testButtonCanBeRenderedWithSizeVariants(ButtonSize $size): void
+    {
+        $view = $this->blade(
+            '<x-pjutils::button :size="$size">Button</x-pjutils::button>',
+            ['size' => $size],
+        );
+
+        $this->assertMatchesHtmlSnapshot((string) $view);
+    }
+
     /**
      * @return iterable<string, array{string}>
      */
@@ -96,5 +129,15 @@ class ButtonTest extends TestCase
         yield 'success' => ['success'];
         yield 'warning' => ['warning'];
         yield 'danger' => ['danger'];
+    }
+
+    /**
+     * @return iterable<string, array{ButtonSize}>
+     */
+    public static function buttonSizeProvider(): iterable
+    {
+        yield 'sm' => [ButtonSize::SM];
+        yield 'md' => [ButtonSize::MD];
+        yield 'lg' => [ButtonSize::LG];
     }
 }

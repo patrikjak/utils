@@ -9,3 +9,4 @@ export const searchKey = 'search';
 export const deleteSearchKey = 'deleteSearch';
 
 export const filterModalUrl = 'pjutils/table/filter-form/{type}';
+export const visibleColumnsKey = 'visibleColumns';

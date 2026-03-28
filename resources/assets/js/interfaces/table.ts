@@ -19,6 +19,10 @@ export type SearchCriteria = {
     deleteSearch: boolean;
 };
 
+export type ColumnsCriteria = {
+    visibleColumns: string[] | null;
+};
+
 export type TableParts = {
     body: string;
     head: string;

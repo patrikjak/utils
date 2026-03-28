@@ -1,21 +1,33 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Table\Dto\EmptyState;
 use Patrikjak\Utils\Table\Dto\Table;
 
 class EmptyRow extends Component
 {
     public readonly int $colspan;
 
-    public function __construct(public Table $table, public ?string $message = null)
+    public readonly string $title;
+
+    public readonly ?string $description;
+
+    public readonly ?string $icon;
+
+    public function __construct(public Table $table)
     {
         $this->colspan = $this->resolveColspan();
-        $this->message ??= __('pjutils::table.no_data_available');
+
+        $emptyState = $table->emptyState;
+
+        $this->title = $emptyState?->title ?? __('pjutils::table.no_data_available');
+        $this->description = $emptyState?->description;
+        $this->icon = $emptyState?->icon;
     }
 
     public function render(): View

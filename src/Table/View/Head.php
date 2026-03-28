@@ -1,11 +1,12 @@
 <?php
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Traits\TableMethods;
 
@@ -18,9 +19,21 @@ final class Head extends Component
      */
     public readonly array $headerData;
 
+    /**
+     * @var array<string>
+     */
+    public readonly array $sortableColumnKeys;
+
+    public readonly ?string $activeSortColumn;
+
+    public readonly ?string $activeSortOrder;
+
     public function __construct(public Table $table)
     {
         $this->headerData = $this->getHeaderData();
+        $this->sortableColumnKeys = $this->getSortableColumnKeys();
+        $this->activeSortColumn = $table->sortSettings?->criteria?->column;
+        $this->activeSortOrder = $table->sortSettings?->criteria?->order->value;
     }
 
     public function render(): View
@@ -41,5 +54,20 @@ final class Head extends Component
         }
 
         return $header;
+    }
+
+    /**
+     * @return array<string>
+     */
+    private function getSortableColumnKeys(): array
+    {
+        if ($this->table->sortSettings === null) {
+            return [];
+        }
+
+        return array_map(
+            static fn (SortableColumn $sortableColumn) => $sortableColumn->column,
+            $this->table->sortSettings->sortableColumns,
+        );
     }
 }

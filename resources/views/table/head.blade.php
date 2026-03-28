@@ -11,7 +11,15 @@
         @endif
 
         @foreach($headerData as $key => $value)
-            <th>{{ $value }}</th>
+            @php
+                $isSortable = in_array($key, $sortableColumnKeys, true);
+                $isActive = $isSortable && $activeSortColumn === $key;
+                $thClass = $isSortable ? 'sortable' . ($isActive ? ' sorted-' . $activeSortOrder : '') : '';
+            @endphp
+            <th
+                @if($isSortable) data-sort-column="{{ $key }}" @endif
+                @if($thClass) class="{{ $thClass }}" @endif
+            >{{ $value }}</th>
         @endforeach
 
         @if($hasActions())
