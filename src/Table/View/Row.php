@@ -7,6 +7,7 @@ namespace Patrikjak\Utils\Table\View;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Cells\Cell;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\View\Traits\TableMethods;
@@ -26,6 +27,17 @@ class Row extends Component
 
     public ?string $actionsDataAttributes = null;
 
+    /** @var array<Item> */
+    public array $inlineActions = [];
+
+    /** @var array<Item> */
+    public array $dropdownActions = [];
+
+    public bool $hasDropdownActions = false;
+
+    /** @var array<string> */
+    public array $hiddenInlineActionIds = [];
+
     /**
      * @param array<string, scalar|array<string>> $row
      */
@@ -37,7 +49,9 @@ class Row extends Component
 
     public function render(): View
     {
+        $this->splitActions();
         $this->setHiddenActions();
+        $this->setHiddenInlineActions();
         $this->setActionsDataAttributes();
 
         return view('pjutils::table.row');
@@ -53,9 +67,41 @@ class Row extends Component
         return (string) $this->row[$this->table->rowId];
     }
 
+    private function splitActions(): void
+    {
+        foreach ($this->table->actions as $action) {
+            if ($action->inline) {
+                $this->inlineActions[] = $action;
+            } else {
+                $this->dropdownActions[] = $action;
+            }
+        }
+
+        $this->hasDropdownActions = count($this->dropdownActions) > 0;
+    }
+
+    private function setHiddenInlineActions(): void
+    {
+        foreach ($this->inlineActions as $action) {
+            if ($action->visible === false) {
+                $this->hiddenInlineActionIds[] = $action->classId;
+
+                continue;
+            }
+
+            if (!$action->visible instanceof Closure) {
+                continue;
+            }
+
+            if (!call_user_func($action->visible, $this->row)) {
+                $this->hiddenInlineActionIds[] = $action->classId;
+            }
+        }
+    }
+
     private function setHiddenActions(): void
     {
-        $actions = $this->table->actions;
+        $actions = $this->dropdownActions;
         $hiddenActions = [];
 
         foreach ($actions as $action) {
@@ -77,7 +123,8 @@ class Row extends Component
         }
 
         $this->hiddenActions = count($hiddenActions) === 0 ? null : implode(',', $hiddenActions);
-        $this->allActionsAreHidden = count($hiddenActions) === count($actions);
+        $this->allActionsAreHidden = $this->hasDropdownActions
+            && count($hiddenActions) === count($actions);
     }
 
     private function setActionsDataAttributes(): void

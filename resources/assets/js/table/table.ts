@@ -19,7 +19,7 @@ import {
     TextFilter
 } from "../interfaces/table";
 import {deleteFilterKey, deleteSearchKey, deleteSortKey, filterKey, orderKey, pageKey, pageSizeKey, searchKey, sortKey, visibleColumnsKey} from "./constants";
-import {bindShowingRowActions, setActionsToDefaultPosition} from "./actions";
+import {bindInlineActions, bindShowingRowActions, setActionsToDefaultPosition} from "./actions";
 import axios from "axios";
 import {bindDropdowns} from "../utils/dropdown";
 import {bindHeaderSorting, getCurrentOrder, getCurrentSort} from "./sort";
@@ -81,6 +81,7 @@ function bindUpdate(tableWrapper: TableWrapper): void {
 function bindFunctions(tableWrapper: TableWrapper): void {
     bindChecking(tableWrapper);
     bindShowingRowActions(tableWrapper);
+    bindInlineActions(tableWrapper);
     bindPagination(tableWrapper);
     bindPageSizeChange(tableWrapper);
     bindOptions(tableWrapper);
@@ -473,6 +474,18 @@ function addColumnsCriteriaToUrl(url: string, columnsCriteria: ColumnsCriteria):
         .join('&');
 }
 
+function restoreColumnVisibilityCheckboxes(tableWrapper: TableWrapper, visibleColumns: string[] | null): void {
+    if (visibleColumns === null) {
+        return;
+    }
+
+    const checkboxes: NodeListOf<HTMLInputElement> = tableWrapper.querySelectorAll('.column-checkbox input[type="checkbox"]');
+
+    checkboxes.forEach((cb: HTMLInputElement): void => {
+        cb.checked = visibleColumns.includes(cb.value);
+    });
+}
+
 function restoreStateFromLocalStorage(tableWrapper: TableWrapper): void {
     if (!tableWrapper.hasAttribute('data-html-parts-url')) {
         tableWrapper.removeAttribute('data-restoring');
@@ -515,6 +528,7 @@ function restoreStateFromLocalStorage(tableWrapper: TableWrapper): void {
 
     reloadTable(tableWrapper, pageCriteria, sortCriteria, filterCriteria, searchCriteria, columnsCriteria).then((): void => {
         tableWrapper.removeAttribute('data-restoring');
+        restoreColumnVisibilityCheckboxes(tableWrapper, columnsCriteria.visibleColumns);
         bindFunctions(tableWrapper);
         bindDropdowns(tableWrapper);
     });

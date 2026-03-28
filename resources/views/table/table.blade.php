@@ -15,12 +15,12 @@
 
             <x-pjutils.table::head :$table />
             <x-pjutils.table::body :$table />
-
-            @if($table->hasActions())
-                <x-pjutils.table::cells.actions.options :actions="$table->actions" />
-            @endif
         </table>
     </div>
+
+    @if($table->hasActions())
+        <x-pjutils.table::cells.actions.options :actions="$table->actions" />
+    @endif
 
     @if($table->hasBulkActions())
         <x-pjutils.table::bulk-actions.wrapper :bulk-actions="$table->bulkActions" />

@@ -142,6 +142,15 @@
             border-top-right-radius: 16px;
         }
 
+        &.actions {
+            width: 1px;
+            white-space: nowrap;
+            position: sticky;
+            right: 0;
+            background-color: $gray-100;
+            z-index: 2;
+        }
+
         &.sortable {
             cursor: pointer;
             user-select: none;
@@ -184,12 +193,28 @@
         transition-duration: .15s;
         border-bottom: solid 1px $background-light;
 
+        td.actions {
+            background-color: $white;
+        }
+
         &:hover {
             background-color: $gray-100;
+
+            td.actions {
+                background-color: $gray-100;
+            }
         }
 
         &.active {
             background-color: $primary-300;
+        }
+
+        &.active-actions {
+            background-color: $gray-100;
+
+            td.actions {
+                background-color: $gray-100;
+            }
         }
 
         &.empty-row {
@@ -296,8 +321,98 @@
         }
 
         &.actions {
-            width: 1rem;
-            position: relative;
+            width: 1px;
+            white-space: nowrap;
+            position: sticky;
+            right: 0;
+            text-align: right;
+
+            .actions-inner {
+                display: flex;
+                align-items: center;
+                gap: .25rem;
+            }
+
+            .action-btn {
+                display: inline-flex;
+                align-items: center;
+                cursor: pointer;
+                border: solid 1px $border;
+                background: transparent;
+                border-radius: 8px;
+                padding: .25rem .5rem;
+                transition-duration: .3s;
+                font-size: inherit;
+                font-family: inherit;
+                color: $font;
+
+                .icon {
+                    width: 16px;
+                    height: 16px;
+                    margin-right: .25rem;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+
+                    svg {
+                        height: 100%;
+                        color: $font-light;
+                    }
+                }
+
+                &:hover {
+                    background-color: $primary-200;
+                    border-color: $primary;
+                }
+
+                &.info {
+                    border-color: $primary;
+
+                    .icon svg { color: $primary; }
+                    .label { color: $primary; }
+                }
+
+                &.success {
+                    border-color: $success;
+
+                    .icon svg { color: $success; }
+                    .label { color: $success; }
+
+                    &:hover {
+                        background-color: $success-light;
+                        border-color: $success;
+                    }
+                }
+
+                &.warning {
+                    border-color: $warning;
+
+                    .icon svg { color: $warning; }
+                    .label { color: $warning; }
+
+                    &:hover {
+                        background-color: $warning-light;
+                        border-color: $warning;
+                    }
+                }
+
+                &.danger {
+                    border-color: $danger;
+
+                    .icon svg { color: $danger; }
+                    .label { color: $danger; }
+
+                    &:hover {
+                        background-color: $danger-light;
+                        border-color: $danger;
+                    }
+                }
+
+                &.hidden-action {
+                    visibility: hidden;
+                    pointer-events: none;
+                }
+            }
         }
 
         &.link a {

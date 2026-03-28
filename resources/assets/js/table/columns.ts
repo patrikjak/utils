@@ -11,6 +11,7 @@ export function bindColumnVisibility(tableWrapper: TableWrapper): void {
     bindToggleOpen(controller);
     bindCheckboxes(tableWrapper, controller);
     bindCloseOnOutsideClick(tableWrapper, controller);
+    enforceAtLeastOneVisible(controller);
 }
 
 export function getCurrentVisibleColumns(tableWrapper: TableWrapper): string[] | null {

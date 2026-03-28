@@ -97,6 +97,33 @@ class BaseTableProviderTest extends TestCase
         $this->tableMatchesSnapshot();
     }
 
+    public function testTableWithInlineActions(): void
+    {
+        $this->tableProvider->setActions([
+            new Item('Edit', 'edit', inline: true),
+            new Item('Delete', 'delete', type: Type::DANGER, inline: true),
+        ]);
+
+        $this->tableMatchesSnapshot();
+    }
+
+    public function testTableWithMixedActions(): void
+    {
+        $this->tableProvider->setActions([
+            new Item('Edit', 'edit', inline: true),
+            new Item('Delete', 'delete', type: Type::DANGER),
+            new Item('Hidden inline', 'hidden-inline', inline: true, visible: false),
+            new Item('Dynamic inline', 'dynamic-inline', inline: true, href: static function (array $row): string {
+                $rowId = $row['id'];
+                assert($rowId instanceof Simple);
+
+                return sprintf('edit/%s', $rowId->value);
+            }),
+        ]);
+
+        $this->tableMatchesSnapshot();
+    }
+
     public function testTableWithTruncatedCellsCanBeRendered(): void
     {
         $this->tableProvider->setData([

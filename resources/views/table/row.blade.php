@@ -21,10 +21,15 @@
     @endforeach
 
     @if($hasActions())
-        @if($allActionsAreHidden)
+        @if($allActionsAreHidden && count($inlineActions) === 0)
             <td></td>
         @else
-            <x-pjutils.table::cells.actions.dots :actions-data-attributes="$actionsDataAttributes" />
+            <x-pjutils.table::cells.actions.dots
+                :actions-data-attributes="$actionsDataAttributes"
+                :inline-actions="$inlineActions"
+                :hidden-inline-action-ids="$hiddenInlineActionIds"
+                :has-dropdown-actions="$hasDropdownActions"
+            />
         @endif
     @endif
 </tr>

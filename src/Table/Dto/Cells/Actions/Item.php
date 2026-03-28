@@ -18,6 +18,7 @@ final readonly class Item
         public bool|Closure $visible = true,
         public string|Closure|null $href = null,
         public ?string $method = null,
+        public bool $inline = false,
     ) {
     }
 }
