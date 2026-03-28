@@ -190,11 +190,12 @@
     }
 
     tbody tr {
-        transition-duration: .15s;
+        transition: background-color .15s;
         border-bottom: solid 1px $background-light;
 
         td.actions {
             background-color: $white;
+            transition: background-color .15s;
         }
 
         &:hover {
@@ -330,7 +331,7 @@
             .actions-inner {
                 display: flex;
                 align-items: center;
-                gap: .25rem;
+                gap: .75rem;
             }
 
             .action-btn {

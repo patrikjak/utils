@@ -13,10 +13,11 @@
     @endif
 
     @foreach($table->columns as $column)
-        <x-dynamic-component :component="$getCellView($row[$column])"
-                             :cell="$row[$column]"
-                             :$column
-                             :defaultMaxLength="$table->defaultMaxLength"
+        <x-dynamic-component
+            :component="$getCellView($row[$column])"
+            :cell="$row[$column]"
+            :$column
+            :defaultMaxLength="$table->defaultMaxLength"
         />
     @endforeach
 
