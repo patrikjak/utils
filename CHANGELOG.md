@@ -7,6 +7,29 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.14.0] - 2026-03-28
+
+### Added
+
+- **Table toolbar** — new `Toolbar` Blade component wraps the options area; rendered above the table and visible whenever the table is filterable, searchable, or has column visibility configured
+- **Column visibility toggle** — new `ColumnVisibility` DTO and `ColumnVisibilityToggle` Blade component; override `getColumnVisibility()` in any table provider to let users show/hide individual columns; `defaultHidden` configures which columns start hidden; at least one column is always kept visible
+- **Table state persistence** — table state (page, sort, filters, search, visible columns) is now saved to `localStorage` and automatically restored on next page load for any table with an `htmlPartsUrl`
+- **Inline checkbox variant** — new `<x-pjutils-form.checkbox :inline="true">` renders a compact `<label>`-wrapped checkbox for use inside lists and toggles (used by the column visibility toggle); the `required` modifier applies to both block and inline variants
+- **Button enhancements** — new `ghost` style (transparent background, coloured text), `pill` shape (fully rounded), and `size` prop backed by `ButtonSize` enum (`sm`, `md`, `lg`); `md` is the default and adds no extra class
+- **Sortable column headers** — sorting is now triggered by clicking the `<th>` directly; active sort direction is shown inline with `↑` / `↓` indicators; the separate sort dropdown in the options panel has been removed
+- **Empty state** — new `EmptyState` DTO with `title`, optional `description`, and optional `icon`; override `getEmptyState()` in a table provider to display a structured empty state instead of a plain message
+- **`data-loading` guard** — the table wrapper receives a `data-loading` attribute during AJAX reloads, preventing duplicate concurrent requests and disabling sort header clicks and pagination links while loading
+- **`visibleColumns` parameter** — `Parameters` DTO and `TableParametersRequest` now carry an optional `visibleColumns` array, passed as `visibleColumns[]` query parameters and used by `BaseTableProvider` to filter headers and row data server-side
+- **Language keys** — `columns` key added to `lang/en/table.php` and `lang/sk/table.php` for the column visibility toggle label
+
+### Changed
+
+- Sortable column state is now expressed via `sorted-asc` / `sorted-desc` CSS classes on `<th>` elements rather than a separate sort values component; the `sort/values.blade.php` partial is no longer rendered in the options panel
+- `applyColumnVisibility` in `BaseTableProvider` now uses `getRowId()` instead of the hardcoded string `'id'`, correctly preserving custom row ID keys when filtering data
+- `ColumnVisibilityToggle` now derives visible columns by intersecting `columnVisibility->columns` keys with the currently filtered header, rather than taking `array_keys($table->header)` directly
+- `getVisibleColumns()` in `TableParametersRequest` now returns `null` for any non-array input (the comma-separated string fallback has been removed)
+- `table.blade.php` uses the `@class` directive for the `sticky-header` modifier instead of string concatenation
+
 ## [2.13.0] - 2026-03-09
 
 ### Added

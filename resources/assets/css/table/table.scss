@@ -147,31 +147,29 @@
             user-select: none;
             white-space: nowrap;
 
-            &::after {
-                content: '↕';
-                margin-left: .375rem;
-                opacity: .5;
-                font-size: .9375rem;
-                color: $font-light;
-                display: inline-block;
+            .sort-icon {
+                display: inline-flex;
                 vertical-align: middle;
+                margin-left: .25rem;
                 position: relative;
                 top: -.0625rem;
+
+                .sort-icon-svg {
+                    width: 1rem;
+                    height: 1rem;
+                    color: $font-light;
+                    opacity: .6;
+                    transition: opacity .15s, color .15s;
+                }
             }
 
-            &:hover::after {
-                opacity: .8;
+            &:hover .sort-icon .sort-icon-svg {
+                opacity: .9;
                 color: $font;
             }
 
-            &.sorted-asc::after {
-                content: '↑';
-                opacity: 1;
-                color: $primary;
-            }
-
-            &.sorted-desc::after {
-                content: '↓';
+            &.sorted-asc .sort-icon .sort-icon-svg,
+            &.sorted-desc .sort-icon .sort-icon-svg {
                 opacity: 1;
                 color: $primary;
             }
