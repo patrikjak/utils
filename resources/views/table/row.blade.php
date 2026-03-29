@@ -30,6 +30,7 @@
                 :inline-actions="$inlineActions"
                 :hidden-inline-action-ids="$hiddenInlineActionIds"
                 :has-dropdown-actions="$hasDropdownActions"
+                :inline-action-hrefs="$inlineActionHrefs"
             />
         @endif
     @endif

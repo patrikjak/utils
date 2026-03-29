@@ -13,12 +13,14 @@ class Dots extends Component
     /**
      * @param array<Item> $inlineActions
      * @param array<string> $hiddenInlineActionIds
+     * @param array<string, string|null> $inlineActionHrefs
      */
     public function __construct(
         public ?string $actionsDataAttributes = null,
         public array $inlineActions = [],
         public array $hiddenInlineActionIds = [],
         public bool $hasDropdownActions = false,
+        public array $inlineActionHrefs = [],
     ) {
     }
 

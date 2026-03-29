@@ -8,6 +8,10 @@ export function bindInlineActions(tableWrapper: TableWrapper): void {
     const inlineButtons: NodeListOf<HTMLElement> = tableWrapper.querySelectorAll('tr td.actions .action-btn');
 
     inlineButtons.forEach((btn: HTMLElement): void => {
+        if (btn.tagName === 'A') {
+            return;
+        }
+
         const td: HTMLElement = btn.closest('td');
         const classId: string = btn.classList[1];
         const link: string | null = getData(td, `${classId}-href`);

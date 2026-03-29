@@ -38,6 +38,9 @@ class Row extends Component
     /** @var array<string> */
     public array $hiddenInlineActionIds = [];
 
+    /** @var array<string, string|null> */
+    public array $inlineActionHrefs = [];
+
     /**
      * @param array<string, scalar|array<string>> $row
      */
@@ -53,6 +56,7 @@ class Row extends Component
         $this->setHiddenActions();
         $this->setHiddenInlineActions();
         $this->setActionsDataAttributes();
+        $this->resolveInlineActionHrefs();
 
         return view('pjutils::table.row');
     }
@@ -125,6 +129,17 @@ class Row extends Component
         $this->hiddenActions = count($hiddenActions) === 0 ? null : implode(',', $hiddenActions);
         $this->allActionsAreHidden = $this->hasDropdownActions
             && count($hiddenActions) === count($dropdownActions);
+    }
+
+    private function resolveInlineActionHrefs(): void
+    {
+        foreach ($this->inlineActions as $action) {
+            if ($action->href instanceof Closure) {
+                $this->inlineActionHrefs[$action->classId] = call_user_func($action->href, $this->row);
+            } else {
+                $this->inlineActionHrefs[$action->classId] = $action->href;
+            }
+        }
     }
 
     private function setActionsDataAttributes(): void
