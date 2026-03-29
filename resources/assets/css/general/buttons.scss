@@ -63,6 +63,15 @@
         }
     }
 
+    &.ghost {
+        background-color: $white;
+        color: $info;
+
+        &:hover {
+            background-color: $info-light;
+        }
+    }
+
     &:hover {
         background-color: $primary-hover;
     }
@@ -100,6 +109,15 @@
         }
     }
 
+    &.ghost.info {
+        background-color: $white;
+        color: $info;
+
+        &:hover {
+            background-color: $info-light;
+        }
+    }
+
     &.neutral {
         background-color: $gray-200;
         color: $font;
@@ -126,6 +144,15 @@
         &:hover {
             text-decoration: underline;
             background-color: $white;
+        }
+    }
+
+    &.ghost.neutral {
+        background-color: $white;
+        color: $font;
+
+        &:hover {
+            background-color: $gray-100;
         }
     }
 
@@ -161,6 +188,15 @@
         }
     }
 
+    &.ghost.success {
+        background-color: $white;
+        color: $success;
+
+        &:hover {
+            background-color: $success-light;
+        }
+    }
+
     &.danger {
         background-color: $danger;
 
@@ -190,6 +226,15 @@
         &:hover {
             text-decoration: underline;
             background-color: $white;
+        }
+    }
+
+    &.ghost.danger {
+        background-color: $white;
+        color: $danger;
+
+        &:hover {
+            background-color: $danger-light;
         }
     }
 
@@ -223,6 +268,29 @@
             text-decoration: underline;
             background-color: $white;
         }
+    }
+
+    &.ghost.warning {
+        background-color: $white;
+        color: $warning;
+
+        &:hover {
+            background-color: $warning-light;
+        }
+    }
+
+    &.pill {
+        border-radius: 9999px;
+    }
+
+    &.sm {
+        padding: .5rem 1rem;
+        font-size: .8125rem;
+    }
+
+    &.lg {
+        padding: 1rem 2rem;
+        font-size: 1.0625rem;
     }
 
     .loader {

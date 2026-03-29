@@ -3,13 +3,11 @@
 <div
     class="pj-table-wrapper"
     id="{{ $tableId }}"
-    @if($table->htmlPartsUrl !== null) data-html-parts-url="{{ $table->htmlPartsUrl }}" @endif
+    @if($table->htmlPartsUrl !== null) data-html-parts-url="{{ $table->htmlPartsUrl }}" data-restoring @endif
 >
-    @if($showOptions)
-        <x-pjutils.table::options :table="$table" />
-    @endif
+    <x-pjutils.table::toolbar :table="$table" />
 
-    <div class="table-wrapper">
+    <div @class(['table-wrapper', 'sticky-header' => $table->stickyHeader])>
         <table
             class="{{ $tableClass }}"
             @if($table->expandable !== null) data-expandable="{{ $table->expandable }}" @endif
@@ -17,12 +15,12 @@
 
             <x-pjutils.table::head :$table />
             <x-pjutils.table::body :$table />
-
-            @if($table->hasActions())
-                <x-pjutils.table::cells.actions.options :actions="$table->actions" />
-            @endif
         </table>
     </div>
+
+    @if($table->hasDropdownActions())
+        <x-pjutils.table::cells.actions.options :actions="$table->getDropdownActions()" />
+    @endif
 
     @if($table->hasBulkActions())
         <x-pjutils.table::bulk-actions.wrapper :bulk-actions="$table->bulkActions" />

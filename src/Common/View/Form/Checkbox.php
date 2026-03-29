@@ -14,6 +14,7 @@ final class Checkbox extends Component
     public function __construct(
         public readonly ?string $label = null,
         public readonly bool $required = false,
+        public readonly bool $inline = false,
     ) {
     }
 
@@ -26,7 +27,7 @@ final class Checkbox extends Component
 
     private function resolveWrapperClass(): string
     {
-        $classes = ['pj-checkbox'];
+        $classes = $this->inline ? ['pj-checkbox-inline'] : ['pj-checkbox'];
 
         if ($this->required) {
             $classes[] = 'required';

@@ -19,8 +19,6 @@ class Table extends Component
 
     public readonly Table $component;
 
-    public bool $showOptions = false;
-
     public function __construct(public TableDto $table)
     {
         $this->tableClass = $this->resolveTableClass();
@@ -30,8 +28,6 @@ class Table extends Component
 
     public function render(): View
     {
-        $this->showOptions = $this->table->isSortable() || $this->table->isFilterable() || $this->table->isSearchable();
-
         return view('pjutils::table.table');
     }
 

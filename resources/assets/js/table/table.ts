@@ -4,6 +4,7 @@ import {bindPageSizeChange, getCurrentPageSize} from "./page-size";
 import {bindChecking, checkSavedCheckboxes, handleBulkActions} from "./checkboxes";
 import {bindOptions} from "./options";
 import {
+    ColumnsCriteria,
     DateFilter,
     Filter,
     FilterCriteria,
@@ -17,13 +18,15 @@ import {
     TableWrapper,
     TextFilter
 } from "../interfaces/table";
-import {deleteFilterKey, deleteSearchKey, deleteSortKey, filterKey, orderKey, pageKey, pageSizeKey, searchKey, sortKey} from "./constants";
-import {bindShowingRowActions, setActionsToDefaultPosition} from "./actions";
+import {deleteFilterKey, deleteSearchKey, deleteSortKey, filterKey, orderKey, pageKey, pageSizeKey, searchKey, sortKey, visibleColumnsKey} from "./constants";
+import {bindInlineActions, bindShowingRowActions, setActionsToDefaultPosition} from "./actions";
 import axios from "axios";
 import {bindDropdowns} from "../utils/dropdown";
-import {bindSorting, getCurrentOrder, getCurrentSort} from "./sort";
+import {bindHeaderSorting, getCurrentOrder, getCurrentSort} from "./sort";
 import {bindFilter, getCurrentFilterCriteria} from "./filter";
 import {bindSearch, getCurrentSearchCriteria} from "./search";
+import {bindColumnVisibility, getCurrentVisibleColumns} from "./columns";
+import {loadTableState, saveTableState, TableState} from "./state";
 
 export function bindTableFunctions(tableWrapper: TableWrapper | null = null): void {
     let tables: TableWrapper[] = Array.from(document.querySelectorAll('.pj-table-wrapper'));
@@ -35,6 +38,7 @@ export function bindTableFunctions(tableWrapper: TableWrapper | null = null): vo
     tables.forEach((table: TableWrapper): void => {
         bindUpdate(table);
         bindFunctions(table);
+        restoreStateFromLocalStorage(table);
     });
 }
 
@@ -46,14 +50,28 @@ export function dispatchUpdateEvent(tableWrapper: TableWrapper, detail: object =
 
 function bindUpdate(tableWrapper: TableWrapper): void {
     tableWrapper.addEventListener('update', function (event: CustomEvent): void {
+        if (tableWrapper.hasAttribute('data-loading')) {
+            return;
+        }
+
         const pageCriteria: PageCriteria = getPageCriteria(tableWrapper, event);
         const sortCriteria: SortCriteria = getSortCriteria(tableWrapper, event);
         const filterCriteria: FilterCriteria = getFilterCriteria(tableWrapper, event);
         const searchCriteria: SearchCriteria = getSearchCriteria(tableWrapper, event);
+        const columnsCriteria: ColumnsCriteria = getColumnsCriteria(tableWrapper, event);
 
         setActionsToDefaultPosition(tableWrapper);
 
-        reloadTable(tableWrapper, pageCriteria, sortCriteria, filterCriteria, searchCriteria).then((): void => {
+        saveTableState(
+            tableWrapper.id,
+            pageCriteria,
+            sortCriteria,
+            filterCriteria,
+            searchCriteria,
+            columnsCriteria.visibleColumns,
+        );
+
+        reloadTable(tableWrapper, pageCriteria, sortCriteria, filterCriteria, searchCriteria, columnsCriteria).then((): void => {
             bindFunctions(tableWrapper);
             bindDropdowns(tableWrapper);
         });
@@ -63,12 +81,14 @@ function bindUpdate(tableWrapper: TableWrapper): void {
 function bindFunctions(tableWrapper: TableWrapper): void {
     bindChecking(tableWrapper);
     bindShowingRowActions(tableWrapper);
+    bindInlineActions(tableWrapper);
     bindPagination(tableWrapper);
     bindPageSizeChange(tableWrapper);
     bindOptions(tableWrapper);
-    bindSorting(tableWrapper);
+    bindHeaderSorting(tableWrapper);
     bindFilter(tableWrapper);
     bindSearch(tableWrapper);
+    bindColumnVisibility(tableWrapper);
     bindTooltips(tableWrapper);
 
     handleBulkActions(tableWrapper);
@@ -191,17 +211,28 @@ function getSearchCriteria(tableWrapper: TableWrapper, event: CustomEvent): Sear
     return searchCriteria;
 }
 
+function getColumnsCriteria(tableWrapper: TableWrapper, event: CustomEvent): ColumnsCriteria {
+    const visibleColumns: string[] | undefined = event.detail.visibleColumns;
+
+    if (visibleColumns !== undefined) {
+        return {visibleColumns};
+    }
+
+    return {visibleColumns: getCurrentVisibleColumns(tableWrapper)};
+}
+
 async function reloadTable(
     tableWrapper: TableWrapper,
     pageCriteria: PageCriteria | null = null,
     sortCriteria: SortCriteria | null = null,
     filterCriteria: FilterCriteria | null = null,
     searchCriteria: SearchCriteria | null = null,
+    columnsCriteria: ColumnsCriteria | null = null,
 ): Promise<void> {
     showTableLoader(tableWrapper);
 
     try {
-        const url: string = getTableUrl(tableWrapper, pageCriteria, sortCriteria, filterCriteria, searchCriteria);
+        const url: string = getTableUrl(tableWrapper, pageCriteria, sortCriteria, filterCriteria, searchCriteria, columnsCriteria);
         const tableParts: TableParts | null = await getTableParts(url);
 
         if (tableParts === null) {
@@ -229,6 +260,8 @@ function showTableLoader(tableWrapper: TableWrapper): void {
     if (loader !== null) {
         loader.classList.remove('hidden');
     }
+
+    tableWrapper.setAttribute('data-loading', 'true');
 }
 
 function hideTableLoader(tableWrapper: TableWrapper): void {
@@ -237,6 +270,8 @@ function hideTableLoader(tableWrapper: TableWrapper): void {
     if (loader !== null) {
         loader.classList.add('hidden');
     }
+
+    tableWrapper.removeAttribute('data-loading');
 }
 
 function getTableUrl(
@@ -245,6 +280,7 @@ function getTableUrl(
     sortCriteria: SortCriteria | null = null,
     filterCriteria: FilterCriteria | null = null,
     searchCriteria: SearchCriteria | null = null,
+    columnsCriteria: ColumnsCriteria | null = null,
 ): string {
     let url: string = getData(tableWrapper, 'html-parts-url');
 
@@ -262,6 +298,10 @@ function getTableUrl(
 
     if (searchCriteria !== null) {
         url = addSearchCriteriaToUrl(url, searchCriteria);
+    }
+
+    if (columnsCriteria !== null) {
+        url = addColumnsCriteriaToUrl(url, columnsCriteria);
     }
 
     return url;
@@ -420,4 +460,76 @@ function addSearchCriteriaToUrl(url: string, searchCriteria: SearchCriteria): st
     }
 
     return url + `${searchKey}=${encodeURIComponent(searchCriteria.query)}&${deleteSearchKey}=false`;
+}
+
+function addColumnsCriteriaToUrl(url: string, columnsCriteria: ColumnsCriteria): string {
+    if (columnsCriteria.visibleColumns === null) {
+        return url;
+    }
+
+    urlIncludesGetParameters(url) ? url += '&' : url += '?';
+
+    return url + columnsCriteria.visibleColumns
+        .map((col: string) => `${visibleColumnsKey}[]=${encodeURIComponent(col)}`)
+        .join('&');
+}
+
+function restoreColumnVisibilityCheckboxes(tableWrapper: TableWrapper, visibleColumns: string[] | null): void {
+    if (visibleColumns === null) {
+        return;
+    }
+
+    const checkboxes: NodeListOf<HTMLInputElement> = tableWrapper.querySelectorAll('.column-checkbox input[type="checkbox"]');
+
+    checkboxes.forEach((cb: HTMLInputElement): void => {
+        cb.checked = visibleColumns.includes(cb.value);
+    });
+}
+
+function restoreStateFromLocalStorage(tableWrapper: TableWrapper): void {
+    if (!tableWrapper.hasAttribute('data-html-parts-url')) {
+        tableWrapper.removeAttribute('data-restoring');
+
+        return;
+    }
+
+    const state: TableState | null = loadTableState(tableWrapper.id);
+
+    if (state === null) {
+        tableWrapper.removeAttribute('data-restoring');
+
+        return;
+    }
+
+    const pageCriteria: PageCriteria = {
+        page: state.page,
+        pageSize: state.pageSize,
+    };
+
+    const sortCriteria: SortCriteria = {
+        column: state.sort,
+        order: state.order,
+        deleteSort: state.sort === null,
+    };
+
+    const filterCriteria: FilterCriteria = state.filters ?? {
+        filters: [],
+        deleteFilters: false,
+    };
+
+    const searchCriteria: SearchCriteria = {
+        query: state.search,
+        deleteSearch: state.search === null,
+    };
+
+    const columnsCriteria: ColumnsCriteria = {
+        visibleColumns: state.visibleColumns,
+    };
+
+    reloadTable(tableWrapper, pageCriteria, sortCriteria, filterCriteria, searchCriteria, columnsCriteria).then((): void => {
+        tableWrapper.removeAttribute('data-restoring');
+        restoreColumnVisibilityCheckboxes(tableWrapper, columnsCriteria.visibleColumns);
+        bindFunctions(tableWrapper);
+        bindDropdowns(tableWrapper);
+    });
 }

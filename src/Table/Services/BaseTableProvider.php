@@ -9,6 +9,8 @@ use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Table\Dto\ColumnVisibility;
+use Patrikjak\Utils\Table\Dto\EmptyState;
 use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Search\Settings as SearchSettings;
@@ -41,11 +43,14 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
     {
         $this->parameters = $parameters;
 
+        $columnVisibility = $this->getColumnVisibility();
+        [$header, $data] = $this->applyColumnVisibility($this->getHeader(), $this->getData(), $columnVisibility);
+
         return new Table(
             $this->getTableId(),
-            $this->getHeader(),
-            $this->getData(),
-            $this->getColumns(),
+            $header,
+            $data,
+            array_keys($header),
             $this->getRowId(),
             $this->showCheckboxes(),
             $this->showOrder(),
@@ -58,6 +63,9 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
             $this->getFilterSettings(),
             $this->getDefaultMaxLength(),
             $this->getSearchSettings(),
+            $this->stickyHeader(),
+            $this->getEmptyState(),
+            $columnVisibility,
         );
     }
 
@@ -66,13 +74,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
      */
     public function getColumns(): array
     {
-        $header = $this->getHeader();
-
-        if ($header === null) {
-            return [];
-        }
-
-        return array_keys($header);
+        return array_keys($this->getHeader() ?? []);
     }
 
     public function getTableId(): string
@@ -98,6 +100,11 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
     public function getExpandable(): ?string
     {
         return null;
+    }
+
+    public function stickyHeader(): bool
+    {
+        return false;
     }
 
     /**
@@ -184,6 +191,16 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         return null;
     }
 
+    public function getEmptyState(): ?EmptyState
+    {
+        return null;
+    }
+
+    public function getColumnVisibility(): ?ColumnVisibility
+    {
+        return null;
+    }
+
     protected function getHeadHtml(): string
     {
         return Blade::renderComponent(new Head($this->table));
@@ -196,7 +213,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
 
     protected function getOptionsHtml(): ?string
     {
-        if (!$this->table->isSortable() && !$this->table->isFilterable() && !$this->table->isSearchable()) {
+        if (!$this->table->isFilterable() && !$this->table->isSearchable()) {
             return null;
         }
 
@@ -228,5 +245,39 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         }
 
         return new SearchSettings($this->getSearchableColumns(), $this->parameters?->searchQuery);
+    }
+
+    /**
+     * @param array<string, string>|null $header
+     * @param array<array<scalar>> $data
+     * @return array{array<string, string>, array<array<scalar>>}
+     */
+    private function applyColumnVisibility(?array $header, array $data, ?ColumnVisibility $columnVisibility): array
+    {
+        if ($header === null || $columnVisibility === null) {
+            return [$header ?? [], $data];
+        }
+
+        $visibleKeys = $columnVisibility->getVisibleColumns($this->parameters?->visibleColumns);
+        $rowId = $this->getRowId();
+
+        $filteredHeader = array_filter(
+            $header,
+            static fn (string $key) => in_array($key, $visibleKeys, strict: true),
+            ARRAY_FILTER_USE_KEY,
+        );
+
+        $filteredData = array_map(
+            static function (array $row) use ($visibleKeys, $rowId): array {
+                return array_filter(
+                    $row,
+                    static fn (string $key) => $key === $rowId || in_array($key, $visibleKeys, strict: true),
+                    ARRAY_FILTER_USE_KEY,
+                );
+            },
+            $data,
+        );
+
+        return [$filteredHeader, $filteredData];
     }
 }

@@ -1,7 +1,5 @@
 @use('Patrikjak\Utils\Common\Enums\Sort\SortOrder')
 
-@lang('pjutils::table.sorted_by')
-
 <div class="values">
     <div
         class="option sort-option"

@@ -13,18 +13,25 @@
     @endif
 
     @foreach($table->columns as $column)
-        <x-dynamic-component :component="$getCellView($row[$column])"
-                             :cell="$row[$column]"
-                             :$column
-                             :defaultMaxLength="$table->defaultMaxLength"
+        <x-dynamic-component
+            :component="$getCellView($row[$column])"
+            :cell="$row[$column]"
+            :$column
+            :defaultMaxLength="$table->defaultMaxLength"
         />
     @endforeach
 
     @if($hasActions())
-        @if($allActionsAreHidden)
+        @if($allActionsAreHidden && count($inlineActions) === 0)
             <td></td>
         @else
-            <x-pjutils.table::cells.actions.dots :actions-data-attributes="$actionsDataAttributes" />
+            <x-pjutils.table::cells.actions.dots
+                :actions-data-attributes="$actionsDataAttributes"
+                :inline-actions="$inlineActions"
+                :hidden-inline-action-ids="$hiddenInlineActionIds"
+                :has-dropdown-actions="$hasDropdownActions"
+                :inline-action-hrefs="$inlineActionHrefs"
+            />
         @endif
     @endif
 </tr>

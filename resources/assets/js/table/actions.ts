@@ -4,12 +4,37 @@ import {dispatchUpdateEvent} from "./table";
 import axios, {AxiosResponse} from "axios";
 import notify from "../utils/notification";
 
+export function bindInlineActions(tableWrapper: TableWrapper): void {
+    const inlineButtons: NodeListOf<HTMLElement> = tableWrapper.querySelectorAll('tr td.actions .action-btn');
+
+    inlineButtons.forEach((btn: HTMLElement): void => {
+        if (btn.tagName === 'A') {
+            return;
+        }
+
+        const td: HTMLElement = btn.closest('td');
+        const classId: string = btn.classList[1];
+        const link: string | null = getData(td, `${classId}-href`);
+        const method: string = getData(td, `${classId}-method`) ?? 'get';
+
+        if (link !== null && link !== '') {
+            bindActionClick(btn, link, method !== '' ? method : 'get', tableWrapper);
+        }
+    });
+}
+
 export function bindShowingRowActions(tableWrapper: TableWrapper): void {
     if (tableWrapper.querySelector('.table-actions')) {
         const actionButtons: NodeListOf<HTMLElement> = tableWrapper.querySelectorAll('tr td.actions');
 
         actionButtons.forEach((actionButton: HTMLElement): void => {
-            actionButton.querySelector('.hellip').addEventListener('click', (): void => {
+            const hellip: HTMLElement | null = actionButton.querySelector('.hellip');
+
+            if (hellip === null) {
+                return;
+            }
+
+            hellip.addEventListener('click', (): void => {
                 showAction(actionButton, tableWrapper.querySelector('.table-actions'));
             });
         });
@@ -20,7 +45,7 @@ export function setActionsToDefaultPosition(tableWrapper: TableWrapper): void {
     const actions: HTMLElement = tableWrapper.querySelector('.table-actions');
 
     if (actions !== null) {
-        insertAfter(actions, tableWrapper.querySelector('.pj-table'));
+        actions.style.display = 'none';
     }
 }
 
@@ -35,9 +60,14 @@ export function doAction(tableWrapper: TableWrapper, actionId: string, callback:
     });
 }
 
-function showAction(actionButton: HTMLElement, actions: HTMLElement): void {
+function renderOffScreenForMeasurement(actions: HTMLElement): void {
+    actions.style.visibility = 'hidden';
     actions.style.display = 'inline-block';
-    actions.style.position = 'absolute';
+    actions.style.position = 'fixed';
+}
+
+function showAction(actionButton: HTMLElement, actions: HTMLElement): void {
+    renderOffScreenForMeasurement(actions);
 
     const row = actionButton.closest('tr');
     row.classList.add('active-actions');
@@ -45,17 +75,18 @@ function showAction(actionButton: HTMLElement, actions: HTMLElement): void {
     hideHiddenActions(actionButton, actions);
     bindActions(actionButton, actions);
 
-    const tableWrapper: HTMLElement = actionButton.closest('.table-wrapper');
-    const visibleWidth: number = tableWrapper.clientWidth;
+    const actionButtonRect = actionButton.getBoundingClientRect();
+    const actionsRect = actions.getBoundingClientRect();
 
-    const actionButtonPositions = actionButton.getBoundingClientRect();
-    const actionsPositions = actions.getBoundingClientRect();
-    const tableWrapperPositions = tableWrapper.getBoundingClientRect();
+    const leftPosition: number = actionButtonRect.right - actionsRect.width;
+    const spaceBelow: number = window.innerHeight - actionButtonRect.bottom;
+    const topPosition: number = spaceBelow < actionsRect.height
+        ? actionButtonRect.top - actionsRect.height
+        : actionButtonRect.bottom;
 
-    const actionsNewLeftPosition: number = visibleWidth - actionButtonPositions.width - actionsPositions.width;
-
-    actions.style.top = (actionButtonPositions.top - tableWrapperPositions.top + (actionButtonPositions.height / 2) / 2) + 'px';
-    actions.style.left = actionsNewLeftPosition + 'px';
+    actions.style.top = topPosition + 'px';
+    actions.style.left = leftPosition + 'px';
+    actions.style.visibility = 'visible';
 
     setTimeout((): void => {
         bindClosingActions(actionButton, actions);
@@ -123,7 +154,7 @@ function bindActionClick(actionElement: HTMLElement, link: string, method: strin
                     notify(message, title, level);
                 })
                 .catch((): void => {
-                    console.log('Error during action');
+                    console.error('Error during action');
                 });
         } else {
             window.location.href = link;
@@ -137,7 +168,7 @@ function bindActionClick(actionElement: HTMLElement, link: string, method: strin
     actionElement.addEventListener('click', clickHandler);
 }
 
-function removeOnClickListenersFromActions(actions: HTMLElement, action): void {
+function removeOnClickListenersFromActions(actions: HTMLElement, action: () => void): void {
     actions.addEventListener('close', function (): void {
         const actionElements: NodeListOf<HTMLElement> = actions.querySelectorAll('.action');
 

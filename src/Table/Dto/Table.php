@@ -37,12 +37,28 @@ final readonly class Table
         public ?FilterSettings $filterSettings = null,
         public ?int $defaultMaxLength = null,
         public ?SearchSettings $searchSettings = null,
+        public bool $stickyHeader = false,
+        public ?EmptyState $emptyState = null,
+        public ?ColumnVisibility $columnVisibility = null,
     ) {
     }
 
     public function hasActions(): bool
     {
         return count($this->actions) > 0;
+    }
+
+    public function hasDropdownActions(): bool
+    {
+        return array_any($this->actions, fn (Item $action) => !$action->inline);
+    }
+
+    /**
+     * @return array<Item>
+     */
+    public function getDropdownActions(): array
+    {
+        return array_values(array_filter($this->actions, fn (Item $action) => !$action->inline));
     }
 
     public function hasBulkActions(): bool
@@ -80,5 +96,10 @@ final readonly class Table
         }
 
         return count($this->searchSettings->searchableColumns) > 0;
+    }
+
+    public function hasColumnVisibility(): bool
+    {
+        return $this->columnVisibility !== null;
     }
 }

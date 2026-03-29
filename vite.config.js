@@ -34,9 +34,13 @@ export default defineConfig({
     },
     server: {
         host: '0.0.0.0',
-        port: 5173,
+        origin: 'https://vite-pkg.utils-package.local',
+        cors: {
+            origin: 'https://utils-package.local'
+        },
         hmr: {
-            host: '0.0.0.0',
-        }
+            host: 'vite-pkg.utils-package.local',
+            protocol: 'wss',
+        },
     },
 })

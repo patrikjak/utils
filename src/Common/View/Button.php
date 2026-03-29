@@ -6,6 +6,7 @@ namespace Patrikjak\Utils\Common\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Common\Enums\ButtonSize;
 
 class Button extends Component
 {
@@ -16,6 +17,9 @@ class Button extends Component
         public bool $loading = false,
         public bool $bordered = false,
         public bool $texted = false,
+        public bool $ghost = false,
+        public bool $pill = false,
+        public ButtonSize $size = ButtonSize::MD,
     ) {
     }
 
@@ -38,12 +42,24 @@ class Button extends Component
             $classes[] = 'bordered';
         }
 
+        if ($this->ghost) {
+            $classes[] = 'ghost';
+        }
+
+        if ($this->pill) {
+            $classes[] = 'pill';
+        }
+
         if ($this->loading) {
             $classes[] = 'loading';
         }
 
         if ($this->href) {
             $classes[] = 'button-like';
+        }
+
+        if ($this->size !== ButtonSize::MD) {
+            $classes[] = $this->size->value;
         }
 
         return implode(' ', $classes);

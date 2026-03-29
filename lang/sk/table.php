@@ -42,5 +42,6 @@ return [
     'filter_min' => 'Min',
     'filter_max' => 'Max',
     'search' => 'Hľadať',
+    'columns' => 'Stĺpce',
 
 ];
