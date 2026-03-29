@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [2.14.0] - 2026-03-28
+## [2.14.0] - 2026-03-29
 
 ### Added
 
@@ -23,6 +23,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - **Language keys** — `columns` key added to `lang/en/table.php` and `lang/sk/table.php` for the column visibility toggle label
 - **Inline action buttons** — table actions can now be rendered as inline buttons directly in the row by setting `inline: true` on an `Item`; mixed tables can have some actions inline and others in the dropdown, appearing side by side in the same cell; the `Type` parameter controls the button colour; buttons have comfortable spacing and their background transitions in sync with the row hover
 - **`hasDropdownActions()` on `Table` DTO** — the `.table-actions` dropdown panel is now only rendered when at least one action is not inline, preventing a JS crash on inline-only tables
+- **Inline action links** — inline actions with an `href` and a `GET` method (or no method) render as native `<a>` elements instead of buttons, enabling correct browser behaviour (right-click, open in new tab, etc.); actions with non-GET methods continue to use `<button>` and axios
+- **Inline actions excluded from dropdown** — actions marked `inline: true` are no longer included in the `.table-actions` dropdown panel
 
 ### Changed
 
