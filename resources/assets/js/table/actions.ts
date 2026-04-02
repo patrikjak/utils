@@ -163,7 +163,11 @@ function bindActionClick(actionElement: HTMLElement, link: string, method: strin
         dispatchUpdateEvent(tableWrapper);
     }
 
-    removeOnClickListenersFromActions(actionElement.closest('.table-actions'), clickHandler);
+    const tableActions = actionElement.closest('.table-actions');
+
+    if (tableActions !== null) {
+        removeOnClickListenersFromActions(tableActions, clickHandler);
+    }
 
     actionElement.addEventListener('click', clickHandler);
 }
