@@ -53,8 +53,11 @@ export function doAction(tableWrapper: TableWrapper, actionId: string, callback:
     const action: HTMLElement = tableWrapper.querySelector(`.action.${actionId}`);
 
     action.addEventListener('click', function (): void {
-        const tableActions: HTMLElement = this.closest('.table-actions');
-        tableActions.style.display = 'none';
+        const tableActions: HTMLElement | null = this.closest('.table-actions');
+
+        if (tableActions !== null) {
+            tableActions.style.display = 'none';
+        }
 
         callback(tableWrapper.querySelector('tr.active-actions').id);
     });
