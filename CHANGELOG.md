@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [2.14.1] - 2026-04-02
+
+### Fixed
+
+- Table action click binding no longer crashes when an action element has no `.table-actions` ancestor (e.g. inline-only action rows where the dropdown panel is not rendered)
+- `doAction` no longer crashes when called on a table without a `.table-actions` dropdown panel
+
 ## [2.14.0] - 2026-03-29
 
 ### Added
