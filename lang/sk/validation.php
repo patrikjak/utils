@@ -3,6 +3,8 @@
 return [
 
     'accepted' => '{1} :attribute musí byť akceptovaný|{2} :attribute musí byť akceptovaná|{3} :attribute musí byť akceptované',
+    'email' => ':attribute musí byť platná e-mailová adresa',
+    'exists' => '{1} Vybraný :attribute je neplatný|{2} Vybraná :attribute je neplatná|{3} Vybrané :attribute je neplatné',
     'in' => '{1} Vybraná :attribute je neplatný|{2} Vybraná :attribute je neplatná|{3} Vybrané :attribute je neplatné',
     'max' => [
         'array' => ':attribute nesmie mať viac ako :max položiek.',
@@ -35,6 +37,6 @@ return [
     'required' => '{1} :attribute je povinný|{2} :attribute je povinná|{3} :attribute je povinné',
     'telephone_format' => ':attribute musí byť platné telefónne číslo vo formáte :format',
     'telephone_format_multiple' => ':attribute musí byť platné telefónne číslo v medzinárodnom formáte (+421123456789)',
-    'unique' => '{1} :attribute je už použitý|{2} :attribute je už použitá|{3} :attribute je už použité',
+    'unique' => '{1} :Attribute je už použitý|{2} :attribute je už použitá|{3} :attribute je už použité',
 
 ];

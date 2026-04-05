@@ -3,6 +3,8 @@
 return [
 
     'accepted' => 'The :attribute must be accepted',
+    'email' => 'The :attribute must be a valid email address',
+    'exists' => 'The selected :attribute is invalid',
     'in' => 'The selected :attribute is invalid',
     'max' => [
         'array' => 'The :attribute may not have more than :max items',
