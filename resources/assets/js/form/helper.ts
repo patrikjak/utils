@@ -27,7 +27,7 @@ export function emptyFormInputs(form: HTMLFormElement): void {
     const textareas: NodeListOf<HTMLTextAreaElement> = form.querySelectorAll('textarea');
 
     for (const input of inputs) {
-        if (['submit', 'button', 'hidden'].includes(input.type)) {
+        if (['submit', 'button', 'hidden', 'checkbox', 'radio'].includes(input.type)) {
             continue;
         }
 
