@@ -6,8 +6,8 @@ namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
+use Patrikjak\Utils\Table\ValueObjects\Pagination\LinkItem;
 use Patrikjak\Utils\Table\View\Pagination\Paginator;
 use Patrikjak\Utils\Tests\Integration\Table\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;

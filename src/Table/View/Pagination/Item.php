@@ -6,8 +6,8 @@ namespace Patrikjak\Utils\Table\View\Pagination;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Table\Contracts\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
-use Patrikjak\Utils\Table\Interfaces\Pagination\LinkItem;
 
 /**
  * We display 9 items in the pagination. Range is 1, so we display 1 item before and 1 item after the current page.

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\View\Filter;
 
-use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\AbstractFilterCriteria;
 
 final readonly class FilterOption
 {

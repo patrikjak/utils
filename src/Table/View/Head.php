@@ -6,8 +6,8 @@ namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
 use Patrikjak\Utils\Table\Dto\Table;
+use Patrikjak\Utils\Table\ValueObjects\Sort\SortableColumn;
 use Patrikjak\Utils\Table\View\Traits\TableMethods;
 
 final class Head extends Component

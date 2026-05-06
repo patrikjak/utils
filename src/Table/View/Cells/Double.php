@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\View\Cells;
 
 use Illuminate\Contracts\View\View;
-use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
-use Patrikjak\Utils\Table\Dto\Cells\Double as DoubleCell;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Cell as AbstractCell;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Double as DoubleCell;
 
 final class Double extends Cell
 {

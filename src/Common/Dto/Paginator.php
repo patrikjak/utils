@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Common\Dto;
 
 use Illuminate\Support\Collection;
-use Patrikjak\Utils\Common\Interfaces\Paginator as PaginatorInterface;
+use Patrikjak\Utils\Common\Contracts\Paginator as PaginatorInterface;
 
 class Paginator implements PaginatorInterface
 {

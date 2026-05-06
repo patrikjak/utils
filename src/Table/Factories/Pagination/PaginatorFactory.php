@@ -6,8 +6,8 @@ namespace Patrikjak\Utils\Table\Factories\Pagination;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Paginator;
+use Patrikjak\Utils\Table\ValueObjects\Pagination\LinkItem;
 
 final readonly class PaginatorFactory
 {

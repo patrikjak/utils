@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Table\View\Cells\Actions;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
 
 class Dots extends Component
 {

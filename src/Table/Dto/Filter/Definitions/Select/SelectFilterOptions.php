@@ -8,6 +8,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Common\View\Dropdown;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Select\SelectFilterOption;
 
 final readonly class SelectFilterOptions implements Arrayable
 {

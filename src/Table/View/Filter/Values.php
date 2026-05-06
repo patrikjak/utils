@@ -7,11 +7,11 @@ namespace Patrikjak\Utils\Table\View\Filter;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterableColumn;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\Json\JsonFilterDefinition;
+use Patrikjak\Utils\Common\ValueObjects\Filter\AbstractFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\JsonFilterCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Settings;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\FilterableColumn;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Json\JsonFilterDefinition;
 
 class Values extends Component
 {

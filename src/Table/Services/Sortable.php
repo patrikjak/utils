@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\Services;
 
-use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
-use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
+use Patrikjak\Utils\Common\ValueObjects\Sort\SortCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Sort\SortableColumn;
 
 interface Sortable extends Renderable
 {

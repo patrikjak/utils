@@ -7,9 +7,9 @@ namespace Patrikjak\Utils\Tests\Unit\Common\Services\QueryBuilder;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
 use Orchestra\Testbench\TestCase;
-use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
 use Patrikjak\Utils\Common\Enums\Sort\SortOrder;
 use Patrikjak\Utils\Common\Services\QueryBuilder\SortService;
+use Patrikjak\Utils\Common\ValueObjects\Sort\SortCriteria;
 
 class SortServiceTest extends TestCase
 {

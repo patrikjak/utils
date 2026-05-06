@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\Factories\Filter;
 
 use Carbon\CarbonInterface;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\Date\DateFilterDefinition;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterDefinition;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\Json\JsonFilterDefinition;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\Number\NumberFilterDefinition;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\Select\SelectFilterDefinition;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\Text\TextFilterDefinition;
+use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Date\DateFilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Json\JsonFilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Number\NumberFilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Select\SelectFilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Text\TextFilterDefinition;
 
 final readonly class FilterableFactory
 {

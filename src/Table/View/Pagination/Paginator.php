@@ -7,8 +7,8 @@ namespace Patrikjak\Utils\Table\View\Pagination;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
+use Patrikjak\Utils\Table\Contracts\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
-use Patrikjak\Utils\Table\Interfaces\Pagination\LinkItem;
 
 class Paginator extends Component
 {

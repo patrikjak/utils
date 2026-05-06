@@ -8,13 +8,13 @@ use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
 use Orchestra\Testbench\TestCase;
-use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria;
 use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
 use Patrikjak\Utils\Common\Services\QueryBuilder\FilterService;
+use Patrikjak\Utils\Common\ValueObjects\Filter\DateFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\NumberFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\SelectFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\TextFilterCriteria;
 
 class FilterServiceTest extends TestCase
 {

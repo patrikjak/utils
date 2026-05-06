@@ -1,7 +1,7 @@
 @use('Patrikjak\Utils\Common\Enums\Filter\FilterType')
-@use('Patrikjak\Utils\Table\Dto\Filter\Definitions\Json\JsonFilterDefinition')
-@use('Patrikjak\Utils\Table\Dto\Filter\Definitions\NeedsData')
-@use('Patrikjak\Utils\Table\Dto\Filter\Definitions\RangeData')
+@use('Patrikjak\Utils\Table\Contracts\Filter\NeedsData')
+@use('Patrikjak\Utils\Table\Contracts\Filter\RangeData')
+@use('Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Json\JsonFilterDefinition')
 
 <div class="controller filter-options-wrapper">
     <div class="clickable">
