@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\Factories\Cells;
 
-use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
+use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\Dto\Cells\Chip;
 use Patrikjak\Utils\Table\Dto\Cells\Double as DoubleCell;
 use Patrikjak\Utils\Table\Dto\Cells\Link;

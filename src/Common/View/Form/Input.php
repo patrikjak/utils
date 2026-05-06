@@ -6,24 +6,27 @@ namespace Patrikjak\Utils\Common\View\Form;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Common\Enums\Icon;
+use Patrikjak\Utils\Common\Icon;
 
 class Input extends Component
 {
     public string $wrapperClass;
 
+    public ?Icon $icon = null;
+
     public function __construct(
         public readonly ?string $label = null,
         public readonly ?string $error = null,
         public readonly bool $required = false,
-        public ?Icon $icon = null,
+        ?Icon $icon = null,
     ) {
+        $this->icon = $icon;
     }
 
     public function render(): View
     {
         if (isset($this->error)) {
-            $this->icon = Icon::CIRCLE_EXCLAMATION;
+            $this->icon = Icon::heroicon('heroicon-o-exclamation-circle');
         }
 
         $this->wrapperClass = $this->resolveWrapperClass();
@@ -35,7 +38,7 @@ class Input extends Component
     {
         $classes = ['pj-classic'];
 
-        if (isset($this->icon)) {
+        if ($this->icon !== null) {
             $classes[] = 'iconic';
         }
 
