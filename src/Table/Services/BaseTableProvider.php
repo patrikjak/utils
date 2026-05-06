@@ -224,7 +224,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         return Blade::renderComponent(new Options($this->table));
     }
 
-    private function getSortSettings(): ?Settings
+    protected function getSortSettings(): ?Settings
     {
         if (count($this->getSortableColumns()) === 0) {
             return null;
@@ -233,7 +233,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         return new Settings($this->getSortableColumns(), $this->parameters?->sortCriteria);
     }
 
-    private function getFilterSettings(): ?FilterSettings
+    protected function getFilterSettings(): ?FilterSettings
     {
         if (count($this->getFilterableColumns()) === 0) {
             return null;
@@ -242,7 +242,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         return new FilterSettings($this->getFilterableColumns(), $this->parameters?->filterCriteria);
     }
 
-    private function getSearchSettings(): ?SearchSettings
+    protected function getSearchSettings(): ?SearchSettings
     {
         if (count($this->getSearchableColumns()) === 0) {
             return null;
@@ -256,7 +256,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
      * @param array<array<scalar>> $data
      * @return array{array<string, string>, array<array<scalar>>}
      */
-    private function applyColumnVisibility(?array $header, array $data, ?ColumnVisibility $columnVisibility): array
+    protected function applyColumnVisibility(?array $header, array $data, ?ColumnVisibility $columnVisibility): array
     {
         if ($header === null || $columnVisibility === null) {
             return [$header ?? [], $data];

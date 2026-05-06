@@ -18,7 +18,7 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
     TableProviderInterface,
     SupportsPagination
 {
-    private TablePaginator $paginator;
+    protected TablePaginator $paginator;
 
     abstract protected function getPaginator(): TablePaginator;
 

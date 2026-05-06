@@ -41,7 +41,7 @@ class Form extends Component
         return view('pjutils::components.form');
     }
 
-    private function resolveDataAttributes(): string
+    protected function resolveDataAttributes(): string
     {
         return new Collection($this->dataAttributes)
             ->map(static fn ($value, $key) => sprintf('data-%s=%s', $key, $value))

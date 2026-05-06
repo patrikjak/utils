@@ -65,7 +65,7 @@ abstract class Cell extends Component
         return implode(' ', $classes);
     }
 
-    private function hasIcon(): bool
+    protected function hasIcon(): bool
     {
         return $this->cell instanceof SupportsIcon && $this->cell->getIcon() !== null;
     }
