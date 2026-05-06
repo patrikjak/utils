@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\Dto\Pagination;
 
 use Illuminate\Support\Collection;
+use Patrikjak\Utils\Common\Contracts\Paginator as BasePaginatorInterface;
 use Patrikjak\Utils\Common\Dto\Paginator as BasePaginator;
-use Patrikjak\Utils\Common\Interfaces\Paginator as BasePaginatorInterface;
-use Patrikjak\Utils\Table\Interfaces\Pagination\Paginator as TablePaginatorInterface;
+use Patrikjak\Utils\Table\Contracts\Pagination\Paginator as TablePaginatorInterface;
 
-class Paginator extends BasePaginator implements BasePaginatorInterface, TablePaginatorInterface
+readonly class Paginator extends BasePaginator implements BasePaginatorInterface, TablePaginatorInterface
 {
     public function __construct(
         int $page,

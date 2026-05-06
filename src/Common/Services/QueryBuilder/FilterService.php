@@ -6,14 +6,14 @@ namespace Patrikjak\Utils\Common\Services\QueryBuilder;
 
 use Illuminate\Contracts\Database\Query\Builder;
 use Illuminate\Support\Collection;
-use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\Filter;
 use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\JsonFilter;
 use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\RangeFilter;
 use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\SelectFilter;
 use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\TextFilter;
+use Patrikjak\Utils\Common\ValueObjects\Filter\AbstractFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
 
 class FilterService
 {

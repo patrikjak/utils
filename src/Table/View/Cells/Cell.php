@@ -7,8 +7,8 @@ namespace Patrikjak\Utils\Table\View\Cells;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Icon;
-use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
-use Patrikjak\Utils\Table\Interfaces\Cells\SupportsIcon;
+use Patrikjak\Utils\Table\Contracts\Cells\SupportsIcon;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Cell as AbstractCell;
 
 abstract class Cell extends Component
 {
@@ -65,7 +65,7 @@ abstract class Cell extends Component
         return implode(' ', $classes);
     }
 
-    private function hasIcon(): bool
+    protected function hasIcon(): bool
     {
         return $this->cell instanceof SupportsIcon && $this->cell->getIcon() !== null;
     }

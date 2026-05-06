@@ -6,13 +6,13 @@ namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria;
 use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterableColumn;
+use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\JsonFilterCriteria;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Factories\Filter\FilterableFactory;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\FilterableColumn;
 use Patrikjak\Utils\Table\View\Table;
 use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\JsonFilterTableProvider;
 use Patrikjak\Utils\Tests\Integration\Table\TestCase;

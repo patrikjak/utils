@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Enums\AlertType;
 
-final class Alert extends Component
+class Alert extends Component
 {
     public string $classes;
 

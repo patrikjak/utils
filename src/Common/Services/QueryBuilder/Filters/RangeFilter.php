@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
 use Illuminate\Contracts\Database\Query\Builder;
-use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\AbstractFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\DateFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\NumberFilterCriteria;
 
 class RangeFilter extends AbstractFilter implements Filter
 {

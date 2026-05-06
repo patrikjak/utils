@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Common\Exceptions;
 
 use RuntimeException;
 
-final class IconFileNotFoundException extends RuntimeException
+class IconFileNotFoundException extends RuntimeException
 {
     public function __construct(string $path)
     {

@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-final class Divider extends Component
+class Divider extends Component
 {
     public function __construct(
         public ?string $label = null,

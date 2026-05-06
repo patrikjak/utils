@@ -9,7 +9,7 @@ use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Translation\PotentiallyTranslatedString;
 use Patrikjak\Utils\Common\Services\TelephonePattern;
 
-final readonly class TelephoneNumber implements ValidationRule
+readonly class TelephoneNumber implements ValidationRule
 {
     /**
      * @param TelephonePattern|array<TelephonePattern|mixed> $pattern

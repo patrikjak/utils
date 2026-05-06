@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Tests\Integration\Common\View\Form;
 
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Common\Dto\Image;
+use Patrikjak\Utils\Common\ValueObjects\Image;
 use Patrikjak\Utils\Tests\Integration\TestCase;
 
 class PhotoUploaderTest extends TestCase

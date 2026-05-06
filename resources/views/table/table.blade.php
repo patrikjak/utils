@@ -1,4 +1,4 @@
-@use('Patrikjak\Utils\Table\Services\Renderable')
+@use('Patrikjak\Utils\Table\Contracts\Renderable')
 
 <div
     class="pj-table-wrapper"

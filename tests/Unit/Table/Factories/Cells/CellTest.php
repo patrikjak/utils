@@ -6,10 +6,10 @@ namespace Patrikjak\Utils\Tests\Unit\Table\Factories\Cells;
 
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Common\Icon;
-use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
+use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellInterface;
 use Patrikjak\Utils\Table\Enums\Cells\CellType;
 use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
-use Patrikjak\Utils\Table\Interfaces\Cells\Cell as CellInterface;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Cell as AbstractCell;
 use PHPUnit\Framework\TestCase;
 
 class CellTest extends TestCase

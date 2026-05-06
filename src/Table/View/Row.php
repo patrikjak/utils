@@ -7,9 +7,9 @@ namespace Patrikjak\Utils\Table\View;
 use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
-use Patrikjak\Utils\Table\Dto\Cells\Cell;
 use Patrikjak\Utils\Table\Dto\Table;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Cell;
 use Patrikjak\Utils\Table\View\Traits\TableMethods;
 use stdClass;
 

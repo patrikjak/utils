@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common;
 use Patrikjak\Utils\Common\Exceptions\IconFileNotFoundException;
 use Patrikjak\Utils\Common\Exceptions\InvalidIconTypeException;
 
-final readonly class Icon
+readonly class Icon
 {
     private const string TYPE_HEROICON = 'heroicon';
     private const string TYPE_SVG = 'svg';

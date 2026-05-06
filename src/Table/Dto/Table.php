@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\Dto;
 
-use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkActionItem;
-use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 use Patrikjak\Utils\Table\Dto\Search\Settings as SearchSettings;
 use Patrikjak\Utils\Table\Dto\Sort\Settings as SortSettings;
+use Patrikjak\Utils\Table\ValueObjects\BulkActions\Item as BulkActionItem;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
+use Patrikjak\Utils\Table\ValueObjects\ColumnVisibility;
+use Patrikjak\Utils\Table\ValueObjects\EmptyState;
 
-final readonly class Table
+readonly class Table
 {
     /**
      * @param array<string, string> $header
