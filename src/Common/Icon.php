@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Common;
 
 use Patrikjak\Utils\Common\Exceptions\IconFileNotFoundException;
+use Patrikjak\Utils\Common\Exceptions\InvalidIconTypeException;
 
 final readonly class Icon
 {
@@ -39,6 +40,7 @@ final readonly class Icon
             self::TYPE_HEROICON => svg($this->value)->toHtml(),
             self::TYPE_SVG => $this->value,
             self::TYPE_STORAGE => $this->readStorageFile(),
+            default => throw new InvalidIconTypeException($this->type),
         };
     }
 
