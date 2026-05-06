@@ -95,10 +95,7 @@ Table/
 │   ├── Table.php                      # Full table configuration bag (assembled once, passed to views)
 │   ├── Parameters.php                 # HTTP request parameters for paginated/filtered tables
 │   ├── Filter/
-│   │   ├── Settings.php               # Array of FilterableColumns + active FilterCriteria
-│   │   └── Definitions/
-│   │       └── Select/
-│   │           └── SelectFilterOptions.php  # View-layer DTO: renders Blade dropdown HTML
+│   │   └── Settings.php               # Array of FilterableColumns + active FilterCriteria
 │   ├── Pagination/
 │   │   ├── Settings.php               # Pagination config (page, pageSize, links)
 │   │   └── Paginator.php              # Extends Common\Dto\Paginator; adds path/lastPage/links
@@ -131,7 +128,8 @@ Table/
 │   │       │   └── NumberFilterDefinition.php  # min/max float; implements RangeData
 │   │       ├── Select/
 │   │       │   ├── SelectFilterDefinition.php  # dataUrl; implements NeedsData
-│   │       │   └── SelectFilterOption.php      # Immutable value+label pair
+│   │       │   ├── SelectFilterOption.php      # Immutable value+label pair
+│   │       │   └── SelectFilterOptions.php     # Immutable; renders Blade dropdown via toArray()
 │   │       └── Text/
 │   │           └── TextFilterDefinition.php    # No state; returns FilterType::TEXT
 │   ├── Pagination/
@@ -193,5 +191,6 @@ Table/
 | `Table\Dto\Filter\Definitions\FilterableColumn` | `Table\ValueObjects\Filter\Definitions\FilterableColumn` |
 | `Table\Dto\Filter\Definitions\*FilterDefinition` | `Table\ValueObjects\Filter\Definitions\*\*FilterDefinition` |
 | `Table\Dto\Filter\Definitions\Select\SelectFilterOption` | `Table\ValueObjects\Filter\Definitions\Select\SelectFilterOption` |
+| `Table\Dto\Filter\Definitions\Select\SelectFilterOptions` | `Table\ValueObjects\Filter\Definitions\Select\SelectFilterOptions` |
 | `Table\Dto\Pagination\LinkItem` | `Table\ValueObjects\Pagination\LinkItem` |
 | `Table\Dto\Sort\SortableColumn` | `Table\ValueObjects\Sort\SortableColumn` |
