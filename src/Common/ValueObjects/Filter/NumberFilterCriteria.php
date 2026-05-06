@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Common\ValueObjects\Filter;
 
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 
-class NumberFilterCriteria extends AbstractFilterCriteria
+readonly class NumberFilterCriteria extends AbstractFilterCriteria
 {
     public function __construct(string $column, public ?float $from, public ?float $to)
     {

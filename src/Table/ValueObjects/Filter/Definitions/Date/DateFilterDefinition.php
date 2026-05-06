@@ -9,7 +9,7 @@ use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
 use Patrikjak\Utils\Table\Contracts\Filter\RangeData;
 
-class DateFilterDefinition implements FilterDefinition, RangeData
+readonly class DateFilterDefinition implements FilterDefinition, RangeData
 {
     public function __construct(public ?CarbonInterface $from = null, public ?CarbonInterface $to = null)
     {

@@ -8,7 +8,7 @@ use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
 use Patrikjak\Utils\Table\Contracts\Filter\RangeData;
 
-class NumberFilterDefinition implements FilterDefinition, RangeData
+readonly class NumberFilterDefinition implements FilterDefinition, RangeData
 {
     public function __construct(public ?float $min = null, public ?float $max = null)
     {

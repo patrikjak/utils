@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Table\ValueObjects\Filter\Definitions;
 
 use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
 
-final readonly class FilterableColumn
+readonly class FilterableColumn
 {
     public function __construct(
         public string $label,

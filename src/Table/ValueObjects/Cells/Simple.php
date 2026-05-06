@@ -9,13 +9,13 @@ use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellContract;
 use Patrikjak\Utils\Table\Contracts\Cells\SupportsIcon;
 use Patrikjak\Utils\Table\Enums\Cells\CellType;
 
-class Simple extends Cell implements CellContract, SupportsIcon
+readonly class Simple extends Cell implements CellContract, SupportsIcon
 {
     public function __construct(
-        public string $value,
+        string $value,
         public ?Icon $icon = null,
-        public ?int $maxLength = null,
-        public bool $noTruncation = false,
+        ?int $maxLength = null,
+        bool $noTruncation = false,
     ) {
         parent::__construct($value, $maxLength, $noTruncation);
     }

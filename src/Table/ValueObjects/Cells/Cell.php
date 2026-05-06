@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Table\ValueObjects\Cells;
 
 use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellContract;
 
-abstract class Cell implements CellContract
+abstract readonly class Cell implements CellContract
 {
     public function __construct(
         public string $value,

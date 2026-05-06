@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\ValueObjects\Filter;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
 
-class JsonFilterCriteria extends AbstractFilterCriteria
+readonly class JsonFilterCriteria extends AbstractFilterCriteria
 {
     public function __construct(
         string $column,

@@ -9,7 +9,7 @@ use Patrikjak\Utils\Common\Contracts\Paginator as BasePaginatorInterface;
 use Patrikjak\Utils\Common\Dto\Paginator as BasePaginator;
 use Patrikjak\Utils\Table\Contracts\Pagination\Paginator as TablePaginatorInterface;
 
-class Paginator extends BasePaginator implements BasePaginatorInterface, TablePaginatorInterface
+readonly class Paginator extends BasePaginator implements BasePaginatorInterface, TablePaginatorInterface
 {
     public function __construct(
         int $page,

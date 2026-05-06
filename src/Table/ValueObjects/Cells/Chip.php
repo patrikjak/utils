@@ -8,13 +8,13 @@ use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellContract;
 use Patrikjak\Utils\Table\Enums\Cells\CellType;
 
-class Chip extends Cell implements CellContract
+readonly class Chip extends Cell implements CellContract
 {
     public function __construct(
-        public string $value,
+        string $value,
         public Type $type,
-        public ?int $maxLength = null,
-        public bool $noTruncation = false,
+        ?int $maxLength = null,
+        bool $noTruncation = false,
     ) {
         parent::__construct($value, $maxLength, $noTruncation);
     }
