@@ -6,7 +6,7 @@
 A dumb data bag whose only job is to carry data across a boundary (e.g. HTTP layer → service → view). Values are arbitrary, no invariants enforced, no identity. Lives in `Dto/`.
 
 ### Value Object
-Immutable, defined entirely by its values, carries no identity. May have domain behaviour (formatting, validation, `toArray`). Lives in `ValueObjects/`.
+Immutable, defined entirely by its values, carries no identity. May have domain behaviour (formatting, validation, `toArray`). Lives in `ValueObjects/`. Declared as `readonly class` (without `final`) so consumers can extend while immutability is still enforced on all properties.
 
 ### Contract
 PHP `interface` that defines a boundary between layers. Lives in `Contracts/`. Replaces the old `Interfaces/` directories.
@@ -168,6 +168,18 @@ Table/
 | Is it a PHP `interface`? | `Contracts/` |
 | Is it a backed string/int enum? | `Enums/` |
 
+## Class modifier rules
+
+| Class kind | Modifier |
+|---|---|
+| Value Object (concrete) | `readonly class` |
+| Value Object (abstract base) | `abstract readonly class` |
+| DTO | `readonly class` |
+| Contract | `interface` |
+| Service / factory / view component | plain `class` |
+| **`final`** | **Never** — consumers must be able to subclass anything |
+| Hook methods in base classes | `protected`, not `private` |
+
 ---
 
 ## What Changed from V2
@@ -199,3 +211,19 @@ Table/
 | `Table\Services\Searchable` | `Table\Contracts\Searchable` |
 | `Table\Services\Renderable` | `Table\Contracts\Renderable` |
 | `Table\Services\SupportsPagination` | `Table\Contracts\SupportsPagination` |
+
+### Behavioural changes (same namespace, different modifier)
+
+| Class | V2 | V3 |
+|---|---|---|
+| All VOs and DTOs | some `final`, some plain `class` | `readonly class` (no `final`) |
+| `AbstractFilterCriteria` + cell `Cell` abstract base | plain `abstract class` | `abstract readonly class` |
+| `BaseTableProvider` hook methods (`getSortSettings`, `getFilterSettings`, `getSearchSettings`, `applyColumnVisibility`) | `private` | `protected` |
+| `BasePaginatedTableProvider::$paginator` | `private` | `protected` |
+| `Form::resolveDataAttributes()` | `private` | `protected` |
+| `Table\View\Cells\Cell::hasIcon()` | `private` | `protected` |
+| All concrete classes | many were `final` | `final` removed; all are subclassable |
+
+Subclasses of `Simple`, `Chip`, `Double` that re-promoted `$value`, `$maxLength`,
+`$noTruncation` from the parent constructor must drop those promotions and pass
+the values up via `parent::__construct()` instead (PHP readonly inheritance requirement).
