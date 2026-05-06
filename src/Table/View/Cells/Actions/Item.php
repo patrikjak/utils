@@ -6,14 +6,14 @@ namespace Patrikjak\Utils\Table\View\Cells\Actions;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Common\Enums\Icon;
+use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item as ActionItem;
 
 class Item extends Component
 {
     public readonly string $actionItemClass;
 
-    public Icon|string|null $icon = null;
+    public ?Icon $icon = null;
 
     public function __construct(public readonly ActionItem $action)
     {

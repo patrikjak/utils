@@ -8,6 +8,6 @@
             placeholder="{{ __('pjutils::table.search') }}"
             value="{{ $settings->searchQuery ?? '' }}"
         />
-        @icon('search')
+        @icon('heroicon-o-search')
     </label>
 </div>

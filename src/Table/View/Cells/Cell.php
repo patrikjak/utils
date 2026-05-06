@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Table\View\Cells;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Common\Enums\Icon;
+use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
 use Patrikjak\Utils\Table\Interfaces\Cells\SupportsIcon;
 

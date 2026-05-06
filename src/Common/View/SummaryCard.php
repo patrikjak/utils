@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Enums\BadgeType;
-use Patrikjak\Utils\Common\Enums\Icon;
+use Patrikjak\Utils\Common\Icon;
 
 final class SummaryCard extends Component
 {
@@ -15,7 +15,7 @@ final class SummaryCard extends Component
         public string $title,
         public ?BadgeType $status = null,
         public ?string $statusLabel = null,
-        public ?Icon $icon = null,
+        public readonly ?Icon $icon = null,
     ) {
     }
 

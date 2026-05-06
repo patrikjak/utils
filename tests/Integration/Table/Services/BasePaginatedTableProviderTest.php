@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
+use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkActionItem;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Parameters;
@@ -69,8 +69,8 @@ class BasePaginatedTableProviderTest extends TestCase
         $this->tableProvider->setActions([
             new Item('Edit', 'edit'),
             new Item('Delete', 'delete', type: Type::DANGER),
-            new Item('Show', 'show', Icon::EYE),
-            new Item('Hide', 'hide', Icon::EYE_SLASH, Type::DANGER),
+            new Item('Show', 'show', Icon::heroicon('heroicon-o-eye')),
+            new Item('Hide', 'hide', Icon::heroicon('heroicon-o-eye-off'), Type::DANGER),
         ]);
 
         $this->tableMatchesSnapshot();
@@ -81,7 +81,28 @@ class BasePaginatedTableProviderTest extends TestCase
         $this->tableProvider->showCheckboxes();
         $this->tableProvider->setBulkActions([
             new BulkActionItem('Export', 'https://example.com/export'),
-            new BulkActionItem('Delete', 'https://example.com/delete', 'DELETE', Icon::TRASH, Type::DANGER),
+            new BulkActionItem(
+                'Delete',
+                'https://example.com/delete',
+                'DELETE',
+                Icon::heroicon('heroicon-o-trash'),
+                Type::DANGER,
+            ),
+        ]);
+
+        $this->tableMatchesSnapshot();
+    }
+
+    public function testTableWithSingleIconBulkAction(): void
+    {
+        $this->tableProvider->showCheckboxes();
+        $this->tableProvider->setBulkActions([
+            new BulkActionItem(
+                'Verify',
+                'https://example.com/verify',
+                'POST',
+                Icon::heroicon('heroicon-o-shield-check'),
+            ),
         ]);
 
         $this->tableMatchesSnapshot();

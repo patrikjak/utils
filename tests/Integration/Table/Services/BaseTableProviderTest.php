@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
+use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Cells\Simple;
 use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
@@ -70,8 +70,8 @@ class BaseTableProviderTest extends TestCase
         $this->tableProvider->setActions([
             new Item('Edit', 'edit'),
             new Item('Delete', 'delete', type: Type::DANGER),
-            new Item('Show', 'show', Icon::EYE),
-            new Item('Hide', 'hide', Icon::EYE_SLASH, Type::DANGER),
+            new Item('Show', 'show', Icon::heroicon('heroicon-o-eye')),
+            new Item('Hide', 'hide', Icon::heroicon('heroicon-o-eye-off'), Type::DANGER),
             new Item('Hidden for some rows', 'dynamic', visible: static function (array $row): bool {
                 $rowId = $row['id'];
                 assert($rowId instanceof Simple);
@@ -92,6 +92,15 @@ class BaseTableProviderTest extends TestCase
                 href: 'https://example.com/different-method',
                 method: 'POST',
             ),
+        ]);
+
+        $this->tableMatchesSnapshot();
+    }
+
+    public function testTableWithSingleIconAction(): void
+    {
+        $this->tableProvider->setActions([
+            new Item('Verify', 'verify', Icon::heroicon('heroicon-o-shield-check')),
         ]);
 
         $this->tableMatchesSnapshot();

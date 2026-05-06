@@ -5,7 +5,7 @@
 
 <div class="controller filter-options-wrapper">
     <div class="clickable">
-        @icon('filter')
+        @icon('heroicon-o-filter')
         <span>@lang('pjutils::table.filter')</span>
     </div>
 

@@ -1,6 +1,6 @@
 <div class="controller sorter-wrapper">
     <div class="clickable">
-        @icon('sort')
+        @icon('heroicon-o-switch-vertical')
         <span>@lang('pjutils::table.sort')</span>
     </div>
 

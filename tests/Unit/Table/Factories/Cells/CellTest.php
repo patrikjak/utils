@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Table\Factories\Cells;
 
-use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
+use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
 use Patrikjak\Utils\Table\Enums\Cells\CellType;
 use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
@@ -27,10 +27,11 @@ class CellTest extends TestCase
 
     public function testSimpleCellWithIconCanBeCreated(): void
     {
-        $cell = CellFactory::simple('value with icon', Icon::CHECK);
+        $icon = Icon::heroicon('heroicon-o-check');
+        $cell = CellFactory::simple('value with icon', $icon);
 
         $this->assertEquals('value with icon', $cell->value);
-        $this->assertEquals(Icon::CHECK, $cell->icon);
+        $this->assertSame($icon, $cell->icon);
         $this->assertEquals(CellType::SIMPLE, $cell->getType());
         $this->assertInstanceOf(AbstractCell::class, $cell);
         $this->assertInstanceOf(CellInterface::class, $cell);
