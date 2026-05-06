@@ -80,6 +80,11 @@ Common/
 ```
 Table/
 ├── Contracts/
+│   ├── Filterable.php                 # getFilterableColumns/getFilterCriteria
+│   ├── Renderable.php                 # getHtmlParts/getHtmlPartsUrl
+│   ├── Searchable.php                 # getSearchableColumns/getSearchQuery
+│   ├── Sortable.php                   # getSortableColumns/getSortCriteria
+│   ├── SupportsPagination.php         # getPaginationSettings
 │   ├── Cells/
 │   │   ├── Cell.php                   # getType(): CellType
 │   │   └── SupportsIcon.php           # getIcon(): ?Icon
@@ -147,12 +152,7 @@ Table/
 ├── Services/
 │   ├── TableProviderInterface.php
 │   ├── BaseTableProvider.php
-│   ├── BasePaginatedTableProvider.php
-│   ├── Filterable.php    (trait)
-│   ├── Renderable.php    (trait)
-│   ├── Searchable.php    (trait)
-│   ├── Sortable.php      (trait)
-│   └── SupportsPagination.php (trait)
+│   └── BasePaginatedTableProvider.php
 └── View/                              # Blade component classes
 ```
 
@@ -194,3 +194,8 @@ Table/
 | `Table\Dto\Filter\Definitions\Select\SelectFilterOptions` | `Table\ValueObjects\Filter\Definitions\Select\SelectFilterOptions` |
 | `Table\Dto\Pagination\LinkItem` | `Table\ValueObjects\Pagination\LinkItem` |
 | `Table\Dto\Sort\SortableColumn` | `Table\ValueObjects\Sort\SortableColumn` |
+| `Table\Services\Sortable` | `Table\Contracts\Sortable` |
+| `Table\Services\Filterable` | `Table\Contracts\Filterable` |
+| `Table\Services\Searchable` | `Table\Contracts\Searchable` |
+| `Table\Services\Renderable` | `Table\Contracts\Renderable` |
+| `Table\Services\SupportsPagination` | `Table\Contracts\SupportsPagination` |

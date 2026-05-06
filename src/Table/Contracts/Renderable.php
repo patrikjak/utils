@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Patrikjak\Utils\Table\Services;
+namespace Patrikjak\Utils\Table\Contracts;
 
 use Patrikjak\Utils\Table\Dto\Parameters;
 

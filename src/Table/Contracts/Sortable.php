@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Patrikjak\Utils\Table\Services;
+namespace Patrikjak\Utils\Table\Contracts;
 
 use Patrikjak\Utils\Common\ValueObjects\Sort\SortCriteria;
 use Patrikjak\Utils\Table\ValueObjects\Sort\SortableColumn;
