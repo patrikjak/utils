@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Common\View\Dropdown;
 
-final readonly class SelectFilterOptions implements Arrayable
+readonly class SelectFilterOptions implements Arrayable
 {
     /**
      * @param array<SelectFilterOption> $options

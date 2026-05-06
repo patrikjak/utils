@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\Dto\Pagination;
 use Illuminate\Support\Collection;
 use Patrikjak\Utils\Table\Contracts\Pagination\LinkItem;
 
-final readonly class Settings
+readonly class Settings
 {
     /**
      * @param array<int, int> $pageSizeOptions

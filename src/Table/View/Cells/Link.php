@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\View\Cells;
 use Illuminate\Contracts\View\View;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Link as LinkCell;
 
-final class Link extends Cell
+class Link extends Cell
 {
     public string $link;
 

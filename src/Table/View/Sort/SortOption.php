@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Table\View\Sort;
 
 use Patrikjak\Utils\Common\ValueObjects\Sort\SortCriteria;
 
-final readonly class SortOption
+readonly class SortOption
 {
     public function __construct(public SortCriteria $criteria, public string $label)
     {

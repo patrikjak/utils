@@ -12,7 +12,7 @@ use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Number\NumberFilterDef
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Select\SelectFilterDefinition;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Text\TextFilterDefinition;
 
-final readonly class FilterableFactory
+readonly class FilterableFactory
 {
     public static function text(): FilterDefinition
     {

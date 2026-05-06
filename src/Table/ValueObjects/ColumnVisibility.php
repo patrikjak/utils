@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\ValueObjects;
 
-final readonly class ColumnVisibility
+readonly class ColumnVisibility
 {
     /**
      * @param array<string, string> $columns All toggleable columns (key => label)

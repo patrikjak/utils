@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View\Form;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-final class File extends Component
+class File extends Component
 {
     public string $wrapperClass;
 

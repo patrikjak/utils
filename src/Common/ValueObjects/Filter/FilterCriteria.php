@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Common\ValueObjects\Filter;
 
-final readonly class FilterCriteria
+readonly class FilterCriteria
 {
     /**
      * @param array<AbstractFilterCriteria> $filters

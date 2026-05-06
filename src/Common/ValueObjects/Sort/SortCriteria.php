@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Common\ValueObjects\Sort;
 
 use Patrikjak\Utils\Common\Enums\Sort\SortOrder;
 
-final readonly class SortCriteria
+readonly class SortCriteria
 {
     public function __construct(
         public string $column,

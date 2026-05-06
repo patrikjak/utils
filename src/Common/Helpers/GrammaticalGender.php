@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Common\Helpers;
 
-final readonly class GrammaticalGender
+readonly class GrammaticalGender
 {
     public const int MASCULINE = 1;
 

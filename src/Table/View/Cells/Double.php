@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Cell as AbstractCell;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Double as DoubleCell;
 
-final class Double extends Cell
+class Double extends Cell
 {
     public readonly string $addition;
 

@@ -8,7 +8,7 @@ use Illuminate\Contracts\Support\Arrayable;
 use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
 use Patrikjak\Utils\Common\ValueObjects\Sort\SortCriteria;
 
-final readonly class Parameters implements Arrayable
+readonly class Parameters implements Arrayable
 {
     /**
      * @param array<string>|null $visibleColumns

@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Table\ValueObjects\Pagination;
 
 use Patrikjak\Utils\Table\Contracts\Pagination\LinkItem as LinkItemContract;
 
-final readonly class LinkItem implements LinkItemContract
+readonly class LinkItem implements LinkItemContract
 {
     public function __construct(
         private string $label,

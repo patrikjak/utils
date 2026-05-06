@@ -8,7 +8,7 @@ use Illuminate\Support\Collection;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Select\SelectFilterOption;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Select\SelectFilterOptions;
 
-final readonly class SelectFilterOptionsFactory
+readonly class SelectFilterOptionsFactory
 {
     /**
      * @param array<string, string> $options

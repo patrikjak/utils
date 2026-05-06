@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\Dto\Sort;
 use Patrikjak\Utils\Common\ValueObjects\Sort\SortCriteria;
 use Patrikjak\Utils\Table\ValueObjects\Sort\SortableColumn;
 
-final readonly class Settings
+readonly class Settings
 {
     /**
      * @param array<SortableColumn> $sortableColumns

@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Text;
 use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
 
-final readonly class TextFilterDefinition implements FilterDefinition
+readonly class TextFilterDefinition implements FilterDefinition
 {
     public function getType(): FilterType
     {

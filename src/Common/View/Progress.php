@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Enums\ProgressType;
 
-final class Progress extends Component
+class Progress extends Component
 {
     public readonly string $classes;
 

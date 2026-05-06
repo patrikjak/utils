@@ -13,7 +13,7 @@ use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
 use Patrikjak\Utils\Table\ValueObjects\ColumnVisibility;
 use Patrikjak\Utils\Table\ValueObjects\EmptyState;
 
-final readonly class Table
+readonly class Table
 {
     /**
      * @param array<string, string> $header

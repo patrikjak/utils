@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Enums\WidgetGridGap;
 
-final class WidgetGrid extends Component
+class WidgetGrid extends Component
 {
     public string $classes;
 

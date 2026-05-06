@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\Dto\Filter;
 use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\FilterableColumn;
 
-final readonly class Settings
+readonly class Settings
 {
     /**
      * @param array<FilterableColumn> $filterableColumns

@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Cell as AbstractCell;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Chip as ChipCell;
 
-final class Chip extends Cell
+class Chip extends Cell
 {
     public string $type;
 

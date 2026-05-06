@@ -8,7 +8,7 @@ use Closure;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Common\Icon;
 
-final readonly class Item
+readonly class Item
 {
     public function __construct(
         public string $label,
