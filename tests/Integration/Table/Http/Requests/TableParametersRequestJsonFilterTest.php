@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Tests\Integration\Table\Http\Requests;
 
 use Illuminate\Http\Request;
-use Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria;
 use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
+use Patrikjak\Utils\Common\ValueObjects\Filter\JsonFilterCriteria;
 use Patrikjak\Utils\Table\Http\Requests\TableParametersRequest;
 use Patrikjak\Utils\Tests\Integration\Table\TestCase;
 

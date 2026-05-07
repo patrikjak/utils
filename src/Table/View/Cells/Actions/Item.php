@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\View\Cells\Actions;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Icon;
-use Patrikjak\Utils\Table\Dto\Cells\Actions\Item as ActionItem;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item as ActionItem;
 
 class Item extends Component
 {

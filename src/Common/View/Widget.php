@@ -9,7 +9,7 @@ use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Enums\WidgetHeight;
 use Patrikjak\Utils\Common\Enums\WidgetSize;
 
-final class Widget extends Component
+class Widget extends Component
 {
     public string $classes;
 

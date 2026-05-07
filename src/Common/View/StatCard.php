@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-final class StatCard extends Component
+class StatCard extends Component
 {
     public string $trendDirection;
 

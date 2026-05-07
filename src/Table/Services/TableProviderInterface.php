@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\Services;
 
-use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkActionItem;
-use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Table;
+use Patrikjak\Utils\Table\ValueObjects\BulkActions\Item as BulkActionItem;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
 
 interface TableProviderInterface
 {

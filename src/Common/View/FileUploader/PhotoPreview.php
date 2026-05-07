@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Common\View\FileUploader;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Common\Dto\Image;
+use Patrikjak\Utils\Common\ValueObjects\Image;
 
 class PhotoPreview extends Component
 {

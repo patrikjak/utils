@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Sort\Settings;
-use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
+use Patrikjak\Utils\Table\ValueObjects\Sort\SortableColumn;
 
 class Values extends Component
 {

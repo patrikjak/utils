@@ -7,15 +7,19 @@ namespace Patrikjak\Utils\Table\Services;
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
-use Patrikjak\Utils\Table\Dto\ColumnVisibility;
-use Patrikjak\Utils\Table\Dto\EmptyState;
+use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Sort\SortCriteria;
+use Patrikjak\Utils\Table\Contracts\Filterable;
+use Patrikjak\Utils\Table\Contracts\Searchable;
+use Patrikjak\Utils\Table\Contracts\Sortable;
+use Patrikjak\Utils\Table\Contracts\SupportsPagination;
 use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Search\Settings as SearchSettings;
 use Patrikjak\Utils\Table\Dto\Sort\Settings;
 use Patrikjak\Utils\Table\Dto\Table;
+use Patrikjak\Utils\Table\ValueObjects\ColumnVisibility;
+use Patrikjak\Utils\Table\ValueObjects\EmptyState;
 use Patrikjak\Utils\Table\View\Body;
 use Patrikjak\Utils\Table\View\Head;
 use Patrikjak\Utils\Table\View\Options;
@@ -220,7 +224,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         return Blade::renderComponent(new Options($this->table));
     }
 
-    private function getSortSettings(): ?Settings
+    protected function getSortSettings(): ?Settings
     {
         if (count($this->getSortableColumns()) === 0) {
             return null;
@@ -229,7 +233,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         return new Settings($this->getSortableColumns(), $this->parameters?->sortCriteria);
     }
 
-    private function getFilterSettings(): ?FilterSettings
+    protected function getFilterSettings(): ?FilterSettings
     {
         if (count($this->getFilterableColumns()) === 0) {
             return null;
@@ -238,7 +242,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
         return new FilterSettings($this->getFilterableColumns(), $this->parameters?->filterCriteria);
     }
 
-    private function getSearchSettings(): ?SearchSettings
+    protected function getSearchSettings(): ?SearchSettings
     {
         if (count($this->getSearchableColumns()) === 0) {
             return null;
@@ -252,7 +256,7 @@ abstract class BaseTableProvider implements TableProviderInterface, Sortable, Fi
      * @param array<array<scalar>> $data
      * @return array{array<string, string>, array<array<scalar>>}
      */
-    private function applyColumnVisibility(?array $header, array $data, ?ColumnVisibility $columnVisibility): array
+    protected function applyColumnVisibility(?array $header, array $data, ?ColumnVisibility $columnVisibility): array
     {
         if ($header === null || $columnVisibility === null) {
             return [$header ?? [], $data];

@@ -7,10 +7,10 @@ namespace Patrikjak\Utils\Tests\Unit\Common\Services\QueryBuilder;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
 use Orchestra\Testbench\TestCase;
-use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria;
 use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
 use Patrikjak\Utils\Common\Services\QueryBuilder\FilterService;
+use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\JsonFilterCriteria;
 
 class JsonFilterIndexedTest extends TestCase
 {

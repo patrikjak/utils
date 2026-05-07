@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View\Form;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-final class Combobox extends Component
+class Combobox extends Component
 {
     public readonly string $wrapperClass;
 

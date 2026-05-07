@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Table\View\BulkActions;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dto\BulkActions\Item;
+use Patrikjak\Utils\Table\ValueObjects\BulkActions\Item;
 
 class Wrapper extends Component
 {

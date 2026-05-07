@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-final class ClipboardBtn extends Component
+class ClipboardBtn extends Component
 {
     public function __construct(
         public readonly string $value,

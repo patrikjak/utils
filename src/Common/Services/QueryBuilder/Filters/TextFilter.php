@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
 use Illuminate\Contracts\Database\Query\Builder;
-use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria;
 use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
+use Patrikjak\Utils\Common\ValueObjects\Filter\AbstractFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\TextFilterCriteria;
 
 class TextFilter extends AbstractFilter implements Filter
 {

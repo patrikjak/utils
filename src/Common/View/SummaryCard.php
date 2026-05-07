@@ -9,7 +9,7 @@ use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Enums\BadgeType;
 use Patrikjak\Utils\Common\Icon;
 
-final class SummaryCard extends Component
+class SummaryCard extends Component
 {
     public function __construct(
         public string $title,

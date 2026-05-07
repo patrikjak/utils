@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Tests\Integration\Table\Services\Implementations;
 
 use Illuminate\Support\Collection;
-use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkItem;
-use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
-use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
 use Patrikjak\Utils\Table\Services\BasePaginatedTableProvider;
 use Patrikjak\Utils\Table\Services\TableProviderInterface;
+use Patrikjak\Utils\Table\ValueObjects\BulkActions\Item as BulkItem;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
+use Patrikjak\Utils\Table\ValueObjects\Pagination\LinkItem;
 
 class PaginatedTableProvider extends BasePaginatedTableProvider implements TableProviderInterface
 {

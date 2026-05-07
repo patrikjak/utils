@@ -6,10 +6,10 @@ namespace Patrikjak\Utils\Table\Factories\Cells;
 
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Common\Icon;
-use Patrikjak\Utils\Table\Dto\Cells\Chip;
-use Patrikjak\Utils\Table\Dto\Cells\Double as DoubleCell;
-use Patrikjak\Utils\Table\Dto\Cells\Link;
-use Patrikjak\Utils\Table\Dto\Cells\Simple;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Chip;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Double as DoubleCell;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Link;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Simple;
 
 readonly class CellFactory
 {

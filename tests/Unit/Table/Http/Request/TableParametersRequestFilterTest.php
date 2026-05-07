@@ -6,10 +6,10 @@ namespace Patrikjak\Utils\Tests\Unit\Table\Http\Request;
 
 use Carbon\CarbonInterface;
 use Orchestra\Testbench\TestCase;
-use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\DateFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\NumberFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\SelectFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\TextFilterCriteria;
 use Patrikjak\Utils\Table\Http\Requests\TableParametersRequest;
 
 class TableParametersRequestFilterTest extends TestCase

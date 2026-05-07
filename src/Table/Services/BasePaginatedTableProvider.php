@@ -6,6 +6,7 @@ namespace Patrikjak\Utils\Table\Services;
 
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Blade;
+use Patrikjak\Utils\Table\Contracts\SupportsPagination;
 use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 use Patrikjak\Utils\Table\Dto\Parameters;
@@ -17,7 +18,7 @@ abstract class BasePaginatedTableProvider extends BaseTableProvider implements
     TableProviderInterface,
     SupportsPagination
 {
-    private TablePaginator $paginator;
+    protected TablePaginator $paginator;
 
     abstract protected function getPaginator(): TablePaginator;
 

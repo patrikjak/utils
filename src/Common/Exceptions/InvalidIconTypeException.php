@@ -6,7 +6,7 @@ namespace Patrikjak\Utils\Common\Exceptions;
 
 use LogicException;
 
-final class InvalidIconTypeException extends LogicException
+class InvalidIconTypeException extends LogicException
 {
     public function __construct(string $type)
     {

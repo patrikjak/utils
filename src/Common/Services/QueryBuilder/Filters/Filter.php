@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
 use Illuminate\Contracts\Database\Query\Builder;
-use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
+use Patrikjak\Utils\Common\ValueObjects\Filter\AbstractFilterCriteria;
 
 interface Filter
 {

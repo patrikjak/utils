@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View\Form;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-final class Repeater extends Component
+class Repeater extends Component
 {
     public function __construct(
         public readonly int $min = 1,
