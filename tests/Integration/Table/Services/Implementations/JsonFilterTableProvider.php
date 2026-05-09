@@ -4,277 +4,53 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Services\Implementations;
 
-use Illuminate\Support\Collection;
-use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Sort\SortCriteria;
-use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
-use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
-use Patrikjak\Utils\Table\Services\BasePaginatedTableProvider;
-use Patrikjak\Utils\Table\Services\TableProviderInterface;
-use Patrikjak\Utils\Table\ValueObjects\BulkActions\Item as BulkItem;
-use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
-use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\FilterableColumn;
-use Patrikjak\Utils\Table\ValueObjects\Pagination\LinkItem;
-use Patrikjak\Utils\Table\ValueObjects\Sort\SortableColumn;
+use Closure;
+use Patrikjak\Utils\Table\Builder\Cell;
+use Patrikjak\Utils\Table\Builder\TableBuilder;
+use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Services\TableProvider as BaseTableProvider;
 
-class JsonFilterTableProvider extends BasePaginatedTableProvider implements TableProviderInterface
+final class JsonFilterTableProvider extends BaseTableProvider
 {
-    private string $tableId = 'json-table';
+    private ?Closure $configurator = null;
 
-    /**
-     * @var array<string>
-     */
-    private array $columns = [
-        'id', 'name', 'metadata', 'data', 'tags', 'settings', 'preferences', 'contacts', 'users', 'matrix', 'json_data',
-    ];
-
-    private string $rowId = 'id';
-
-    private bool $showOrder = false;
-
-    private bool $showCheckboxes = false;
-
-    /**
-     * @var array<Item>
-     */
-    private array $actions = [];
-
-    /**
-     * @var array<BulkItem>
-     */
-    private array $bulkActions = [];
-
-    /**
-     * @var array<int, int>
-     */
-    private array $paginationOptions = [10 => 10, 20 => 20];
-
-    /**
-     * @var array<SortableColumn>
-     */
-    private array $sortableColumns = [];
-
-    private ?SortCriteria $sortCriteria = null;
-
-    /**
-     * @var array<FilterableColumn>
-     */
-    private array $filterableColumns = [];
-
-    private ?FilterCriteria $filterCriteria = null;
-
-    public function getTableId(): string
+    public function configure(Closure $configurator): void
     {
-        return $this->tableId;
+        $this->configurator = $configurator;
     }
 
-    /** @inheritDoc */
-    public function getHeader(): ?array
+    protected function build(?Parameters $parameters): TableBuilder
     {
-        return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'metadata' => 'Metadata',
-            'data' => 'Data',
-            'tags' => 'Tags',
-            'settings' => 'Settings',
-            'preferences' => 'Preferences',
-            'contacts' => 'Contacts',
-            'users' => 'Users',
-            'matrix' => 'Matrix',
-            'json_data' => 'JSON Data',
-        ];
-    }
+        $builder = TableBuilder::for('json-table', $this->getJsonTableData())
+            ->column('id', 'ID', static fn (array $row) => Cell::simple((string) $row['id']))
+            ->column('name', 'Name', static fn (array $row) => Cell::simple((string) $row['name']))
+            ->column('metadata', 'Metadata', static fn (array $row) => Cell::simple((string) $row['metadata']))
+            ->column('data', 'Data', static fn (array $row) => Cell::simple((string) $row['data']))
+            ->column('tags', 'Tags', static fn (array $row) => Cell::simple((string) $row['tags']))
+            ->column('settings', 'Settings', static fn (array $row) => Cell::simple((string) $row['settings']))
+            ->column('preferences', 'Preferences', static fn (array $row) => Cell::simple((string) $row['preferences']))
+            ->column('contacts', 'Contacts', static fn (array $row) => Cell::simple((string) $row['contacts']))
+            ->column('users', 'Users', static fn (array $row) => Cell::simple((string) $row['users']))
+            ->column('matrix', 'Matrix', static fn (array $row) => Cell::simple((string) $row['matrix']))
+            ->column('json_data', 'JSON Data', static fn (array $row) => Cell::simple((string) $row['json_data']))
+            ->htmlPartsUrl('https://example.com/table');
 
-    /**
-     * @inheritDoc
-     */
-    public function getData(): array
-    {
-        return $this->getPageData()->map(static function (array $item) {
-            return [
-                'id' => CellFactory::simple((string) $item['id']),
-                'name' => CellFactory::simple((string) $item['name']),
-                'metadata' => CellFactory::simple((string) $item['metadata']),
-                'data' => CellFactory::simple((string) $item['data']),
-                'tags' => CellFactory::simple((string) $item['tags']),
-                'settings' => CellFactory::simple((string) $item['settings']),
-                'preferences' => CellFactory::simple((string) $item['preferences']),
-                'contacts' => CellFactory::simple((string) $item['contacts']),
-                'users' => CellFactory::simple((string) $item['users']),
-                'matrix' => CellFactory::simple((string) $item['matrix']),
-                'json_data' => CellFactory::simple((string) $item['json_data']),
-            ];
-        })->toArray();
-    }
+        if ($this->configurator !== null) {
+            ($this->configurator)($builder, $parameters);
+        }
 
-    /**
-     * @inheritDoc
-     */
-    public function getColumns(): array
-    {
-        return $this->columns;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getRowId(): string
-    {
-        return $this->rowId;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function showOrder(): bool
-    {
-        return $this->showOrder;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function showCheckboxes(): bool
-    {
-        return $this->showCheckboxes;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getActions(): array
-    {
-        return $this->actions;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getBulkActions(): array
-    {
-        return $this->bulkActions;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getPaginationOptions(): array
-    {
-        return $this->paginationOptions;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSortableColumns(): array
-    {
-        return $this->sortableColumns;
-    }
-
-    /**
-     * @param array<SortableColumn> $sortableColumns
-     */
-    public function setSortableColumns(array $sortableColumns): void
-    {
-        $this->sortableColumns = $sortableColumns;
-    }
-
-    public function getSortCriteria(): ?SortCriteria
-    {
-        return $this->sortCriteria;
-    }
-
-    public function setSortCriteria(?SortCriteria $sortCriteria): void
-    {
-        $this->sortCriteria = $sortCriteria;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getFilterableColumns(): array
-    {
-        return $this->filterableColumns;
-    }
-
-    /**
-     * @param array<FilterableColumn> $filterableColumns
-     */
-    public function setFilterableColumns(array $filterableColumns): void
-    {
-        $this->filterableColumns = $filterableColumns;
-    }
-
-    public function getFilterCriteria(): ?FilterCriteria
-    {
-        return $this->filterCriteria;
-    }
-
-    public function setFilterCriteria(?FilterCriteria $filterCriteria): void
-    {
-        $this->filterCriteria = $filterCriteria;
-    }
-
-    protected function getPaginator(): TablePaginator
-    {
-        return new TablePaginator(
-            1,
-            10,
-            new Collection($this->getTableData()),
-            'https://example.com/table',
-            1,
-            new Collection([
-                new LinkItem('1', 'https://example.com/table/1', true),
-            ]),
-        );
+        return $builder;
     }
 
     /**
      * @return array<array<string, string>>
      */
-    private function getTableData(): array
+    private function getJsonTableData(): array
     {
         return [
-            [
-                'id' => '1',
-                'name' => 'John Doe',
-                'metadata' => '{"email": "john@example.com", "phone": "+420123456789"}',
-                'data' => '{"address": {"city": "Prague", "country": "CZ"}, "status": "active"}',
-                'tags' => '{"items": ["tech", "admin", "user"]}',
-                'settings' => '{"theme": "dark", "notifications": true}',
-                'preferences' => '{"language": "en", "timezone": "Europe/Prague"}',
-                'contacts' => '{"list": [{"phones": ["+420123456", "+420987654"]}]}',
-                'users' => '{"data": [{"profile": {"name": "John"}}, {"profile": {"name": "Jane"}}]}',
-                'matrix' => '{"values": [["a", "b"], ["c", "d"]]}',
-                'json_data' => '{"search_value": "found", "other": "data"}',
-            ],
-            [
-                'id' => '2',
-                'name' => 'Jane Smith',
-                'metadata' => '{"email": "jane@example.com", "phone": "+420987654321"}',
-                'data' => '{"address": {"city": "Brno", "country": "CZ"}, "status": "inactive"}',
-                'tags' => '{"items": ["user", "customer"]}',
-                'settings' => '{"theme": "light", "notifications": false}',
-                'preferences' => '{"language": "sk", "timezone": "Europe/Bratislava"}',
-                'contacts' => '{"list": [{"phones": ["+421123456", "+421987654"]}]}',
-                'users' => '{"data": [{"profile": {"name": "Alice"}}, {"profile": {"name": "Bob"}}]}',
-                'matrix' => '{"values": [["1", "2"], ["3", "4"]]}',
-                'json_data' => '{"config": "value", "search_value": "test"}',
-            ],
-            [
-                'id' => '3',
-                'name' => 'Admin User',
-                'metadata' => '{"email": "admin@example.com", "phone": "+420555666777"}',
-                'data' => '{"address": {"city": "Ostrava", "country": "CZ"}, "status": "active"}',
-                'tags' => '{"items": ["admin", "tech", "support"]}',
-                'settings' => '{"theme": "dark", "notifications": true}',
-                'preferences' => '{"language": "en", "timezone": "UTC"}',
-                'contacts' => '{"list": [{"phones": ["+420111222", "+420333444"]}]}',
-                'users' => '{"data": [{"profile": {"name": "Charlie"}}, {"profile": {"name": "David"}}]}',
-                'matrix' => '{"values": [["x", "y"], ["z", "w"]]}',
-                'json_data' => '{"search_value": "admin_data", "type": "admin"}',
-            ],
+            ['id' => '1', 'name' => 'John Doe', 'metadata' => '{"email": "john@example.com", "phone": "+420123456789"}', 'data' => '{"address": {"city": "Prague", "country": "CZ"}, "status": "active"}', 'tags' => '{"items": ["tech", "admin", "user"]}', 'settings' => '{"theme": "dark", "notifications": true}', 'preferences' => '{"language": "en", "timezone": "Europe/Prague"}', 'contacts' => '{"list": [{"phones": ["+420123456", "+420987654"]}]}', 'users' => '{"data": [{"profile": {"name": "John"}}, {"profile": {"name": "Jane"}}]}', 'matrix' => '{"values": [["a", "b"], ["c", "d"]]}', 'json_data' => '{"search_value": "found", "other": "data"}'],
+            ['id' => '2', 'name' => 'Jane Smith', 'metadata' => '{"email": "jane@example.com", "phone": "+420987654321"}', 'data' => '{"address": {"city": "Brno", "country": "CZ"}, "status": "inactive"}', 'tags' => '{"items": ["user", "customer"]}', 'settings' => '{"theme": "light", "notifications": false}', 'preferences' => '{"language": "sk", "timezone": "Europe/Bratislava"}', 'contacts' => '{"list": [{"phones": ["+421123456", "+421987654"]}]}', 'users' => '{"data": [{"profile": {"name": "Alice"}}, {"profile": {"name": "Bob"}}]}', 'matrix' => '{"values": [["1", "2"], ["3", "4"]]}', 'json_data' => '{"config": "value", "search_value": "test"}'],
+            ['id' => '3', 'name' => 'Admin User', 'metadata' => '{"email": "admin@example.com", "phone": "+420555666777"}', 'data' => '{"address": {"city": "Ostrava", "country": "CZ"}, "status": "active"}', 'tags' => '{"items": ["admin", "tech", "support"]}', 'settings' => '{"theme": "dark", "notifications": true}', 'preferences' => '{"language": "en", "timezone": "UTC"}', 'contacts' => '{"list": [{"phones": ["+420111222", "+420333444"]}]}', 'users' => '{"data": [{"profile": {"name": "Charlie"}}, {"profile": {"name": "David"}}]}', 'matrix' => '{"values": [["x", "y"], ["z", "w"]]}', 'json_data' => '{"search_value": "admin_data", "type": "admin"}'],
         ];
     }
 }

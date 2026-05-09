@@ -6,11 +6,11 @@ namespace Patrikjak\Utils\Table\Enums\Cells;
 
 enum CellType: string
 {
-    case SIMPLE = 'simple';
+    case Simple = 'simple';
 
-    case DOUBLE = 'double';
+    case TwoLine = 'two-line';
 
-    case CHIP = 'chip';
+    case Chip = 'chip';
 
-    case LINK = 'link';
+    case Link = 'link';
 }

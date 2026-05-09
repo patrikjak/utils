@@ -44,10 +44,16 @@ class Row extends Component
     /**
      * @param array<string, scalar|array<string>> $row
      */
+    public mixed $rawRow;
+
+    /**
+     * @param array<string, scalar|array<string>> $row
+     */
     public function __construct(public Table $table, public array $row, public stdClass $loop)
     {
         $this->rowId = $this->resolveRowId();
         $this->rowClass = isset($row['rowClass']) ? implode(' ', $row['rowClass']) : null;
+        $this->rawRow = $table->rawData[$this->rowId] ?? $row;
     }
 
     public function render(): View
@@ -97,7 +103,7 @@ class Row extends Component
                 continue;
             }
 
-            if (!call_user_func($action->visible, $this->row)) {
+            if (!call_user_func($action->visible, $this->rawRow)) {
                 $this->hiddenInlineActionIds[] = $action->classId;
             }
         }
@@ -119,7 +125,7 @@ class Row extends Component
                 continue;
             }
 
-            if (call_user_func($action->visible, $this->row)) {
+            if (call_user_func($action->visible, $this->rawRow)) {
                 continue;
             }
 
@@ -135,7 +141,7 @@ class Row extends Component
     {
         foreach ($this->inlineActions as $action) {
             if ($action->href instanceof Closure) {
-                $this->inlineActionHrefs[$action->classId] = call_user_func($action->href, $this->row);
+                $this->inlineActionHrefs[$action->classId] = call_user_func($action->href, $this->rawRow);
             } else {
                 $this->inlineActionHrefs[$action->classId] = $action->href;
             }
@@ -156,7 +162,7 @@ class Row extends Component
                 $dataAttributes[] = sprintf(
                     'data-%s-href="%s"',
                     $action->classId,
-                    call_user_func($action->href, $this->row),
+                    call_user_func($action->href, $this->rawRow),
                 );
             }
 

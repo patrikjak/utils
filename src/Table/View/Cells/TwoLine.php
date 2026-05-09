@@ -6,9 +6,9 @@ namespace Patrikjak\Utils\Table\View\Cells;
 
 use Illuminate\Contracts\View\View;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Cell as AbstractCell;
-use Patrikjak\Utils\Table\ValueObjects\Cells\Double as DoubleCell;
+use Patrikjak\Utils\Table\ValueObjects\Cells\TwoLine as TwoLineCell;
 
-class Double extends Cell
+final class TwoLine extends Cell
 {
     public readonly string $addition;
 
@@ -21,12 +21,12 @@ class Double extends Cell
 
     public function render(): View
     {
-        return view('pjutils::table.cells.double');
+        return view('pjutils::table.cells.two-line');
     }
 
     private function getAddition(): string
     {
-        assert($this->cell instanceof DoubleCell);
+        assert($this->cell instanceof TwoLineCell);
 
         return $this->cell->addition;
     }

@@ -12,7 +12,7 @@ use Patrikjak\Utils\Common\ValueObjects\Filter\SelectFilterCriteria;
 use Patrikjak\Utils\Common\ValueObjects\Filter\TextFilterCriteria;
 use Patrikjak\Utils\Table\Http\Requests\TableParametersRequest;
 
-class TableParametersRequestFilterTest extends TestCase
+final class TableParametersRequestFilterTest extends TestCase
 {
     private const string TABLE_ID = 'table-id';
 

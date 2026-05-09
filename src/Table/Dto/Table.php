@@ -8,16 +8,18 @@ use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
 use Patrikjak\Utils\Table\Dto\Search\Settings as SearchSettings;
 use Patrikjak\Utils\Table\Dto\Sort\Settings as SortSettings;
+use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellContract;
 use Patrikjak\Utils\Table\ValueObjects\BulkActions\Item as BulkActionItem;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
 use Patrikjak\Utils\Table\ValueObjects\ColumnVisibility;
 use Patrikjak\Utils\Table\ValueObjects\EmptyState;
 
-readonly class Table
+final readonly class Table
 {
     /**
      * @param array<string, string> $header
-     * @param array<array<scalar>> $data
+     * @param array<int, array<string, string|int|CellContract>> $data
+     * @param array<string, object|array<string, mixed>> $rawData
      * @param array<string> $columns
      * @param array<Item> $actions
      * @param array<BulkActionItem> $bulkActions
@@ -26,6 +28,7 @@ readonly class Table
         public string $tableId,
         public array $header,
         public array $data,
+        public array $rawData,
         public array $columns,
         public string $rowId,
         public bool $showCheckboxes,
