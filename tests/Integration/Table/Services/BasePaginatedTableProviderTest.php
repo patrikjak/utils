@@ -75,7 +75,13 @@ final class BasePaginatedTableProviderTest extends TestCase
                 ->action('Edit', 'edit', href: static fn (array $row) => 'edit')
                 ->action('Delete', 'delete', href: static fn () => 'delete', type: Type::DANGER)
                 ->action('Show', 'show', Icon::heroicon('heroicon-o-eye'), href: static fn () => 'show')
-                ->action('Hide', 'hide', Icon::heroicon('heroicon-o-eye-off'), href: static fn () => 'hide', type: Type::DANGER);
+                ->action(
+                    'Hide',
+                    'hide',
+                    Icon::heroicon('heroicon-o-eye-off'),
+                    href: static fn () => 'hide',
+                    type: Type::DANGER
+                );
         });
 
         $this->tableMatchesSnapshot();

@@ -296,7 +296,13 @@ final class TableBuilderTest extends TestCase
         $table = TableBuilder::for('users', $this->rows)
             ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
             ->action('Edit', 'edit', href: fn (array $r) => '/edit/' . $r['id'])
-            ->action('Delete', 'delete', type: Type::DANGER, method: 'DELETE', href: fn (array $r) => '/delete/' . $r['id'])
+            ->action(
+                'Delete',
+                'delete',
+                type: Type::DANGER,
+                method: 'DELETE',
+                href: fn (array $r) => '/delete/' . $r['id']
+            )
             ->assembleTable(null);
 
         $this->assertCount(2, $table->actions);

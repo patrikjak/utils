@@ -47,7 +47,7 @@ final class SortAndFilterTableProviderTest extends TestCase
         $this->tableMatchesSnapshot(new Parameters(1, 10, $sortCriteria, null));
     }
 
-public function testTableWithFilterableColumns(): void
+    public function testTableWithFilterableColumns(): void
     {
         $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
             $builder

@@ -75,17 +75,37 @@ final class BaseTableProviderTest extends TestCase
                 ->action('Edit', 'edit', href: static fn (array $row) => 'edit')
                 ->action('Delete', 'delete', href: static fn () => 'delete', type: Type::DANGER)
                 ->action('Show', 'show', Icon::heroicon('heroicon-o-eye'), href: static fn () => 'show')
-                ->action('Hide', 'hide', Icon::heroicon('heroicon-o-eye-off'), href: static fn () => 'hide', type: Type::DANGER)
+                ->action(
+                    'Hide',
+                    'hide',
+                    Icon::heroicon('heroicon-o-eye-off'),
+                    href: static fn () => 'hide',
+                    type: Type::DANGER
+                )
                 ->action(
                     'Hidden for some rows',
                     'hidden-for-some-rows',
                     href: static fn () => 'dynamic',
                     when: static fn (array $row) => $row['id'] !== '1',
                 )
-                ->action('Hidden for all items', 'hidden-for-all-items', href: static fn () => 'hidden', when: static fn () => false)
+                ->action(
+                    'Hidden for all items',
+                    'hidden-for-all-items',
+                    href: static fn () => 'hidden',
+                    when: static fn () => false
+                )
                 ->action('Static link', 'static-link', href: static fn () => 'https://google.com')
-                ->action('Dynamic link', 'dynamic-link', href: static fn (array $row) => sprintf('dynamic-link/%s', $row['id']))
-                ->action('Different method', 'different-method', href: static fn () => 'https://example.com/different-method', method: 'POST');
+                ->action(
+                    'Dynamic link',
+                    'dynamic-link',
+                    href: static fn (array $row) => sprintf('dynamic-link/%s', $row['id'])
+                )
+                ->action(
+                    'Different method',
+                    'different-method',
+                    href: static fn () => 'https://example.com/different-method',
+                    method: 'POST'
+                );
         });
 
         $this->tableMatchesSnapshot();
@@ -97,7 +117,12 @@ final class BaseTableProviderTest extends TestCase
     public function testTableWithSingleIconAction(): void
     {
         $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
-            $builder->action('Verify', 'verify', Icon::heroicon('heroicon-o-shield-check'), href: static fn () => 'verify');
+            $builder->action(
+                'Verify',
+                'verify',
+                Icon::heroicon('heroicon-o-shield-check'),
+                href: static fn () => 'verify'
+            );
         });
 
         $this->tableMatchesSnapshot();
@@ -126,7 +151,13 @@ final class BaseTableProviderTest extends TestCase
             $builder
                 ->action('Edit', 'edit', href: static fn () => 'edit', inline: true)
                 ->action('Delete', 'delete', href: static fn () => 'delete', type: Type::DANGER)
-                ->action('Hidden inline', 'hidden-inline', href: static fn () => 'hidden-inline', when: static fn () => false, inline: true)
+                ->action(
+                    'Hidden inline',
+                    'hidden-inline',
+                    href: static fn () => 'hidden-inline',
+                    when: static fn () => false,
+                    inline: true
+                )
                 ->action(
                     'Dynamic inline',
                     'dynamic-inline',

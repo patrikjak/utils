@@ -7,9 +7,9 @@ namespace Patrikjak\Utils\Table\Builder;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Chip;
-use Patrikjak\Utils\Table\ValueObjects\Cells\TwoLine;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Link;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Simple;
+use Patrikjak\Utils\Table\ValueObjects\Cells\TwoLine;
 
 final class Cell
 {

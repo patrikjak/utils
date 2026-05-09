@@ -48,9 +48,45 @@ final class JsonFilterTableProvider extends BaseTableProvider
     private function getJsonTableData(): array
     {
         return [
-            ['id' => '1', 'name' => 'John Doe', 'metadata' => '{"email": "john@example.com", "phone": "+420123456789"}', 'data' => '{"address": {"city": "Prague", "country": "CZ"}, "status": "active"}', 'tags' => '{"items": ["tech", "admin", "user"]}', 'settings' => '{"theme": "dark", "notifications": true}', 'preferences' => '{"language": "en", "timezone": "Europe/Prague"}', 'contacts' => '{"list": [{"phones": ["+420123456", "+420987654"]}]}', 'users' => '{"data": [{"profile": {"name": "John"}}, {"profile": {"name": "Jane"}}]}', 'matrix' => '{"values": [["a", "b"], ["c", "d"]]}', 'json_data' => '{"search_value": "found", "other": "data"}'],
-            ['id' => '2', 'name' => 'Jane Smith', 'metadata' => '{"email": "jane@example.com", "phone": "+420987654321"}', 'data' => '{"address": {"city": "Brno", "country": "CZ"}, "status": "inactive"}', 'tags' => '{"items": ["user", "customer"]}', 'settings' => '{"theme": "light", "notifications": false}', 'preferences' => '{"language": "sk", "timezone": "Europe/Bratislava"}', 'contacts' => '{"list": [{"phones": ["+421123456", "+421987654"]}]}', 'users' => '{"data": [{"profile": {"name": "Alice"}}, {"profile": {"name": "Bob"}}]}', 'matrix' => '{"values": [["1", "2"], ["3", "4"]]}', 'json_data' => '{"config": "value", "search_value": "test"}'],
-            ['id' => '3', 'name' => 'Admin User', 'metadata' => '{"email": "admin@example.com", "phone": "+420555666777"}', 'data' => '{"address": {"city": "Ostrava", "country": "CZ"}, "status": "active"}', 'tags' => '{"items": ["admin", "tech", "support"]}', 'settings' => '{"theme": "dark", "notifications": true}', 'preferences' => '{"language": "en", "timezone": "UTC"}', 'contacts' => '{"list": [{"phones": ["+420111222", "+420333444"]}]}', 'users' => '{"data": [{"profile": {"name": "Charlie"}}, {"profile": {"name": "David"}}]}', 'matrix' => '{"values": [["x", "y"], ["z", "w"]]}', 'json_data' => '{"search_value": "admin_data", "type": "admin"}'],
+            [
+                'id' => '1',
+                'name' => 'John Doe',
+                'metadata' => '{"email": "john@example.com", "phone": "+420123456789"}',
+                'data' => '{"address": {"city": "Prague", "country": "CZ"}, "status": "active"}',
+                'tags' => '{"items": ["tech", "admin", "user"]}',
+                'settings' => '{"theme": "dark", "notifications": true}',
+                'preferences' => '{"language": "en", "timezone": "Europe/Prague"}',
+                'contacts' => '{"list": [{"phones": ["+420123456", "+420987654"]}]}',
+                'users' => '{"data": [{"profile": {"name": "John"}}, {"profile": {"name": "Jane"}}]}',
+                'matrix' => '{"values": [["a", "b"], ["c", "d"]]}',
+                'json_data' => '{"search_value": "found", "other": "data"}',
+            ],
+            [
+                'id' => '2',
+                'name' => 'Jane Smith',
+                'metadata' => '{"email": "jane@example.com", "phone": "+420987654321"}',
+                'data' => '{"address": {"city": "Brno", "country": "CZ"}, "status": "inactive"}',
+                'tags' => '{"items": ["user", "customer"]}',
+                'settings' => '{"theme": "light", "notifications": false}',
+                'preferences' => '{"language": "sk", "timezone": "Europe/Bratislava"}',
+                'contacts' => '{"list": [{"phones": ["+421123456", "+421987654"]}]}',
+                'users' => '{"data": [{"profile": {"name": "Alice"}}, {"profile": {"name": "Bob"}}]}',
+                'matrix' => '{"values": [["1", "2"], ["3", "4"]]}',
+                'json_data' => '{"config": "value", "search_value": "test"}',
+            ],
+            [
+                'id' => '3',
+                'name' => 'Admin User',
+                'metadata' => '{"email": "admin@example.com", "phone": "+420555666777"}',
+                'data' => '{"address": {"city": "Ostrava", "country": "CZ"}, "status": "active"}',
+                'tags' => '{"items": ["admin", "tech", "support"]}',
+                'settings' => '{"theme": "dark", "notifications": true}',
+                'preferences' => '{"language": "en", "timezone": "UTC"}',
+                'contacts' => '{"list": [{"phones": ["+420111222", "+420333444"]}]}',
+                'users' => '{"data": [{"profile": {"name": "Charlie"}}, {"profile": {"name": "David"}}]}',
+                'matrix' => '{"values": [["x", "y"], ["z", "w"]]}',
+                'json_data' => '{"search_value": "admin_data", "type": "admin"}',
+            ],
         ];
     }
 }
