@@ -2,17 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Patrikjak\Utils\Table\Factories\Cells;
+namespace Patrikjak\Utils\Table\Builder;
 
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Chip;
-use Patrikjak\Utils\Table\ValueObjects\Cells\Double as DoubleCell;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Link;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Simple;
+use Patrikjak\Utils\Table\ValueObjects\Cells\TwoLine;
 
-readonly class CellFactory
+final class Cell
 {
+    private function __construct()
+    {
+    }
+
     public static function simple(
         string $value,
         ?Icon $icon = null,
@@ -22,13 +26,13 @@ readonly class CellFactory
         return new Simple($value, $icon, $maxLength, $noTruncation);
     }
 
-    public static function double(
+    public static function twoLine(
         string $value,
         string $addition,
         ?int $maxLength = null,
         bool $noTruncation = false,
-    ): DoubleCell {
-        return new DoubleCell($value, $addition, $maxLength, $noTruncation);
+    ): TwoLine {
+        return new TwoLine($value, $addition, $maxLength, $noTruncation);
     }
 
     public static function chip(

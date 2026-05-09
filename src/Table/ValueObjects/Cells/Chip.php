@@ -21,6 +21,6 @@ readonly class Chip extends Cell implements CellContract
 
     public function getType(): CellType
     {
-        return CellType::CHIP;
+        return CellType::Chip;
     }
 }

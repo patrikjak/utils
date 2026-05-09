@@ -9,7 +9,7 @@ use Illuminate\Support\Collection;
 use Orchestra\Testbench\TestCase;
 use Patrikjak\Utils\Table\Http\Requests\Traits\HandlesBulkActionsIds;
 
-class HandlesBulkActionsIdsTest extends TestCase
+final class HandlesBulkActionsIdsTest extends TestCase
 {
     public function testGetBulkActionsIdsDefault(): void
     {

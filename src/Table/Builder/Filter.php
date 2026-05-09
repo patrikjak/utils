@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Patrikjak\Utils\Table\Factories\Filter;
+namespace Patrikjak\Utils\Table\Builder;
 
 use Carbon\CarbonInterface;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
@@ -12,8 +12,12 @@ use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Number\NumberFilterDef
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Select\SelectFilterDefinition;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Text\TextFilterDefinition;
 
-readonly class FilterableFactory
+final class Filter
 {
+    private function __construct()
+    {
+    }
+
     public static function text(): FilterDefinition
     {
         return new TextFilterDefinition();

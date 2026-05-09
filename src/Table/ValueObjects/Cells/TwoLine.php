@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Table\ValueObjects\Cells;
 use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellContract;
 use Patrikjak\Utils\Table\Enums\Cells\CellType;
 
-readonly class Double extends Cell implements CellContract
+readonly class TwoLine extends Cell implements CellContract
 {
     public function __construct(
         string $value,
@@ -20,6 +20,6 @@ readonly class Double extends Cell implements CellContract
 
     public function getType(): CellType
     {
-        return CellType::DOUBLE;
+        return CellType::TwoLine;
     }
 }

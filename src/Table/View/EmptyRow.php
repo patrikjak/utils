@@ -7,7 +7,6 @@ namespace Patrikjak\Utils\Table\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Table;
-use Patrikjak\Utils\Table\ValueObjects\EmptyState;
 
 class EmptyRow extends Component
 {

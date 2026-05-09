@@ -20,6 +20,6 @@ readonly class Link extends Cell implements CellContract
 
     public function getType(): CellType
     {
-        return CellType::LINK;
+        return CellType::Link;
     }
 }

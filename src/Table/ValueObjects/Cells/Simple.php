@@ -22,7 +22,7 @@ readonly class Simple extends Cell implements CellContract, SupportsIcon
 
     public function getType(): CellType
     {
-        return CellType::SIMPLE;
+        return CellType::Simple;
     }
 
     public function getIcon(): ?Icon

@@ -12,7 +12,11 @@ export function bindPagination(tableWrapper: TableWrapper): void {
 }
 
 export function getCurrentPage(tableWrapper: TableWrapper): number {
-    const activeLink: HTMLElement = tableWrapper.querySelector('.pagination a.active');
+    const activeLink: HTMLElement | null = tableWrapper.querySelector('.pagination a.active');
+
+    if (activeLink === null) {
+        return 1;
+    }
 
     return parseInt(activeLink.querySelector('.page-number').textContent);
 }
@@ -28,9 +32,14 @@ function bindPaginationLinks(tableWrapper: TableWrapper, paginationElement: HTML
                 return;
             }
 
-            dispatchUpdateEvent(tableWrapper, {
-                page: getPageFromUrl(link.getAttribute('href')),
-            });
+            const href: string | null = link.getAttribute('href');
+            const page: number | null = href !== null ? getPageFromUrl(href) : null;
+
+            if (page === null) {
+                return;
+            }
+
+            dispatchUpdateEvent(tableWrapper, { page });
         });
     });
 }

@@ -4,162 +4,184 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Common\Icon;
-use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
-use Patrikjak\Utils\Table\Services\TableProviderInterface;
-use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
-use Patrikjak\Utils\Table\ValueObjects\Cells\Simple;
+use Patrikjak\Utils\Table\Builder\TableBuilder;
+use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\View\Table;
-use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations;
 use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\TableProvider;
 use Patrikjak\Utils\Tests\Integration\Table\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class BaseTableProviderTest extends TestCase
+final class BaseTableProviderTest extends TestCase
 {
     use MatchesSnapshots;
 
-    private TableProviderInterface $tableProvider;
+    private TableProvider $tableProvider;
 
-    private Table $table;
-
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableCanBeRendered(): void
     {
         $this->tableMatchesSnapshot();
     }
 
-    public function testTableWithCustomTableIdCanBeRendered(): void
-    {
-        $this->tableProvider->setTableId('customTableId');
-
-        $this->tableMatchesSnapshot();
-    }
-
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableWithDifferentRowId(): void
     {
-        $this->tableProvider->setRowId('email');
+        $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
+            $builder->rowId('email');
+        });
 
         $this->tableMatchesSnapshot();
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableWithOrderDisplayedCanBeRendered(): void
     {
-        $this->tableProvider->setShowOrder(true);
+        $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
+            $builder->order();
+        });
 
         $this->tableMatchesSnapshot();
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableWithCheckboxesCanBeRendered(): void
     {
-        $this->tableProvider->setShowCheckboxes(true);
+        $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
+            $builder->checkboxes();
+        });
 
         $this->tableMatchesSnapshot();
     }
 
-    public function testTableWithDifferentColumnsDisplayed(): void
-    {
-        $this->tableProvider->setColumns(['id', 'name', 'email']);
-
-        $this->tableMatchesSnapshot();
-    }
-
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableWithActions(): void
     {
-        $this->tableProvider->setActions([
-            new Item('Edit', 'edit'),
-            new Item('Delete', 'delete', type: Type::DANGER),
-            new Item('Show', 'show', Icon::heroicon('heroicon-o-eye')),
-            new Item('Hide', 'hide', Icon::heroicon('heroicon-o-eye-off'), Type::DANGER),
-            new Item('Hidden for some rows', 'dynamic', visible: static function (array $row): bool {
-                $rowId = $row['id'];
-                assert($rowId instanceof Simple);
-
-                return $rowId->value !== '1';
-            }),
-            new Item('Hidden for all items', 'hidden', visible: false),
-            new Item('Static link', 'static-link', href: 'https://google.com'),
-            new Item('Dynamic link', 'dynamic-link', href: static function (array $row): string {
-                $rowId = $row['id'];
-                assert($rowId instanceof Simple);
-
-                return sprintf('dynamic-link/%s', $rowId->value);
-            }),
-            new Item(
-                'Different method',
-                'different-method',
-                href: 'https://example.com/different-method',
-                method: 'POST',
-            ),
-        ]);
+        $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
+            $builder
+                ->action('Edit', 'edit', href: static fn (array $row) => 'edit')
+                ->action('Delete', 'delete', href: static fn () => 'delete', type: Type::DANGER)
+                ->action('Show', 'show', Icon::heroicon('heroicon-o-eye'), href: static fn () => 'show')
+                ->action(
+                    'Hide',
+                    'hide',
+                    Icon::heroicon('heroicon-o-eye-off'),
+                    href: static fn () => 'hide',
+                    type: Type::DANGER
+                )
+                ->action(
+                    'Hidden for some rows',
+                    'hidden-for-some-rows',
+                    href: static fn () => 'dynamic',
+                    when: static fn (array $row) => $row['id'] !== '1',
+                )
+                ->action(
+                    'Hidden for all items',
+                    'hidden-for-all-items',
+                    href: static fn () => 'hidden',
+                    when: static fn () => false
+                )
+                ->action('Static link', 'static-link', href: static fn () => 'https://google.com')
+                ->action(
+                    'Dynamic link',
+                    'dynamic-link',
+                    href: static fn (array $row) => sprintf('dynamic-link/%s', $row['id'])
+                )
+                ->action(
+                    'Different method',
+                    'different-method',
+                    href: static fn () => 'https://example.com/different-method',
+                    method: 'POST'
+                );
+        });
 
         $this->tableMatchesSnapshot();
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableWithSingleIconAction(): void
     {
-        $this->tableProvider->setActions([
-            new Item('Verify', 'verify', Icon::heroicon('heroicon-o-shield-check')),
-        ]);
+        $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
+            $builder->action(
+                'Verify',
+                'verify',
+                Icon::heroicon('heroicon-o-shield-check'),
+                href: static fn () => 'verify'
+            );
+        });
 
         $this->tableMatchesSnapshot();
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableWithInlineActions(): void
     {
-        $this->tableProvider->setActions([
-            new Item('Edit', 'edit', inline: true),
-            new Item('Delete', 'delete', type: Type::DANGER, inline: true),
-        ]);
+        $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
+            $builder
+                ->action('Edit', 'edit', href: static fn () => 'edit', inline: true)
+                ->action('Delete', 'delete', href: static fn () => 'delete', type: Type::DANGER, inline: true);
+        });
 
         $this->tableMatchesSnapshot();
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableWithMixedActions(): void
     {
-        $this->tableProvider->setActions([
-            new Item('Edit', 'edit', inline: true),
-            new Item('Delete', 'delete', type: Type::DANGER),
-            new Item('Hidden inline', 'hidden-inline', inline: true, visible: false),
-            new Item('Dynamic inline', 'dynamic-inline', inline: true, href: static function (array $row): string {
-                $rowId = $row['id'];
-                assert($rowId instanceof Simple);
-
-                return sprintf('edit/%s', $rowId->value);
-            }),
-        ]);
-
-        $this->tableMatchesSnapshot();
-    }
-
-    public function testTableWithTruncatedCellsCanBeRendered(): void
-    {
-        $this->tableProvider->setData([
-            [
-                'id' => CellFactory::simple('1'),
-                'name' => CellFactory::simple('This is a very long name that exceeds the limit', maxLength: 10),
-                'email' => CellFactory::simple('john.doe@example.com'),
-                'link' => CellFactory::link(
-                    'A very long link label that will be truncated',
-                    'https://example.com',
-                    maxLength: 12,
-                ),
-                'created_at' => CellFactory::simple('2021-01-01 00:00:00'),
-                'updated_at' => CellFactory::simple('2021-01-01 00:00:00'),
-            ],
-        ]);
+        $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
+            $builder
+                ->action('Edit', 'edit', href: static fn () => 'edit', inline: true)
+                ->action('Delete', 'delete', href: static fn () => 'delete', type: Type::DANGER)
+                ->action(
+                    'Hidden inline',
+                    'hidden-inline',
+                    href: static fn () => 'hidden-inline',
+                    when: static fn () => false,
+                    inline: true
+                )
+                ->action(
+                    'Dynamic inline',
+                    'dynamic-inline',
+                    href: static fn (array $row) => sprintf('edit/%s', $row['id']),
+                    inline: true,
+                );
+        });
 
         $this->tableMatchesSnapshot();
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableWithDefaultMaxLengthCanBeRendered(): void
     {
-        $this->tableProvider->setDefaultMaxLength(10);
+        config()->set('pjutils.table.default_max_length', 10);
 
         $this->tableMatchesSnapshot();
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableUsesConfigDefaultMaxLength(): void
     {
         config()->set('pjutils.table.default_max_length', 8);
@@ -171,23 +193,9 @@ class BaseTableProviderTest extends TestCase
         $this->assertMatchesHtmlSnapshot($view);
     }
 
-    public function testTableWithNoTruncationCellIgnoresDefaultMaxLength(): void
-    {
-        $this->tableProvider->setDefaultMaxLength(5);
-        $this->tableProvider->setData([
-            [
-                'id' => CellFactory::simple('1'),
-                'name' => CellFactory::simple('This is long but not truncated', noTruncation: true),
-                'email' => CellFactory::simple('john.doe@example.com'),
-                'link' => CellFactory::link('Test link', 'https://example.com'),
-                'created_at' => CellFactory::simple('2021-01-01 00:00:00'),
-                'updated_at' => CellFactory::simple('2021-01-01 00:00:00'),
-            ],
-        ]);
-
-        $this->tableMatchesSnapshot();
-    }
-
+    /**
+     * @throws BindingResolutionException
+     */
     public function testTableLoaderIsAbsentForStaticTable(): void
     {
         $table = $this->tableProvider->getTable();
@@ -203,11 +211,14 @@ class BaseTableProviderTest extends TestCase
         $this->tableProvider = new TableProvider();
     }
 
+    /**
+     * @throws BindingResolutionException
+     */
     private function tableMatchesSnapshot(): void
     {
         $table = $this->tableProvider->getTable();
         $view = Blade::renderComponent(new Table($table));
 
-        $this->assertMatchesHtmlSnapshot((string) $view);
+        $this->assertMatchesHtmlSnapshot($view);
     }
 }

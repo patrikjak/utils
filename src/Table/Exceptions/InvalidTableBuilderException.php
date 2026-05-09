@@ -1,0 +1,20 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Patrikjak\Utils\Table\Exceptions;
+
+use RuntimeException;
+
+final class InvalidTableBuilderException extends RuntimeException
+{
+    /**
+     * @param array<string> $violations
+     */
+    public static function withViolations(array $violations): self
+    {
+        $list = implode('; ', $violations);
+
+        return new self(sprintf('TableBuilder validation failed: %s', $list));
+    }
+}

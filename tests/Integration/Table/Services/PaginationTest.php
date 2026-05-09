@@ -12,7 +12,7 @@ use Patrikjak\Utils\Table\View\Pagination\Paginator;
 use Patrikjak\Utils\Tests\Integration\Table\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
 
-class PaginationTest extends TestCase
+final class PaginationTest extends TestCase
 {
     use MatchesSnapshots;
 

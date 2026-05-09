@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Tests\Unit\Table\Http\Request;
 use Orchestra\Testbench\TestCase;
 use Patrikjak\Utils\Table\Http\Requests\TableParametersRequest;
 
-class TableParametersRequestTest extends TestCase
+final class TableParametersRequestTest extends TestCase
 {
     private const string TABLE_ID = 'table-id';
 

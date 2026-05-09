@@ -282,7 +282,11 @@ function getTableUrl(
     searchCriteria: SearchCriteria | null = null,
     columnsCriteria: ColumnsCriteria | null = null,
 ): string {
-    let url: string = getData(tableWrapper, 'html-parts-url');
+    let url: string | null = getData(tableWrapper, 'html-parts-url');
+
+    if (url === null) {
+        return '';
+    }
 
     if (pageCriteria !== null) {
         url = addPageCriteriaToUrl(url, pageCriteria);
