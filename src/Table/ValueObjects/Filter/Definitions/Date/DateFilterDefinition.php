@@ -30,6 +30,9 @@ readonly class DateFilterDefinition implements FilterDefinition, RangeData
         return $this->to?->format('Y-m-d');
     }
 
+    /**
+     * @return array<string, string|int|float|null>
+     */
     public function getFilterData(): array
     {
         return [

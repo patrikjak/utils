@@ -17,6 +17,9 @@ readonly class CustomFilterDefinition implements FilterDefinition
         return $this->type;
     }
 
+    /**
+     * @return array<string, string|int|float|null>
+     */
     public function getFilterData(): array
     {
         return [];

@@ -25,9 +25,10 @@ class JsonFilter extends AbstractFilter implements Filter
             return;
         }
 
-        $resolvedDbColumn = $filterCriteria->getDatabaseColumn();
+        $resolvedDatabaseColumn = $filterCriteria->getDatabaseColumn();
 
-        $column = $query->getGrammar()->wrap($resolvedDbColumn ?? $this->resolveColumn($filterCriteria->column, $columnsMask));
+        $resolvedColumn = $resolvedDatabaseColumn ?? $this->resolveColumn($filterCriteria->column, $columnsMask);
+        $column = $query->getGrammar()->wrap($resolvedColumn);
         $jsonPath = $this->buildJsonPath($filterCriteria->jsonPath);
 
         $operator = $this->getOperator($filterCriteria->filterType);

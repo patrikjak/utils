@@ -14,6 +14,9 @@ readonly class TextFilterDefinition implements FilterDefinition
         return FilterType::Text->value;
     }
 
+    /**
+     * @return array<string, string|int|float|null>
+     */
     public function getFilterData(): array
     {
         return [];

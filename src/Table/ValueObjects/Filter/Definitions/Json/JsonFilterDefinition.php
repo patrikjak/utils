@@ -18,6 +18,9 @@ readonly class JsonFilterDefinition implements FilterDefinition
         return FilterType::Json->value;
     }
 
+    /**
+     * @return array<string, string|int|float|null>
+     */
     public function getFilterData(): array
     {
         return ['json-path' => $this->jsonPath];

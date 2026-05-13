@@ -17,4 +17,11 @@ final class InvalidTableBuilderException extends RuntimeException
 
         return new self(sprintf('TableBuilder validation failed: %s', $list));
     }
+
+    public static function forMissingRowId(string $rowId): self
+    {
+        return new self(
+            sprintf('Row is missing rowId field "%s". Check the rowId() builder setting.', $rowId),
+        );
+    }
 }

@@ -36,7 +36,9 @@ final class TableBuilder
     private array $columns = [];
 
     /**
-     * @var array<string>
+     * Keys are the column keys; values are always `true` (set semantics for O(1) dedup).
+     *
+     * @var array<string, true>
      */
     private array $sortKeys = [];
 
@@ -46,7 +48,9 @@ final class TableBuilder
     private array $filterEntries = [];
 
     /**
-     * @var array<string>
+     * Keys are the column keys; values are always `true` (set semantics for O(1) dedup).
+     *
+     * @var array<string, true>
      */
     private array $searchKeys = [];
 
@@ -69,6 +73,10 @@ final class TableBuilder
     private ?EmptyState $emptyState = null;
 
     private ?string $htmlPartsUrl = null;
+
+    private ?string $expandable = null;
+
+    private bool $stickyHeader = false;
 
     /**
      * @var array<int, int>
@@ -109,9 +117,7 @@ final class TableBuilder
     public function sort(string ...$keys): self
     {
         foreach ($keys as $key) {
-            if (!in_array($key, $this->sortKeys, true)) {
-                $this->sortKeys[] = $key;
-            }
+            $this->sortKeys[$key] = true;
         }
 
         return $this;
@@ -127,9 +133,7 @@ final class TableBuilder
     public function search(string ...$keys): self
     {
         foreach ($keys as $key) {
-            if (!in_array($key, $this->searchKeys, true)) {
-                $this->searchKeys[] = $key;
-            }
+            $this->searchKeys[$key] = true;
         }
 
         return $this;
@@ -194,6 +198,18 @@ final class TableBuilder
         return $this;
     }
 
+    /**
+     * Sets the empty-state shown when the table has no rows.
+     *
+     * Passing a plain string is a shorthand that sets only the title.
+     * Pass a full `EmptyState` object to also control the description and icon.
+     *
+     * ```
+     * Example:
+     *   ->emptyState('No records found')
+     *   ->emptyState(new EmptyState('No records found', 'Try adjusting your filters.'))
+     * ```
+     */
     public function emptyState(string|EmptyState $emptyState): self
     {
         $this->emptyState = $emptyState instanceof EmptyState
@@ -211,6 +227,27 @@ final class TableBuilder
     }
 
     /**
+     * Marks the table as expandable and sets the expand trigger identifier.
+     * When set, rows get the `expandable` CSS class and `data-expandable` attribute.
+     */
+    public function expandable(string $expandable): self
+    {
+        $this->expandable = $expandable;
+
+        return $this;
+    }
+
+    /**
+     * Fixes the table header while the body scrolls.
+     */
+    public function stickyHeader(): self
+    {
+        $this->stickyHeader = true;
+
+        return $this;
+    }
+
+    /**
      * @param array<int, int> $options
      */
     public function pageSizeOptions(array $options): self
@@ -221,6 +258,14 @@ final class TableBuilder
     }
 
     /**
+     * Assembles and returns the Table DTO.
+     *
+     * This method must always be called fresh — never cache its result across requests.
+     * In particular, when the frontend sends a different `visibleColumns` selection,
+     * the `Parameters` object passed here changes, and the builder re-computes the
+     * visible key list from `$parameters->visibleColumns` (via `ColumnVisibility::getVisibleColumns`
+     * in the view layer). Caching would serve stale column sets to subsequent requests.
+     *
      * @throws InvalidTableBuilderException
      * @throws BindingResolutionException
      */
@@ -247,7 +292,7 @@ final class TableBuilder
             $this->rowId,
             $this->showCheckboxes,
             $this->showOrder,
-            null,
+            $this->expandable,
             $this->buildActionItems(),
             $this->buildPaginationSettings($parameters),
             $this->buildBulkActionItems(),
@@ -256,7 +301,7 @@ final class TableBuilder
             $filterSettings,
             $this->resolveDefaultMaxLength(),
             $this->buildSearchSettings($parameters),
-            false,
+            $this->stickyHeader,
             $this->emptyState,
             $this->buildColumnVisibility(),
             $this->buildEnrichedParameters($parameters, $filterSettings),
@@ -265,7 +310,7 @@ final class TableBuilder
 
     /**
      * @param array<string> $visibleKeys
-     * @return array{array<array<string, mixed>>, array<string, mixed>}
+     * @return array{array<array<string, mixed>>, array<string, object|array<string, mixed>>}
      */
     private function buildRows(array $visibleKeys): array
     {
@@ -273,7 +318,13 @@ final class TableBuilder
         $data = [];
 
         foreach ($this->resolveRows() as $row) {
-            $rowId = (string) $this->extractRowId($row);
+            $extracted = $this->extractRowId($row);
+
+            if ($extracted === null) {
+                throw InvalidTableBuilderException::forMissingRowId($this->rowId);
+            }
+
+            $rowId = (string) $extracted;
             $rawData[$rowId] = $row;
 
             $result = [$this->rowId => $rowId];
@@ -306,7 +357,7 @@ final class TableBuilder
             $violations[] = 'at least one column() must be defined';
         }
 
-        foreach ($this->sortKeys as $key) {
+        foreach (array_keys($this->sortKeys) as $key) {
             if (!in_array($key, $columnKeys, true)) {
                 $violations[] = sprintf('sort key "%s" does not match any column', $key);
             }
@@ -318,7 +369,7 @@ final class TableBuilder
             }
         }
 
-        foreach ($this->searchKeys as $key) {
+        foreach (array_keys($this->searchKeys) as $key) {
             if (!in_array($key, $columnKeys, true)) {
                 $violations[] = sprintf('search key "%s" does not match any column', $key);
             }
@@ -368,7 +419,7 @@ final class TableBuilder
             return null;
         }
 
-        $sortableColumns = new Collection($this->sortKeys)->map(function (string $key): SortableColumn {
+        $sortableColumns = new Collection(array_keys($this->sortKeys))->map(function (string $key): SortableColumn {
             $column = $this->columns[$key];
 
             return new SortableColumn($column->label, $column->databaseColumn ?? $key);
@@ -400,7 +451,7 @@ final class TableBuilder
             return null;
         }
 
-        $dbColumns = new Collection($this->searchKeys)->map(function (string $key): string {
+        $dbColumns = new Collection(array_keys($this->searchKeys))->map(function (string $key): string {
             return $this->columns[$key]->databaseColumn ?? $key;
         });
 

@@ -65,11 +65,41 @@ class UtilsServiceProvider extends ServiceProvider
         $registry = $this->app->make(FilterStrategyRegistry::class);
         $rangeFilter = new RangeFilter();
 
-        $registry->register(FilterType::Text->value, new TextFilter(), new TextFilterCriteriaFactory(), 'pjutils::table.filter.filter-forms.text', 'pjutils::table.filter.chips.text');
-        $registry->register(FilterType::Select->value, new SelectFilter(), new SelectFilterCriteriaFactory(), 'pjutils::table.filter.filter-forms.select', 'pjutils::table.filter.chips.select');
-        $registry->register(FilterType::Date->value, $rangeFilter, new DateFilterCriteriaFactory(), 'pjutils::table.filter.filter-forms.date', 'pjutils::table.filter.chips.date');
-        $registry->register(FilterType::Number->value, $rangeFilter, new NumberFilterCriteriaFactory(), 'pjutils::table.filter.filter-forms.number', 'pjutils::table.filter.chips.number');
-        $registry->register(FilterType::Json->value, new JsonFilter(), new JsonFilterCriteriaFactory(), 'pjutils::table.filter.filter-forms.json', 'pjutils::table.filter.chips.json');
+        $registry->register(
+            FilterType::Text->value,
+            new TextFilter(),
+            new TextFilterCriteriaFactory(),
+            'pjutils::table.filter.filter-forms.text',
+            'pjutils::table.filter.chips.text',
+        );
+        $registry->register(
+            FilterType::Select->value,
+            new SelectFilter(),
+            new SelectFilterCriteriaFactory(),
+            'pjutils::table.filter.filter-forms.select',
+            'pjutils::table.filter.chips.select',
+        );
+        $registry->register(
+            FilterType::Date->value,
+            $rangeFilter,
+            new DateFilterCriteriaFactory(),
+            'pjutils::table.filter.filter-forms.date',
+            'pjutils::table.filter.chips.date',
+        );
+        $registry->register(
+            FilterType::Number->value,
+            $rangeFilter,
+            new NumberFilterCriteriaFactory(),
+            'pjutils::table.filter.filter-forms.number',
+            'pjutils::table.filter.chips.number',
+        );
+        $registry->register(
+            FilterType::Json->value,
+            new JsonFilter(),
+            new JsonFilterCriteriaFactory(),
+            'pjutils::table.filter.filter-forms.json',
+            'pjutils::table.filter.chips.json',
+        );
     }
 
     private function registerComponentNamespaces(): void

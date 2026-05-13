@@ -55,6 +55,15 @@ abstract class TableProvider
             return $parameters;
         }
 
+        // First enrichment pass: apply the provider-level column map (getColumnMap()) to
+        // filter criteria that arrived from the request, before build() even runs.
+        // This lets query-builder calls inside build() (applyFilter/applySearch) see
+        // the real database column names without any extra work from the subclass.
+        //
+        // A second pass happens inside assembleTable() via FilterSettings::withResolvedDatabaseColumns(),
+        // which applies the per-column databaseColumn mapping declared on the builder's filter() calls.
+        // The two passes are additive and idempotent: a criterion that already has a databaseColumn
+        // set is skipped by the second pass, so there is no risk of double-enrichment.
         if ($parameters->filterCriteria !== null) {
             $parameters = $parameters->withFilterCriteria(
                 FilterSettings::enrichCriteria($parameters->filterCriteria, $mask),

@@ -24,6 +24,9 @@ readonly class SelectFilterDefinition implements FilterDefinition, NeedsData
         return $this->dataUrl;
     }
 
+    /**
+     * @return array<string, string|int|float|null>
+     */
     public function getFilterData(): array
     {
         return ['options-url' => $this->dataUrl];

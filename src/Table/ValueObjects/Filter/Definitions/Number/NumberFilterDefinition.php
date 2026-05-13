@@ -37,6 +37,9 @@ readonly class NumberFilterDefinition implements FilterDefinition, RangeData
         return (string) $this->max;
     }
 
+    /**
+     * @return array<string, string|int|float|null>
+     */
     public function getFilterData(): array
     {
         return [

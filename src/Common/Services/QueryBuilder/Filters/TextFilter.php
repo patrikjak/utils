@@ -43,7 +43,7 @@ class TextFilter extends AbstractFilter implements Filter
             TextFilterType::CONTAINS, TextFilterType::NOT_CONTAINS => sprintf('%%%s%%', $escapedValue),
             TextFilterType::STARTS_WITH => sprintf('%s%%', $escapedValue),
             TextFilterType::ENDS_WITH => sprintf('%%%s', $escapedValue),
-            TextFilterType::EQUALS, TextFilterType::NOT_EQUALS => $value,
+            TextFilterType::EQUALS, TextFilterType::NOT_EQUALS => $escapedValue,
         };
     }
 }
