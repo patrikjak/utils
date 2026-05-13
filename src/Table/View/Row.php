@@ -8,6 +8,7 @@ use Closure;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Table;
+use Patrikjak\Utils\Table\Registry\CellRegistry;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Cell;
 use Patrikjak\Utils\Table\View\Traits\TableMethods;
@@ -27,18 +28,26 @@ class Row extends Component
 
     public ?string $actionsDataAttributes = null;
 
-    /** @var array<Item> */
+    /**
+     * @var array<Item>
+     */
     public array $inlineActions = [];
 
-    /** @var array<Item> */
+    /**
+     * @var array<Item>
+     */
     public array $dropdownActions = [];
 
     public bool $hasDropdownActions = false;
 
-    /** @var array<string> */
+    /**
+     * @var array<string>
+     */
     public array $hiddenInlineActionIds = [];
 
-    /** @var array<string, string|null> */
+    /**
+     * @var array<string, string|null>
+     */
     public array $inlineActionHrefs = [];
 
     /**
@@ -49,11 +58,15 @@ class Row extends Component
     /**
      * @param array<string, scalar|array<string>> $row
      */
-    public function __construct(public Table $table, public array $row, public stdClass $loop)
-    {
+    public function __construct(
+        public Table $table,
+        public array $row,
+        public stdClass $loop,
+        private readonly CellRegistry $cellRegistry,
+    ) {
         $this->rowId = $this->resolveRowId();
         $this->rowClass = isset($row['rowClass']) ? implode(' ', $row['rowClass']) : null;
-        $this->rawRow = $table->rawData[$this->rowId] ?? $row;
+        $this->rawRow = $table->rawData->get($this->rowId) ?? $row;
     }
 
     public function render(): View
@@ -69,7 +82,7 @@ class Row extends Component
 
     public function getCellView(Cell $cell): string
     {
-        return sprintf('pjutils.table::cells.%s', $cell->getType()->value);
+        return $this->cellRegistry->getView($cell->getType());
     }
 
     private function resolveRowId(): string
@@ -87,7 +100,7 @@ class Row extends Component
             }
         }
 
-        $this->hasDropdownActions = count($this->dropdownActions) > 0;
+        $this->hasDropdownActions = $this->dropdownActions !== [];
     }
 
     private function setHiddenInlineActions(): void
@@ -132,7 +145,7 @@ class Row extends Component
             $hiddenActions[] = $action->classId;
         }
 
-        $this->hiddenActions = count($hiddenActions) === 0 ? null : implode(',', $hiddenActions);
+        $this->hiddenActions = $hiddenActions === [] ? null : implode(',', $hiddenActions);
         $this->allActionsAreHidden = $this->hasDropdownActions
             && count($hiddenActions) === count($dropdownActions);
     }
@@ -171,6 +184,6 @@ class Row extends Component
             }
         }
 
-        $this->actionsDataAttributes = count($dataAttributes) === 0 ? null : implode(' ', $dataAttributes);
+        $this->actionsDataAttributes = $dataAttributes === [] ? null : implode(' ', $dataAttributes);
     }
 }

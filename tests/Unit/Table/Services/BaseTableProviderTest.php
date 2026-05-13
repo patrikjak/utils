@@ -31,11 +31,11 @@ final class BaseTableProviderTest extends TestCase
     {
         $table = $this->tableProvider->getTable();
 
-        $this->assertArrayHasKey('id', $table->header);
-        $this->assertArrayHasKey('name', $table->header);
-        $this->assertArrayHasKey('email', $table->header);
-        $this->assertArrayHasKey('created_at', $table->header);
-        $this->assertArrayHasKey('updated_at', $table->header);
+        $this->assertTrue($table->header->has('id'));
+        $this->assertTrue($table->header->has('name'));
+        $this->assertTrue($table->header->has('email'));
+        $this->assertTrue($table->header->has('created_at'));
+        $this->assertTrue($table->header->has('updated_at'));
     }
 
     /**
@@ -45,7 +45,6 @@ final class BaseTableProviderTest extends TestCase
     {
         $table = $this->tableProvider->getTable();
 
-        $this->assertIsArray($table->data);
         $this->assertCount(4, $table->data);
         $this->assertIsArray($table->data[0]);
         $this->assertArrayHasKey('id', $table->data[0]);

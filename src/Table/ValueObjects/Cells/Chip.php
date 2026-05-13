@@ -6,7 +6,6 @@ namespace Patrikjak\Utils\Table\ValueObjects\Cells;
 
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellContract;
-use Patrikjak\Utils\Table\Enums\Cells\CellType;
 
 readonly class Chip extends Cell implements CellContract
 {
@@ -19,8 +18,8 @@ readonly class Chip extends Cell implements CellContract
         parent::__construct($value, $maxLength, $noTruncation);
     }
 
-    public function getType(): CellType
+    public function getType(): string
     {
-        return CellType::Chip;
+        return 'chip';
     }
 }

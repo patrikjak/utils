@@ -6,12 +6,13 @@ namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Blade;
-use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
-use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Filter\JsonFilterCriteria;
 use Patrikjak\Utils\Table\Builder\Filter as FilterFactory;
 use Patrikjak\Utils\Table\Builder\TableBuilder;
+use Patrikjak\Utils\Table\Contracts\Filter\NeedsDatabaseColumn;
 use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Enums\Filter\JsonFilterType;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\FilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\JsonFilterCriteria;
 use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\JsonFilterTableProvider;
 use Patrikjak\Utils\Tests\Integration\Table\TestCase;
 use Spatie\Snapshots\MatchesSnapshots;
@@ -172,6 +173,30 @@ final class JsonFilterTableProviderTest extends TestCase
 
         $this->assertStringContainsString('email', $htmlParts['options']);
         $this->assertStringContainsString('user.profile.settings.theme', $htmlParts['options']);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testFilterColumnMapPreEnrichesParametersBeforeBuild(): void
+    {
+        $filterCriteria = new FilterCriteria([
+            new JsonFilterCriteria('metadata', 'email', 'john@example.com', JsonFilterType::CONTAINS),
+        ]);
+
+        $this->tableProvider->setColumnMap(['metadata' => 'users.metadata']);
+        $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
+            $builder->filter('metadata', FilterFactory::json('email'));
+        });
+
+        $table = $this->tableProvider->getTable(new Parameters(1, 10, null, $filterCriteria));
+
+        $enrichedFilters = $table->parameters?->filterCriteria?->filters ?? [];
+        $this->assertNotEmpty($enrichedFilters);
+
+        $first = $enrichedFilters[0];
+        $this->assertInstanceOf(NeedsDatabaseColumn::class, $first);
+        $this->assertSame('users.metadata', $first->getDatabaseColumn());
     }
 
     protected function setUp(): void

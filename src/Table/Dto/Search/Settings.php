@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\Dto\Search;
 
+use Illuminate\Support\Collection;
+
 readonly class Settings
 {
     /**
-     * @param array<string> $searchableColumns
+     * @param Collection<int, string> $searchableColumns
      */
-    public function __construct(public array $searchableColumns, public ?string $searchQuery)
+    public function __construct(public Collection $searchableColumns, public ?string $searchQuery)
     {
     }
 }

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
 use Illuminate\Contracts\Database\Query\Builder;
-use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
-use Patrikjak\Utils\Common\ValueObjects\Filter\AbstractFilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Filter\TextFilterCriteria;
+use Patrikjak\Utils\Table\Enums\Filter\TextFilterType;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\TextFilterCriteria;
 
 class TextFilter extends AbstractFilter implements Filter
 {
@@ -19,7 +19,7 @@ class TextFilter extends AbstractFilter implements Filter
         assert($filterCriteria instanceof TextFilterCriteria);
 
         $query->orWhere(
-            $this->getRealColumn($filterCriteria->column, $columnsMask),
+            $this->resolveColumn($filterCriteria->column, $columnsMask),
             $this->getOperator($filterCriteria->filterType),
             $this->getConditionValue($filterCriteria->filterType, $filterCriteria->value),
         );

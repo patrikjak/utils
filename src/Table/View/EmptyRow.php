@@ -36,7 +36,7 @@ class EmptyRow extends Component
 
     private function resolveColspan(): int
     {
-        return count($this->table->header)
+        return $this->table->header->count()
             + ($this->table->showOrder ? 1 : 0)
             + ($this->table->showCheckboxes ? 1 : 0)
             + ($this->table->hasActions() ? 1 : 0);

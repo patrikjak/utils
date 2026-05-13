@@ -50,7 +50,7 @@ final class TableBuilderTest extends TestCase
             ->column('email', 'Email', fn (array $r) => Cell::simple($r['email']))
             ->assembleTable(null);
 
-        $this->assertSame(['name' => 'Name', 'email' => 'Email'], $table->header);
+        $this->assertSame(['name' => 'Name', 'email' => 'Email'], $table->header->all());
     }
 
     /**
@@ -106,8 +106,8 @@ final class TableBuilderTest extends TestCase
             ->column('notes', 'Notes', fn (array $r) => Cell::simple('note'), hidden: true)
             ->assembleTable(null);
 
-        $this->assertArrayHasKey('name', $table->header);
-        $this->assertArrayNotHasKey('notes', $table->header);
+        $this->assertTrue($table->header->has('name'));
+        $this->assertFalse($table->header->has('notes'));
         $this->assertArrayHasKey('name', $table->data[0]);
         $this->assertArrayNotHasKey('notes', $table->data[0]);
     }

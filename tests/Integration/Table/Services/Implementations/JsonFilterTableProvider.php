@@ -14,9 +14,30 @@ final class JsonFilterTableProvider extends BaseTableProvider
 {
     private ?Closure $configurator = null;
 
+    /**
+     * @var array<string, string>
+     */
+    private array $filterColumnMap = [];
+
     public function configure(Closure $configurator): void
     {
         $this->configurator = $configurator;
+    }
+
+    /**
+     * @param array<string, string> $map
+     */
+    public function setColumnMap(array $map): void
+    {
+        $this->filterColumnMap = $map;
+    }
+
+    /**
+     * @return array<string, string>
+     */
+    protected function getColumnMap(): array
+    {
+        return $this->filterColumnMap;
     }
 
     protected function build(?Parameters $parameters): TableBuilder

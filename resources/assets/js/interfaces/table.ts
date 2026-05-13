@@ -43,34 +43,5 @@ export interface TableWrapper extends HTMLElement {
 export interface Filter {
     column: string;
     type: string;
-}
-
-export interface TextFilter extends Filter {
-    type: 'text';
-    filterType: 'contains' | 'not_contains' |'equals' | 'not_equals' | 'starts_with' | 'ends_with';
-    value: string;
-}
-
-export interface NumberFilter extends Filter {
-    type: 'number';
-    from: number;
-    to: number;
-}
-
-export interface DateFilter extends Filter {
-    type: 'date';
-    from: string | null;
-    to: string | null;
-}
-
-export interface SelectFilter extends Filter {
-    type: 'select';
-    value: string;
-}
-
-export interface JsonFilter extends Filter {
-    type: 'json';
-    filterType: 'contains' | 'not_contains' | 'equals' | 'not_equals' | 'starts_with' | 'ends_with';
-    jsonPath: string | null;
-    value: string;
+    data: Record<string, string | number | null>;
 }

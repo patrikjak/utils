@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Tests\Integration\Table\Http\Requests;
 
 use Illuminate\Http\Request;
-use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
-use Patrikjak\Utils\Common\ValueObjects\Filter\JsonFilterCriteria;
+use Patrikjak\Utils\Table\Enums\Filter\JsonFilterType;
 use Patrikjak\Utils\Table\Http\Requests\TableParametersRequest;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\JsonFilterCriteria;
 use Patrikjak\Utils\Tests\Integration\Table\TestCase;
 
 class TableParametersRequestJsonFilterTest extends TestCase
@@ -19,13 +19,13 @@ class TableParametersRequestJsonFilterTest extends TestCase
                 [
                     'type' => 'json',
                     'operator' => 'contains',
-                    'jsonPath' => 'email',
+                    'json-path' => 'email',
                     'value' => 'john@example.com',
                 ],
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertNotNull($parameters->filterCriteria);
         $this->assertCount(1, $parameters->filterCriteria->filters);
@@ -45,13 +45,13 @@ class TableParametersRequestJsonFilterTest extends TestCase
                 [
                     'type' => 'json',
                     'operator' => 'equals',
-                    'jsonPath' => 'user.address.city',
+                    'json-path' => 'user.address.city',
                     'value' => 'Prague',
                 ],
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
@@ -68,13 +68,13 @@ class TableParametersRequestJsonFilterTest extends TestCase
                 [
                     'type' => 'json',
                     'operator' => 'starts_with',
-                    'jsonPath' => 'items[0]',
+                    'json-path' => 'items[0]',
                     'value' => 'tech',
                 ],
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
@@ -91,13 +91,13 @@ class TableParametersRequestJsonFilterTest extends TestCase
                 [
                     'type' => 'json',
                     'operator' => 'ends_with',
-                    'jsonPath' => 'users[0].phones[1]',
+                    'json-path' => 'users[0].phones[1]',
                     'value' => '789',
                 ],
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
@@ -114,13 +114,13 @@ class TableParametersRequestJsonFilterTest extends TestCase
                 [
                     'type' => 'json',
                     'operator' => 'contains',
-                    'jsonPath' => null,
+                    'json-path' => null,
                     'value' => 'search_term',
                 ],
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
@@ -137,13 +137,13 @@ class TableParametersRequestJsonFilterTest extends TestCase
                 [
                     'type' => 'json',
                     'operator' => 'not_contains',
-                    'jsonPath' => '',
+                    'json-path' => '',
                     'value' => 'unwanted',
                 ],
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $filter = $parameters->filterCriteria->filters[0];
         $this->assertInstanceOf(JsonFilterCriteria::class, $filter);
@@ -160,13 +160,13 @@ class TableParametersRequestJsonFilterTest extends TestCase
                 [
                     'type' => 'json',
                     'operator' => 'contains',
-                    'jsonPath' => 'email',
+                    'json-path' => 'email',
                     'value' => 'john',
                 ],
                 [
                     'type' => 'json',
                     'operator' => 'starts_with',
-                    'jsonPath' => 'phone',
+                    'json-path' => 'phone',
                     'value' => '+420',
                 ],
             ],
@@ -174,13 +174,13 @@ class TableParametersRequestJsonFilterTest extends TestCase
                 [
                     'type' => 'json',
                     'operator' => 'equals',
-                    'jsonPath' => 'status',
+                    'json-path' => 'status',
                     'value' => 'active',
                 ],
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertCount(3, $parameters->filterCriteria->filters);
 
@@ -207,13 +207,13 @@ class TableParametersRequestJsonFilterTest extends TestCase
                 [
                     'type' => 'json',
                     'operator' => 'invalid_operator',
-                    'jsonPath' => 'email',
+                    'json-path' => 'email',
                     'value' => 'test',
                 ],
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertNotNull($parameters->filterCriteria);
         $this->assertEmpty($parameters->filterCriteria->filters);
@@ -225,13 +225,13 @@ class TableParametersRequestJsonFilterTest extends TestCase
             'metadata' => [
                 [
                     'type' => 'json',
-                    'jsonPath' => 'email',
+                    'json-path' => 'email',
                     'value' => 'test',
                 ],
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertNotNull($parameters->filterCriteria);
         $this->assertEmpty($parameters->filterCriteria->filters);
@@ -240,15 +240,15 @@ class TableParametersRequestJsonFilterTest extends TestCase
     public function testAllJsonFilterTypes(): void
     {
         $request = $this->createRequestWithJsonFilter([
-            'test1' => [['type' => 'json', 'operator' => 'contains', 'jsonPath' => 'path', 'value' => 'val']],
-            'test2' => [['type' => 'json', 'operator' => 'not_contains', 'jsonPath' => 'path', 'value' => 'val']],
-            'test3' => [['type' => 'json', 'operator' => 'equals', 'jsonPath' => 'path', 'value' => 'val']],
-            'test4' => [['type' => 'json', 'operator' => 'not_equals', 'jsonPath' => 'path', 'value' => 'val']],
-            'test5' => [['type' => 'json', 'operator' => 'starts_with', 'jsonPath' => 'path', 'value' => 'val']],
-            'test6' => [['type' => 'json', 'operator' => 'ends_with', 'jsonPath' => 'path', 'value' => 'val']],
+            'test1' => [['type' => 'json', 'operator' => 'contains', 'json-path' => 'path', 'value' => 'val']],
+            'test2' => [['type' => 'json', 'operator' => 'not_contains', 'json-path' => 'path', 'value' => 'val']],
+            'test3' => [['type' => 'json', 'operator' => 'equals', 'json-path' => 'path', 'value' => 'val']],
+            'test4' => [['type' => 'json', 'operator' => 'not_equals', 'json-path' => 'path', 'value' => 'val']],
+            'test5' => [['type' => 'json', 'operator' => 'starts_with', 'json-path' => 'path', 'value' => 'val']],
+            'test6' => [['type' => 'json', 'operator' => 'ends_with', 'json-path' => 'path', 'value' => 'val']],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertCount(6, $parameters->filterCriteria->filters);
 
@@ -274,12 +274,12 @@ class TableParametersRequestJsonFilterTest extends TestCase
                 [
                     'type' => 'json',
                     'operator' => 'contains',
-                    'jsonPath' => 'email',
+                    'json-path' => 'email',
                 ],
             ],
         ]);
 
-        $parameters = $request->getTableParameters('test-table');
+        $parameters = $request->getTableParameters();
 
         $this->assertNotNull($parameters->filterCriteria);
         $this->assertEmpty($parameters->filterCriteria->filters);

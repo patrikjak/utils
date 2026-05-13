@@ -7,7 +7,6 @@ namespace Patrikjak\Utils\Tests\Unit\Table\Factories\Cells;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\Builder\Cell as CellFactory;
-use Patrikjak\Utils\Table\Enums\Cells\CellType;
 use PHPUnit\Framework\TestCase;
 
 final class CellTest extends TestCase
@@ -18,7 +17,7 @@ final class CellTest extends TestCase
 
         $this->assertEquals('value', $cell->value);
         $this->assertNull($cell->icon);
-        $this->assertEquals(CellType::Simple, $cell->getType());
+        $this->assertEquals('simple', $cell->getType());
     }
 
     public function testSimpleCellWithIconCanBeCreated(): void
@@ -28,7 +27,7 @@ final class CellTest extends TestCase
 
         $this->assertEquals('value with icon', $cell->value);
         $this->assertSame($icon, $cell->icon);
-        $this->assertEquals(CellType::Simple, $cell->getType());
+        $this->assertEquals('simple', $cell->getType());
     }
 
     public function testTwoLineCellCanBeCreated(): void
@@ -37,7 +36,7 @@ final class CellTest extends TestCase
 
         $this->assertEquals('value', $cell->value);
         $this->assertEquals('addition', $cell->addition);
-        $this->assertEquals(CellType::TwoLine, $cell->getType());
+        $this->assertEquals('two-line', $cell->getType());
     }
 
     public function testChipCellCanBeCreated(): void
@@ -46,7 +45,7 @@ final class CellTest extends TestCase
 
         $this->assertEquals('value', $cell->value);
         $this->assertEquals(Type::NEUTRAL, $cell->type);
-        $this->assertEquals(CellType::Chip, $cell->getType());
+        $this->assertEquals('chip', $cell->getType());
     }
 
     public function testLinkCellCanBeCreated(): void
@@ -55,7 +54,7 @@ final class CellTest extends TestCase
 
         $this->assertEquals('value', $cell->value);
         $this->assertEquals('https://example.com', $cell->href);
-        $this->assertEquals(CellType::Link, $cell->getType());
+        $this->assertEquals('link', $cell->getType());
     }
 
     public function testSimpleCellMaxLengthIsStoredCorrectly(): void

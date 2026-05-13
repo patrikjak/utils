@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Patrikjak\Utils\Common\ValueObjects\Filter;
+namespace Patrikjak\Utils\Table\ValueObjects\Filter\Criteria;
 
-use Patrikjak\Utils\Common\Enums\Filter\FilterType;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 
 readonly class NumberFilterCriteria extends AbstractFilterCriteria
 {
@@ -13,9 +13,9 @@ readonly class NumberFilterCriteria extends AbstractFilterCriteria
         parent::__construct($column);
     }
 
-    public function getType(): FilterType
+    public function getType(): string
     {
-        return FilterType::NUMBER;
+        return FilterType::Number->value;
     }
 
     /**
@@ -27,7 +27,18 @@ readonly class NumberFilterCriteria extends AbstractFilterCriteria
             'column' => $this->column,
             'from' => $this->from,
             'to' => $this->to,
-            'type' => $this->getType()->value,
+            'type' => $this->getType(),
+        ];
+    }
+
+    /**
+     * @return array<string, float|null>
+     */
+    public function getFilterData(): array
+    {
+        return [
+            'from' => $this->from,
+            'to' => $this->to,
         ];
     }
 }

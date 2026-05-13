@@ -6,9 +6,9 @@ namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
 use Illuminate\Contracts\Database\Query\Builder;
 use InvalidArgumentException;
-use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
-use Patrikjak\Utils\Common\ValueObjects\Filter\AbstractFilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Filter\JsonFilterCriteria;
+use Patrikjak\Utils\Table\Enums\Filter\JsonFilterType;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\JsonFilterCriteria;
 
 class JsonFilter extends AbstractFilter implements Filter
 {
@@ -25,7 +25,9 @@ class JsonFilter extends AbstractFilter implements Filter
             return;
         }
 
-        $column = $query->getGrammar()->wrap($this->getRealColumn($filterCriteria->column, $columnsMask));
+        $resolvedDbColumn = $filterCriteria->getDatabaseColumn();
+
+        $column = $query->getGrammar()->wrap($resolvedDbColumn ?? $this->resolveColumn($filterCriteria->column, $columnsMask));
         $jsonPath = $this->buildJsonPath($filterCriteria->jsonPath);
 
         $operator = $this->getOperator($filterCriteria->filterType);

@@ -1,3 +1,3 @@
-@use('Patrikjak\Utils\Common\Enums\Filter\FilterType')
-
-@include('pjutils::table.filter.filter-forms.' . $type->value)
+<div id="filter-form-inner">
+    @include($formView)
+</div>

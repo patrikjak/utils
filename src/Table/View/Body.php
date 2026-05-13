@@ -15,6 +15,6 @@ class Body extends Table
 
     public function emptyBody(): bool
     {
-        return $this->table->data === [];
+        return $this->table->data->isEmpty();
     }
 }

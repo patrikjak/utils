@@ -1,4 +1,4 @@
-@use('Patrikjak\Utils\Common\Enums\Sort\SortOrder')
+@use('Patrikjak\Utils\Table\Enums\Sort\SortOrder')
 
 <div class="values">
     <div

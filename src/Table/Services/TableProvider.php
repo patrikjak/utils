@@ -7,6 +7,7 @@ namespace Patrikjak\Utils\Table\Services;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Blade;
 use Patrikjak\Utils\Table\Builder\TableBuilder;
+use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Dto\Table;
 use Patrikjak\Utils\Table\Exceptions\InvalidTableBuilderException;
@@ -25,7 +26,42 @@ abstract class TableProvider
      */
     public function getTable(?Parameters $parameters = null): Table
     {
-        return $this->build($parameters)->assembleTable($parameters);
+        $enrichedParameters = $this->preEnrichParameters($parameters);
+
+        return $this->build($enrichedParameters)->assembleTable($enrichedParameters);
+    }
+
+    /**
+     * Override to declare display-column → real-database-column mappings.
+     * Used to pre-enrich filter criteria before build() runs, and can be
+     * called directly inside build() when passing the mask to applySort/applyFilter.
+     *
+     * @return array<string, string>
+     */
+    protected function getColumnMap(): array
+    {
+        return [];
+    }
+
+    private function preEnrichParameters(?Parameters $parameters): ?Parameters
+    {
+        if ($parameters === null) {
+            return null;
+        }
+
+        $mask = $this->getColumnMap();
+
+        if ($mask === []) {
+            return $parameters;
+        }
+
+        if ($parameters->filterCriteria !== null) {
+            $parameters = $parameters->withFilterCriteria(
+                FilterSettings::enrichCriteria($parameters->filterCriteria, $mask),
+            );
+        }
+
+        return $parameters;
     }
 
     /**
