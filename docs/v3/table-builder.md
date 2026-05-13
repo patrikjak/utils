@@ -84,9 +84,9 @@ The old `getSortCriteria()`, `getFilterCriteria()`, `getSearchQuery()` methods a
 ```php
 protected function build(?Parameters $parameters, array $columnMap): TableBuilder
 {
-    $this->sortService->applySort($query, $parameters?->sortCriteria);
-    $this->filterService->applyFilter($query, $parameters?->filterCriteria);
-    $this->filterService->applySearch($query, $parameters?->searchQuery, $searchableColumns);
+    $this->sortService->applySort($query, $parameters?->sortCriteria, $columnMap);
+    $this->filterService->applyFilter($query, $parameters?->filterCriteria, $columnMap);
+    $this->filterService->applySearch($query, $parameters?->searchQuery, array_values($columnMap));
 }
 ```
 
@@ -111,8 +111,8 @@ class UsersTableProvider extends TableProvider
             ->select('users.*', 'c.name AS company_name')
             ->join('companies AS c', 'users.company_id', '=', 'c.id');
 
-        $this->filterService->applyFilter($query, $parameters?->filterCriteria);
-        $this->sortService->applySort($query, $parameters?->sortCriteria);
+        $this->filterService->applyFilter($query, $parameters?->filterCriteria, $columnMap);
+        $this->sortService->applySort($query, $parameters?->sortCriteria, $columnMap);
 
         return TableBuilder::for('users', $paginator, $columnMap)
             ->column('company', 'Company', fn (User $u) => Cell::simple($u->company_name))
@@ -124,26 +124,9 @@ class UsersTableProvider extends TableProvider
 
 The mapping keeps real DB column names out of the frontend: `$key` (e.g. `"company"`) is what appears in URLs and HTML; `$columnMap` resolves it to `"c.name"` server-side only.
 
-### Using enriched parameters in controllers
+### Applying sort / filter / search in controllers
 
-When the query lives in a controller rather than inside `build()`, use `$table->parameters` — filter criteria have `databaseColumn` resolved by the time `getTable()` returns:
-
-```php
-public function update(TableParametersRequest $request): JsonResponse
-{
-    $parameters = $request->getTableParameters();
-    $table = $this->provider->getTable($parameters);
-
-    // $table->parameters has databaseColumn resolved on all criteria
-    $query = User::query();
-    $this->filterService->applyFilter($query, $table->parameters?->filterCriteria);
-    $this->sortService->applySort($query, $table->parameters?->sortCriteria);
-
-    return new JsonResponse($this->provider->getHtmlParts($table->parameters ?? $parameters));
-}
-```
-
-If none of your columns have a mapping, `$table->parameters` is identical to the original `$parameters`.
+If the query lives in a controller rather than inside `build()`, keep the query inside `build()` and return the data from there. Splitting the query across `build()` and a controller is not supported.
 
 ## `TableBuilder` API
 
