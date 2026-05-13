@@ -160,8 +160,8 @@ final class TableBuilderTest extends TestCase
      */
     public function testSortUsesDbAliasWhenSet(): void
     {
-        $table = TableBuilder::for('users', $this->rows)
-            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']), 'u.name')
+        $table = TableBuilder::for('users', $this->rows, ['name' => 'u.name'])
+            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
             ->sort('name')
             ->assembleTable(null);
 
@@ -254,8 +254,8 @@ final class TableBuilderTest extends TestCase
      */
     public function testSearchUsesDbAliasWhenSet(): void
     {
-        $table = TableBuilder::for('users', $this->rows)
-            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']), 'u.name')
+        $table = TableBuilder::for('users', $this->rows, ['name' => 'u.name'])
+            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
             ->search('name')
             ->assembleTable(null);
 

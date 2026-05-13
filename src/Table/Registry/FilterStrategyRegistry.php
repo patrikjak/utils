@@ -8,15 +8,7 @@ use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\Filter;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterCriteriaFactory;
 use Patrikjak\Utils\Table\Exceptions\UnregisteredFilterStrategyException;
 
-/**
- * Singleton registry that maps filter-type strings to their strategy objects,
- * criteria factories, and optional Blade view names.
- *
- * Strategies are stored as shared instances (not class names), which is safe
- * only as long as every Filter implementation is stateless — i.e. it holds no
- * per-request mutable state. If a future filter needs per-request data, it must
- * be resolved freshly via the container instead of being stored here directly.
- */
+/** Strategies must be stateless — they are stored as shared instances. */
 final class FilterStrategyRegistry
 {
     /**

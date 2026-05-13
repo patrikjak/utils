@@ -19,9 +19,6 @@ readonly class Settings
     }
 
     /**
-     * Returns [displayColumn => realDatabaseColumn] for columns that have a databaseColumn mapping.
-     * Pass this to FilterService::applyFilter() and FilterService::applySearch().
-     *
      * @return array<string, string>
      */
     public function getColumnsMask(): array
@@ -32,14 +29,6 @@ readonly class Settings
             ->all();
     }
 
-    /**
-     * Second enrichment pass: applies the per-column `databaseColumn` mappings that
-     * were declared via `TableBuilder::column(..., databaseColumn: '...')`.
-     *
-     * Criteria that already carry a databaseColumn (set by the first pass in
-     * `TableProvider::preEnrichParameters`) are left untouched, so the two passes
-     * are safe to run in sequence without overwriting each other.
-     */
     public function withResolvedDatabaseColumns(): self
     {
         if ($this->criteria === null) {

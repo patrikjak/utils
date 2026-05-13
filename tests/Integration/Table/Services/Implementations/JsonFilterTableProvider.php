@@ -40,9 +40,12 @@ final class JsonFilterTableProvider extends BaseTableProvider
         return $this->filterColumnMap;
     }
 
-    protected function build(?Parameters $parameters): TableBuilder
+    /**
+     * @param array<string, string> $columnMap
+     */
+    protected function build(?Parameters $parameters, array $columnMap): TableBuilder
     {
-        $builder = TableBuilder::for('json-table', $this->getJsonTableData())
+        $builder = TableBuilder::for('json-table', $this->getJsonTableData(), $columnMap)
             ->column('id', 'ID', static fn (array $row) => Cell::simple((string) $row['id']))
             ->column('name', 'Name', static fn (array $row) => Cell::simple((string) $row['name']))
             ->column('metadata', 'Metadata', static fn (array $row) => Cell::simple((string) $row['metadata']))

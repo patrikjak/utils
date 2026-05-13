@@ -9,11 +9,8 @@ use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
 interface FilterCriteriaFactory
 {
     /**
-     * Build a filter criteria object from raw request data.
-     *
-     * Returns null when the data is malformed or insufficient to construct a meaningful
-     * criteria (e.g. a required field is missing). Implementations that always produce a
-     * valid criteria may declare a non-nullable return type (LSP covariance is allowed).
+     * Returns null when data is malformed/insufficient. Implementations that never return null
+     * may declare a non-nullable return type (LSP covariance is allowed).
      *
      * @param array<string, mixed> $data
      */

@@ -36,9 +36,9 @@ class UsersTableProvider extends TableProvider
 {
     public function __construct(private readonly UserRepository $users) {}
 
-    protected function build(?Parameters $parameters): TableBuilder
+    protected function build(?Parameters $parameters, array $columnMap): TableBuilder
     {
-        return TableBuilder::for('users', $this->users->paginate($parameters))
+        return TableBuilder::for('users', $this->users->paginate($parameters), $columnMap)
             ->column('name',  'Name',  fn (User $user) => Cell::simple($user->name))
             ->column('email', 'Email', fn (User $user) => Cell::link($user->email, "mailto:{$user->email}"))
             ->sort('name', 'email')
@@ -54,10 +54,10 @@ class UsersTableProvider extends TableProvider
 Extend `Patrikjak\Utils\Table\Services\TableProvider` and implement one method:
 
 ```php
-abstract protected function build(?Parameters $parameters): TableBuilder;
+abstract protected function build(?Parameters $parameters, array $columnMap): TableBuilder;
 ```
 
-The framework calls `build()` internally. You never call it yourself. `getTable()` and `getHtmlParts()` are still available for the same purposes as before.
+The framework calls `build()` internally — you never call it yourself. Always pass `$columnMap` through to `TableBuilder::for()` as the third argument. `getTable()` and `getHtmlParts()` are still the public API.
 
 ### Table ID and controllers
 
@@ -66,9 +66,9 @@ The framework calls `build()` internally. You never call it yourself. `getTable(
 ```php
 class UsersTableProvider extends TableProvider
 {
-    protected function build(?Parameters $parameters): TableBuilder
+    protected function build(?Parameters $parameters, array $columnMap): TableBuilder
     {
-        return TableBuilder::for('users-table', ...);
+        return TableBuilder::for('users-table', ..., $columnMap);
     }
 }
 
@@ -82,7 +82,7 @@ $provider->getHtmlParts($request->getTableParameters());
 The old `getSortCriteria()`, `getFilterCriteria()`, `getSearchQuery()` methods are gone. Use `$parameters` directly:
 
 ```php
-protected function build(?Parameters $parameters): TableBuilder
+protected function build(?Parameters $parameters, array $columnMap): TableBuilder
 {
     $this->sortService->applySort($query, $parameters?->sortCriteria);
     $this->filterService->applyFilter($query, $parameters?->filterCriteria);
@@ -90,9 +90,9 @@ protected function build(?Parameters $parameters): TableBuilder
 }
 ```
 
-### Column mapping — `databaseColumn` and `getColumnMap()`
+### Column mapping — `getColumnMap()`
 
-When a display column key differs from its real DB column name (e.g. a joined column `c.name` displayed as `company`, or a JSON column `users.metadata` backing multiple logical filters), declare the mapping by overriding `getColumnMap()`:
+When a display column key differs from its real DB column name (e.g. a joined column `c.name` displayed as `company`), declare the mapping once by overriding `getColumnMap()`. The base class forwards it to `build()` as `$columnMap` and it is passed to `TableBuilder::for()`, so every `->column()` call resolves its `databaseColumn` automatically — no need to set it on individual columns.
 
 ```php
 class UsersTableProvider extends TableProvider
@@ -105,31 +105,24 @@ class UsersTableProvider extends TableProvider
         ];
     }
 
-    protected function build(?Parameters $parameters): TableBuilder
+    protected function build(?Parameters $parameters, array $columnMap): TableBuilder
     {
         $query = User::query()
             ->select('users.*', 'c.name AS company_name')
             ->join('companies AS c', 'users.company_id', '=', 'c.id');
 
-        $this->filterService->applyFilter($query, $parameters?->filterCriteria, $this->getColumnMap());
-        $this->sortService->applySort($query, $parameters?->sortCriteria, $this->getColumnMap());
+        $this->filterService->applyFilter($query, $parameters?->filterCriteria);
+        $this->sortService->applySort($query, $parameters?->sortCriteria);
 
-        // ...
-
-        return TableBuilder::for('users', $paginator)
-            ->column('company', 'Company', fn (User $u) => Cell::simple($u->company_name), 'c.name')
+        return TableBuilder::for('users', $paginator, $columnMap)
+            ->column('company', 'Company', fn (User $u) => Cell::simple($u->company_name))
             ->sort('company')
             ->filter('company');
     }
 }
 ```
 
-`getColumnMap()` returns `[displayKey => realDatabaseColumn]`. The base class uses it in two ways:
-
-- **Before `build()` runs** — filter criteria are pre-enriched with the resolved DB column, so `applyFilter` receives the correct column even for criteria types that embed it (e.g. `JsonFilterCriteria`).
-- **Inside `build()`** — call `$this->columnMap()` when passing the mask to `applyFilter` / `applySort` directly, covering sort and any filter strategy that resolves via the mask rather than via the criteria object.
-
-The `->column(..., $databaseColumn)` declaration on the builder is still required — it drives sort query generation and the `$table->parameters` enrichment for the controller pattern (see below).
+The mapping keeps real DB column names out of the frontend: `$key` (e.g. `"company"`) is what appears in URLs and HTML; `$columnMap` resolves it to `"c.name"` server-side only.
 
 ### Using enriched parameters in controllers
 
@@ -141,7 +134,7 @@ public function update(TableParametersRequest $request): JsonResponse
     $parameters = $request->getTableParameters();
     $table = $this->provider->getTable($parameters);
 
-    // Use $table->parameters — filter criteria have databaseColumn resolved
+    // $table->parameters has databaseColumn resolved on all criteria
     $query = User::query();
     $this->filterService->applyFilter($query, $table->parameters?->filterCriteria);
     $this->sortService->applySort($query, $table->parameters?->sortCriteria);
@@ -150,29 +143,30 @@ public function update(TableParametersRequest $request): JsonResponse
 }
 ```
 
-If none of your columns have a `databaseColumn` mapping, `$table->parameters` is identical to the original `$parameters` and either can be used.
+If none of your columns have a mapping, `$table->parameters` is identical to the original `$parameters`.
 
 ## `TableBuilder` API
 
 ### Entry point
 
 ```php
-TableBuilder::for(string $tableId, LengthAwarePaginator|Collection|array $data): self
+TableBuilder::for(string $tableId, LengthAwarePaginator|Collection|array $data, array $columnMap = []): self
 ```
 
-Pass a `LengthAwarePaginator` for paginated tables — pagination settings are derived automatically. Pass a `Collection` or plain `array` for simple non-paginated tables.
+Pass a `LengthAwarePaginator` for paginated tables — pagination settings are derived automatically. Pass a `Collection` or plain `array` for simple non-paginated tables. Always forward the `$columnMap` received from `build()` as the third argument.
 
 ### Columns
 
 ```php
 ->column(
-    string $key,        // data key — must match what your render closure returns
-    string $label,      // column header label
-    Closure $render,    // receives one row item, returns a Cell VO
-    ?string $databaseColumn = null, // DB column name if different from key (used for sort/filter)
+    string $key,      // logical identifier — appears in URLs and HTML, never a real DB column name
+    string $label,    // column header label
+    Closure $render,  // receives one row item, returns a Cell VO
     bool $hidden = false,
 )
 ```
+
+If the real DB column name differs from `$key`, declare the mapping in `getColumnMap()` on the provider. The map is forwarded to `TableBuilder::for()` and resolved automatically for every `column()` call — no per-column configuration needed.
 
 Hidden columns are excluded from the rendered table but remain available for column-visibility toggling. `ColumnVisibility` is derived automatically — you no longer construct it manually.
 
@@ -182,7 +176,7 @@ Hidden columns are excluded from the rendered table but remain available for col
 ->sort(string ...$keys)
 ```
 
-Each key must match a column key defined with `->column()`. The `databaseColumn` value from the column definition is used as the actual DB column name for sort queries. Multiple keys can be passed at once or via chained calls.
+Each key must match a column key defined with `->column()`. The real DB column name is resolved from the column map automatically. Multiple keys can be passed at once or via chained calls.
 
 ### Filtering
 
@@ -190,7 +184,7 @@ Each key must match a column key defined with `->column()`. The `databaseColumn`
 ->filter(string $key, ?FilterDefinition $definition = null)
 ```
 
-Defaults to `Filter::text()` when no definition is provided. Uses `Filter::*` static factory (see below). The logical column `$key` is used as the filter identifier sent to the server. When the column's `databaseColumn` differs from its key (e.g. a JSON column stored as `users.metadata`), the builder resolves it automatically — use `$table->parameters` instead of the original request parameters when querying (see below).
+Defaults to `Filter::text()` when no definition is provided. Uses `Filter::*` static factory (see below). The logical column `$key` is used as the filter identifier sent to the server. When the real DB column differs from the key, the builder resolves it automatically via the column map — use `$table->parameters` instead of the original request parameters when querying (see below).
 
 ### Search
 
@@ -198,7 +192,7 @@ Defaults to `Filter::text()` when no definition is provided. Uses `Filter::*` st
 ->search(string ...$keys)
 ```
 
-Keys must match column keys. `databaseColumn` values are respected.
+Keys must match column keys. Real DB column names are resolved from the column map automatically.
 
 ### Actions
 
@@ -401,7 +395,7 @@ final readonly class RatingFilter implements Filter
 }
 ```
 
-3a. **`NeedsDatabaseColumn` — optional, for column-mapped filters** — if your filter queries a DB column whose name differs from the logical filter key (e.g. a JSON column, a qualified `table.column` name), implement `NeedsDatabaseColumn` on your criteria class. The builder will automatically resolve the correct DB column from the `databaseColumn` defined on `->column()` and make it available via `$table->parameters`:
+3a. **`NeedsDatabaseColumn` — optional, for column-mapped filters** — if your filter queries a DB column whose name differs from the logical filter key (e.g. a JSON column, a qualified `table.column` name), implement `NeedsDatabaseColumn` on your criteria class. The builder will automatically resolve the correct DB column from the column map and make it available via `$table->parameters`:
 
 ```php
 use Patrikjak\Utils\Table\Contracts\Filter\NeedsDatabaseColumn;
@@ -534,12 +528,19 @@ class UsersTableProvider extends TableProvider
 {
     public function __construct(private readonly UserRepository $users) {}
 
-    protected function build(?Parameters $parameters): TableBuilder
+    protected function getColumnMap(): array
     {
-        return TableBuilder::for('users', $this->users->paginate($parameters))
+        return ['company' => 'c.name'];
+    }
+
+    protected function build(?Parameters $parameters, array $columnMap): TableBuilder
+    {
+        $paginator = $this->users->paginateWithCompany($parameters);
+
+        return TableBuilder::for('users', $paginator, $columnMap)
             ->column('name',    'Name',    fn (User $user) => Cell::simple($user->name))
             ->column('email',   'Email',   fn (User $user) => Cell::link($user->email, "mailto:{$user->email}"))
-            ->column('company', 'Company', fn (User $user) => Cell::simple($user->company_name), 'c.name')
+            ->column('company', 'Company', fn (User $user) => Cell::simple($user->company_name))
             ->column('notes',   'Notes',   fn (User $user) => Cell::simple($user->notes), hidden: true)
             ->sort('name', 'email', 'company')
             ->filter('name')
