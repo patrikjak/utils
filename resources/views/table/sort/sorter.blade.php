@@ -9,8 +9,8 @@
 
         @foreach($settings->sortableColumns as $sortableColumn)
             <div
-                {{ $attributes->class(['option', 'selected' => $sortableColumn->column === $selectedColumn]) }}
-                data-column="{{ $sortableColumn->column }}"
+                {{ $attributes->class(['option', 'selected' => $sortableColumn->key === $selectedColumn]) }}
+                data-column="{{ $sortableColumn->key }}"
             >
                 <span>{{ $sortableColumn->label }}</span>
             </div>

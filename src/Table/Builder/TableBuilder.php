@@ -405,7 +405,7 @@ final class TableBuilder
         $sortableColumns = new Collection(array_keys($this->sortKeys))->map(function (string $key): SortableColumn {
             $column = $this->columns[$key];
 
-            return new SortableColumn($column->label, $column->resolvedDatabaseColumn ?? $key);
+            return new SortableColumn($column->label, $key, $column->resolvedDatabaseColumn ?? $key);
         });
 
         return new SortSettings($sortableColumns, $parameters?->sortCriteria);

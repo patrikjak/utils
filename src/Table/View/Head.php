@@ -7,6 +7,7 @@ namespace Patrikjak\Utils\Table\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Table;
+use Patrikjak\Utils\Table\ValueObjects\Sort\SortableColumn;
 use Patrikjak\Utils\Table\View\Traits\TableMethods;
 
 class Head extends Component
@@ -60,7 +61,7 @@ class Head extends Component
         }
 
         return $this->table->sortSettings->sortableColumns
-            ->map(static fn ($col) => $col->column)
+            ->map(static fn (SortableColumn $sortableColumn) => $sortableColumn->key)
             ->all();
     }
 }
