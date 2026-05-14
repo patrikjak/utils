@@ -16,6 +16,7 @@ use Patrikjak\Utils\Table\Dto\Sort\Settings as SortSettings;
 use Patrikjak\Utils\Table\Exceptions\InvalidTableBuilderException;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item as ActionItem;
 use Patrikjak\Utils\Table\ValueObjects\ColumnVisibility;
+use Patrikjak\Utils\Table\ValueObjects\EmptyState;
 use Patrikjak\Utils\Tests\Integration\TestCase;
 
 final class TableBuilderTest extends TestCase
@@ -520,6 +521,99 @@ final class TableBuilderTest extends TestCase
             ->assembleTable(null);
 
         $this->assertNull($table->htmlPartsUrl);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testStickyHeader(): void
+    {
+        $table = TableBuilder::for('users', $this->rows)
+            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
+            ->stickyHeader()
+            ->assembleTable(null);
+
+        $this->assertTrue($table->stickyHeader);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testStickyHeaderFalseByDefault(): void
+    {
+        $table = TableBuilder::for('users', $this->rows)
+            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
+            ->assembleTable(null);
+
+        $this->assertFalse($table->stickyHeader);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testExpandable(): void
+    {
+        $table = TableBuilder::for('users', $this->rows)
+            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
+            ->expandable('details')
+            ->assembleTable(null);
+
+        $this->assertSame('details', $table->expandable);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testExpandableNullByDefault(): void
+    {
+        $table = TableBuilder::for('users', $this->rows)
+            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
+            ->assembleTable(null);
+
+        $this->assertNull($table->expandable);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testEmptyStateFromString(): void
+    {
+        $table = TableBuilder::for('users', $this->rows)
+            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
+            ->emptyState('No users found')
+            ->assembleTable(null);
+
+        $this->assertInstanceOf(EmptyState::class, $table->emptyState);
+        $this->assertSame('No users found', $table->emptyState->title);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testEmptyStateFromObject(): void
+    {
+        $state = new EmptyState('No users found', 'Try adjusting your filters.', 'heroicon-o-users');
+
+        $table = TableBuilder::for('users', $this->rows)
+            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
+            ->emptyState($state)
+            ->assembleTable(null);
+
+        $this->assertSame($state, $table->emptyState);
+        $this->assertSame('Try adjusting your filters.', $table->emptyState->description);
+        $this->assertSame('heroicon-o-users', $table->emptyState->icon);
+    }
+
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testEmptyStateNullByDefault(): void
+    {
+        $table = TableBuilder::for('users', $this->rows)
+            ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
+            ->assembleTable(null);
+
+        $this->assertNull($table->emptyState);
     }
 
     /**
