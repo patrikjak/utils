@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\Dto;
 
+use Illuminate\Support\Collection;
 use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellContract;
 use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
@@ -17,26 +18,26 @@ use Patrikjak\Utils\Table\ValueObjects\EmptyState;
 final readonly class Table
 {
     /**
-     * @param array<string, string> $header
-     * @param array<int, array<string, string|int|CellContract>> $data
-     * @param array<string, object|array<string, mixed>> $rawData
-     * @param array<string> $columns
-     * @param array<Item> $actions
-     * @param array<BulkActionItem> $bulkActions
+     * @param Collection<string, string> $header
+     * @param Collection<int, array<string, string|int|CellContract>> $data
+     * @param Collection<string, object|array<string, mixed>> $rawData
+     * @param Collection<int, string> $columns
+     * @param Collection<int, Item> $actions
+     * @param Collection<int, BulkActionItem> $bulkActions
      */
     public function __construct(
         public string $tableId,
-        public array $header,
-        public array $data,
-        public array $rawData,
-        public array $columns,
+        public Collection $header,
+        public Collection $data,
+        public Collection $rawData,
+        public Collection $columns,
         public string $rowId,
         public bool $showCheckboxes,
         public bool $showOrder,
         public ?string $expandable,
-        public array $actions,
+        public Collection $actions,
         public ?Settings $paginationSettings = null,
-        public array $bulkActions = [],
+        public Collection $bulkActions = new Collection(),
         public ?string $htmlPartsUrl = null,
         public ?SortSettings $sortSettings = null,
         public ?FilterSettings $filterSettings = null,
@@ -45,30 +46,31 @@ final readonly class Table
         public bool $stickyHeader = false,
         public ?EmptyState $emptyState = null,
         public ?ColumnVisibility $columnVisibility = null,
+        public ?Parameters $parameters = null,
     ) {
     }
 
     public function hasActions(): bool
     {
-        return count($this->actions) > 0;
+        return $this->actions->isNotEmpty();
     }
 
     public function hasDropdownActions(): bool
     {
-        return array_any($this->actions, fn (Item $action) => !$action->inline);
+        return $this->actions->contains(fn (Item $action) => !$action->inline);
     }
 
     /**
-     * @return array<Item>
+     * @return Collection<int, Item>
      */
-    public function getDropdownActions(): array
+    public function getDropdownActions(): Collection
     {
-        return array_values(array_filter($this->actions, fn (Item $action) => !$action->inline));
+        return $this->actions->filter(fn (Item $action) => !$action->inline)->values();
     }
 
     public function hasBulkActions(): bool
     {
-        return count($this->bulkActions) > 0;
+        return $this->bulkActions->isNotEmpty();
     }
 
     public function hasPagination(): bool
@@ -82,7 +84,7 @@ final readonly class Table
             return false;
         }
 
-        return count($this->sortSettings->sortableColumns) > 0;
+        return $this->sortSettings->sortableColumns->isNotEmpty();
     }
 
     public function isFilterable(): bool
@@ -91,7 +93,7 @@ final readonly class Table
             return false;
         }
 
-        return count($this->filterSettings->filterableColumns) > 0;
+        return $this->filterSettings->filterableColumns->isNotEmpty();
     }
 
     public function isSearchable(): bool
@@ -100,7 +102,7 @@ final readonly class Table
             return false;
         }
 
-        return count($this->searchSettings->searchableColumns) > 0;
+        return $this->searchSettings->searchableColumns->isNotEmpty();
     }
 
     public function hasColumnVisibility(): bool

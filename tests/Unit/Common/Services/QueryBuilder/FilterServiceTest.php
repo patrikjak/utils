@@ -7,16 +7,16 @@ namespace Patrikjak\Utils\Tests\Unit\Common\Services\QueryBuilder;
 use Carbon\CarbonImmutable;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
-use Orchestra\Testbench\TestCase;
-use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
 use Patrikjak\Utils\Common\Services\QueryBuilder\FilterService;
-use Patrikjak\Utils\Common\ValueObjects\Filter\DateFilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Filter\NumberFilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Filter\SelectFilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Filter\TextFilterCriteria;
+use Patrikjak\Utils\Table\Enums\Filter\TextFilterType;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\DateFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\FilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\NumberFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SelectFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\TextFilterCriteria;
+use Patrikjak\Utils\Tests\Unit\TestCase;
 
-class FilterServiceTest extends TestCase
+final class FilterServiceTest extends TestCase
 {
     /**
      * @throws BindingResolutionException

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Patrikjak\Utils\Common\ValueObjects\Filter;
+namespace Patrikjak\Utils\Table\ValueObjects\Filter\Criteria;
 
 readonly class FilterCriteria
 {

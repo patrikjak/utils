@@ -17,7 +17,20 @@ use Patrikjak\Utils\Table\View\Pagination\Paginator;
 
 abstract class TableProvider
 {
-    abstract protected function build(?Parameters $parameters): TableBuilder;
+    /**
+     * @param array<string, string> $columnMap
+     */
+    abstract protected function build(?Parameters $parameters, array $columnMap): TableBuilder;
+
+    /**
+     * Override to declare display-column → real-database-column mappings.
+     *
+     * @return array<string, string>
+     */
+    protected function getColumnMap(): array
+    {
+        return [];
+    }
 
     /**
      * @throws BindingResolutionException
@@ -25,7 +38,7 @@ abstract class TableProvider
      */
     public function getTable(?Parameters $parameters = null): Table
     {
-        return $this->build($parameters)->assembleTable($parameters);
+        return $this->build($parameters, $this->getColumnMap())->assembleTable($parameters);
     }
 
     /**

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
 use Illuminate\Contracts\Database\Query\Builder;
-use Patrikjak\Utils\Common\ValueObjects\Filter\AbstractFilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Filter\DateFilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Filter\NumberFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\DateFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\NumberFilterCriteria;
 
 class RangeFilter extends AbstractFilter implements Filter
 {
@@ -24,7 +24,7 @@ class RangeFilter extends AbstractFilter implements Filter
 
         if ($filterCriteria->from === null) {
             $query->orWhere(
-                $this->getRealColumn($filterCriteria->column, $columnsMask),
+                $this->resolveColumn($filterCriteria->column, $columnsMask),
                 '<=',
                 $filterCriteria->to,
             );
@@ -34,7 +34,7 @@ class RangeFilter extends AbstractFilter implements Filter
 
         if ($filterCriteria->to === null) {
             $query->orWhere(
-                $this->getRealColumn($filterCriteria->column, $columnsMask),
+                $this->resolveColumn($filterCriteria->column, $columnsMask),
                 '>=',
                 $filterCriteria->from,
             );
@@ -43,7 +43,7 @@ class RangeFilter extends AbstractFilter implements Filter
         }
 
         $query->orWhereBetween(
-            $this->getRealColumn($filterCriteria->column, $columnsMask),
+            $this->resolveColumn($filterCriteria->column, $columnsMask),
             [$filterCriteria->from, $filterCriteria->to],
         );
     }

@@ -28,11 +28,14 @@ final class FullTableSearchTableProvider extends BaseTableProvider
         return $this->lastParameters;
     }
 
-    protected function build(?Parameters $parameters): TableBuilder
+    /**
+     * @param array<string, string> $columnMap
+     */
+    protected function build(?Parameters $parameters, array $columnMap): TableBuilder
     {
         $this->lastParameters = $parameters;
 
-        $builder = TableBuilder::for('table', $this->getRawTableData())
+        $builder = TableBuilder::for('table', $this->getRawTableData(), $columnMap)
             ->column('id', 'ID', static fn (array $row) => Cell::simple($row['id']))
             ->column('name', 'Name', static fn (array $row) => Cell::simple($row['name']))
             ->column('email', 'Email', static fn (array $row) => Cell::simple($row['email']))

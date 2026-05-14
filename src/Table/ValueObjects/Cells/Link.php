@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\ValueObjects\Cells;
 
 use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellContract;
-use Patrikjak\Utils\Table\Enums\Cells\CellType;
 
 readonly class Link extends Cell implements CellContract
 {
@@ -18,8 +17,8 @@ readonly class Link extends Cell implements CellContract
         parent::__construct($value, $maxLength, $noTruncation);
     }
 
-    public function getType(): CellType
+    public function getType(): string
     {
-        return CellType::Link;
+        return 'link';
     }
 }

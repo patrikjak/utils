@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\Dto\Sort;
 
-use Patrikjak\Utils\Common\ValueObjects\Sort\SortCriteria;
+use Illuminate\Support\Collection;
 use Patrikjak\Utils\Table\ValueObjects\Sort\SortableColumn;
+use Patrikjak\Utils\Table\ValueObjects\Sort\SortCriteria;
 
 readonly class Settings
 {
     /**
-     * @param array<SortableColumn> $sortableColumns
+     * @param Collection<int, SortableColumn> $sortableColumns
      */
-    public function __construct(public array $sortableColumns, public ?SortCriteria $criteria = null)
+    public function __construct(public Collection $sortableColumns, public ?SortCriteria $criteria = null)
     {
     }
 }

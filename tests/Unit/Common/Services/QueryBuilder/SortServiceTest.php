@@ -7,9 +7,9 @@ namespace Patrikjak\Utils\Tests\Unit\Common\Services\QueryBuilder;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
 use Orchestra\Testbench\TestCase;
-use Patrikjak\Utils\Common\Enums\Sort\SortOrder;
 use Patrikjak\Utils\Common\Services\QueryBuilder\SortService;
-use Patrikjak\Utils\Common\ValueObjects\Sort\SortCriteria;
+use Patrikjak\Utils\Table\Enums\Sort\SortOrder;
+use Patrikjak\Utils\Table\ValueObjects\Sort\SortCriteria;
 
 class SortServiceTest extends TestCase
 {
@@ -34,7 +34,7 @@ class SortServiceTest extends TestCase
         $sortService = $this->app->make(SortService::class);
         $query = $this->app->make(DatabaseManager::class)->table('users')->select();
 
-        $sortService->applySort($query, new SortCriteria('name', SortOrder::DESC), ['users.name' => 'name']);
+        $sortService->applySort($query, new SortCriteria('name', SortOrder::DESC), ['name' => 'users.name']);
 
         $this->assertStringContainsString('order by "users"."name" desc', $query->toSql());
     }

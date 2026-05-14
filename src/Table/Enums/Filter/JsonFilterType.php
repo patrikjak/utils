@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Patrikjak\Utils\Common\Enums\Filter;
+namespace Patrikjak\Utils\Table\Enums\Filter;
 
-enum TextFilterType: string
+enum JsonFilterType: string
 {
     case CONTAINS = 'contains';
     case NOT_CONTAINS = 'not_contains';
@@ -15,6 +15,6 @@ enum TextFilterType: string
 
     public function toLabel(): string
     {
-        return __('pjutils::table.text_filter_types.' . $this->value);
+        return __('pjutils::table.json_filter_types.' . $this->value);
     }
 }

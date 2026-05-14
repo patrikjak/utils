@@ -36,7 +36,9 @@ final class TableBuilder
     private array $columns = [];
 
     /**
-     * @var array<string>
+     * Keys are the column keys; values are always `true` (set semantics for O(1) dedup).
+     *
+     * @var array<string, true>
      */
     private array $sortKeys = [];
 
@@ -46,7 +48,9 @@ final class TableBuilder
     private array $filterEntries = [];
 
     /**
-     * @var array<string>
+     * Keys are the column keys; values are always `true` (set semantics for O(1) dedup).
+     *
+     * @var array<string, true>
      */
     private array $searchKeys = [];
 
@@ -70,6 +74,10 @@ final class TableBuilder
 
     private ?string $htmlPartsUrl = null;
 
+    private ?string $expandable = null;
+
+    private bool $stickyHeader = false;
+
     /**
      * @var array<int, int>
      */
@@ -77,31 +85,40 @@ final class TableBuilder
 
     /**
      * @param LengthAwarePaginator<object>|Collection<int, object>|array<int, object|array<string, mixed>> $data
+     * @param array<string, string> $columnMap
      */
     private function __construct(
         private readonly string $tableId,
         private readonly LengthAwarePaginator|Collection|array $data,
+        private readonly array $columnMap = [],
     ) {
     }
 
     /**
      * @param LengthAwarePaginator<object>|Collection<int, object>|array<int, object|array<string, mixed>> $data
+     * @param array<string, string> $columnMap [displayKey => realDatabaseColumn]
      */
     public static function for(
         string $tableId,
         LengthAwarePaginator|Collection|array $data,
+        array $columnMap = [],
     ): self {
-        return new self($tableId, $data);
+        return new self($tableId, $data, $columnMap);
     }
 
     public function column(
         string $key,
         string $label,
         Closure $render,
-        ?string $databaseColumn = null,
         bool $hidden = false,
     ): self {
-        $this->columns[$key] = new ColumnDefinition($key, $label, $render, $databaseColumn, $hidden);
+        $this->columns[$key] = new ColumnDefinition(
+            $key,
+            $label,
+            $render,
+            $this->columnMap[$key] ?? null,
+            $hidden,
+        );
 
         return $this;
     }
@@ -109,9 +126,7 @@ final class TableBuilder
     public function sort(string ...$keys): self
     {
         foreach ($keys as $key) {
-            if (!in_array($key, $this->sortKeys, true)) {
-                $this->sortKeys[] = $key;
-            }
+            $this->sortKeys[$key] = true;
         }
 
         return $this;
@@ -127,9 +142,7 @@ final class TableBuilder
     public function search(string ...$keys): self
     {
         foreach ($keys as $key) {
-            if (!in_array($key, $this->searchKeys, true)) {
-                $this->searchKeys[] = $key;
-            }
+            $this->searchKeys[$key] = true;
         }
 
         return $this;
@@ -194,6 +207,7 @@ final class TableBuilder
         return $this;
     }
 
+    /** Passing a plain string sets only the title; pass EmptyState for description and icon too. */
     public function emptyState(string|EmptyState $emptyState): self
     {
         $this->emptyState = $emptyState instanceof EmptyState
@@ -206,6 +220,20 @@ final class TableBuilder
     public function htmlPartsUrl(string $url): self
     {
         $this->htmlPartsUrl = $url;
+
+        return $this;
+    }
+
+    public function expandable(string $expandable): self
+    {
+        $this->expandable = $expandable;
+
+        return $this;
+    }
+
+    public function stickyHeader(): self
+    {
+        $this->stickyHeader = true;
 
         return $this;
     }
@@ -228,23 +256,65 @@ final class TableBuilder
     {
         $this->validate();
 
-        $visibleColumns = array_filter(
-            $this->columns,
-            static fn (ColumnDefinition $col) => !$col->hidden,
-        );
-        $visibleKeys = array_keys($visibleColumns);
+        $columnVisibility = $this->buildColumnVisibility();
 
-        $rows = $this->resolveRows();
-        $header = array_map(
-            static fn (ColumnDefinition $col) => $col->label,
-            $visibleColumns,
-        );
+        $visibleKeys = $columnVisibility !== null
+            ? $columnVisibility->getVisibleColumns($parameters?->visibleColumns)
+            : new Collection($this->columns)
+                ->filter(static fn (ColumnDefinition $column) => !$column->hidden)
+                ->keys()
+                ->all();
 
+        $header = new Collection($this->columns)
+            ->only($visibleKeys)
+            ->map(static fn (ColumnDefinition $column) => $column->label);
+
+        [$data, $rawData] = $this->buildRows($visibleKeys);
+
+        $filterSettings = $this->buildFilterSettings($parameters)?->withResolvedDatabaseColumns();
+
+        return new Table(
+            $this->tableId,
+            $header,
+            new Collection($data),
+            new Collection($rawData),
+            new Collection($visibleKeys),
+            $this->rowId,
+            $this->showCheckboxes,
+            $this->showOrder,
+            $this->expandable,
+            $this->buildActionItems(),
+            $this->buildPaginationSettings($parameters),
+            $this->buildBulkActionItems(),
+            $this->resolveHtmlPartsUrl(),
+            $this->buildSortSettings($parameters),
+            $filterSettings,
+            $this->resolveDefaultMaxLength(),
+            $this->buildSearchSettings($parameters),
+            $this->stickyHeader,
+            $this->emptyState,
+            $columnVisibility,
+            $this->buildEnrichedParameters($parameters, $filterSettings),
+        );
+    }
+
+    /**
+     * @param array<string> $visibleKeys
+     * @return array{array<array<string, mixed>>, array<string, object|array<string, mixed>>}
+     */
+    private function buildRows(array $visibleKeys): array
+    {
         $rawData = [];
         $data = [];
 
-        foreach ($rows as $row) {
-            $rowId = (string) $this->extractRowId($row);
+        foreach ($this->resolveRows() as $row) {
+            $extracted = $this->extractRowId($row);
+
+            if ($extracted === null) {
+                throw InvalidTableBuilderException::forMissingRowId($this->rowId);
+            }
+
+            $rowId = (string) $extracted;
             $rawData[$rowId] = $row;
 
             $result = [$this->rowId => $rowId];
@@ -256,34 +326,16 @@ final class TableBuilder
             $data[] = $result;
         }
 
-        $sortSettings = $this->buildSortSettings($parameters);
-        $filterSettings = $this->buildFilterSettings($parameters);
-        $searchSettings = $this->buildSearchSettings($parameters);
-        $paginationSettings = $this->buildPaginationSettings($parameters);
-        $columnVisibility = $this->buildColumnVisibility();
+        return [$data, $rawData];
+    }
 
-        return new Table(
-            tableId: $this->tableId,
-            header: $header,
-            data: $data,
-            rawData: $rawData,
-            columns: $visibleKeys,
-            rowId: $this->rowId,
-            showCheckboxes: $this->showCheckboxes,
-            showOrder: $this->showOrder,
-            expandable: null,
-            actions: $this->buildActionItems(),
-            paginationSettings: $paginationSettings,
-            bulkActions: $this->buildBulkActionItems(),
-            htmlPartsUrl: $this->resolveHtmlPartsUrl(),
-            sortSettings: $sortSettings,
-            filterSettings: $filterSettings,
-            defaultMaxLength: $this->resolveDefaultMaxLength(),
-            searchSettings: $searchSettings,
-            stickyHeader: false,
-            emptyState: $this->emptyState,
-            columnVisibility: $columnVisibility,
-        );
+    private function buildEnrichedParameters(?Parameters $parameters, ?FilterSettings $filterSettings): ?Parameters
+    {
+        if ($parameters === null || $filterSettings === null) {
+            return $parameters;
+        }
+
+        return $parameters->withFilterCriteria($filterSettings->criteria);
     }
 
     private function validate(): void
@@ -295,7 +347,7 @@ final class TableBuilder
             $violations[] = 'at least one column() must be defined';
         }
 
-        foreach ($this->sortKeys as $key) {
+        foreach (array_keys($this->sortKeys) as $key) {
             if (!in_array($key, $columnKeys, true)) {
                 $violations[] = sprintf('sort key "%s" does not match any column', $key);
             }
@@ -307,7 +359,7 @@ final class TableBuilder
             }
         }
 
-        foreach ($this->searchKeys as $key) {
+        foreach (array_keys($this->searchKeys) as $key) {
             if (!in_array($key, $columnKeys, true)) {
                 $violations[] = sprintf('search key "%s" does not match any column', $key);
             }
@@ -321,6 +373,7 @@ final class TableBuilder
             throw InvalidTableBuilderException::withViolations($violations);
         }
     }
+
 
     /**
      * @return array<int, object|array<string, mixed>>
@@ -356,11 +409,11 @@ final class TableBuilder
             return null;
         }
 
-        $sortableColumns = array_map(function (string $key): SortableColumn {
-            $col = $this->columns[$key];
+        $sortableColumns = new Collection(array_keys($this->sortKeys))->map(function (string $key): SortableColumn {
+            $column = $this->columns[$key];
 
-            return new SortableColumn($col->label, $col->databaseColumn ?? $key);
-        }, $this->sortKeys);
+            return new SortableColumn($column->label, $key, $column->resolvedDatabaseColumn ?? $key);
+        });
 
         return new SortSettings($sortableColumns, $parameters?->sortCriteria);
     }
@@ -371,11 +424,13 @@ final class TableBuilder
             return null;
         }
 
-        $filterableColumns = array_map(function (string $key, FilterDefinition $definition): FilterableColumn {
-            $col = $this->columns[$key];
+        $filterableColumns = new Collection($this->filterEntries)
+            ->map(function (FilterDefinition $definition, string $key): FilterableColumn {
+                $column = $this->columns[$key];
 
-            return new FilterableColumn($col->label, $col->databaseColumn ?? $key, $definition);
-        }, array_keys($this->filterEntries), $this->filterEntries);
+                return new FilterableColumn($column->label, $key, $definition, $column->resolvedDatabaseColumn);
+            })
+            ->values();
 
         return new FilterSettings($filterableColumns, $parameters?->filterCriteria);
     }
@@ -386,9 +441,9 @@ final class TableBuilder
             return null;
         }
 
-        $dbColumns = array_map(function (string $key): string {
-            return $this->columns[$key]->databaseColumn ?? $key;
-        }, $this->searchKeys);
+        $dbColumns = new Collection(array_keys($this->searchKeys))->map(function (string $key): string {
+            return $this->columns[$key]->resolvedDatabaseColumn ?? $key;
+        });
 
         return new SearchSettings($dbColumns, $parameters?->searchQuery);
     }
@@ -402,19 +457,21 @@ final class TableBuilder
         $paginator = $this->resolvePaginator();
 
         return new PaginationSettings(
-            page: $parameters !== null ? $parameters->page : $this->data->currentPage(),
-            pageSize: $parameters !== null ? $parameters->pageSize : $this->data->perPage(),
-            pageSizeOptions: $this->pageSizeOptions,
-            path: $paginator->getPath(),
-            links: $paginator->getLinks(),
-            lastPage: $paginator->getLastPage(),
+            $parameters !== null ? $parameters->page : $this->data->currentPage(),
+            $parameters !== null ? $parameters->pageSize : $this->data->perPage(),
+            $this->pageSizeOptions,
+            $paginator->getPath(),
+            $paginator->getLinks(),
+            $paginator->getLastPage(),
         );
     }
 
-    /** @return array<ActionItem> */
-    private function buildActionItems(): array
+    /**
+     * @return Collection<int, ActionItem>
+     */
+    private function buildActionItems(): Collection
     {
-        return array_map(function (ActionDefinition $definition): ActionItem {
+        return new Collection(array_map(function (ActionDefinition $definition): ActionItem {
             if ($definition->when !== null) {
                 $visible = $definition->when;
             } elseif ($definition->whenNot !== null) {
@@ -423,50 +480,50 @@ final class TableBuilder
             }
 
             return new ActionItem(
-                label: $definition->label,
-                classId: $definition->classId,
-                icon: $definition->icon,
-                type: $definition->type,
-                visible: $visible ?? true,
-                href: $definition->href,
-                method: $definition->method !== 'GET' ? $definition->method : null,
-                inline: $definition->inline,
+                $definition->label,
+                $definition->classId,
+                $definition->icon,
+                $definition->type,
+                $visible ?? true,
+                $definition->href,
+                $definition->method !== 'GET' ? $definition->method : null,
+                $definition->inline,
             );
-        }, $this->actions);
+        }, $this->actions));
     }
 
-    /** @return array<BulkActionItem> */
-    private function buildBulkActionItems(): array
+    /**
+     * @return Collection<int, BulkActionItem>
+     */
+    private function buildBulkActionItems(): Collection
     {
-        return array_map(
-            static fn (BulkActionDefinition $def) => new BulkActionItem(
-                label: $def->label,
-                action: $def->action,
-                method: $def->method,
-                icon: $def->icon,
-                type: $def->type,
+        return new Collection(array_map(
+            static fn (BulkActionDefinition $definition) => new BulkActionItem(
+                $definition->label,
+                $definition->action,
+                $definition->method,
+                $definition->icon,
+                $definition->type,
             ),
             $this->bulkActions,
-        );
+        ));
     }
 
     private function buildColumnVisibility(): ?ColumnVisibility
     {
-        $hiddenColumns = array_filter(
-            $this->columns,
-            static fn (ColumnDefinition $column) => $column->hidden,
-        );
+        $columns = new Collection($this->columns);
+        $hiddenKeys = $columns
+            ->filter(static fn (ColumnDefinition $column) => $column->hidden)
+            ->keys()
+            ->all();
 
-        if ($hiddenColumns === []) {
+        if ($hiddenKeys === []) {
             return null;
         }
 
-        $all = array_map(
-            static fn (ColumnDefinition $column) => $column->label,
-            $this->columns,
-        );
+        $all = $columns->map(static fn (ColumnDefinition $column) => $column->label)->all();
 
-        return new ColumnVisibility($all, array_keys($hiddenColumns));
+        return new ColumnVisibility($all, $hiddenKeys);
     }
 
     private function resolvePaginator(): PaginatorDto

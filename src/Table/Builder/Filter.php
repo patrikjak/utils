@@ -6,6 +6,7 @@ namespace Patrikjak\Utils\Table\Builder;
 
 use Carbon\CarbonInterface;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Custom\CustomFilterDefinition;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Date\DateFilterDefinition;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Json\JsonFilterDefinition;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Number\NumberFilterDefinition;
@@ -41,5 +42,10 @@ final class Filter
     public static function json(?string $jsonPath = null): FilterDefinition
     {
         return new JsonFilterDefinition($jsonPath);
+    }
+
+    public static function registered(string $type): FilterDefinition
+    {
+        return new CustomFilterDefinition($type);
     }
 }

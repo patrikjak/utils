@@ -21,9 +21,12 @@ final class PaginatedTableProvider extends BaseTableProvider
         $this->configurator = $configurator;
     }
 
-    protected function build(?Parameters $parameters): TableBuilder
+    /**
+     * @param array<string, string> $columnMap
+     */
+    protected function build(?Parameters $parameters, array $columnMap): TableBuilder
     {
-        $builder = TableBuilder::for('table', $this->makePaginator())
+        $builder = TableBuilder::for('table', $this->makePaginator(), $columnMap)
             ->column('id', 'ID', static fn (array $row) => Cell::simple($row['id']))
             ->column('name', 'Name', static fn (array $row) => Cell::simple($row['name']))
             ->column('email', 'Email', static fn (array $row) => Cell::simple($row['email']))

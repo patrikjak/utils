@@ -12,7 +12,7 @@ final readonly class ColumnDefinition
         public string $key,
         public string $label,
         public Closure $render,
-        public ?string $databaseColumn = null,
+        public ?string $resolvedDatabaseColumn = null,
         public bool $hidden = false,
     ) {
     }

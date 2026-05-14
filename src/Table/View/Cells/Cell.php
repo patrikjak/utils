@@ -56,7 +56,7 @@ abstract class Cell extends Component
 
     public function getCellClass(): string
     {
-        $classes = [$this->cell->getType()->value, $this->column];
+        $classes = [$this->cell->getType(), $this->column];
 
         if ($this->hasIcon()) {
             $classes[] = 'with-icon';

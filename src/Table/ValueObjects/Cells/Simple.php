@@ -7,7 +7,6 @@ namespace Patrikjak\Utils\Table\ValueObjects\Cells;
 use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellContract;
 use Patrikjak\Utils\Table\Contracts\Cells\SupportsIcon;
-use Patrikjak\Utils\Table\Enums\Cells\CellType;
 
 readonly class Simple extends Cell implements CellContract, SupportsIcon
 {
@@ -20,9 +19,9 @@ readonly class Simple extends Cell implements CellContract, SupportsIcon
         parent::__construct($value, $maxLength, $noTruncation);
     }
 
-    public function getType(): CellType
+    public function getType(): string
     {
-        return CellType::Simple;
+        return 'simple';
     }
 
     public function getIcon(): ?Icon

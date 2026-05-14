@@ -7,9 +7,9 @@ namespace Patrikjak\Utils\Table\View\Filter;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Common\Enums\Filter\FilterType;
-use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
-use Patrikjak\Utils\Common\Enums\Filter\TextFilterType;
+use Patrikjak\Utils\Table\Enums\Filter\JsonFilterType;
+use Patrikjak\Utils\Table\Enums\Filter\TextFilterType;
+use Patrikjak\Utils\Table\Registry\FilterStrategyRegistry;
 
 class FilterForm extends Component
 {
@@ -23,12 +23,18 @@ class FilterForm extends Component
      */
     public array $jsonFilterTypes = [];
 
+    public string $formView;
+
     public function __construct(
-        public FilterType $type,
+        FilterStrategyRegistry $registry,
+        public string $type,
         public ?string $min = null,
         public ?string $max = null,
-        public ?string $jsonPath = null
+        public ?string $jsonPath = null,
+        public ?string $optionsUrl = null,
     ) {
+        $this->formView = $registry->getFormView($type);
+
         $this->textFilterTypes = new Collection(TextFilterType::cases())->flatMap(
             static fn (TextFilterType $type) => [$type->value => $type->toLabel()],
         )->toArray();

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Date;
 
 use Carbon\CarbonInterface;
-use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
 use Patrikjak\Utils\Table\Contracts\Filter\RangeData;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 
 readonly class DateFilterDefinition implements FilterDefinition, RangeData
 {
@@ -15,9 +15,9 @@ readonly class DateFilterDefinition implements FilterDefinition, RangeData
     {
     }
 
-    public function getType(): FilterType
+    public function getType(): string
     {
-        return FilterType::DATE;
+        return FilterType::Date->value;
     }
 
     public function getMin(): ?string
@@ -28,5 +28,16 @@ readonly class DateFilterDefinition implements FilterDefinition, RangeData
     public function getMax(): ?string
     {
         return $this->to?->format('Y-m-d');
+    }
+
+    /**
+     * @return array<string, string|int|float|null>
+     */
+    public function getFilterData(): array
+    {
+        return [
+            'from' => $this->getMin(),
+            'to' => $this->getMax(),
+        ];
     }
 }

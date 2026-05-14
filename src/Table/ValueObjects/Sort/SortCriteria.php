@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Patrikjak\Utils\Common\ValueObjects\Sort;
+namespace Patrikjak\Utils\Table\ValueObjects\Sort;
 
-use Patrikjak\Utils\Common\Enums\Sort\SortOrder;
+use Patrikjak\Utils\Table\Enums\Sort\SortOrder;
 
 readonly class SortCriteria
 {

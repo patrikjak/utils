@@ -7,10 +7,10 @@ namespace Patrikjak\Utils\Tests\Integration\Common\Services;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
-use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
 use Patrikjak\Utils\Common\Services\QueryBuilder\FilterService;
-use Patrikjak\Utils\Common\ValueObjects\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\ValueObjects\Filter\JsonFilterCriteria;
+use Patrikjak\Utils\Table\Enums\Filter\JsonFilterType;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\FilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\JsonFilterCriteria;
 use Patrikjak\Utils\Tests\Integration\TestCase;
 
 class JsonFilterServiceIntegrationTest extends TestCase
@@ -207,7 +207,7 @@ class JsonFilterServiceIntegrationTest extends TestCase
         $query = DB::table($this->testTable)->select();
 
         $columnMask = [
-            'json_test_table.metadata' => 'user_metadata',
+            'user_metadata' => 'json_test_table.metadata',
         ];
 
         $this->filterService->applyFilter($query, new FilterCriteria([

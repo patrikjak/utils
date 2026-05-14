@@ -12,6 +12,7 @@ readonly class FilterableColumn
         public string $label,
         public string $column,
         public FilterDefinition $filterDefinition,
+        public ?string $databaseColumn = null,
     ) {
     }
 }

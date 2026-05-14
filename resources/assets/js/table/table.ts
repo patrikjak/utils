@@ -5,18 +5,13 @@ import {bindChecking, checkSavedCheckboxes, handleBulkActions} from "./checkboxe
 import {bindOptions} from "./options";
 import {
     ColumnsCriteria,
-    DateFilter,
     Filter,
     FilterCriteria,
-    JsonFilter,
-    NumberFilter,
     PageCriteria,
     SearchCriteria,
-    SelectFilter,
     SortCriteria,
     TableParts,
     TableWrapper,
-    TextFilter
 } from "../interfaces/table";
 import {deleteFilterKey, deleteSearchKey, deleteSortKey, filterKey, orderKey, pageKey, pageSizeKey, searchKey, sortKey, visibleColumnsKey} from "./constants";
 import {bindInlineActions, bindShowingRowActions, setActionsToDefaultPosition} from "./actions";
@@ -325,6 +320,7 @@ function getTableParts(url: string): Promise<TableParts | null> {
 function reloadTableHead(tableWrapper: TableWrapper, head: string): void {
     const tableHead: HTMLTableSectionElement = tableWrapper.querySelector('thead');
     tableHead.innerHTML = head;
+    bindHeaderSorting(tableWrapper);
 }
 
 function reloadTableBody(tableWrapper: TableWrapper, body: string): void {
@@ -398,6 +394,11 @@ function addFilterCriteriaToUrl(url: string, filterCriteria: FilterCriteria): st
     let i: number = 0;
 
     for (const filter of filterCriteria.filters) {
+        if (filter === null || filter === undefined) {
+            i++;
+            continue;
+        }
+
         filterQueries.push(getFilterQuery(filter, i));
         i++;
     }
@@ -406,54 +407,17 @@ function addFilterCriteriaToUrl(url: string, filterCriteria: FilterCriteria): st
 }
 
 function getFilterQuery(filter: Filter, index: number): string {
-    switch (filter.type) {
-        case 'text':
-            return getTextFilterQuery(<TextFilter> filter, index);
-        case 'number':
-        case 'date':
-            return getRangeFilterQuery(<NumberFilter | DateFilter> filter, index);
-        case 'select':
-            return getSelectFilterQuery(<SelectFilter> filter, index);
-        case 'json':
-            return getJsonFilterQuery(<JsonFilter> filter, index);
-    }
-}
+    const parts: string[] = [`${filterKey}[${filter.column}][${index}][type]=${encodeURIComponent(filter.type)}`];
 
-function getTextFilterQuery(filter: TextFilter, index: number): string {
-    return `${filterKey}[${filter.column}][${index}][value]=${encodeURIComponent(filter.value)}
-        &${filterKey}[${filter.column}][${index}][operator]=${encodeURIComponent(filter.filterType)}
-        &${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
-}
+    for (const [key, value] of Object.entries(filter.data)) {
+        if (value === null || value === undefined) {
+            continue;
+        }
 
-function getRangeFilterQuery(filter: NumberFilter | DateFilter, index: number): string {
-    if (filter.from === null && filter.to === null) {
-        return '';
+        parts.push(`${filterKey}[${filter.column}][${index}][${key}]=${encodeURIComponent(String(value))}`);
     }
 
-    const filterTypeQuery: string = `&${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
-
-    if (filter.from === null) {
-        return `${filterKey}[${filter.column}][${index}][to]=${filter.to}${filterTypeQuery}`;
-    }
-
-    if (filter.to === null) {
-        return `${filterKey}[${filter.column}][${index}][from]=${filter.from}${filterTypeQuery}`;
-    }
-
-    return `${filterKey}[${filter.column}][${index}][from]=${filter.from}
-        &${filterKey}[${filter.column}][${index}][to]=${filter.to}${filterTypeQuery}`;
-}
-
-function getSelectFilterQuery(filter: SelectFilter, index: number): string {
-    return `${filterKey}[${filter.column}][${index}][value]=${filter.value}
-        &${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
-}
-
-function getJsonFilterQuery(filter: JsonFilter, index: number): string {
-    return `${filterKey}[${filter.column}][${index}][value]=${encodeURIComponent(filter.value)}
-        &${filterKey}[${filter.column}][${index}][operator]=${encodeURIComponent(filter.filterType)}
-        &${filterKey}[${filter.column}][${index}][jsonPath]=${encodeURIComponent(filter.jsonPath ?? '')}
-        &${filterKey}[${filter.column}][${index}][type]=${filter.type}`;
+    return parts.join('&');
 }
 
 function addSearchCriteriaToUrl(url: string, searchCriteria: SearchCriteria): string {

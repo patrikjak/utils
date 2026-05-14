@@ -24,25 +24,9 @@ Common/
 │   └── Paginator.php                  # Generic page+pageSize+Collection bag
 │
 ├── ValueObjects/
-│   ├── Image.php                      # Immutable image value (src, alt, fileName)
-│   ├── Filter/
-│   │   ├── AbstractFilterCriteria.php # Abstract base: column + getType() + toArray()
-│   │   ├── FilterCriteria.php         # Immutable collection of AbstractFilterCriteria
-│   │   ├── DateFilterCriteria.php     # from/to with getFormattedFrom/To()
-│   │   ├── JsonFilterCriteria.php     # jsonPath, value, filterType
-│   │   ├── NumberFilterCriteria.php   # from/to floats
-│   │   ├── SelectFilterCriteria.php   # single string value
-│   │   └── TextFilterCriteria.php     # value + TextFilterType operator
-│   └── Sort/
-│       └── SortCriteria.php           # column + SortOrder with toArray()
+│   └── Image.php                      # Immutable image value (src, alt, fileName)
 │
 ├── Enums/
-│   ├── Filter/
-│   │   ├── FilterType.php             # TEXT | SELECT | DATE | NUMBER | JSON
-│   │   ├── JsonFilterType.php
-│   │   └── TextFilterType.php
-│   ├── Sort/
-│   │   └── SortOrder.php              # ASC | DESC
 │   ├── AlertType.php
 │   ├── BadgeType.php
 │   ├── ButtonSize.php
@@ -58,9 +42,9 @@ Common/
 ├── Rules/
 ├── Services/
 │   └── QueryBuilder/
-│       ├── FilterService.php
+│       ├── FilterService.php          # Applies filter criteria to a query builder
 │       ├── PaginatorService.php
-│       ├── SortService.php
+│       ├── SortService.php            # Applies sort criteria to a query builder
 │       └── Filters/
 │           ├── Filter.php             # interface
 │           ├── AbstractFilter.php
@@ -79,18 +63,23 @@ Common/
 
 ```
 Table/
+├── Builder/
+│   ├── TableBuilder.php               # Fluent builder — entry point for assembling a Table DTO
+│   ├── Cell.php                       # Static factory for cell value objects (Cell::simple, ::link, …)
+│   ├── Filter.php                     # Static factory for filter definitions (Filter::text, ::select, …)
+│   ├── ActionDefinition.php
+│   ├── BulkActionDefinition.php
+│   └── ColumnDefinition.php
+│
 ├── Contracts/
-│   ├── Filterable.php                 # getFilterableColumns/getFilterCriteria
-│   ├── Renderable.php                 # getHtmlParts/getHtmlPartsUrl
-│   ├── Searchable.php                 # getSearchableColumns/getSearchQuery
-│   ├── Sortable.php                   # getSortableColumns/getSortCriteria
-│   ├── SupportsPagination.php         # getPaginationSettings
 │   ├── Cells/
-│   │   ├── Cell.php                   # getType(): CellType
+│   │   ├── Cell.php                   # getType(): string
 │   │   └── SupportsIcon.php           # getIcon(): ?Icon
 │   ├── Filter/
-│   │   ├── FilterDefinition.php       # getType(): FilterType
+│   │   ├── FilterCriteriaFactory.php  # make(column, data): ?AbstractFilterCriteria
+│   │   ├── FilterDefinition.php       # getType(): string; getFilterData(): array
 │   │   ├── NeedsData.php              # getDataUrl(): string
+│   │   ├── NeedsDatabaseColumn.php    # getDatabaseColumn()/withDatabaseColumn(): static
 │   │   └── RangeData.php              # getMin()/getMax(): ?string
 │   └── Pagination/
 │       ├── LinkItem.php               # getLabel/getUrl/isActive
@@ -98,16 +87,56 @@ Table/
 │
 ├── Dto/
 │   ├── Table.php                      # Full table configuration bag (assembled once, passed to views)
-│   ├── Parameters.php                 # HTTP request parameters for paginated/filtered tables
+│   ├── Parameters.php                 # HTTP request parameters for paginated/filtered/sorted tables
 │   ├── Filter/
-│   │   └── Settings.php               # Array of FilterableColumns + active FilterCriteria
+│   │   └── Settings.php               # Collection of FilterableColumns + active FilterCriteria
 │   ├── Pagination/
 │   │   ├── Settings.php               # Pagination config (page, pageSize, links)
 │   │   └── Paginator.php              # Extends Common\Dto\Paginator; adds path/lastPage/links
 │   ├── Search/
-│   │   └── Settings.php               # Search config (searchable columns)
+│   │   └── Settings.php               # Search config (searchable columns + query)
 │   └── Sort/
-│       └── Settings.php               # Array of SortableColumns + active SortCriteria
+│       └── Settings.php               # Collection of SortableColumns + active SortCriteria
+│
+├── Enums/
+│   ├── Filter/
+│   │   ├── FilterType.php             # Text | Select | Date | Number | Json
+│   │   ├── JsonFilterType.php         # CONTAINS | NOT_CONTAINS | EQUALS | …
+│   │   └── TextFilterType.php         # CONTAINS | NOT_CONTAINS | EQUALS | …
+│   └── Sort/
+│       └── SortOrder.php              # ASC | DESC
+│
+├── Exceptions/
+│   ├── InvalidTableBuilderException.php
+│   ├── UnregisteredCellTypeException.php
+│   └── UnregisteredFilterStrategyException.php
+│
+├── Factories/
+│   ├── Filter/
+│   │   ├── Criteria/
+│   │   │   ├── DateFilterCriteriaFactory.php
+│   │   │   ├── JsonFilterCriteriaFactory.php
+│   │   │   ├── NumberFilterCriteriaFactory.php
+│   │   │   ├── SelectFilterCriteriaFactory.php
+│   │   │   └── TextFilterCriteriaFactory.php
+│   │   └── SelectFilterOptionsFactory.php
+│   └── Pagination/
+│       └── PaginatorFactory.php
+│
+├── Http/
+│   ├── Controllers/
+│   │   └── TableController.php        # Serves filter form HTML via GET /pjutils/table/filter-form/{type}
+│   └── Requests/
+│       ├── TableParametersRequest.php
+│       └── Traits/
+│           └── HandlesBulkActionsIds.php
+│
+├── Registry/
+│   ├── CellRegistry.php               # Maps cell type string → Blade view name
+│   └── FilterStrategyRegistry.php     # Maps filter type string → Filter strategy + factory + views
+│
+├── Services/
+│   └── TableProvider.php              # Abstract base; implement build(?Parameters): TableBuilder
 │
 ├── ValueObjects/
 │   ├── ColumnVisibility.php           # Immutable; enforces "at least one column visible" invariant
@@ -117,14 +146,24 @@ Table/
 │   ├── Cells/
 │   │   ├── Cell.php                   # Abstract base: value, maxLength, noTruncation, __toString
 │   │   ├── Chip.php                   # Cell + Type enum
-│   │   ├── Double.php                 # Cell + addition string
+│   │   ├── TwoLine.php                # Cell + addition string
 │   │   ├── Link.php                   # Cell + href string
 │   │   ├── Simple.php                 # Cell + optional Icon
 │   │   └── Actions/
 │   │       └── Item.php               # Immutable action config (label, classId, icon, visibility, href)
 │   ├── Filter/
+│   │   ├── Criteria/
+│   │   │   ├── AbstractFilterCriteria.php  # Abstract base: column + getType() + getFilterData()
+│   │   │   ├── FilterCriteria.php          # Immutable collection of AbstractFilterCriteria
+│   │   │   ├── DateFilterCriteria.php      # from/to Carbon properties
+│   │   │   ├── JsonFilterCriteria.php      # jsonPath, value, filterType; implements NeedsDatabaseColumn
+│   │   │   ├── NumberFilterCriteria.php    # from/to floats
+│   │   │   ├── SelectFilterCriteria.php    # single string value
+│   │   │   └── TextFilterCriteria.php      # value + TextFilterType operator
 │   │   └── Definitions/
-│   │       ├── FilterableColumn.php   # label + column + FilterDefinition contract
+│   │       ├── FilterableColumn.php        # label + column + FilterDefinition + optional databaseColumn
+│   │       ├── Custom/
+│   │       │   └── CustomFilterDefinition.php  # Wraps an arbitrary registered type string
 │   │       ├── Date/
 │   │       │   └── DateFilterDefinition.php    # from/to Carbon; implements RangeData
 │   │       ├── Json/
@@ -136,23 +175,13 @@ Table/
 │   │       │   ├── SelectFilterOption.php      # Immutable value+label pair
 │   │       │   └── SelectFilterOptions.php     # Immutable; renders Blade dropdown via toArray()
 │   │       └── Text/
-│   │           └── TextFilterDefinition.php    # No state; returns FilterType::TEXT
+│   │           └── TextFilterDefinition.php    # No state; returns FilterType::Text->value
 │   ├── Pagination/
 │   │   └── LinkItem.php               # Immutable label+url+active; implements Contracts\Pagination\LinkItem
 │   └── Sort/
+│       ├── SortCriteria.php           # column + SortOrder with toArray()
 │       └── SortableColumn.php         # Immutable label+column pair
 │
-├── Enums/
-│   └── Cells/
-│       └── CellType.php               # SIMPLE | LINK | CHIP | DOUBLE
-│
-├── Exceptions/
-├── Factories/
-├── Http/
-├── Services/
-│   ├── TableProviderInterface.php
-│   ├── BaseTableProvider.php
-│   └── BasePaginatedTableProvider.php
 └── View/                              # Blade component classes
 ```
 
@@ -188,8 +217,17 @@ Table/
 |---|---|
 | `Common\Interfaces\Paginator` | `Common\Contracts\Paginator` |
 | `Common\Dto\Image` | `Common\ValueObjects\Image` |
-| `Common\Dto\Filter\*Criteria` | `Common\ValueObjects\Filter\*Criteria` |
-| `Common\Dto\Sort\SortCriteria` | `Common\ValueObjects\Sort\SortCriteria` |
+| `Common\Dto\Filter\*Criteria` | `Table\ValueObjects\Filter\Criteria\*Criteria` |
+| `Common\Dto\Sort\SortCriteria` | `Table\ValueObjects\Sort\SortCriteria` |
+| `Common\Enums\FilterType` | `Table\Enums\Filter\FilterType` |
+| `Common\Enums\TextFilterType` | `Table\Enums\Filter\TextFilterType` |
+| `Common\Enums\JsonFilterType` | `Table\Enums\Filter\JsonFilterType` |
+| `Common\Enums\SortOrder` | `Table\Enums\Sort\SortOrder` |
+| `Common\Contracts\Filter\FilterCriteriaFactory` | `Table\Contracts\Filter\FilterCriteriaFactory` |
+| `Common\Contracts\Filter\NeedsDatabaseColumn` | `Table\Contracts\Filter\NeedsDatabaseColumn` |
+| `Common\Factories\Filter\*FilterCriteriaFactory` | `Table\Factories\Filter\Criteria\*FilterCriteriaFactory` |
+| `Common\Registry\FilterStrategyRegistry` | `Table\Registry\FilterStrategyRegistry` |
+| `Common\Exceptions\UnregisteredFilterStrategyException` | `Table\Exceptions\UnregisteredFilterStrategyException` |
 | `Table\Interfaces\Cells\*` | `Table\Contracts\Cells\*` |
 | `Table\Interfaces\Pagination\*` | `Table\Contracts\Pagination\*` |
 | `Table\Dto\Filter\Definitions\FilterDefinition` (interface) | `Table\Contracts\Filter\FilterDefinition` |

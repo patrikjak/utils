@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Number;
 
-use Patrikjak\Utils\Common\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
 use Patrikjak\Utils\Table\Contracts\Filter\RangeData;
+use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 
 readonly class NumberFilterDefinition implements FilterDefinition, RangeData
 {
@@ -14,9 +14,9 @@ readonly class NumberFilterDefinition implements FilterDefinition, RangeData
     {
     }
 
-    public function getType(): FilterType
+    public function getType(): string
     {
-        return FilterType::NUMBER;
+        return FilterType::Number->value;
     }
 
     public function getMin(): ?string
@@ -35,5 +35,16 @@ readonly class NumberFilterDefinition implements FilterDefinition, RangeData
         }
 
         return (string) $this->max;
+    }
+
+    /**
+     * @return array<string, string|int|float|null>
+     */
+    public function getFilterData(): array
+    {
+        return [
+            'from' => $this->getMin(),
+            'to' => $this->getMax(),
+        ];
     }
 }
