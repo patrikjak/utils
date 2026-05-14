@@ -228,11 +228,18 @@ final class TableBuilder
     {
         $this->validate();
 
-        $visibleColumns = new Collection($this->columns)
-            ->filter(static fn (ColumnDefinition $column) => !$column->hidden);
+        $columnVisibility = $this->buildColumnVisibility();
 
-        $visibleKeys = $visibleColumns->keys()->all();
-        $header = $visibleColumns->map(static fn (ColumnDefinition $column) => $column->label);
+        $visibleKeys = $columnVisibility !== null
+            ? $columnVisibility->getVisibleColumns($parameters?->visibleColumns)
+            : new Collection($this->columns)
+                ->filter(static fn (ColumnDefinition $column) => !$column->hidden)
+                ->keys()
+                ->all();
+
+        $header = new Collection($this->columns)
+            ->only($visibleKeys)
+            ->map(static fn (ColumnDefinition $column) => $column->label);
 
         [$data, $rawData] = $this->buildRows($visibleKeys);
 
@@ -258,7 +265,7 @@ final class TableBuilder
             $this->buildSearchSettings($parameters),
             false,
             $this->emptyState,
-            $this->buildColumnVisibility(),
+            $columnVisibility,
             $this->buildEnrichedParameters($parameters, $filterSettings),
         );
     }
