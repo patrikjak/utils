@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View\Form;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-final class Toggle extends Component
+class Toggle extends Component
 {
     public function __construct(
         public readonly ?string $label = null,

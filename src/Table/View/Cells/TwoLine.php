@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Patrikjak\Utils\Table\View\Cells;
+
+use Illuminate\Contracts\View\View;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Cell as AbstractCell;
+use Patrikjak\Utils\Table\ValueObjects\Cells\TwoLine as TwoLineCell;
+
+final class TwoLine extends Cell
+{
+    public readonly string $addition;
+
+    public function __construct(AbstractCell $cell, string $column, ?int $defaultMaxLength = null)
+    {
+        parent::__construct($cell, $column, $defaultMaxLength);
+
+        $this->addition = $this->getAddition();
+    }
+
+    public function render(): View
+    {
+        return view('pjutils::table.cells.two-line');
+    }
+
+    private function getAddition(): string
+    {
+        assert($this->cell instanceof TwoLineCell);
+
+        return $this->cell->addition;
+    }
+}

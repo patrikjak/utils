@@ -4,59 +4,48 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Services\Implementations;
 
-use Patrikjak\Utils\Table\Services\BaseTableProvider;
-use Patrikjak\Utils\Table\Services\TableProviderInterface;
+use Closure;
+use Patrikjak\Utils\Table\Builder\Cell;
+use Patrikjak\Utils\Table\Builder\TableBuilder;
+use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Services\TableProvider as BaseTableProvider;
 
-class FullTableSearchTableProvider extends BaseTableProvider implements TableProviderInterface
+final class FullTableSearchTableProvider extends BaseTableProvider
 {
     use TableProviderData;
 
-    /**
-     * @var array<string>
-     */
-    private array $searchableColumns = [];
+    private ?Closure $configurator = null;
 
-    /** @inheritDoc */
-    public function getHeader(): ?array
+    private ?Parameters $lastParameters = null;
+
+    public function configure(Closure $configurator): void
     {
-        return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'email' => 'Email',
-            'created_at' => 'Created at',
-            'updated_at' => 'Updated at',
-        ];
+        $this->configurator = $configurator;
+    }
+
+    public function getLastParameters(): ?Parameters
+    {
+        return $this->lastParameters;
     }
 
     /**
-     * @inheritDoc
+     * @param array<string, string> $columnMap
      */
-    public function getData(): array
+    protected function build(?Parameters $parameters, array $columnMap): TableBuilder
     {
-        return array_map(static function (array $user) {
-            return [
-                'id' => $user['id'],
-                'name' => $user['name'],
-                'email' => $user['email'],
-                'created_at' => $user['created_at'],
-                'updated_at' => $user['updated_at'],
-            ];
-        }, $this->getTableData());
-    }
+        $this->lastParameters = $parameters;
 
-    /**
-     * @inheritDoc
-     */
-    public function getSearchableColumns(): array
-    {
-        return $this->searchableColumns;
-    }
+        $builder = TableBuilder::for('table', $this->getRawTableData(), $columnMap)
+            ->column('id', 'ID', static fn (array $row) => Cell::simple($row['id']))
+            ->column('name', 'Name', static fn (array $row) => Cell::simple($row['name']))
+            ->column('email', 'Email', static fn (array $row) => Cell::simple($row['email']))
+            ->column('created_at', 'Created at', static fn (array $row) => Cell::simple($row['created_at']))
+            ->column('updated_at', 'Updated at', static fn (array $row) => Cell::simple($row['updated_at']));
 
-    /**
-     * @param array<string> $columns
-     */
-    public function setSearchableColumns(array $columns): void
-    {
-        $this->searchableColumns = $columns;
+        if ($this->configurator !== null) {
+            ($this->configurator)($builder, $parameters);
+        }
+
+        return $builder;
     }
 }

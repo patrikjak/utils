@@ -6,11 +6,11 @@ namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
 use Patrikjak\Utils\Table\Dto\Table;
+use Patrikjak\Utils\Table\ValueObjects\Sort\SortableColumn;
 use Patrikjak\Utils\Table\View\Traits\TableMethods;
 
-final class Head extends Component
+class Head extends Component
 {
     use TableMethods;
 
@@ -20,7 +20,7 @@ final class Head extends Component
     public readonly array $headerData;
 
     /**
-     * @var array<string>
+     * @var array<int, string>
      */
     public readonly array $sortableColumnKeys;
 
@@ -46,18 +46,13 @@ final class Head extends Component
      */
     private function getHeaderData(): array
     {
-        $header = [];
-        $headerData = $this->table->header;
-
-        foreach ($this->table->columns as $column) {
-            $header[$column] = $headerData[$column];
-        }
-
-        return $header;
+        return $this->table->columns
+            ->mapWithKeys(fn (string $column) => [$column => $this->table->header[$column]])
+            ->all();
     }
 
     /**
-     * @return array<string>
+     * @return array<int, string>
      */
     private function getSortableColumnKeys(): array
     {
@@ -65,9 +60,8 @@ final class Head extends Component
             return [];
         }
 
-        return array_map(
-            static fn (SortableColumn $sortableColumn) => $sortableColumn->column,
-            $this->table->sortSettings->sortableColumns,
-        );
+        return $this->table->sortSettings->sortableColumns
+            ->map(static fn (SortableColumn $sortableColumn) => $sortableColumn->key)
+            ->all();
     }
 }

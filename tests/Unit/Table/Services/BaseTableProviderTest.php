@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Table\Services;
 
+use Illuminate\Contracts\Container\BindingResolutionException;
 use Patrikjak\Utils\Table\Dto\Table;
-use Patrikjak\Utils\Table\Services\TableProviderInterface;
-use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\TableProvider;
-use PHPUnit\Framework\TestCase;
+use Patrikjak\Utils\Table\Services\TableProvider;
+use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\MinimalTableProvider as TableProviderImpl;
+use Patrikjak\Utils\Tests\Integration\TestCase;
 
-class BaseTableProviderTest extends TestCase
+final class BaseTableProviderTest extends TestCase
 {
-    private TableProviderInterface $tableProvider;
+    private TableProvider $tableProvider;
 
+    /**
+     * @throws BindingResolutionException
+     */
     public function testCanGetTableInstance(): void
     {
         $table = $this->tableProvider->getTable();
@@ -20,41 +24,50 @@ class BaseTableProviderTest extends TestCase
         $this->assertInstanceOf(Table::class, $table);
     }
 
-    public function testCanGetTableId(): void
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testTableHasExpectedHeader(): void
     {
-        $tableId = $this->tableProvider->getTableId();
+        $table = $this->tableProvider->getTable();
 
-        $this->assertEquals('table', $tableId);
+        $this->assertTrue($table->header->has('id'));
+        $this->assertTrue($table->header->has('name'));
+        $this->assertTrue($table->header->has('email'));
+        $this->assertTrue($table->header->has('created_at'));
+        $this->assertTrue($table->header->has('updated_at'));
     }
 
-    public function testCanGetHeader(): void
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testTableHasExpectedData(): void
     {
-        $header = $this->tableProvider->getHeader();
+        $table = $this->tableProvider->getTable();
 
-        $this->assertIsArray($header);
-        $this->assertArrayHasKey('id', $header);
-        $this->assertArrayHasKey('name', $header);
-        $this->assertArrayHasKey('email', $header);
-        $this->assertArrayHasKey('created_at', $header);
-        $this->assertArrayHasKey('updated_at', $header);
+        $this->assertCount(4, $table->data);
+        $this->assertIsArray($table->data[0]);
+        $this->assertArrayHasKey('id', $table->data[0]);
+        $this->assertArrayHasKey('name', $table->data[0]);
+        $this->assertArrayHasKey('email', $table->data[0]);
+        $this->assertArrayHasKey('created_at', $table->data[0]);
+        $this->assertArrayHasKey('updated_at', $table->data[0]);
     }
 
-    public function testCanGetData(): void
+    /**
+     * @throws BindingResolutionException
+     */
+    public function testTableHasExpectedTableId(): void
     {
-        $data = $this->tableProvider->getData();
+        $table = $this->tableProvider->getTable();
 
-        $this->assertIsArray($data);
-        $this->assertCount(4, $data);
-        $this->assertIsArray($data[0]);
-        $this->assertArrayHasKey('id', $data[0]);
-        $this->assertArrayHasKey('name', $data[0]);
-        $this->assertArrayHasKey('email', $data[0]);
-        $this->assertArrayHasKey('created_at', $data[0]);
-        $this->assertArrayHasKey('updated_at', $data[0]);
+        $this->assertSame('table', $table->tableId);
     }
 
     protected function setUp(): void
     {
-        $this->tableProvider = new TableProvider();
+        parent::setUp();
+
+        $this->tableProvider = new TableProviderImpl();
     }
 }

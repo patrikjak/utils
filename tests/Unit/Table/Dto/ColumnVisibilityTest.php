@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Table\Dto;
 
-use Patrikjak\Utils\Table\Dto\ColumnVisibility;
+use Patrikjak\Utils\Table\ValueObjects\ColumnVisibility;
 use PHPUnit\Framework\TestCase;
 
-class ColumnVisibilityTest extends TestCase
+final class ColumnVisibilityTest extends TestCase
 {
     private const array COLUMNS = [
         'name' => 'Name',

@@ -5,13 +5,11 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\View\Filter;
 
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Collection;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterableColumn;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\Json\JsonFilterDefinition;
 use Patrikjak\Utils\Table\Dto\Filter\Settings;
+use Patrikjak\Utils\Table\Registry\FilterStrategyRegistry;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\FilterableColumn;
 
 class Values extends Component
 {
@@ -20,8 +18,10 @@ class Values extends Component
      */
     public ?array $options;
 
-    public function __construct(public readonly Settings $settings)
-    {
+    public function __construct(
+        public readonly Settings $settings,
+        private readonly FilterStrategyRegistry $filterStrategyRegistry,
+    ) {
     }
 
     public function render(): View
@@ -37,43 +37,32 @@ class Values extends Component
     private function getOptions(): array
     {
         $options = [];
-        $filterableColumnsCollection = new Collection($this->settings->filterableColumns);
 
         foreach ($this->settings->criteria->filters as $filter) {
-            $label = $this->getLabelForFilter($filter, $filterableColumnsCollection);
+            $label = $this->getLabelForFilter($filter);
 
             if ($label === null) {
                 continue;
             }
 
-            $options[] = new FilterOption($label, $filter);
+            $chipView = $this->filterStrategyRegistry->getChipView($filter->getType());
+
+            if ($chipView === null) {
+                continue;
+            }
+
+            $options[] = new FilterOption($label, $filter, $chipView);
         }
 
         return $options;
     }
 
-    /**
-     * @param Collection<int, FilterableColumn> $filterableColumns
-     */
-    private function getLabelForFilter(AbstractFilterCriteria $filter, Collection $filterableColumns): ?string
+    private function getLabelForFilter(AbstractFilterCriteria $filter): ?string
     {
-        if ($filter instanceof JsonFilterCriteria) {
-            $match = $filterableColumns->first(
-                static fn (FilterableColumn $col) => $col->column === $filter->column
-                    && $col->filterDefinition instanceof JsonFilterDefinition
-                    && $col->filterDefinition->jsonPath === $filter->jsonPath,
-            );
+        $match = $this->settings->filterableColumns->first(
+            static fn (FilterableColumn $column) => $filter->matchesDefinition($column),
+        );
 
-            $match ??= $filterableColumns->first(
-                static fn (FilterableColumn $col) => $col->column === $filter->column
-                    && $col->filterDefinition instanceof JsonFilterDefinition,
-            );
-
-            return $match?->label;
-        }
-
-        return $filterableColumns
-            ->mapWithKeys(static fn (FilterableColumn $col) => [$col->column => $col->label])
-            ->get($filter->column);
+        return $match?->label;
     }
 }

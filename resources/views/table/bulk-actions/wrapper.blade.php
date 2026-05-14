@@ -10,7 +10,7 @@
                     data-method="{{ $bulkAction->method }}"
                 >
                     @if($bulkAction->icon !== null)
-                        {!! $bulkAction->icon->getAsHtml() !!}
+                        {!! $bulkAction->icon->toHtml() !!}
                     @endif
 
                     {{ $bulkAction->label }}

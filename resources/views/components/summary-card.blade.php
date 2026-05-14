@@ -1,7 +1,7 @@
 <div {{ $attributes->merge(['class' => 'pj-summary-card']) }}>
     <div class="pj-summary-card-header">
         @if($icon !== null)
-            <span class="pj-summary-card-icon">@icon($icon->value)</span>
+            <span class="pj-summary-card-icon">{!! $icon->toHtml() !!}</span>
         @endif
         <p class="pj-summary-card-title">{{ $title }}</p>
         @if($status !== null && $statusLabel !== null)

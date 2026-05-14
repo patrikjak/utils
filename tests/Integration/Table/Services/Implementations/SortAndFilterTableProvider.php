@@ -4,200 +4,40 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Services\Implementations;
 
-use Illuminate\Support\Collection;
-use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
-use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkItem;
-use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterableColumn;
-use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
-use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
-use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
-use Patrikjak\Utils\Table\Services\BasePaginatedTableProvider;
-use Patrikjak\Utils\Table\Services\TableProviderInterface;
+use Closure;
+use Patrikjak\Utils\Table\Builder\Cell;
+use Patrikjak\Utils\Table\Builder\TableBuilder;
+use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Services\TableProvider as BaseTableProvider;
 
-class SortAndFilterTableProvider extends BasePaginatedTableProvider implements TableProviderInterface
+final class SortAndFilterTableProvider extends BaseTableProvider
 {
     use TableProviderData;
 
-    private string $tableId = 'table';
+    private ?Closure $configurator = null;
 
-    /**
-     * @var array<string>
-     */
-    private array $columns = ['id', 'name', 'email', 'created_at', 'updated_at'];
-
-    private string $rowId = 'id';
-
-    private bool $showOrder = false;
-
-    private bool $showCheckboxes = false;
-
-    /**
-     * @var array<Item>
-     */
-    private array $actions = [];
-
-    /**
-     * @var array<BulkItem>
-     */
-    private array $bulkActions = [];
-
-    /**
-     * @var array<int, int>
-     */
-    private array $paginationOptions = [10 => 10, 20 => 20, 50 => 50, 100 => 100];
-
-    /**
-     * @var array<SortableColumn>
-     */
-    private array $sortableColumns = [];
-
-    private ?SortCriteria $sortCriteria = null;
-
-    /**
-     * @var array<FilterableColumn>
-     */
-    private array $filterableColumns = [];
-
-    private ?FilterCriteria $filterCriteria = null;
-
-    public function getTableId(): string
+    public function configure(Closure $configurator): void
     {
-        return $this->tableId;
-    }
-
-    /** @inheritDoc */
-    public function getHeader(): ?array
-    {
-        return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'email' => 'Email',
-            'created_at' => 'Created at',
-            'updated_at' => 'Updated at',
-        ];
+        $this->configurator = $configurator;
     }
 
     /**
-     * @inheritDoc
+     * @param array<string, string> $columnMap
      */
-    public function getData(): array
+    protected function build(?Parameters $parameters, array $columnMap): TableBuilder
     {
-        return $this->getPageData()->map(static function (array $user) {
-            return [
-                'id' => $user['id'],
-                'name' => $user['name'],
-                'email' => $user['email'],
-                'created_at' => $user['created_at'],
-                'updated_at' => $user['updated_at'],
-            ];
-        })->toArray();
-    }
+        $builder = TableBuilder::for('table', $this->makePaginator(), $columnMap)
+            ->column('id', 'ID', static fn (array $row) => Cell::simple($row['id']))
+            ->column('name', 'Name', static fn (array $row) => Cell::simple($row['name']))
+            ->column('email', 'Email', static fn (array $row) => Cell::simple($row['email']))
+            ->column('created_at', 'Created at', static fn (array $row) => Cell::simple($row['created_at']))
+            ->column('updated_at', 'Updated at', static fn (array $row) => Cell::simple($row['updated_at']))
+            ->htmlPartsUrl('https://example.com/table');
 
-    /**
-     * @inheritDoc
-     */
-    public function getColumns(): array
-    {
-        return $this->columns;
-    }
+        if ($this->configurator !== null) {
+            ($this->configurator)($builder, $parameters);
+        }
 
-    public function getRowId(): string
-    {
-        return $this->rowId;
-    }
-
-    public function showOrder(): bool
-    {
-        return $this->showOrder;
-    }
-
-    public function showCheckboxes(): bool
-    {
-        return $this->showCheckboxes;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getActions(): array
-    {
-        return $this->actions;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getBulkActions(): array
-    {
-        return $this->bulkActions;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSortableColumns(): array
-    {
-        return $this->sortableColumns;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getFilterableColumns(): array
-    {
-        return $this->filterableColumns;
-    }
-
-    /**
-     * @param array<SortableColumn> $sortableColumns
-     */
-    public function setSortableColumns(array $sortableColumns): void
-    {
-        $this->sortableColumns = $sortableColumns;
-    }
-
-    public function setSortCriteria(?SortCriteria $sortCriteria): void
-    {
-        $this->sortCriteria = $sortCriteria;
-    }
-
-    /**
-     * @param array<FilterableColumn> $filterableColumns
-     */
-    public function setFilterableColumns(array $filterableColumns): void
-    {
-        $this->filterableColumns = $filterableColumns;
-    }
-
-    public function setFilterCriteria(?FilterCriteria $filterCriteria): void
-    {
-        $this->filterCriteria = $filterCriteria;
-    }
-
-    protected function getPaginator(): TablePaginator
-    {
-        return new TablePaginator(
-            1,
-            10,
-            new Collection($this->getTableData()),
-            'https://example.com/table',
-            1,
-            new Collection([
-                new LinkItem(__('pagination.previous'), null),
-                new LinkItem('1', 'https://example.com/table/1', true),
-                new LinkItem('2', 'https://example.com/table/2'),
-                new LinkItem('3', 'https://example.com/table/3'),
-                new LinkItem('4', 'https://example.com/table/4'),
-                new LinkItem(__('pagination.next'), null),
-            ]),
-        );
-    }
-
-    /** @inheritDoc */
-    protected function getPageSizeOptions(): array
-    {
-        return $this->paginationOptions;
+        return $builder;
     }
 }

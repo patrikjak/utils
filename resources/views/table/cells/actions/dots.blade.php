@@ -1,11 +1,8 @@
-@use('Patrikjak\Utils\Common\Enums\Icon')
-
 <td class="actions" @isset($actionsDataAttributes) {!! $actionsDataAttributes !!} @endisset>
     <div class="actions-inner">
         @foreach($inlineActions as $action)
             @php
                 $isHidden = in_array($action->classId, $hiddenInlineActionIds, true);
-                $icon = $action->icon;
                 $btnClass = implode(' ', array_filter([
                     'action-btn',
                     $action->classId,
@@ -17,26 +14,18 @@
             @endphp
             @if($isLinkAction)
                 <a href="{{ $resolvedHref }}" class="{{ $btnClass }}">
-                    @if($icon !== null)
-                        <div class="icon {{ $icon }}-icon">
-                            @if($icon instanceof Icon)
-                                {!! $icon->getAsHtml() !!}
-                            @else
-                                @customIcon($icon)
-                            @endif
+                    @if($action->icon !== null)
+                        <div class="icon">
+                            {!! $action->icon->toHtml() !!}
                         </div>
                     @endif
                     <span class="label">{{ $action->label }}</span>
                 </a>
             @else
                 <button type="button" class="{{ $btnClass }}">
-                    @if($icon !== null)
-                        <div class="icon {{ $icon }}-icon">
-                            @if($icon instanceof Icon)
-                                {!! $icon->getAsHtml() !!}
-                            @else
-                                @customIcon($icon)
-                            @endif
+                    @if($action->icon !== null)
+                        <div class="icon">
+                            {!! $action->icon->toHtml() !!}
                         </div>
                     @endif
                     <span class="label">{{ $action->label }}</span>

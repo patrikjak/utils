@@ -12,20 +12,21 @@
     <div class="options">
         <span class="title">Filter by</span>
 
-                    <div class="option" data-column="metadata" data-type="json" data-json-path="email">
-                <span>User Email</span>
+                    
+            <div class="option" data-column="metadata" data-type="json" data-json-path="email">
+                <span>Metadata</span>
             </div>
-                    <div class="option" data-column="metadata" data-type="json" data-json-path="phone">
-                <span>User Phone</span>
+                    
+            <div class="option" data-column="data" data-type="json" data-json-path="address.city">
+                <span>Data</span>
             </div>
-                    <div class="option" data-column="data" data-type="json" data-json-path="address.city">
-                <span>Address City</span>
+                    
+            <div class="option" data-column="tags" data-type="json" data-json-path="items[0]">
+                <span>Tags</span>
             </div>
-                    <div class="option" data-column="tags" data-type="json" data-json-path="items[0]">
-                <span>First Tag</span>
-            </div>
-                    <div class="option" data-column="settings" data-type="json" data-json-path="theme">
-                <span>Settings Theme</span>
+                    
+            <div class="option" data-column="settings" data-type="json" data-json-path="theme">
+                <span>Settings</span>
             </div>
             </div>
 </div>        
@@ -37,82 +38,52 @@
             <div class="group filter-values">
                 Filtered by
 <div class="values">
-            <div class="option filter-option" data-column="metadata" data-type="json" data-operator="contains" data-json-path="email" data-value="john@example.com">
-            <span class="label">User Email</span>
+            
+        <div class="option filter-option" data-column="metadata" data-type="json" data-operator="contains" data-json-path="email" data-value="john@example.com">
+            <span class="label">Metadata</span>
 
-            
-            
-                            <span class="operator">: contains -</span>
-            
-                            <span class="value">&nbsp;john@example.com</span>
-            
-            
-            
+            <span class="operator">: contains -</span>
+<span class="value">&nbsp;john@example.com</span>
+
             <div class="close-button">
     <div class="line"></div>
     <div class="line"></div>
 </div>        </div>
-            <div class="option filter-option" data-column="metadata" data-type="json" data-operator="starts_with" data-json-path="phone" data-value="+420">
-            <span class="label">User Phone</span>
+            
+        <div class="option filter-option" data-column="data" data-type="json" data-operator="equals" data-json-path="address.city" data-value="Prague">
+            <span class="label">Data</span>
 
-            
-            
-                            <span class="operator">: starts with -</span>
-            
-                            <span class="value">&nbsp;+420</span>
-            
-            
-            
+            <span class="operator">: equals -</span>
+<span class="value">&nbsp;Prague</span>
+
             <div class="close-button">
     <div class="line"></div>
     <div class="line"></div>
 </div>        </div>
-            <div class="option filter-option" data-column="data" data-type="json" data-operator="equals" data-json-path="address.city" data-value="Prague">
-            <span class="label">Address City</span>
+            
+        <div class="option filter-option" data-column="tags" data-type="json" data-operator="contains" data-json-path="items[0]" data-value="tech">
+            <span class="label">Tags</span>
 
-            
-            
-                            <span class="operator">: equals -</span>
-            
-                            <span class="value">&nbsp;Prague</span>
-            
-            
-            
+            <span class="operator">: contains -</span>
+<span class="value">&nbsp;tech</span>
+
             <div class="close-button">
     <div class="line"></div>
     <div class="line"></div>
 </div>        </div>
-            <div class="option filter-option" data-column="tags" data-type="json" data-operator="contains" data-json-path="items[0]" data-value="tech">
-            <span class="label">First Tag</span>
+            
+        <div class="option filter-option" data-column="settings" data-type="json" data-operator="equals" data-json-path="theme" data-value="dark">
+            <span class="label">Settings</span>
 
-            
-            
-                            <span class="operator">: contains -</span>
-            
-                            <span class="value">&nbsp;tech</span>
-            
-            
-            
+            <span class="operator">: equals -</span>
+<span class="value">&nbsp;dark</span>
+
             <div class="close-button">
     <div class="line"></div>
     <div class="line"></div>
 </div>        </div>
-            <div class="option filter-option" data-column="settings" data-type="json" data-operator="equals" data-json-path="theme" data-value="dark">
-            <span class="label">Settings Theme</span>
-
-            
-            
-                            <span class="operator">: equals -</span>
-            
-                            <span class="value">&nbsp;dark</span>
-            
-            
-            
-            <div class="close-button">
-    <div class="line"></div>
-    <div class="line"></div>
-</div>        </div>
-    </div>            </div>
+    </div>
+            </div>
         </div>
     </div>
     <div class="table-wrapper">
@@ -340,40 +311,7 @@
 
     
     
-            <div class="pagination">
-    <div class="page-size" data-href="https://example.com/table">
-    <div class="pj-dropdown">
     
-    <div class="dropdown-wrapper">
-        <div class="items">
-            <div class="chosen" data-value="10">
-    <span class="label">10</span>
-
-    <div class="arrow-wrapper">
-    <i class="arrow down"></i>
-</div>
-</div>
-            <div class="all-items">
-                                    <div class="pj-dropdown-item" data-value="10">
-    10
-</div>                                    <div class="pj-dropdown-item" data-value="20">
-    20
-</div>                                    <div class="pj-dropdown-item" data-value="50">
-    50
-</div>                                    <div class="pj-dropdown-item" data-value="100">
-    100
-</div>                            </div>
-        </div>
-    </div>
-</div>
-</div>
-    <div class="links">
-                    <a href="https://example.com/table/1" class="link active">
-                    <span class="page-number">1</span>
-            </a>
-
-            </div>
-</div>    
             <div class="table-loader hidden" role="status" aria-label="Loading">
             <div class="loading-dots">
                 <div class="loading-dot"></div>

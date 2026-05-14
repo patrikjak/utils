@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\Dto;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\FilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Sort\SortCriteria;
 
-final readonly class Parameters implements Arrayable
+readonly class Parameters implements Arrayable
 {
     /**
      * @param array<string>|null $visibleColumns
@@ -21,6 +21,18 @@ final readonly class Parameters implements Arrayable
         public ?string $searchQuery = null,
         public ?array $visibleColumns = null,
     ) {
+    }
+
+    public function withFilterCriteria(?FilterCriteria $filterCriteria): self
+    {
+        return new self(
+            $this->page,
+            $this->pageSize,
+            $this->sortCriteria,
+            $filterCriteria,
+            $this->searchQuery,
+            $this->visibleColumns,
+        );
     }
 
     /**

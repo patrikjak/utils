@@ -1,4 +1,4 @@
-<div class="pj-dropdown">
+<div {{ $attributes->class(['pj-dropdown']) }}>
     @if($label !== null)
         <p class="label">{{ $label }}</p>
     @endif

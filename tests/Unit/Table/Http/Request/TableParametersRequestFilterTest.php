@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Tests\Unit\Table\Http\Request;
 
 use Carbon\CarbonInterface;
-use Orchestra\Testbench\TestCase;
-use Patrikjak\Utils\Common\Dto\Filter\DateFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\NumberFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\TextFilterCriteria;
 use Patrikjak\Utils\Table\Http\Requests\TableParametersRequest;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\DateFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\NumberFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SelectFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\TextFilterCriteria;
+use Patrikjak\Utils\Tests\Unit\TestCase;
 
-class TableParametersRequestFilterTest extends TestCase
+final class TableParametersRequestFilterTest extends TestCase
 {
-    private const string TABLE_ID = 'table-id';
-
     public function testGetTableParametersFilterCriteriaFromRequest(): void
     {
         $request = new TableParametersRequest([
@@ -57,7 +55,7 @@ class TableParametersRequestFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertCount(5, $parameters->filterCriteria->filters);
 
@@ -102,7 +100,7 @@ class TableParametersRequestFilterTest extends TestCase
             ],
         ]);
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertEmpty($parameters->filterCriteria->filters);
     }
@@ -113,7 +111,7 @@ class TableParametersRequestFilterTest extends TestCase
             'deleteFilters' => true,
         ]);
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertNull($parameters->filterCriteria);
     }
@@ -122,7 +120,7 @@ class TableParametersRequestFilterTest extends TestCase
     {
         $request = new TableParametersRequest();
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertNull($parameters->filterCriteria);
     }

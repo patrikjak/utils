@@ -5,12 +5,12 @@
         <label for="{{ $attributes->get('id', $attributes->get('name')) }}">{{ $label }}</label>
     @endif
 
-    @if(isset($icon) || isset($error))
+    @if($icon !== null)
         <div class="input">
             <input {{ $attributes->merge(['type' => 'text', 'id' => $attributes->get('name')]) }}>
 
-            <div class="icon {{ $icon }}-icon">
-                {!! $icon->getAsHtml() !!}
+            <div class="icon">
+                {!! $icon->toHtml() !!}
             </div>
         </div>
     @else

@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\View\Cells;
 
 use Illuminate\Contracts\View\View;
-use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
-use Patrikjak\Utils\Table\Dto\Cells\Chip as ChipCell;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Cell as AbstractCell;
+use Patrikjak\Utils\Table\ValueObjects\Cells\Chip as ChipCell;
 
-final class Chip extends Cell
+class Chip extends Cell
 {
     public string $type;
 

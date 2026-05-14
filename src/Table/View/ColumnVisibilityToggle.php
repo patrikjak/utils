@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\View;
 
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Table\Dto\Table;
 
@@ -17,14 +18,12 @@ class ColumnVisibilityToggle extends Component
 
     public function __construct(public Table $table)
     {
-        $visibleHeaderKeys = array_keys($table->header);
+        $visibleHeaderKeys = $table->header->keys();
 
-        $this->visibleColumns = array_values(
-            array_filter(
-                array_keys($table->columnVisibility->columns),
-                static fn (string $key) => in_array($key, $visibleHeaderKeys, strict: true),
-            ),
-        );
+        $this->visibleColumns = new Collection(array_keys($table->columnVisibility->columns))
+            ->filter(static fn (string $key) => $visibleHeaderKeys->contains($key))
+            ->values()
+            ->all();
     }
 
     public function render(): View

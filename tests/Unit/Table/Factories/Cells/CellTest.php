@@ -4,15 +4,12 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Table\Factories\Cells;
 
-use Patrikjak\Utils\Common\Enums\Icon;
 use Patrikjak\Utils\Common\Enums\Type;
-use Patrikjak\Utils\Table\Dto\Cells\Cell as AbstractCell;
-use Patrikjak\Utils\Table\Enums\Cells\CellType;
-use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
-use Patrikjak\Utils\Table\Interfaces\Cells\Cell as CellInterface;
+use Patrikjak\Utils\Common\Icon;
+use Patrikjak\Utils\Table\Builder\Cell as CellFactory;
 use PHPUnit\Framework\TestCase;
 
-class CellTest extends TestCase
+final class CellTest extends TestCase
 {
     public function testSimpleCellCanBeCreated(): void
     {
@@ -20,31 +17,26 @@ class CellTest extends TestCase
 
         $this->assertEquals('value', $cell->value);
         $this->assertNull($cell->icon);
-        $this->assertEquals(CellType::SIMPLE, $cell->getType());
-        $this->assertInstanceOf(AbstractCell::class, $cell);
-        $this->assertInstanceOf(CellInterface::class, $cell);
+        $this->assertEquals('simple', $cell->getType());
     }
 
     public function testSimpleCellWithIconCanBeCreated(): void
     {
-        $cell = CellFactory::simple('value with icon', Icon::CHECK);
+        $icon = Icon::heroicon('heroicon-o-check');
+        $cell = CellFactory::simple('value with icon', $icon);
 
         $this->assertEquals('value with icon', $cell->value);
-        $this->assertEquals(Icon::CHECK, $cell->icon);
-        $this->assertEquals(CellType::SIMPLE, $cell->getType());
-        $this->assertInstanceOf(AbstractCell::class, $cell);
-        $this->assertInstanceOf(CellInterface::class, $cell);
+        $this->assertSame($icon, $cell->icon);
+        $this->assertEquals('simple', $cell->getType());
     }
 
-    public function testDoubleCellCanBeCreated(): void
+    public function testTwoLineCellCanBeCreated(): void
     {
-        $cell = CellFactory::double('value', 'addition');
+        $cell = CellFactory::twoLine('value', 'addition');
 
         $this->assertEquals('value', $cell->value);
         $this->assertEquals('addition', $cell->addition);
-        $this->assertEquals(CellType::DOUBLE, $cell->getType());
-        $this->assertInstanceOf(AbstractCell::class, $cell);
-        $this->assertInstanceOf(CellInterface::class, $cell);
+        $this->assertEquals('two-line', $cell->getType());
     }
 
     public function testChipCellCanBeCreated(): void
@@ -53,9 +45,7 @@ class CellTest extends TestCase
 
         $this->assertEquals('value', $cell->value);
         $this->assertEquals(Type::NEUTRAL, $cell->type);
-        $this->assertEquals(CellType::CHIP, $cell->getType());
-        $this->assertInstanceOf(AbstractCell::class, $cell);
-        $this->assertInstanceOf(CellInterface::class, $cell);
+        $this->assertEquals('chip', $cell->getType());
     }
 
     public function testLinkCellCanBeCreated(): void
@@ -64,9 +54,7 @@ class CellTest extends TestCase
 
         $this->assertEquals('value', $cell->value);
         $this->assertEquals('https://example.com', $cell->href);
-        $this->assertEquals(CellType::LINK, $cell->getType());
-        $this->assertInstanceOf(AbstractCell::class, $cell);
-        $this->assertInstanceOf(CellInterface::class, $cell);
+        $this->assertEquals('link', $cell->getType());
     }
 
     public function testSimpleCellMaxLengthIsStoredCorrectly(): void
@@ -83,9 +71,9 @@ class CellTest extends TestCase
         $this->assertNull($cell->maxLength);
     }
 
-    public function testDoubleCellMaxLengthIsStoredCorrectly(): void
+    public function testTwoLineCellMaxLengthIsStoredCorrectly(): void
     {
-        $cell = CellFactory::double('value', 'addition', maxLength: 3);
+        $cell = CellFactory::twoLine('value', 'addition', maxLength: 3);
 
         $this->assertEquals(3, $cell->maxLength);
     }
@@ -118,9 +106,9 @@ class CellTest extends TestCase
         $this->assertTrue($cell->noTruncation);
     }
 
-    public function testDoubleCellNoTruncationCanBeSetToTrue(): void
+    public function testTwoLineCellNoTruncationCanBeSetToTrue(): void
     {
-        $cell = CellFactory::double('value', 'addition', noTruncation: true);
+        $cell = CellFactory::twoLine('value', 'addition', noTruncation: true);
 
         $this->assertTrue($cell->noTruncation);
     }

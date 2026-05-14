@@ -7,15 +7,13 @@ namespace Patrikjak\Utils\Tests\Unit\Table\Http\Request;
 use Orchestra\Testbench\TestCase;
 use Patrikjak\Utils\Table\Http\Requests\TableParametersRequest;
 
-class TableParametersRequestSearchTest extends TestCase
+final class TableParametersRequestSearchTest extends TestCase
 {
-    private const string TABLE_ID = 'table-id';
-
     public function testGetTableParametersSearchQueryFromRequest(): void
     {
         $request = new TableParametersRequest(['search' => 'john']);
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertSame('john', $parameters->searchQuery);
     }
@@ -24,7 +22,7 @@ class TableParametersRequestSearchTest extends TestCase
     {
         $request = new TableParametersRequest(['deleteSearch' => 'true']);
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertNull($parameters->searchQuery);
     }
@@ -33,7 +31,7 @@ class TableParametersRequestSearchTest extends TestCase
     {
         $request = new TableParametersRequest();
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertNull($parameters->searchQuery);
     }

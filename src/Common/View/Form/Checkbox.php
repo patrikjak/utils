@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View\Form;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-final class Checkbox extends Component
+class Checkbox extends Component
 {
     public string $wrapperClass;
 

@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Tests\Unit\Table\Factories\Filter;
 use Patrikjak\Utils\Table\Factories\Filter\SelectFilterOptionsFactory;
 use Patrikjak\Utils\Tests\Integration\Table\TestCase;
 
-class SelectFilterOptionsFactoryTest extends TestCase
+final class SelectFilterOptionsFactoryTest extends TestCase
 {
     public function testCreateFromArray(): void
     {

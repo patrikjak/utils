@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
 use Illuminate\Contracts\Database\Query\Builder;
-use Patrikjak\Utils\Common\Dto\Filter\AbstractFilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\SelectFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SelectFilterCriteria;
 
 class SelectFilter extends AbstractFilter implements Filter
 {
@@ -18,7 +18,7 @@ class SelectFilter extends AbstractFilter implements Filter
         assert($filterCriteria instanceof SelectFilterCriteria);
 
         $query->orWhere(
-            $this->getRealColumn($filterCriteria->column, $columnsMask),
+            $this->resolveColumn($filterCriteria->column, $columnsMask),
             '=',
             $filterCriteria->value,
         );

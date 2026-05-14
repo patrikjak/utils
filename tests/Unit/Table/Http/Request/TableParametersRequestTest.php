@@ -7,15 +7,13 @@ namespace Patrikjak\Utils\Tests\Unit\Table\Http\Request;
 use Orchestra\Testbench\TestCase;
 use Patrikjak\Utils\Table\Http\Requests\TableParametersRequest;
 
-class TableParametersRequestTest extends TestCase
+final class TableParametersRequestTest extends TestCase
 {
-    private const string TABLE_ID = 'table-id';
-
     public function testGetTableParametersDefault(): void
     {
         $request = new TableParametersRequest();
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertSame(1, $parameters->page);
         $this->assertSame(10, $parameters->pageSize);
@@ -28,7 +26,7 @@ class TableParametersRequestTest extends TestCase
             'pageSize' => 20,
         ]);
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertSame(2, $parameters->page);
         $this->assertSame(20, $parameters->pageSize);
@@ -41,7 +39,7 @@ class TableParametersRequestTest extends TestCase
             'pageSize' => 50,
         ]);
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertSame(4, $parameters->page);
         $this->assertSame(50, $parameters->pageSize);
@@ -53,7 +51,7 @@ class TableParametersRequestTest extends TestCase
             'pageSize' => 40,
         ]);
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertSame(1, $parameters->page);
         $this->assertSame(40, $parameters->pageSize);
@@ -66,7 +64,7 @@ class TableParametersRequestTest extends TestCase
             'order' => 'desc',
         ]);
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertSame('name', $parameters->sortCriteria->column);
         $this->assertSame('desc', $parameters->sortCriteria->order->value);
@@ -76,7 +74,7 @@ class TableParametersRequestTest extends TestCase
     {
         $request = new TableParametersRequest();
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertNull($parameters->sortCriteria);
     }
@@ -89,7 +87,7 @@ class TableParametersRequestTest extends TestCase
             'deleteSort' => true,
         ]);
 
-        $parameters = $request->getTableParameters(self::TABLE_ID);
+        $parameters = $request->getTableParameters();
 
         $this->assertNull($parameters->sortCriteria);
     }

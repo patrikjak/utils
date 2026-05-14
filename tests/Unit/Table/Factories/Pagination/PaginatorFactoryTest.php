@@ -8,22 +8,12 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Mockery\MockInterface;
 use Orchestra\Testbench\TestCase;
-use Patrikjak\Utils\Common\Interfaces\Paginator;
+use Patrikjak\Utils\Common\Contracts\Paginator;
+use Patrikjak\Utils\Table\Contracts\Pagination\LinkItem;
 use Patrikjak\Utils\Table\Factories\Pagination\PaginatorFactory;
-use Patrikjak\Utils\Table\Interfaces\Pagination\LinkItem;
 
-class PaginatorFactoryTest extends TestCase
+final class PaginatorFactoryTest extends TestCase
 {
-    public function testPaginatorFromLengthAwarePaginatorCanBeCreated(): void
-    {
-        $mockedLengthAwarePaginator = $this->getMockedLengthAwarePaginator();
-        assert($mockedLengthAwarePaginator instanceof LengthAwarePaginator);
-
-        $paginator = PaginatorFactory::createFromLengthAwarePaginator($mockedLengthAwarePaginator);
-
-        $this->assertInstanceOf(Paginator::class, $paginator);
-    }
-
     public function testLinkItemsCanBeMappedFromLinkCollection(): void
     {
         $mockedLengthAwarePaginator = $this->getMockedLengthAwarePaginator();

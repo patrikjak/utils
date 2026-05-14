@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0] - 2026-05-06
+
+### Added
+
+- **`Icon` class** — `Patrikjak\Utils\Common\Icon` is the single icon type for the entire package. Use `Icon::heroicon('heroicon-o-trash')` for any Heroicon by its full name, `Icon::svg('<svg>…</svg>')` for a raw SVG string, or `Icon::storage('/path/to/file.svg')` to load an SVG from the filesystem. Call `toHtml()` to render. See [migration guide](docs/v3/icons/icons.md).
+
+### Changed
+
+- All component properties and DTO constructor parameters that previously accepted `Icon` enum cases now accept `?Icon` objects only. Affected: `Table\Dto\Cells\Actions\Item`, `Table\Dto\BulkActions\Item`, `Table\Dto\Cells\Simple`, `Table\Factories\Cells\CellFactory::simple()`, `Common\View\SummaryCard`, `Common\View\Form\Input`.
+- The `@icon` Blade directive now expects a full Heroicon name string (e.g. `@icon('heroicon-o-search')`) instead of an enum case name.
+- Icon wrapper elements in Blade templates no longer carry a per-icon CSS class (e.g. `eye-icon`); they use only the generic `icon` or `icon-data` class.
+
+### Removed
+
+- **`Icon` enum** (`Patrikjak\Utils\Common\Enums\Icon`) — use `Icon::heroicon()` with the full Heroicon name instead of enum cases.
+- **`IconValue` value object** (`Patrikjak\Utils\Common\ValueObjects\IconValue`) — replaced by the new `Icon` class.
+
 ## [2.14.1] - 2026-04-02
 
 ### Fixed

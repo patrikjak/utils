@@ -8,7 +8,7 @@ use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 use Patrikjak\Utils\Common\Enums\BadgeType;
 
-final class Badge extends Component
+class Badge extends Component
 {
     public string $classes;
 

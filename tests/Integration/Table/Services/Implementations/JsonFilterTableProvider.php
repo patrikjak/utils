@@ -4,236 +4,72 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Integration\Table\Services\Implementations;
 
-use Illuminate\Support\Collection;
-use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\Dto\Sort\SortCriteria;
-use Patrikjak\Utils\Table\Dto\BulkActions\Item as BulkItem;
-use Patrikjak\Utils\Table\Dto\Cells\Actions\Item;
-use Patrikjak\Utils\Table\Dto\Filter\Definitions\FilterableColumn;
-use Patrikjak\Utils\Table\Dto\Pagination\LinkItem;
-use Patrikjak\Utils\Table\Dto\Pagination\Paginator as TablePaginator;
-use Patrikjak\Utils\Table\Dto\Sort\SortableColumn;
-use Patrikjak\Utils\Table\Factories\Cells\CellFactory;
-use Patrikjak\Utils\Table\Services\BasePaginatedTableProvider;
-use Patrikjak\Utils\Table\Services\TableProviderInterface;
+use Closure;
+use Patrikjak\Utils\Table\Builder\Cell;
+use Patrikjak\Utils\Table\Builder\TableBuilder;
+use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\Services\TableProvider as BaseTableProvider;
 
-class JsonFilterTableProvider extends BasePaginatedTableProvider implements TableProviderInterface
+final class JsonFilterTableProvider extends BaseTableProvider
 {
-    private string $tableId = 'json-table';
+    private ?Closure $configurator = null;
 
     /**
-     * @var array<string>
+     * @var array<string, string>
      */
-    private array $columns = [
-        'id', 'name', 'metadata', 'data', 'tags', 'settings', 'preferences', 'contacts', 'users', 'matrix', 'json_data',
-    ];
+    private array $filterColumnMap = [];
 
-    private string $rowId = 'id';
-
-    private bool $showOrder = false;
-
-    private bool $showCheckboxes = false;
-
-    /**
-     * @var array<Item>
-     */
-    private array $actions = [];
-
-    /**
-     * @var array<BulkItem>
-     */
-    private array $bulkActions = [];
-
-    /**
-     * @var array<int, int>
-     */
-    private array $paginationOptions = [10 => 10, 20 => 20];
-
-    /**
-     * @var array<SortableColumn>
-     */
-    private array $sortableColumns = [];
-
-    private ?SortCriteria $sortCriteria = null;
-
-    /**
-     * @var array<FilterableColumn>
-     */
-    private array $filterableColumns = [];
-
-    private ?FilterCriteria $filterCriteria = null;
-
-    public function getTableId(): string
+    public function configure(Closure $configurator): void
     {
-        return $this->tableId;
-    }
-
-    /** @inheritDoc */
-    public function getHeader(): ?array
-    {
-        return [
-            'id' => 'ID',
-            'name' => 'Name',
-            'metadata' => 'Metadata',
-            'data' => 'Data',
-            'tags' => 'Tags',
-            'settings' => 'Settings',
-            'preferences' => 'Preferences',
-            'contacts' => 'Contacts',
-            'users' => 'Users',
-            'matrix' => 'Matrix',
-            'json_data' => 'JSON Data',
-        ];
+        $this->configurator = $configurator;
     }
 
     /**
-     * @inheritDoc
+     * @param array<string, string> $map
      */
-    public function getData(): array
+    public function setColumnMap(array $map): void
     {
-        return $this->getPageData()->map(static function (array $item) {
-            return [
-                'id' => CellFactory::simple((string) $item['id']),
-                'name' => CellFactory::simple((string) $item['name']),
-                'metadata' => CellFactory::simple((string) $item['metadata']),
-                'data' => CellFactory::simple((string) $item['data']),
-                'tags' => CellFactory::simple((string) $item['tags']),
-                'settings' => CellFactory::simple((string) $item['settings']),
-                'preferences' => CellFactory::simple((string) $item['preferences']),
-                'contacts' => CellFactory::simple((string) $item['contacts']),
-                'users' => CellFactory::simple((string) $item['users']),
-                'matrix' => CellFactory::simple((string) $item['matrix']),
-                'json_data' => CellFactory::simple((string) $item['json_data']),
-            ];
-        })->toArray();
+        $this->filterColumnMap = $map;
     }
 
     /**
-     * @inheritDoc
+     * @return array<string, string>
      */
-    public function getColumns(): array
+    protected function getColumnMap(): array
     {
-        return $this->columns;
+        return $this->filterColumnMap;
     }
 
     /**
-     * @inheritDoc
+     * @param array<string, string> $columnMap
      */
-    public function getRowId(): string
+    protected function build(?Parameters $parameters, array $columnMap): TableBuilder
     {
-        return $this->rowId;
-    }
+        $builder = TableBuilder::for('json-table', $this->getJsonTableData(), $columnMap)
+            ->column('id', 'ID', static fn (array $row) => Cell::simple((string) $row['id']))
+            ->column('name', 'Name', static fn (array $row) => Cell::simple((string) $row['name']))
+            ->column('metadata', 'Metadata', static fn (array $row) => Cell::simple((string) $row['metadata']))
+            ->column('data', 'Data', static fn (array $row) => Cell::simple((string) $row['data']))
+            ->column('tags', 'Tags', static fn (array $row) => Cell::simple((string) $row['tags']))
+            ->column('settings', 'Settings', static fn (array $row) => Cell::simple((string) $row['settings']))
+            ->column('preferences', 'Preferences', static fn (array $row) => Cell::simple((string) $row['preferences']))
+            ->column('contacts', 'Contacts', static fn (array $row) => Cell::simple((string) $row['contacts']))
+            ->column('users', 'Users', static fn (array $row) => Cell::simple((string) $row['users']))
+            ->column('matrix', 'Matrix', static fn (array $row) => Cell::simple((string) $row['matrix']))
+            ->column('json_data', 'JSON Data', static fn (array $row) => Cell::simple((string) $row['json_data']))
+            ->htmlPartsUrl('https://example.com/table');
 
-    /**
-     * @inheritDoc
-     */
-    public function showOrder(): bool
-    {
-        return $this->showOrder;
-    }
+        if ($this->configurator !== null) {
+            ($this->configurator)($builder, $parameters);
+        }
 
-    /**
-     * @inheritDoc
-     */
-    public function showCheckboxes(): bool
-    {
-        return $this->showCheckboxes;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getActions(): array
-    {
-        return $this->actions;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getBulkActions(): array
-    {
-        return $this->bulkActions;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getPaginationOptions(): array
-    {
-        return $this->paginationOptions;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getSortableColumns(): array
-    {
-        return $this->sortableColumns;
-    }
-
-    /**
-     * @param array<SortableColumn> $sortableColumns
-     */
-    public function setSortableColumns(array $sortableColumns): void
-    {
-        $this->sortableColumns = $sortableColumns;
-    }
-
-    public function getSortCriteria(): ?SortCriteria
-    {
-        return $this->sortCriteria;
-    }
-
-    public function setSortCriteria(?SortCriteria $sortCriteria): void
-    {
-        $this->sortCriteria = $sortCriteria;
-    }
-
-    /**
-     * @inheritDoc
-     */
-    public function getFilterableColumns(): array
-    {
-        return $this->filterableColumns;
-    }
-
-    /**
-     * @param array<FilterableColumn> $filterableColumns
-     */
-    public function setFilterableColumns(array $filterableColumns): void
-    {
-        $this->filterableColumns = $filterableColumns;
-    }
-
-    public function getFilterCriteria(): ?FilterCriteria
-    {
-        return $this->filterCriteria;
-    }
-
-    public function setFilterCriteria(?FilterCriteria $filterCriteria): void
-    {
-        $this->filterCriteria = $filterCriteria;
-    }
-
-    protected function getPaginator(): TablePaginator
-    {
-        return new TablePaginator(
-            1,
-            10,
-            new Collection($this->getTableData()),
-            'https://example.com/table',
-            1,
-            new Collection([
-                new LinkItem('1', 'https://example.com/table/1', true),
-            ]),
-        );
+        return $builder;
     }
 
     /**
      * @return array<array<string, string>>
      */
-    private function getTableData(): array
+    private function getJsonTableData(): array
     {
         return [
             [

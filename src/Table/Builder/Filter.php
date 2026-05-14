@@ -1,0 +1,51 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Patrikjak\Utils\Table\Builder;
+
+use Carbon\CarbonInterface;
+use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Custom\CustomFilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Date\DateFilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Json\JsonFilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Number\NumberFilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Select\SelectFilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Text\TextFilterDefinition;
+
+final class Filter
+{
+    private function __construct()
+    {
+    }
+
+    public static function text(): FilterDefinition
+    {
+        return new TextFilterDefinition();
+    }
+
+    public static function select(string $dataProviderUrl): FilterDefinition
+    {
+        return new SelectFilterDefinition($dataProviderUrl);
+    }
+
+    public static function date(?CarbonInterface $from = null, ?CarbonInterface $to = null): FilterDefinition
+    {
+        return new DateFilterDefinition($from, $to);
+    }
+
+    public static function number(?int $min = null, ?int $max = null): FilterDefinition
+    {
+        return new NumberFilterDefinition($min, $max);
+    }
+
+    public static function json(?string $jsonPath = null): FilterDefinition
+    {
+        return new JsonFilterDefinition($jsonPath);
+    }
+
+    public static function registered(string $type): FilterDefinition
+    {
+        return new CustomFilterDefinition($type);
+    }
+}

@@ -7,13 +7,13 @@ namespace Patrikjak\Utils\Tests\Unit\Common\Services\QueryBuilder;
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Database\DatabaseManager;
 use InvalidArgumentException;
-use Orchestra\Testbench\TestCase;
-use Patrikjak\Utils\Common\Dto\Filter\FilterCriteria;
-use Patrikjak\Utils\Common\Dto\Filter\JsonFilterCriteria;
-use Patrikjak\Utils\Common\Enums\Filter\JsonFilterType;
 use Patrikjak\Utils\Common\Services\QueryBuilder\FilterService;
+use Patrikjak\Utils\Table\Enums\Filter\JsonFilterType;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\FilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\JsonFilterCriteria;
+use Patrikjak\Utils\Tests\Unit\TestCase;
 
-class JsonFilterTest extends TestCase
+final class JsonFilterTest extends TestCase
 {
     /**
      * @throws BindingResolutionException
@@ -219,7 +219,7 @@ class JsonFilterTest extends TestCase
             new FilterCriteria([
                 new JsonFilterCriteria('user_metadata', 'email', 'test', JsonFilterType::CONTAINS),
             ]),
-            ['users.metadata' => 'user_metadata']
+            ['user_metadata' => 'users.metadata']
         );
 
         $sql = $query->toRawSql();

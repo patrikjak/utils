@@ -7,7 +7,7 @@ namespace Patrikjak\Utils\Common\View;
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
 
-final class DebugBacktrace extends Component
+class DebugBacktrace extends Component
 {
     /**
      * @var array<int, array<string, mixed>>

@@ -1,4 +1,4 @@
-@use('Patrikjak\Utils\Common\Enums\Sort\SortOrder')
+@use('Patrikjak\Utils\Table\Enums\Sort\SortOrder')
 
 <div class="values">
     <div
@@ -8,9 +8,9 @@
     >
         <div class="icon sort-order">
             @if($option->criteria->order === SortOrder::ASC)
-                @icon('sort_asc')
+                @icon('heroicon-o-sort-ascending')
             @else
-                @icon('sort_desc')
+                @icon('heroicon-o-sort-descending')
             @endif
         </div>
 
