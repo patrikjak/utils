@@ -86,7 +86,7 @@ protected function build(?Parameters $parameters, array $columnMap): TableBuilde
 {
     $this->sortService->applySort($query, $parameters?->sortCriteria, $columnMap);
     $this->filterService->applyFilter($query, $parameters?->filterCriteria, $columnMap);
-    $this->filterService->applySearch($query, $parameters?->searchQuery, array_values($columnMap));
+    // no separate applySearch() call — search flows through applyFilter()
 }
 ```
 
@@ -176,6 +176,26 @@ Defaults to `Filter::text()` when no definition is provided. Uses `Filter::*` st
 ```
 
 Keys must match column keys. Real DB column names are resolved from the column map automatically.
+
+Search is no longer a separate code path — it is represented internally as a `TextFilterCriteria` targeting the synthetic column `__search`. The search input still works the same way in the UI and the `->search()` builder call is unchanged. What is removed is everything you had to wire up manually:
+
+- `Parameters::$searchQuery` is gone — the search term arrives as a regular filter criterion inside `$parameters->filterCriteria`
+- `FilterService::applySearch()` is gone — call `applyFilter()` only; the `__search` criterion fans out across all searchable columns automatically inside `TextFilter`
+- `SearchSettings` is gone — `$table->isSearchable()` now checks whether any searchable columns were declared via `filterSettings`
+
+**Before:**
+
+```php
+$this->filterService->applyFilter($query, $parameters?->filterCriteria, $columnMap);
+$this->filterService->applySearch($query, $parameters?->searchQuery, array_values($columnMap));
+```
+
+**After:**
+
+```php
+$this->filterService->applyFilter($query, $parameters?->filterCriteria, $columnMap);
+// applySearch() call removed — search flows through applyFilter() automatically
+```
 
 ### Actions
 
@@ -495,6 +515,10 @@ The front-end sends `filter[column][0][type]=rating&filter[column][0][min]=3&fil
 | `MissingTableParametersException` | `InvalidTableBuilderException` |
 | `CellType` enum | `getType(): string` on cell value objects |
 | `FilterType::TEXT` / `::SELECT` / `::DATE` / `::NUMBER` / `::JSON` | `FilterType::Text` / `::Select` / `::Date` / `::Number` / `::Json` |
+| `Parameters::$searchQuery` | included in `$parameters->filterCriteria` as `TextFilterCriteria` on `__search` |
+| `FilterService::applySearch()` | removed — call `applyFilter()` only |
+| `SearchSettings` | `$table->isSearchable()` now driven by `filterSettings` |
+| `Table::$searchSettings` | `Table::$filterSettings` covers search |
 
 ## Full example
 

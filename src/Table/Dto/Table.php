@@ -6,9 +6,9 @@ namespace Patrikjak\Utils\Table\Dto;
 
 use Illuminate\Support\Collection;
 use Patrikjak\Utils\Table\Contracts\Cells\Cell as CellContract;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SearchFilterCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings;
-use Patrikjak\Utils\Table\Dto\Search\Settings as SearchSettings;
 use Patrikjak\Utils\Table\Dto\Sort\Settings as SortSettings;
 use Patrikjak\Utils\Table\ValueObjects\BulkActions\Item as BulkActionItem;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item;
@@ -42,7 +42,6 @@ final readonly class Table
         public ?SortSettings $sortSettings = null,
         public ?FilterSettings $filterSettings = null,
         public ?int $defaultMaxLength = null,
-        public ?SearchSettings $searchSettings = null,
         public bool $stickyHeader = false,
         public ?EmptyState $emptyState = null,
         public ?ColumnVisibility $columnVisibility = null,
@@ -93,16 +92,20 @@ final readonly class Table
             return false;
         }
 
-        return $this->filterSettings->filterableColumns->isNotEmpty();
+        return $this->filterSettings->filterableColumns->contains(
+            static fn (mixed $col) => $col->column !== SearchFilterCriteria::COLUMN,
+        );
     }
 
     public function isSearchable(): bool
     {
-        if ($this->searchSettings === null) {
+        if ($this->filterSettings === null) {
             return false;
         }
 
-        return $this->searchSettings->searchableColumns->isNotEmpty();
+        return $this->filterSettings->filterableColumns->contains(
+            static fn (mixed $col) => $col->column === SearchFilterCriteria::COLUMN,
+        );
     }
 
     public function hasColumnVisibility(): bool

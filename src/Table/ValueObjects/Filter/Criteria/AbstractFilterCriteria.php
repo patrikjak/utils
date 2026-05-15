@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Patrikjak\Utils\Table\ValueObjects\Filter\Criteria;
 
 use Illuminate\Contracts\Support\Arrayable;
-use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\FilterableColumn;
 
 abstract readonly class AbstractFilterCriteria implements Arrayable
 {
@@ -26,10 +25,5 @@ abstract readonly class AbstractFilterCriteria implements Arrayable
 
     public function __construct(public string $column)
     {
-    }
-
-    public function matchesDefinition(FilterableColumn $column): bool
-    {
-        return $column->column === $this->column;
     }
 }

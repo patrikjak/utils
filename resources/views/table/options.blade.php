@@ -7,7 +7,7 @@
         @endif
 
         @if($table->isSearchable())
-            <x-pjutils.table::search.search-input :settings="$table->searchSettings"/>
+            <x-pjutils.table::search.search-input :filter-settings="$table->filterSettings"/>
         @endif
 
         @if($table->hasColumnVisibility())

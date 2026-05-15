@@ -18,7 +18,6 @@ readonly class Parameters implements Arrayable
         public int $pageSize,
         public ?SortCriteria $sortCriteria,
         public ?FilterCriteria $filterCriteria,
-        public ?string $searchQuery = null,
         public ?array $visibleColumns = null,
     ) {
     }
@@ -30,7 +29,6 @@ readonly class Parameters implements Arrayable
             $this->pageSize,
             $this->sortCriteria,
             $filterCriteria,
-            $this->searchQuery,
             $this->visibleColumns,
         );
     }
@@ -45,7 +43,6 @@ readonly class Parameters implements Arrayable
             'pageSize' => $this->pageSize,
             'sortCriteria' => $this->sortCriteria?->toArray(),
             'filterCriteria' => $this->filterCriteria?->toArray(),
-            'searchQuery' => $this->searchQuery,
             'visibleColumns' => $this->visibleColumns,
         ];
     }

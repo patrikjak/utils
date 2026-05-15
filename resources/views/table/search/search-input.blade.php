@@ -6,7 +6,7 @@
             name="search"
             class="search-input"
             placeholder="{{ __('pjutils::table.search') }}"
-            value="{{ $settings->searchQuery ?? '' }}"
+            value="{{ $searchQuery ?? '' }}"
         />
         @icon('heroicon-o-search')
     </label>

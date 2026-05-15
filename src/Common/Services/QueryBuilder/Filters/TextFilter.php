@@ -7,6 +7,7 @@ namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 use Illuminate\Contracts\Database\Query\Builder;
 use Patrikjak\Utils\Table\Enums\Filter\TextFilterType;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SearchFilterCriteria;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\TextFilterCriteria;
 
 class TextFilter extends AbstractFilter implements Filter
@@ -18,11 +19,38 @@ class TextFilter extends AbstractFilter implements Filter
     {
         assert($filterCriteria instanceof TextFilterCriteria);
 
+        if ($filterCriteria instanceof SearchFilterCriteria) {
+            $this->applySearch($query, $filterCriteria, $columnsMask);
+            return;
+        }
+
         $query->orWhere(
             $this->resolveColumn($filterCriteria->column, $columnsMask),
             $this->getOperator($filterCriteria->filterType),
             $this->getConditionValue($filterCriteria->filterType, $filterCriteria->value),
         );
+    }
+
+    /**
+     * @param array<string, string> $columnsMask
+     */
+    private function applySearch(Builder $query, SearchFilterCriteria $criteria, array $columnsMask): void
+    {
+        if ($criteria->value === null || $criteria->value === '' || $criteria->searchableColumns === []) {
+            return;
+        }
+
+        $conditionValue = $this->getConditionValue(TextFilterType::CONTAINS, $criteria->value);
+
+        $query->where(function (Builder $query) use ($criteria, $conditionValue, $columnsMask): void {
+            foreach ($criteria->searchableColumns as $column) {
+                $query->orWhere(
+                    $this->resolveColumn($column, $columnsMask),
+                    'like',
+                    $conditionValue,
+                );
+            }
+        });
     }
 
     private function getOperator(TextFilterType $textFilterType): string

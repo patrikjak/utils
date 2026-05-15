@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\Factories\Filter\Criteria;
 
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterCriteriaFactory;
 use Patrikjak\Utils\Table\Enums\Filter\TextFilterType;
-use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\TextFilterCriteria;
 
 final readonly class TextFilterCriteriaFactory implements FilterCriteriaFactory

@@ -7,8 +7,6 @@ namespace Patrikjak\Utils\Table\ValueObjects\Filter\Criteria;
 use Patrikjak\Utils\Table\Contracts\Filter\NeedsDatabaseColumn;
 use Patrikjak\Utils\Table\Enums\Filter\FilterType;
 use Patrikjak\Utils\Table\Enums\Filter\JsonFilterType;
-use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\FilterableColumn;
-use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Json\JsonFilterDefinition;
 
 readonly class JsonFilterCriteria extends AbstractFilterCriteria implements NeedsDatabaseColumn
 {
@@ -62,22 +60,5 @@ readonly class JsonFilterCriteria extends AbstractFilterCriteria implements Need
             'json-path' => $this->jsonPath,
             'value' => $this->value,
         ];
-    }
-
-    public function matchesDefinition(FilterableColumn $column): bool
-    {
-        if ($column->column !== $this->column) {
-            return false;
-        }
-
-        if (!$column->filterDefinition instanceof JsonFilterDefinition) {
-            return false;
-        }
-
-        if ($column->filterDefinition->jsonPath !== null && $column->filterDefinition->jsonPath !== $this->jsonPath) {
-            return false;
-        }
-
-        return true;
     }
 }

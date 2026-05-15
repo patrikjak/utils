@@ -6,6 +6,8 @@ namespace Patrikjak\Utils\Tests\Integration\Table\Services;
 
 use Illuminate\Contracts\Container\BindingResolutionException;
 use Illuminate\Support\Facades\Blade;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\FilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SearchFilterCriteria;
 use Patrikjak\Utils\Table\Builder\TableBuilder;
 use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Tests\Integration\Table\Services\Implementations\FullTableSearchTableProvider;
@@ -39,20 +41,38 @@ final class FullTableSearchTableProviderTest extends TestCase
             $builder->search('name', 'email');
         });
 
-        $this->tableMatchesSnapshot(new Parameters(1, 10, null, null, 'john'));
+        $this->tableMatchesSnapshot(new Parameters(
+            1,
+            10,
+            null,
+            new FilterCriteria([new SearchFilterCriteria('john', [])]),
+        ));
     }
 
     /**
      * @throws BindingResolutionException
      */
-    public function testProviderHasSearchQuery(): void
+    public function testProviderHasSearchCriteria(): void
     {
         $this->tableProvider->configure(static function (TableBuilder $builder, ?Parameters $parameters): void {
             $builder->search('name', 'email');
         });
 
-        $this->tableMatchesSnapshot(new Parameters(1, 10, null, null, 'john'));
-        $this->assertSame('john', $this->tableProvider->getLastParameters()?->searchQuery);
+        $parameters = new Parameters(
+            1,
+            10,
+            null,
+            new FilterCriteria([new SearchFilterCriteria('john', [])]),
+        );
+
+        $this->tableMatchesSnapshot($parameters);
+
+        $lastParameters = $this->tableProvider->getLastParameters();
+        $searchCriteria = collect($lastParameters?->filterCriteria?->filters ?? [])
+            ->first(static fn (mixed $f) => $f instanceof SearchFilterCriteria);
+
+        $this->assertInstanceOf(SearchFilterCriteria::class, $searchCriteria);
+        $this->assertSame('john', $searchCriteria->value);
     }
 
     /**
@@ -104,7 +124,12 @@ final class FullTableSearchTableProviderTest extends TestCase
             $builder->search('name', 'email');
         });
 
-        $htmlParts = $this->tableProvider->getHtmlParts(new Parameters(1, 10, null, null, 'alice'));
+        $htmlParts = $this->tableProvider->getHtmlParts(new Parameters(
+            1,
+            10,
+            null,
+            new FilterCriteria([new SearchFilterCriteria('alice', [])]),
+        ));
 
         $this->assertStringContainsString('value="alice"', $htmlParts['options']);
     }

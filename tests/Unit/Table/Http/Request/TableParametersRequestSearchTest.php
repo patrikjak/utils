@@ -4,35 +4,66 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Tests\Unit\Table\Http\Request;
 
-use Orchestra\Testbench\TestCase;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SearchFilterCriteria;
 use Patrikjak\Utils\Table\Http\Requests\TableParametersRequest;
+use Patrikjak\Utils\Tests\Unit\TestCase;
 
 final class TableParametersRequestSearchTest extends TestCase
 {
-    public function testGetTableParametersSearchQueryFromRequest(): void
+    public function testGetTableParametersSearchQueryProducesSearchFilterCriteria(): void
     {
         $request = new TableParametersRequest(['search' => 'john']);
 
         $parameters = $request->getTableParameters();
 
-        $this->assertSame('john', $parameters->searchQuery);
+        $filters = $parameters->filterCriteria?->filters ?? [];
+        $searchCriteria = collect($filters)->first(static fn (mixed $f) => $f instanceof SearchFilterCriteria);
+
+        $this->assertInstanceOf(SearchFilterCriteria::class, $searchCriteria);
+        $this->assertSame('john', $searchCriteria->value);
+        $this->assertSame([], $searchCriteria->searchableColumns);
     }
 
-    public function testGetTableParametersDeleteSearchClearsQuery(): void
+    public function testGetTableParametersDeleteSearchClearsSearchCriteria(): void
     {
         $request = new TableParametersRequest(['deleteSearch' => 'true']);
 
         $parameters = $request->getTableParameters();
 
-        $this->assertNull($parameters->searchQuery);
+        $filters = $parameters->filterCriteria?->filters ?? [];
+        $searchCriteria = collect($filters)->first(static fn (mixed $f) => $f instanceof SearchFilterCriteria);
+
+        $this->assertNull($searchCriteria);
     }
 
-    public function testGetTableParametersSearchQueryIsNullByDefault(): void
+    public function testGetTableParametersNoSearchProducesNoSearchCriteria(): void
     {
         $request = new TableParametersRequest();
 
         $parameters = $request->getTableParameters();
 
-        $this->assertNull($parameters->searchQuery);
+        $filters = $parameters->filterCriteria?->filters ?? [];
+        $searchCriteria = collect($filters)->first(static fn (mixed $f) => $f instanceof SearchFilterCriteria);
+
+        $this->assertNull($searchCriteria);
+    }
+
+    public function testSearchAndFilterCriteriaAreMerged(): void
+    {
+        $request = new TableParametersRequest([
+            'search' => 'alice',
+            'filter' => [
+                'status' => [['type' => 'select', 'value' => 'active']],
+            ],
+        ]);
+
+        $parameters = $request->getTableParameters();
+
+        $filters = $parameters->filterCriteria?->filters ?? [];
+        $this->assertCount(2, $filters);
+
+        $searchCriteria = collect($filters)->first(static fn (mixed $f) => $f instanceof SearchFilterCriteria);
+        $this->assertInstanceOf(SearchFilterCriteria::class, $searchCriteria);
+        $this->assertSame('alice', $searchCriteria->value);
     }
 }

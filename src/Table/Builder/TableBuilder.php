@@ -12,13 +12,15 @@ use Illuminate\Support\Collection;
 use Patrikjak\Utils\Common\Enums\Type;
 use Patrikjak\Utils\Common\Icon;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterDefinition;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\FilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SearchFilterCriteria;
 use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
 use Patrikjak\Utils\Table\Dto\Pagination\Paginator as PaginatorDto;
 use Patrikjak\Utils\Table\Dto\Pagination\Settings as PaginationSettings;
 use Patrikjak\Utils\Table\Dto\Parameters;
-use Patrikjak\Utils\Table\Dto\Search\Settings as SearchSettings;
 use Patrikjak\Utils\Table\Dto\Sort\Settings as SortSettings;
 use Patrikjak\Utils\Table\Dto\Table;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\Text\TextFilterDefinition;
 use Patrikjak\Utils\Table\Exceptions\InvalidTableBuilderException;
 use Patrikjak\Utils\Table\Factories\Pagination\PaginatorFactory;
 use Patrikjak\Utils\Table\ValueObjects\BulkActions\Item as BulkActionItem;
@@ -290,7 +292,6 @@ final class TableBuilder
             $this->buildSortSettings($parameters),
             $filterSettings,
             $this->resolveDefaultMaxLength(),
-            $this->buildSearchSettings($parameters),
             $this->stickyHeader,
             $this->emptyState,
             $columnVisibility,
@@ -420,7 +421,7 @@ final class TableBuilder
 
     private function buildFilterSettings(?Parameters $parameters): ?FilterSettings
     {
-        if ($this->filterEntries === []) {
+        if ($this->filterEntries === [] && $this->searchKeys === []) {
             return null;
         }
 
@@ -432,20 +433,38 @@ final class TableBuilder
             })
             ->values();
 
-        return new FilterSettings($filterableColumns, $parameters?->filterCriteria);
-    }
-
-    private function buildSearchSettings(?Parameters $parameters): ?SearchSettings
-    {
-        if ($this->searchKeys === []) {
-            return null;
+        if ($this->searchKeys !== []) {
+            $filterableColumns->push(new FilterableColumn('', SearchFilterCriteria::COLUMN, new TextFilterDefinition()));
         }
 
-        $dbColumns = new Collection(array_keys($this->searchKeys))->map(function (string $key): string {
-            return $this->columns[$key]->resolvedDatabaseColumn ?? $key;
-        });
+        $filterCriteria = $this->enrichSearchCriteria($parameters?->filterCriteria);
 
-        return new SearchSettings($dbColumns, $parameters?->searchQuery);
+        return new FilterSettings($filterableColumns, $filterCriteria);
+    }
+
+    private function enrichSearchCriteria(?FilterCriteria $filterCriteria): ?FilterCriteria
+    {
+        if ($filterCriteria === null || $this->searchKeys === []) {
+            return $filterCriteria;
+        }
+
+        $resolvedColumns = array_map(
+            fn (string $key): string => $this->columns[$key]->resolvedDatabaseColumn ?? $key,
+            array_keys($this->searchKeys),
+        );
+
+        $enriched = array_map(
+            static function (mixed $filter) use ($resolvedColumns): mixed {
+                if (!$filter instanceof SearchFilterCriteria) {
+                    return $filter;
+                }
+
+                return new SearchFilterCriteria($filter->value ?? '', $resolvedColumns);
+            },
+            $filterCriteria->filters,
+        );
+
+        return new FilterCriteria($enriched);
     }
 
     private function buildPaginationSettings(?Parameters $parameters): ?PaginationSettings

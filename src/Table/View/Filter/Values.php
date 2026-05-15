@@ -6,9 +6,10 @@ namespace Patrikjak\Utils\Table\View\Filter;
 
 use Illuminate\Contracts\View\View;
 use Illuminate\View\Component;
-use Patrikjak\Utils\Table\Dto\Filter\Settings;
 use Patrikjak\Utils\Table\Registry\FilterStrategyRegistry;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SearchFilterCriteria;
+use Patrikjak\Utils\Table\Dto\Filter\Settings;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Definitions\FilterableColumn;
 
 class Values extends Component
@@ -39,6 +40,10 @@ class Values extends Component
         $options = [];
 
         foreach ($this->settings->criteria->filters as $filter) {
+            if ($filter instanceof SearchFilterCriteria) {
+                continue;
+            }
+
             $label = $this->getLabelForFilter($filter);
 
             if ($label === null) {
@@ -60,7 +65,7 @@ class Values extends Component
     private function getLabelForFilter(AbstractFilterCriteria $filter): ?string
     {
         $match = $this->settings->filterableColumns->first(
-            static fn (FilterableColumn $column) => $filter->matchesDefinition($column),
+            static fn (FilterableColumn $column) => $column->column === $filter->column,
         );
 
         return $match?->label;

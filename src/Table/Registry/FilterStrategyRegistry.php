@@ -8,7 +8,6 @@ use Patrikjak\Utils\Common\Services\QueryBuilder\Filters\Filter;
 use Patrikjak\Utils\Table\Contracts\Filter\FilterCriteriaFactory;
 use Patrikjak\Utils\Table\Exceptions\UnregisteredFilterStrategyException;
 
-/** Strategies must be stateless — they are stored as shared instances. */
 final class FilterStrategyRegistry
 {
     /**

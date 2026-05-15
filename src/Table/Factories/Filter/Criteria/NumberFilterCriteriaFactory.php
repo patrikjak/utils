@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Patrikjak\Utils\Table\Factories\Filter\Criteria;
 
-use Patrikjak\Utils\Table\Contracts\Filter\FilterCriteriaFactory;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
+use Patrikjak\Utils\Table\Contracts\Filter\FilterCriteriaFactory;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\NumberFilterCriteria;
 
 final readonly class NumberFilterCriteriaFactory implements FilterCriteriaFactory

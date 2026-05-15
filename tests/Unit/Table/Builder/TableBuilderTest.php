@@ -11,7 +11,9 @@ use Patrikjak\Utils\Table\Builder\Cell;
 use Patrikjak\Utils\Table\Builder\Filter;
 use Patrikjak\Utils\Table\Builder\TableBuilder;
 use Patrikjak\Utils\Table\Dto\Filter\Settings as FilterSettings;
-use Patrikjak\Utils\Table\Dto\Search\Settings as SearchSettings;
+use Patrikjak\Utils\Table\Dto\Parameters;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\FilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SearchFilterCriteria;
 use Patrikjak\Utils\Table\Dto\Sort\Settings as SortSettings;
 use Patrikjak\Utils\Table\Exceptions\InvalidTableBuilderException;
 use Patrikjak\Utils\Table\ValueObjects\Cells\Actions\Item as ActionItem;
@@ -238,7 +240,7 @@ final class TableBuilderTest extends TestCase
     /**
      * @throws BindingResolutionException
      */
-    public function testSearchSettingsDerivedFromSearchKeys(): void
+    public function testSearchKeysProduceSearchableFilterSettings(): void
     {
         $table = TableBuilder::for('users', $this->rows)
             ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
@@ -246,8 +248,12 @@ final class TableBuilderTest extends TestCase
             ->search('name', 'email')
             ->assembleTable(null);
 
-        $this->assertInstanceOf(SearchSettings::class, $table->searchSettings);
-        $this->assertCount(2, $table->searchSettings->searchableColumns);
+        $this->assertTrue($table->isSearchable());
+        $this->assertNotNull($table->filterSettings);
+        $searchColumn = $table->filterSettings->filterableColumns->first(
+            static fn (mixed $col) => $col->column === SearchFilterCriteria::COLUMN,
+        );
+        $this->assertNotNull($searchColumn);
     }
 
     /**
@@ -255,12 +261,26 @@ final class TableBuilderTest extends TestCase
      */
     public function testSearchUsesDbAliasWhenSet(): void
     {
+        $parameters = new Parameters(
+            1,
+            10,
+            null,
+            new FilterCriteria(
+                [new SearchFilterCriteria('alice', [])],
+            ),
+        );
+
         $table = TableBuilder::for('users', $this->rows, ['name' => 'u.name'])
             ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
             ->search('name')
-            ->assembleTable(null);
+            ->assembleTable($parameters);
 
-        $this->assertSame('u.name', $table->searchSettings->searchableColumns[0]);
+        $criteria = $parameters->filterCriteria?->filters ?? [];
+        $searchCriteria = collect($table->filterSettings?->criteria?->filters ?? [])
+            ->first(static fn (mixed $f) => $f instanceof SearchFilterCriteria);
+
+        $this->assertInstanceOf(SearchFilterCriteria::class, $searchCriteria);
+        $this->assertContains('u.name', $searchCriteria->searchableColumns);
     }
 
     /**
@@ -274,19 +294,23 @@ final class TableBuilderTest extends TestCase
             ->search('name')
             ->assembleTable(null);
 
-        $this->assertCount(1, $table->searchSettings->searchableColumns);
+        $this->assertTrue($table->isSearchable());
+        $searchColumn = $table->filterSettings?->filterableColumns->filter(
+            static fn (mixed $col) => $col->column === SearchFilterCriteria::COLUMN,
+        );
+        $this->assertCount(1, $searchColumn ?? collect());
     }
 
     /**
      * @throws BindingResolutionException
      */
-    public function testNoSearchKeysProducesNullSearchSettings(): void
+    public function testNoSearchKeysProducesNotSearchable(): void
     {
         $table = TableBuilder::for('users', $this->rows)
             ->column('name', 'Name', fn (array $r) => Cell::simple($r['name']))
             ->assembleTable(null);
 
-        $this->assertNull($table->searchSettings);
+        $this->assertFalse($table->isSearchable());
     }
 
     /**

@@ -6,8 +6,8 @@ namespace Patrikjak\Utils\Common\Services\QueryBuilder\Filters;
 
 use Illuminate\Contracts\Database\Query\Builder;
 use InvalidArgumentException;
-use Patrikjak\Utils\Table\Enums\Filter\JsonFilterType;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\AbstractFilterCriteria;
+use Patrikjak\Utils\Table\Enums\Filter\JsonFilterType;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\JsonFilterCriteria;
 
 class JsonFilter extends AbstractFilter implements Filter

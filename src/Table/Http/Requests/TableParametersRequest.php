@@ -9,6 +9,7 @@ use Patrikjak\Utils\Table\Dto\Parameters;
 use Patrikjak\Utils\Table\Enums\Sort\SortOrder;
 use Patrikjak\Utils\Table\Registry\FilterStrategyRegistry;
 use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\FilterCriteria;
+use Patrikjak\Utils\Table\ValueObjects\Filter\Criteria\SearchFilterCriteria;
 use Patrikjak\Utils\Table\ValueObjects\Sort\SortCriteria;
 
 class TableParametersRequest extends FormRequest
@@ -19,8 +20,7 @@ class TableParametersRequest extends FormRequest
             $this->getCurrentPage(),
             $this->getPageSize(),
             $this->getSortCriteria(),
-            $this->getFilterCriteria(),
-            $this->getSearchQuery(),
+            $this->getMergedFilterCriteria(),
             $this->getVisibleColumns(),
         );
     }
@@ -87,21 +87,34 @@ class TableParametersRequest extends FormRequest
         return new FilterCriteria($filters);
     }
 
-    private function getSearchQuery(): ?string
+    private function getMergedFilterCriteria(): ?FilterCriteria
     {
-        $deleteSearch = $this->boolean('deleteSearch');
+        $filterCriteria = $this->getFilterCriteria();
+        $searchCriteria = $this->getSearchCriteria();
 
-        if ($deleteSearch) {
+        if ($searchCriteria === null) {
+            return $filterCriteria;
+        }
+
+        $filters = $filterCriteria !== null ? $filterCriteria->filters : [];
+        $filters[] = $searchCriteria;
+
+        return new FilterCriteria($filters);
+    }
+
+    private function getSearchCriteria(): ?SearchFilterCriteria
+    {
+        if ($this->boolean('deleteSearch')) {
             return null;
         }
 
         $searchQuery = $this->input('search');
 
-        if ($searchQuery === null) {
+        if ($searchQuery === null || (string) $searchQuery === '') {
             return null;
         }
 
-        return (string) $searchQuery ?: null;
+        return new SearchFilterCriteria((string) $searchQuery, []);
     }
 
     /**
